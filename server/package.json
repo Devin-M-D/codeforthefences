@@ -1,0 +1,27 @@
+{
+  "name": "cookbook-server",
+  "version": "1.0.0",
+  "description": "server component for https://github.com/Devin-M-D/cookbook",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --trace-warnings server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Devin-M-D/cookbook.git"
+  },
+  "author": "Devin-M-D",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Devin-M-D/cookbook/issues"
+  },
+  "homepage": "https://github.com/Devin-M-D/cookbook#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "orientjs": "^3.0.10",
+    "systemjs": "^6.2.6"
+  }
+}
