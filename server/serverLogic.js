@@ -29,9 +29,9 @@ function addBCrypt(){
   return require('bcryptjs')
 }
 
-function configRoutes(){
+function configRoutes(DIobj){
   var configRoutes = require('./routes')
-  configRoutes(DI)
+  configRoutes(DIobj)
 }
-configRoutes()
+configRoutes(DI)
 module.exports = DI

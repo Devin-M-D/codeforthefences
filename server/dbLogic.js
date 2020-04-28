@@ -1,24 +1,24 @@
 var OrientDB = require('orientjs');
 
-function orientServer() {
-  this.connect = (exportObj) => {
+function orientServer(dbName) {
+  this.connect = (DI_data) => {
       var server = OrientDB({
        host:       'localhost',
        port:       2424,
        username:   'root',
        password:   'testpass123'
      })
-     var db = server.use('testDbName')
-     console.log('Using Database:', db.name);
-     return db;
+     DI_data.server = server
+     DI_data.dbConn = server.use(dbName)
+     console.log('Using Database:', DI_data.dbConn.name);
   }
   this.disconnect = () => {
     // server.close()
     // console.log("OrientDb stopped");
   }
-  this.api = require('orientjs')
+  this.api = OrientDB
   this.server = "server placeholder"
   this.dbConn = "db placeholder"
 }
-var retVal = new orientServer()
+var retVal = new orientServer('testDb')
 module.exports = retVal;
