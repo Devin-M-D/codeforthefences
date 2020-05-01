@@ -1,24 +1,46 @@
-var OrientDB = require('orientjs');
+var OrientDB = require("orientjs")
+var OrientDBClient = OrientDB.OrientDBClient
 
-function orientServer(dbName) {
-  this.connect = (DI_data) => {
-      var server = OrientDB({
-       host:       'localhost',
-       port:       2424,
-       username:   'root',
-       password:   'testpass123'
-     })
-     DI_data.server = server
-     DI_data.dbConn = server.use(dbName)
-     console.log('Using Database:', DI_data.dbConn.name);
+const config = {
+  host: "localhost",
+  db: "cookbook",
+  rootUser: "root",
+  rootPassword: "testpass123"
+};
+
+const setupDatabase = async (DI) => {
+  let client = await OrientDBClient.connect({
+    host: config.host,
+    pool: {
+      max: 10
+    }
+  });
+
+  let exists = await client.existsDatabase({
+    name: config.db,
+    username: config.rootUser,
+    password: config.rootPassword
+  });
+
+  let pool = await client.sessions({
+    name: config.db,
+    username: config.user,
+    password: config.password,
+    pool: {
+      max: 25
+    }
+  });
+
+  var runQuery = async (DI_data, query) => {
+    let session = await DI_data.pool.acquire();
+    let data = await session.query(query).all();
+    await session.close();
+    return data;
   }
-  this.disconnect = () => {
-    // server.close()
-    // console.log("OrientDb stopped");
-  }
-  this.api = OrientDB
-  this.server = "server placeholder"
-  this.dbConn = "db placeholder"
+
+  DI.data.client = client
+  DI.data.pool = pool
+  DI.data.runQuery = runQuery
 }
-var retVal = new orientServer('testDb')
-module.exports = retVal;
+
+module.exports = setupDatabase

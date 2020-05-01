@@ -1,8 +1,11 @@
 var DI = {
   express: configExpress(),
-  bcrypt: addBCrypt(),
-  data: require('./dbLogic')
+  bcrypt: require('bcryptjs'),
 }
+
+DI.data = require('./dbLogic')(DI)
+let routes = require('./routes')(DI)
+
 function configExpress() {
   var express = require('express')
   var expressApp = express()
@@ -25,13 +28,4 @@ function addBodyParser(expressApp) {
   expressApp.use(bodyParser.urlencoded({ extended: true }))
   expressApp.use(bodyParser.json())
 }
-function addBCrypt(){
-  return require('bcryptjs')
-}
-
-function configRoutes(DIobj){
-  var configRoutes = require('./routes')
-  configRoutes(DIobj)
-}
-configRoutes(DI)
 module.exports = DI
