@@ -31,16 +31,29 @@ const setupDatabase = async (DI) => {
     }
   });
 
-  var runQuery = async (DI_data, query) => {
+  var run = async (DI_data, callback) => {
     let session = await DI_data.pool.acquire();
-    let data = await session.query(query).all();
+    let data = await callback(session)
     await session.close();
     return data;
+  }
+
+  var runQuery = async (DI_data, query, params = null) => {
+    return await run(DI_data, async (session) => {
+      return await session.query(query, {params: params}).all();
+    })
+  }
+
+  var runCommand = async (DI_data, query, params = null) => {
+    return await run(DI_data, async (session) => {
+      return await session.command(query, {params: params}).all()
+    })
   }
 
   DI.data.client = client
   DI.data.pool = pool
   DI.data.runQuery = runQuery
+  DI.data.runCommand = runCommand
 }
 
 module.exports = setupDatabase

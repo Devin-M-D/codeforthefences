@@ -3,7 +3,10 @@ var DI = {
   bcrypt: require('bcryptjs'),
 }
 
+// set up database connection
 DI.data = require('./dbLogic')(DI)
+
+//set up routes
 let routes = require('./routes')(DI)
 
 function configExpress() {

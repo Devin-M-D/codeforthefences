@@ -1,0 +1,78 @@
+﻿/*root styles*/
+/*///////////*/
+html, body, span {
+  display: inline-flex;
+  flex-flow: row wrap;
+  position: relative;
+  margin: 0px;
+  box-sizing: border-box;
+  border-collapse: collapse;
+  align-items: stretch;
+  flex: 1 1 auto;
+  justify-content: center;
+  align-items: stretch;
+  align-content: center;
+  height: 100%;
+  width: 100%;
+}
+html, body {
+  flex-flow: column nowrap;
+}
+#headerMain {
+  height: 100px;
+  border-bottom: solid thin black;
+  box-shadow: 5px 10px 20px #888;
+  background-color: mediumaquamarine;
+}
+#headerLeft{
+  width: 20%;
+}
+#headerTitle{
+  width: 60%;
+}
+#headerRight{
+  width: 20%;
+}
+#bodyMain {
+  flex-direction: column;
+  height: calc(100% - 100px);
+}
+#bodyMain > * {
+  align-items: center;
+}
+#cargoHold {
+  height: 0px;
+  width: 0px;
+}
+
+/*main page styles*/
+/*////////////////*/
+#search {
+  height: 100px;
+}
+#txtSearch {
+  margin: 20px;
+  height: 60px;
+  width: 100%;
+  border-radius: 10px;
+  padding: 0px 100px;
+  border: inset lightseagreen;
+}
+#addNew {
+  height: 100px;
+}
+#results {
+  height: calc(100% - 200px);
+}
+.searchIcon {
+  position: absolute;
+  left: 50px;
+  fill: gray;
+}
+
+/*Typesetting Styles*/
+/*//////////////////*/
+.headline { font-size:22px; text-decoration:underline; height:30px; }
+.subheading { font-size:20px; font-style:italic; }
+.bodyCopy1 { font-size: 18px; }
+.finePrint { font-size:14px; font-style:italic; line-height:1em; }
