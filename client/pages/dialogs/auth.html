@@ -1,14 +1,63 @@
+<style>
+  #authBox{
+    height: 80%;
+    width: 80%;
+    background-color: white;
+    position:absolute;
+  }
+  #authBox > span > span {
+    height: auto;
+    padding: 25px;
+    text-align: left;
+  }
+  #signup {
+    width: 50%;
+  }
+  /* #signup > span {
+    height: 20%;
+  } */
+  #login {
+    width: 50%;
+  }
+  /* #login > span {
+    height: 33%;
+  } */
+</style>
+
 <span id="authBox">
-  <span id="signup">
-    <span id="suEmail">email</span>
-    <span id="suUsername">un</span>
-    <span id="suPass">pass</span>
-    <span id="suConfirmPass">confPass</span>
-    <span id="btnSignup"></span>
+  <span id="signup" class="spacer vert">
+    <span id="suEmail">
+      <span class="inputLabelLg">Email (optional):</span>
+      <input type="text" placeholder="email" />
+    </span>
+    <span id="suUsername">
+      <span class="inputLabelLg">Username:</span>
+      <input type="text" placeholder="username">
+    </span>
+    <span id="suPass">
+      <span class="inputLabelLg">Password:</span>
+      <input type="pasword" placeholder="password">
+    </span>
+    <span id="suConfirmPass" class="spacer horiz">
+      <span class="inputLabelLg">Confirm password:</span>
+      <input type="password" placeholder="confirm password">
+    </span>
+    <span id="btnSignup" class="btnFrame">
+      <span class="btn1">Signup</span>
+    </span>
   </span>
   <span id="login">
-    <span id="logUsername">un</span>
-    <span id="logPass">pass</span>
-    <span id="btnLogin"></span>
+    <span id="logUsername">
+      <span class="inputLabelLg">Username:</span>
+      <input type="text" placeholder="username">
+    </span>
+    <!-- <span class="spacer2"></span> -->
+    <span id="logPass" class="spacer horiz">
+      <span class="inputLabelLg">Password:</span>
+      <input type="pasword" placeholder="password">
+    </span>
+    <span id="btnLogin" class="btnFrame">
+      <span class="btn1">Login</span>
+    </span>
   </span>
-<span>
+</span>

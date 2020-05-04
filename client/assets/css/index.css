@@ -1,5 +1,19 @@
 ﻿/*root styles*/
 /*///////////*/
+:root {
+  --rgbaTransparent: rgba(0,0,0,0);
+
+  --colorHeader: mediumaquamarine;
+  --colorPrimary: lightblue;
+  --colorSecondary: lightseagreen;
+  --colorBtnPrimary: lightblue;
+  --colorBtnSecondary: aquamarine;
+
+  --spacerInner: var(--colorSecondary);
+  --spacerOuter: var(--colorPrimary);
+  --spacerGradient: var(--rgbaTransparent) 0%, var(--spacerOuter) 25%, var(--spacerInner) 50%, var(--spacerOuter) 75%, var(--rgbaTransparent) 100%;
+}
+
 html, body, span {
   display: inline-flex;
   flex-flow: row wrap;
@@ -15,22 +29,63 @@ html, body, span {
   height: 100%;
   width: 100%;
 }
-html, body {
-  flex-flow: column nowrap;
+input {
+  display: inline-block;
+  position: relative;
+  width: 100%;
 }
+.headline { font-size:22px; text-decoration:underline; height:30px; }
+.subheading { font-size:20px; font-style:italic; }
+.inputLabelLg { font-size:16px; justify-content: flex-start; height: auto; }
+.bodyCopy1 { font-size: 14px; }
+.finePrint { font-size:10px; font-style:italic; line-height:1em; }
+
+.spacer::after {
+  background-color: gray;
+  position: absolute;
+  content: "";
+}
+.spacer.horiz::after {
+  background: linear-gradient(90deg, var(--spacerGradient));
+  width: 100%;
+  height:2px;
+  bottom: -1px;
+}
+.spacer.vert::after {
+  background: linear-gradient(0deg, var(--spacerGradient));
+  width: 2px;
+  height: 100%;
+  right: -1px;
+}
+.btnFrame{
+  flex: 0 0 auto;
+}
+.btn1 {
+  background-color: var(--colorBtnPrimary);
+  border: solid thick black;
+  border-style: outset;
+  border-color: var(--colorBtnSecondary);
+  height: auto;
+  width: auto;
+  margin: 0px 25px;
+  padding: 10px 0px;
+}
+
+/*global element styles*/
+/*///////////*/
 #headerMain {
   height: 100px;
   border-bottom: solid thin black;
   box-shadow: 5px 10px 20px #888;
-  background-color: mediumaquamarine;
+  background-color: var(--colorHeader);
 }
-#headerLeft{
+#headerLeft {
   width: 20%;
 }
-#headerTitle{
+#headerTitle {
   width: 60%;
 }
-#headerRight{
+#headerRight {
   width: 20%;
 }
 #bodyMain {
@@ -45,7 +100,7 @@ html, body {
   width: 0px;
 }
 
-/*main page styles*/
+/*index page styles*/
 /*////////////////*/
 #search {
   height: 100px;
@@ -56,7 +111,7 @@ html, body {
   width: 100%;
   border-radius: 10px;
   padding: 0px 100px;
-  border: inset lightseagreen;
+  border: inset var(--colorSecondary);
 }
 #addNew {
   height: 100px;
@@ -69,10 +124,3 @@ html, body {
   left: 50px;
   fill: gray;
 }
-
-/*Typesetting Styles*/
-/*//////////////////*/
-.headline { font-size:22px; text-decoration:underline; height:30px; }
-.subheading { font-size:20px; font-style:italic; }
-.bodyCopy1 { font-size: 18px; }
-.finePrint { font-size:14px; font-style:italic; line-height:1em; }

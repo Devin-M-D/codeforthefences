@@ -1,19 +1,20 @@
-<script type="text/javascript">
-  function popModalDialog(dialogPath) {
-    console.log(dialogPath)
-  }
-  $("html").prepend($("#modalCurtain").clone())
-  console.log($("#modalCurtain"))
-  //$("#modalCurtain")[0].style("display", "inline-flex")
-</script>
-<style>
-  #modalCurtain{
-    display: none;
-    background-color: gray;
-    position: absolute;
-    z-index: 9999;
-  }
-</style>
-<span id="modalCurtain">
-  <span id="modalDialog"></span>
+
+<span id="modals">
+  <script type="text/javascript">
+    function popModalDialog(dialogPath) {
+      $("html").prepend(`<span id="modalCurtain"></span>`)
+      $("#modalCurtain").css("display", "inline-flex")
+      $.get(dialogPath, (dialog) => { $("#modalCurtain").append(dialog) })
+    }
+    console.log($("#modalCurtain"))
+  </script>
+  <style>
+    #modalCurtain{
+      display: none;
+      background-color: gray;
+      position: absolute;
+      z-index: 9999;
+    }
+  </style>
+  <span id="modalCurtain"></span>
 </span>
