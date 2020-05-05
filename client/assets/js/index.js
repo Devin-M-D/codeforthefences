@@ -16,32 +16,19 @@ async function strapApp(doUnitTests = false){
 }
 
 function asyncClick(func) {
-  return func()
+  return new Promise((f, r) => {
+    func().then((result) => { f(result); })
+  })
 }
 
 //Ajax Methods
 //////////////
 function remoteCall(remoteURL, postData = {}, enable_logging = false) {
-  if (enable_logging){
-    console.log({
-      "url": remoteURL,
-      "data": postData
-    })
-  }
+  if (enable_logging) { console.log(`Calling ${remoteURL} with ${postData}`) }
+
   postData = JSON.stringify(postData) || {}
-  var callType = "POST"
-  var contentType = "application/json; charset=utf-8"
-  var dataType = "json"
-  if (remoteURL.indexOf(".json") != -1 || remoteURL.indexOf(".html") != -1) {
-    callType = "GET"
-    if (remoteURL.indexOf(".json") != -1){
-      contentType = "text/html; charset=UTF-8"
-    }
-    if (remoteURL.indexOf(".html") != -1){
-      contentType = "text/html; charset=UTF-8"
-      dataType = "html"
-    }
-  }
+  var callType = "POST";
+  if (remoteURL.indexOf(".json") != -1) { callType = "GET"; }
 
   return promise = new Promise(function (fulfill, reject) {
     $.ajax({
@@ -52,7 +39,7 @@ function remoteCall(remoteURL, postData = {}, enable_logging = false) {
       dataType: dataType,
       async: false,
       success: function (msg) {
-        if (enable_logging == 1) { console.log("Call to:  " + remoteURL + " - Succeeded: ") }
+        if (enable_logging == 1) { console.log("Call to:  " + remoteURL + " - Succeeded: ", msg) }
         fulfill(msg);
       },
       error: function (msg) {

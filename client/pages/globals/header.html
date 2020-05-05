@@ -19,7 +19,6 @@
   <span id="headerLeft">hamburger</span>
   <span id="headerTitle" class="header1">The Cookbook</span>
   <span id="headerRight">
-    <!-- <span id="btnPopMdlAuth" class="button" onclick="(async () => { await popModalDialog('/pages/dialogs/auth.html') })">auth</span> -->
-    <span id="btnPopMdlAuth" class="button" onclick="return new Promise((f, r) => { popModalDialog('/pages/dialogs/auth.html').then((test) => { f(); }) })">auth</span>
+    <span id="btnPopMdlAuth" class="button" onclick="return asyncClick(() => popModalDialog('/pages/dialogs/auth.html'))">auth</span>
   </span>
 </span>

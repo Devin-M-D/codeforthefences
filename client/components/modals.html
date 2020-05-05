@@ -10,28 +10,6 @@
       return $.get(dialogPath, (html) => {
         $("#modalCurtain").append(html)
       })
-
-      // return new Promise((fulfill, reject) => {
-      //   $("html").prepend(`<span id="modalCurtain" onclick="closeModal()"></span>`)
-      //   console.log($("#modalCurtain"))
-      //   //remoteCall(dialogPath, {}, true)
-      //
-      //   return $.get(dialogPath, (html) => {
-      //     $("#modalCurtain").append(html)
-      //     fulfill()
-      //   })
-
-        // .then((html) => {
-        //   $("#modalCurtain").append(html)
-        //   fulfill()
-        // })
-        // await $.get(dialogPath, async (html) => {
-        //   console.log($(html))
-        //   $("#modalCurtain").append(html)
-        //   return true
-        //   console.log($("#modalCurtain"))
-        // })
-      // })
     }
   </script>
   <style>
