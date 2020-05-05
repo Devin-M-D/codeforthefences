@@ -10,40 +10,40 @@
     padding: 25px;
     text-align: left;
   }
-  #signup {
+  #signup, #login {
     width: 50%;
   }
-  /* #signup > span {
-    height: 20%;
-  } */
-  #login {
-    width: 50%;
-  }
-  /* #login > span {
-    height: 33%;
-  } */
 </style>
-
+<script type="text/javascript">
+  async function signup(email, un, pw, confPw) {
+    console.log('here')
+    if (pw != confPw) {
+      console.log("passwords do not match!")
+    }
+    var data = await remoteCall("/signup", {"email": email, "username": un, "password": pw, "confPw": confPw }, true)
+    console.log(data)
+  }
+</script>
 <span id="authBox">
   <span id="signup" class="spacer vert">
     <span id="suEmail">
       <span class="inputLabelLg">Email (optional):</span>
-      <input type="text" placeholder="email" />
+      <input id="txtSgnEmail" type="text" placeholder="email" value="test" />
     </span>
     <span id="suUsername">
       <span class="inputLabelLg">Username:</span>
-      <input type="text" placeholder="username">
+      <input id="txtSgnUN" type="text" placeholder="username" value="test" / >
     </span>
     <span id="suPass">
       <span class="inputLabelLg">Password:</span>
-      <input type="pasword" placeholder="password">
+      <input id="txtSgnPW" type="pasword" placeholder="password" value="test">
     </span>
     <span id="suConfirmPass" class="spacer horiz">
       <span class="inputLabelLg">Confirm password:</span>
-      <input type="password" placeholder="confirm password">
+      <input id="txtSgnConfPW" type="password" placeholder="confirm password" value="test">
     </span>
-    <span id="btnSignup" class="btnFrame">
-      <span class="btn1">Signup</span>
+    <span class="btnFrame">
+      <span id="btnSignup" class="btn1" onclick="signup($('#txtSgnEmail').val(), $('#txtSgnUN').val(), $('#txtSgnPW').val(), $('#txtSgnConfPW').val())">Signup</span>
     </span>
   </span>
   <span id="login">
@@ -56,8 +56,8 @@
       <span class="inputLabelLg">Password:</span>
       <input type="pasword" placeholder="password">
     </span>
-    <span id="btnLogin" class="btnFrame">
-      <span class="btn1">Login</span>
+    <span class="btnFrame">
+      <span id="btnLogin" class="btn1">Login</span>
     </span>
   </span>
 </span>

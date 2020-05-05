@@ -1,19 +1,19 @@
-﻿/*root styles*/
-/*///////////*/
+/*#region root styles*/
 :root {
   --rgbaTransparent: rgba(0,0,0,0);
 
   --colorHeader: mediumaquamarine;
+
   --colorPrimary: lightblue;
   --colorSecondary: lightseagreen;
+
   --colorBtnPrimary: lightblue;
   --colorBtnSecondary: aquamarine;
 
-  --spacerInner: var(--colorSecondary);
-  --spacerOuter: var(--colorPrimary);
-  --spacerGradient: var(--rgbaTransparent) 0%, var(--spacerOuter) 25%, var(--spacerInner) 50%, var(--spacerOuter) 75%, var(--rgbaTransparent) 100%;
+  --spcInner: var(--colorSecondary);
+  --spcOuter: var(--colorPrimary);
+  --spcGradient: var(--rgbaTransparent) 0%, var(--spcOuter) 25%, var(--spcInner) 50%, var(--spcOuter) 75%, var(--rgbaTransparent) 100%;
 }
-
 html, body, span {
   display: inline-flex;
   flex-flow: row wrap;
@@ -39,20 +39,22 @@ input {
 .inputLabelLg { font-size:16px; justify-content: flex-start; height: auto; }
 .bodyCopy1 { font-size: 14px; }
 .finePrint { font-size:10px; font-style:italic; line-height:1em; }
+/*#endregion*/
 
+/*#region global element styles*/
 .spacer::after {
   background-color: gray;
   position: absolute;
   content: "";
 }
 .spacer.horiz::after {
-  background: linear-gradient(90deg, var(--spacerGradient));
+  background: linear-gradient(90deg, var(--spcGradient));
   width: 100%;
   height:2px;
   bottom: -1px;
 }
 .spacer.vert::after {
-  background: linear-gradient(0deg, var(--spacerGradient));
+  background: linear-gradient(0deg, var(--spcGradient));
   width: 2px;
   height: 100%;
   right: -1px;
@@ -70,24 +72,6 @@ input {
   margin: 0px 25px;
   padding: 10px 0px;
 }
-
-/*global element styles*/
-/*///////////*/
-#headerMain {
-  height: 100px;
-  border-bottom: solid thin black;
-  box-shadow: 5px 10px 20px #888;
-  background-color: var(--colorHeader);
-}
-#headerLeft {
-  width: 20%;
-}
-#headerTitle {
-  width: 60%;
-}
-#headerRight {
-  width: 20%;
-}
 #bodyMain {
   flex-direction: column;
   height: calc(100% - 100px);
@@ -99,28 +83,4 @@ input {
   height: 0px;
   width: 0px;
 }
-
-/*index page styles*/
-/*////////////////*/
-#search {
-  height: 100px;
-}
-#txtSearch {
-  margin: 20px;
-  height: 60px;
-  width: 100%;
-  border-radius: 10px;
-  padding: 0px 100px;
-  border: inset var(--colorSecondary);
-}
-#addNew {
-  height: 100px;
-}
-#results {
-  height: calc(100% - 200px);
-}
-.searchIcon {
-  position: absolute;
-  left: 50px;
-  fill: gray;
-}
+/*#endregion*/

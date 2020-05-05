@@ -1,14 +1,14 @@
 var path = require('path');
-module.exports = (DI) => {
+// var nodemailer = require('nodemailer');
+
+module.exports = async (DI) => {
   DI.express.app.use(DI.express.api.static(__dirname + '/../client/'))
   DI.express.app.use(DI.express.api.static(__dirname + '/../client/assets'))
   DI.express.app.use(DI.express.api.static(__dirname + '/../client/components'))
-  //DI.express.app.use(DI.express.api.static(__dirname + '/client'));
 
   var router = DI.express.api.Router();
   router.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/../client/index.html'));
-    //res.json({ message: 'root route!' })
   });
   router.post('/crud/users/r/', function (req, res) {
     DI.data.runQuery(DI.data, "SELECT * FROM user").then((data) => {
@@ -34,5 +34,11 @@ module.exports = (DI) => {
       }
     })
   })
+  router.post('/signup', async function (req, res) {
+    var data = await DI.data.runQuery(DI.data, "SELECT * FROM user")
+    console.log("here", req.body, data)
+    res.json(data)
+  })
+
   DI.express.app.use(router)
 }

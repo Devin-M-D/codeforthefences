@@ -1,20 +1,44 @@
-
+<script type="text/javascript">
+  function closeModal(){
+    $("#modalCurtain").remove()
+  }
+</script>
 <span id="modals">
   <script type="text/javascript">
-    function popModalDialog(dialogPath) {
-      $("html").prepend(`<span id="modalCurtain"></span>`)
-      $("#modalCurtain").css("display", "inline-flex")
-      $.get(dialogPath, (dialog) => { $("#modalCurtain").append(dialog) })
+    async function popModalDialog(dialogPath) {
+      $("html").prepend(`<span id="modalCurtain" onclick="closeModal()"></span>`)
+      return $.get(dialogPath, (html) => {
+        $("#modalCurtain").append(html)
+      })
+
+      // return new Promise((fulfill, reject) => {
+      //   $("html").prepend(`<span id="modalCurtain" onclick="closeModal()"></span>`)
+      //   console.log($("#modalCurtain"))
+      //   //remoteCall(dialogPath, {}, true)
+      //
+      //   return $.get(dialogPath, (html) => {
+      //     $("#modalCurtain").append(html)
+      //     fulfill()
+      //   })
+
+        // .then((html) => {
+        //   $("#modalCurtain").append(html)
+        //   fulfill()
+        // })
+        // await $.get(dialogPath, async (html) => {
+        //   console.log($(html))
+        //   $("#modalCurtain").append(html)
+        //   return true
+        //   console.log($("#modalCurtain"))
+        // })
+      // })
     }
-    console.log($("#modalCurtain"))
   </script>
   <style>
-    #modalCurtain{
-      display: none;
-      background-color: gray;
+    #modalCurtain {
+      background-color: rgba(128, 128, 128, .75);
       position: absolute;
       z-index: 9999;
     }
   </style>
-  <span id="modalCurtain"></span>
 </span>

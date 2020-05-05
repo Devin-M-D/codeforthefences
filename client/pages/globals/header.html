@@ -1,0 +1,25 @@
+<style>
+  #headerMain {
+    height: 100px;
+    border-bottom: solid thin black;
+    box-shadow: 5px 10px 20px #888;
+    background-color: var(--colorHeader);
+  }
+  #headerLeft {
+    width: 20%;
+  }
+  #headerTitle {
+    width: 60%;
+  }
+  #headerRight {
+    width: 20%;
+  }
+</style>
+<span id="headerMain">
+  <span id="headerLeft">hamburger</span>
+  <span id="headerTitle" class="header1">The Cookbook</span>
+  <span id="headerRight">
+    <!-- <span id="btnPopMdlAuth" class="button" onclick="(async () => { await popModalDialog('/pages/dialogs/auth.html') })">auth</span> -->
+    <span id="btnPopMdlAuth" class="button" onclick="return new Promise((f, r) => { popModalDialog('/pages/dialogs/auth.html').then((test) => { f(); }) })">auth</span>
+  </span>
+</span>
