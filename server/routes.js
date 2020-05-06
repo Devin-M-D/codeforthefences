@@ -16,28 +16,25 @@ module.exports = async (DI) => {
     })
   })
   router.post('/crud/users/c/', async function (req, res) {
+    //{"email": email, "username": un, "password": pw }
+    var user = req.body
     var newPass = ""
-    DI.bcrypt.hash(req.body.user.password, 10, function(err, hash) {
+    DI.bcrypt.hash(user.password, 10, function(err, hash) {
       if (err) { console.log(err) }
       else {
         newPass = hash
-        let params = {
-          name: req.body.user.name,
-          password: newPass,
-        }
         DI.data.runCommand(DI.data,
-          "INSERT INTO user SET name = :name, password = :password", params
+          "INSERT INTO user SET name = :username, password = :password"
+          , {
+            username: user.username,
+            password: newPass,
+          }
         )
         .then((data) => {
           res.json(data)
         })
       }
     })
-  })
-  router.post('/signup', async function (req, res) {
-    var data = await DI.data.runQuery(DI.data, "SELECT * FROM user")
-    console.log("here", req.body, data)
-    res.json(data)
   })
 
   DI.express.app.use(router)

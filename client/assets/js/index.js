@@ -35,8 +35,8 @@ function remoteCall(remoteURL, postData = {}, enable_logging = false) {
       type: callType,
       url: remoteURL,
       data: postData,
-      contentType: contentType,
-      dataType: dataType,
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
       async: false,
       success: function (msg) {
         if (enable_logging == 1) { console.log("Call to:  " + remoteURL + " - Succeeded: ", msg) }

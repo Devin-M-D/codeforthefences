@@ -20,7 +20,7 @@
     if (pw != confPw) {
       console.log("passwords do not match!")
     }
-    var data = await remoteCall("/signup", {"email": email, "username": un, "password": pw, "confPw": confPw }, true)
+    var data = await remoteCall("/crud/users/c/", {"email": email, "username": un, "password": pw }, true)
     console.log(data)
   }
 </script>
@@ -28,19 +28,19 @@
   <span id="signup" class="spacer vert">
     <span id="suEmail">
       <span class="inputLabelLg">Email (optional):</span>
-      <input id="txtSgnEmail" type="text" placeholder="email" value="test" />
+      <input id="txtSgnEmail" type="text" placeholder="email" value="foo" />
     </span>
     <span id="suUsername">
       <span class="inputLabelLg">Username:</span>
-      <input id="txtSgnUN" type="text" placeholder="username" value="test" / >
+      <input id="txtSgnUN" type="text" placeholder="username" value="bar" / >
     </span>
     <span id="suPass">
       <span class="inputLabelLg">Password:</span>
-      <input id="txtSgnPW" type="pasword" placeholder="password" value="test">
+      <input id="txtSgnPW" type="pasword" placeholder="password" value="baz">
     </span>
     <span id="suConfirmPass" class="spacer horiz">
       <span class="inputLabelLg">Confirm password:</span>
-      <input id="txtSgnConfPW" type="password" placeholder="confirm password" value="test">
+      <input id="txtSgnConfPW" type="password" placeholder="confirm password" value="blah">
     </span>
     <span class="btnFrame">
       <span id="btnSignup" class="btn1" onclick="signup($('#txtSgnEmail').val(), $('#txtSgnUN').val(), $('#txtSgnPW').val(), $('#txtSgnConfPW').val())">Signup</span>
