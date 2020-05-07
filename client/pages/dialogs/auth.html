@@ -16,23 +16,26 @@
 </style>
 <script type="text/javascript">
   async function signup(email, un, pw, confPw) {
-    console.log('here')
     if (pw != confPw) {
       console.log("passwords do not match!")
     }
-    var data = await remoteCall("/crud/users/c/", {"email": email, "username": un, "password": pw }, true)
+    var data = await remoteCall("/crud/users/c/", {"email": email, "username": un, "password": pw })
+  }
+  async function login(un, pw) {
+    var data = await remoteCall("/login", {"username": un, "password": pw })
     console.log(data)
   }
+
 </script>
 <span id="authBox">
   <span id="signup" class="spacer vert">
     <span id="suEmail">
       <span class="inputLabelLg">Email (optional):</span>
-      <input id="txtSgnEmail" type="text" placeholder="email" value="foo" />
+      <input id="txtSgnEmail" type="text" placeholder="email" value="foo">
     </span>
     <span id="suUsername">
       <span class="inputLabelLg">Username:</span>
-      <input id="txtSgnUN" type="text" placeholder="username" value="bar" / >
+      <input id="txtSgnUN" type="text" placeholder="username" value="bar">
     </span>
     <span id="suPass">
       <span class="inputLabelLg">Password:</span>
@@ -49,14 +52,14 @@
   <span id="login">
     <span id="logUsername">
       <span class="inputLabelLg">Username:</span>
-      <input type="text" placeholder="username">
+      <input type="text" placeholder="username" value="bar">
     </span>
     <span id="logPass" class="spacer horiz">
       <span class="inputLabelLg">Password:</span>
-      <input type="pasword" placeholder="password">
+      <input type="pasword" placeholder="password" value="baz">
     </span>
     <span class="btnFrame">
-      <span id="btnLogin" class="btn1">Login</span>
+      <span id="btnLogin" class="btn1" onclick="login($('#txtSgnUN').val(), $('#txtSgnPW').val())">Login</span>
     </span>
   </span>
 </span>

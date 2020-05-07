@@ -3,7 +3,8 @@
 //     api: null,
 //     app: null,
 //     port: null,
-//     router: null
+//     router: null,
+//     asyncRoute: null
 //   },
 //   bcrypt: null,
 //   data: {
@@ -11,20 +12,15 @@
 //     pool: null,
 //     runQuery: null,
 //     runCommand: null
-//   }
+//   },
+//  sessions: [
+//    {
+//      token: null,
+//      payload: null,
+//      res: null
+//    }
+//  ]
 // }
-
-var DI = {
-  express: configExpress(),
-  bcrypt: require('bcryptjs'),
-}
-//add middleware
-require('./middleware/mwIndex.js')(DI);
-//set up routes
-let routes = require('./routes')(DI)
-// set up database connection
-DI.data = require('./dbLogic')(DI)
-
 function configExpress() {
   var express = require('express')
   var expressApp = express()
@@ -42,4 +38,17 @@ function addCors(expressApp){
   expressApp.use(cors())
   expressApp.options('*', cors())
 }
-module.exports = DI
+
+module.exports = async () => {
+  var DI = {
+    express: configExpress(),
+    bcrypt: require('bcryptjs'),
+  }
+  //add middleware
+  require('./middleware/mwIndex.js')(DI);
+  //set up routes
+  require('./routes')(DI)
+  // set up database connection
+  await require('./dbLogic')(DI)
+  return DI
+}

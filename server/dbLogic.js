@@ -9,11 +9,10 @@ const config = {
 };
 
 const setupDatabase = async (DI) => {
+
   let client = await OrientDBClient.connect({
     host: config.host,
-    pool: {
-      max: 10
-    }
+    pool: { max: 10 }
   });
 
   let exists = await client.existsDatabase({
@@ -26,34 +25,30 @@ const setupDatabase = async (DI) => {
     name: config.db,
     username: config.user,
     password: config.password,
-    pool: {
-      max: 25
-    }
+    pool: { max: 25 }
   });
 
   var run = async (DI_data, callback) => {
-    let session = await DI_data.pool.acquire();
+    let session = await DI_data.pool.acquire()
     let data = await callback(session)
-    await session.close();
-    return data;
+    if (data.length == 1) { data = data[0]; }
+    await session.close()
+    return data
   }
-
-  var runQuery = async (DI_data, query, params = null) => {
-    return await run(DI_data, async (session) => {
-      return await session.query(query, {params: params}).all();
-    })
+  DI.data = {
+    client: client,
+    pool: pool,
+    runQuery: async (DIdata, query, params = null) => {
+      return run(DIdata, async (session) => {
+        return session.query(query, {params: params}).all();
+      })
+    },
+    runCommand: async (DIdata, query, params = null) => {
+      return run(DIdata, async (session) => {
+        return session.command(query, {params: params}).all()
+      })
+    }
   }
-
-  var runCommand = async (DI_data, query, params = null) => {
-    return await run(DI_data, async (session) => {
-      return await session.command(query, {params: params}).all()
-    })
-  }
-
-  DI.data.client = client
-  DI.data.pool = pool
-  DI.data.runQuery = runQuery
-  DI.data.runCommand = runCommand
 }
 
 module.exports = setupDatabase

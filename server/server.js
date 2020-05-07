@@ -1,3 +1,5 @@
-var DI = require('./serverLogic');
-DI.express.app.listen(DI.express.port);
-console.log('Magic happens on port ' + DI.express.port);
+var DI = require('./serverLogic')()
+DI.then((di) => {
+  di.express.app.listen(di.express.port);
+  console.log('Magic happens on port ' + di.express.port);
+});

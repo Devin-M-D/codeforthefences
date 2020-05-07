@@ -1,5 +1,5 @@
 let addMiddleware = (DI) => {
-  //#region error hndaling middleware
+  //#region error handling middleware
   DI.express.app.use(function (err, req, res, next) {
     console.error(err.stack)
     res.status(500).send('Something broke!')
@@ -17,6 +17,11 @@ let addMiddleware = (DI) => {
     }
     next()
   })
+
+  DI.express.asyncRoute = fn =>(req, res, next) => {
+    Promise.resolve(fn(req, res, next)).catch(next)
+  }
+
 }
 
 module.exports = addMiddleware

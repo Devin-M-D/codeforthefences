@@ -2,6 +2,9 @@
 <span id=""></span>
 <span id="" class=""></span>
 /*#region*//*#endregion*/
+router.get('/asyncTest', DI.express.asyncRoute(async (req, res, next) => {
+  res.sendFile(path.join(__dirname + '/../'));
+}));
 
 DI
 DI.express
@@ -9,6 +12,7 @@ DI.express.api
 DI.express.app
 DI.express.port
 DI.express.router
+DI.express.asyncRoute
 DI.bcrypt
 DI.data
 DI.data.client
