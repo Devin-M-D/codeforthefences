@@ -4,18 +4,19 @@
     height: 100px;
   }
   #txtSearch {
-    margin: 20px;
     height: 60px;
     width: 100%;
     border-radius: 10px;
     padding: 0px 100px;
-    border: inset var(--colorSecondary);
   }
   #addNew {
     height: 100px;
   }
   #results {
     height: calc(100% - 200px);
+  }
+  #results > span {
+
   }
   .searchIcon {
     position: absolute;
@@ -24,11 +25,23 @@
   }
   /*#endregion*/
 </style>
+<script type="text/javascript">
+  async function doSearch(){
+    debounce()
+  }
+
+  async function loadCreateRecipe(dialogPath){
+    return $.get(dialogPath, (html) => {
+      $("#results").prepend(html)
+      //createNewRecipe()
+    })
+  }
+</script>
 <span id="search">
   <input id="txtSearch" type="text" placeholder="Search" />
   <svg aria-hidden="true" class="searchIcon" width="18" height="18" viewBox="0 0 18 18">
     <path d="M18 16.5l-5.14-5.18h-.35a7 7 0 1 0-1.19 1.19v.35L16.5 18l1.5-1.5zM12 7A5 5 0 1 1 2 7a5 5 0 0 1 10 0z"></path>
   </svg>
 </span>
-<span id="addNew" onclick="console.log('new recipe window');">+ add new recipe</span>
-<span id="results">results</span>
+<span id="addNew" onclick="return asyncClick(() => loadCreateRecipe('/pages/home/recipeCard.html'))">+ add new recipe</span>
+<span id="results"></span>

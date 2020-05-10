@@ -1,18 +1,17 @@
 //jquery .ready()
 $(() => {
-  console.log("App loaded, firing strapApp()")
-  strapApp(true)
+  console.log("Document ready, firing strapApp()")
+  strapApp(2)
 })
 
-async function strapApp(doUnitTests = false){
+async function strapApp(doUnitTests = false) {
   await $.get("pages/globals/header.html", (val) => { $("body").prepend(val) })
   await $.get("pages/home.html", (val) => { $("#bodyMain").append(val) })
   await $.get("components/modals.html", (val) => { $("#cargoHold").append(val) })
 
-  if (doUnitTests){
-    await loadScript("js/unitTests/unitTests.js")
-    runTests()
-  }
+  if (doUnitTests != 0) { await loadScript("js/unitTests/unitTests.js") }
+  if (doUnitTests == 1) { await utRunAllTests() }
+  else if (doUnitTests == 2) { await utCurrentTestScenario() }
 }
 
 function asyncClick(func) {
@@ -59,5 +58,9 @@ function loadScript(hrefURL) {
     script.addEventListener("load", function (e) { fulfill("loaded"); }, false);
     document.head.appendChild(script);
   });
+}
+
+function debounce(){
+  console.log("debouncing")
 }
 //////////////

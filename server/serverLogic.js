@@ -1,26 +1,3 @@
-// DI = {
-//   express: {
-//     api: null,
-//     app: null,
-//     port: null,
-//     router: null,
-//     asyncRoute: null
-//   },
-//   bcrypt: null,
-//   data: {
-//     client: null,
-//     pool: null,
-//     runQuery: null,
-//     runCommand: null
-//   },
-//  sessions: [
-//    {
-//      token: null,
-//      payload: null,
-//      res: null
-//    }
-//  ]
-// }
 function configExpress() {
   var express = require('express')
   var expressApp = express()

@@ -1,0 +1,83 @@
+<style>
+  #tmpRecipeCardId, .recipeCard {
+    border: var(--brdrOutline);
+    border-radius: 8px;
+    flex-direction: column;
+  }
+  .recipeCard {
+    height: 250px;
+  }
+  .recipeCard > span:nth-child(1) { flex: 1; }
+  .recipeCard > span:nth-child(n+2) { flex: 3; }
+  .recipeName {
+
+  }
+  .recipe {
+
+  }
+  .recipe > span {
+    width: 50%;
+  }
+  .recipeIngredients {
+    flex-flow: column nowrap;
+    padding: 10px;
+  }
+  .recipeIngredients > span {
+    height: auto;
+    flex: 0 1 auto;
+    flex-basis: none;
+  }
+  .photos {
+    background-color: lightgreen;
+  }
+</style>
+<script type="text/javascript">
+  async function createNewRecipe() {
+    var newCard = $("#tmpRecipeCardId")
+    newCard.attr("id", "recipeNewCard")
+
+    console.log("foo")
+
+    var newIng = newCard.find(".tmplIngredient").clone()
+    newIng.removeClass("tmplIngredient")
+    var ingBox = $(".ingredientList")
+    ingBox.append(newIng)
+    newIng.removeClass("cloneTemplate")
+    newIng.attr("idxIngredient", 1)
+    // newIng.attr("id", "newIngredient")
+    // newIng.find(".txtIngQuant").id("newIngQuant").removeClass("txtIngQuant")
+    // newIng.find(".txtIngName").id("newIngName").removeClass("txtIngName")
+
+    makeCardEditable(newCard)
+  }
+
+  async function makeCardEditable(card){
+    //card.find(".editable.editModeOff").removeClass("editModeOff")
+  }
+
+  async function sendIngredient() {
+    remoteCall("/crud/ingredient/c", { "quantity": "foo", "name": "bar" }
+  }
+</script>
+<span id="tmpRecipeCardId" class="recipeCard  algnSS">
+  <span class="recipeName pad10">name and servings</span>
+
+  <span class="recipe">
+    <span class="recipeIngredients outline pad10 cols">
+      <span class="cloneTemplate tmplIngredient unwrap" idxIngredient="0">
+        <input type="text" class="txtIngQuant inputTxtBox editable editModeOff" placeholder="Quantity Value" onblur="sendIngredient()">
+        <input type="text" class="txtIngName inputTxtBox editable editModeOff" placeholder="Ingredient" onblur="sendIngredient()">
+      </span>
+      <span class="ingredientList"></span>
+      <span class="btnPlus editable editModeOff"><!-- add new ingredient --></span>
+    </span>
+    <span class="recipeSteps outline pad10 cols">
+      <span class="cloneTemplate tmplStep">
+        <input type="text" class="inputTxtBox editable editModeOff" placeholder="Directions">
+      </span>
+      <span class="btnPlus editable editModeOff"><!-- add new step --></span>
+    </span>
+  </span>
+
+  <span class="photos pad10">photos carousel</span>
+</span>
