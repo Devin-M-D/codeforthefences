@@ -1,13 +1,31 @@
 <html>
   <head>
     <title>Welcome to the world's best cookbook!</title>
-    <link rel="shortcut icon" href="raptor.ico" sizes="1152x648">
+    <link rel="shortcut icon" href="/assets/img/raptor.ico" sizes="1152x648" />
+    <link rel="icon" href="img/raptor.ico?v=1.0"  sizes="1152x648" />
     <link rel="stylesheet" type="text/css" href="css/index.css">
-    <script type="text/javascript" src="js\jquery-3.5.0.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.5.0.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
     <script type="text/javascript" src="js/unitTests/unitTests.js"></script>
+    <script type="text/javascript" src="js/services/recipeService.js"></script>
+    <style>
+      #bodyMain {
+        flex-direction: column;
+        height: 80%;
+        margin: 20% 5% 0%;
+        overflow-y: auto;
+      }
+      #bodyMain > * {
+
+      }
+      #cargoHold {
+        height: 0px;
+        width: 0px;
+      }
+    </style>
   </head>
-  <body>
+  <body class="hasWingedHeader">
     <span id="bodyMain"></span>
     <span id="cargoHold"></span>
   </body>

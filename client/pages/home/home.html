@@ -1,0 +1,20 @@
+<style>
+  #homeBox {
+
+  }
+</style>
+<script>
+  async function pageHomeOnStrap(){
+    var recipes = await getAllRecipes()
+    console.log(recipes)
+    // callRes.payload.forEach(async (recipe) => {
+    //   $(".counterTop").append(buildRecipeCard(recipe))
+    // })
+
+  }
+  pageHomeOnStrap()
+</script>
+<span id="homeBox" class="fitH">
+  <span id="siteSearch"></span>
+  <span id="counterTop"></span>
+</span>

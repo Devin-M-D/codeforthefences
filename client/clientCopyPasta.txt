@@ -1,0 +1,83 @@
+/*#region*//*#endregion*/
+//#region//#endregion
+
+<span></span>
+<span id=""></span>
+<span id="" class=""></span>
+<span class="btnPlus editable editModeOff"><!-- what it do? --></span>
+<input id="inputId" type="text" placeholder="" value="">
+<span id="btnId" class="btn1">Text</span>
+
+var clickRes = await cDI.clickRes($("#elemId"))
+cDI.clickToSpawn(elem, componentPath, destElemId, placement = 0)
+cDI.clickToModal(elem, dialogPath, async (createdElem) => { await runAnyComponentOnloadFuncs(); return createdElem; })
+cDI.addAsyncOnclick(elem, async (res) => { await res })
+await cDI.h(remoteCallVar, async (callRes) => { /*handle success*/ }, async (callRes) => { /*handle errors*/ })
+await cDI.remoteCall("/path/to/route/", { dataVal: value })
+await cDI.utils.isDef(obj)
+cDI.utils.pluck(arr, key)
+cDI.utils.unique(arr)
+cDI.utils.filterSplice(arr, handlerTake, handlerLeave)
+cDI.utils.clone(obj)
+
+cDI.utils.legId(dataObj)
+var extruded = cDI.utils.extrudeFlatGraph(callRes.payload)
+
+//msgToLog, levelOfMessage = 1, fnToRun = null, stackTrace = false
+cDI.log(() => { console.log("Dev level log") }, 1, async () => { /*callback func*/ })
+cDI.log(() => { console.log("Verbose level log") }"Verbose level log", 2, async () => { /*callback func*/ })
+cDI.log(() => { console.log("AJAX level log") }, 4, async () => { /*callback func*/ })
+cDI.utils.ifTrace("msg", data, trace)
+
+//template for a standard grid form of heading-row body-submit
+<span class="componentName cols fitH">
+  <span class="gridheader headline">Name</span>
+  <span class="rows fitW labeledRows">
+    <span class="inputLabelLg">Field 1:</span>
+    <input id="txtField" type="text" placeholder="Value 1" value="">
+  </span>
+  <span class="buttonBox">
+    <span id="btnForm" class="btn1">Submit</span>
+  </span>
+</span>
+
+
+////////////////////////////
+//new html component
+////////////////////////////
+<style></style>
+<script type="text/javascript"></script>
+<span class="componentName"></span>
+
+////////////////////////////
+//set up growth priorities based on a parent's class
+////////////////////////////
+.parent { height: 250px; }
+.parent > span:nth-child(1) { flex: 1; }
+.parent > span:nth-child(n+2) { flex: 3; }
+
+//////////////////
+//DI obj structure
+//////////////////
+cDI
+  cDI.token //set on login
+  cDI.username //set on login
+
+  cDI.utils
+    cDI.utils.isDef
+    cDI.utils.debounce
+    cDI.utils.ifTrace
+
+  cDI.log
+  cDI.loadScript
+  cDI.loadComponent
+  cDI.addAsyncOnclick
+  cDI.clickToSpawn
+  cDI.h
+  cDI.clickToModal
+  cDI.remoteCall
+  cDI.logout
+  cDI.clearLogin
+
+  cDI.popModalDialog /components/widgets/modals.html
+  cDI.closeModal /components/widgets/modals.html

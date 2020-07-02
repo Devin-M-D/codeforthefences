@@ -1,0 +1,63 @@
+script sql;
+begin;
+
+let $u1 = CREATE USER user1 IDENTIFIED BY test ROLE admin;
+let $u2 = CREATE USER user2 IDENTIFIED BY test ROLE admin;
+let $u3 = CREATE USER user3 IDENTIFIED BY test ROLE admin;
+let $u4 = CREATE USER user4 IDENTIFIED BY test ROLE admin;
+let $dd = CREATE USER ddowner IDENTIFIED BY test ROLE admin;
+let $ba = CREATE USER balomepe IDENTIFIED BY test ROLE admin;
+
+let $r = CREATE VERTEX recipe SET name = 'Cereal Treats', duration = 10, servings = "16 treats"
+
+let $t = CREATE VERTEX tool SET name = 'pan', description = "Typical stovetop pan"
+let $rt = CREATE EDGE recipeTool FROM $r TO $t
+let $uom = CREATE VERTEX UoM SET name = "large", abbreviation = "lg"
+
+let $rts = CREATE EDGE toolSize FROM $rt.@rid TO $uom
+
+let $uomTBSP = CREATE VERTEX UoM SET name = "tablespoon", abbreviation = "tbsp"
+let $uomCUP = CREATE VERTEX UoM SET name = "cup", abbreviation = "c"
+
+
+
+let $ft = CREATE VERTEX foodType SET name = "butter"
+let $ing1 = CREATE VERTEX ingredient SET quantity = '3'
+let $ingFood = CREATE EDGE FROM $ing1 TO $ft
+let $ingUoM = CREATE EDGE ingredientUoM FROM $ing1 TO $uomTBSP
+let $recIng1 = CREATE EDGE recipeIngredient FROM $r TO $ing1 SET ingredientNum = 1
+
+let $ft = CREATE VERTEX foodType SET name = "marshmallow", plural = "marshmallows"
+let $ing2 = CREATE VERTEX ingredient SET quantity = '4'
+let $ingFood = CREATE EDGE FROM $ing2 TO $ft
+let $ingUoM = CREATE EDGE ingredientUoM FROM $ing2 TO $uomCUP
+let $ps = CREATE VERTEX prepStyle SET name = 'miniature', abbreviation = 'mini'
+let $ingPrepStyle = CREATE EDGE ingredientPrepStyle FROM $ing2 TO $ps
+let $recIng2 = CREATE EDGE recipeIngredient FROM $r TO $ing2 SET ingredientNum = 2
+
+let $ft = CREATE VERTEX foodType SET name = "cereal"
+let $ing3 = CREATE VERTEX ingredient SET quantity = '6'
+let $ingFood = CREATE EDGE FROM $ing3 TO $ft
+let $ingUoM = CREATE EDGE ingredientUoM FROM $ing3 TO $uomCUP
+let $recIng3 = CREATE EDGE recipeIngredient FROM $r TO $ing3 SET ingredientNum = 3
+
+
+
+let $step = CREATE VERTEX step SET text = "Melt {i0} in {t0} over low heat"
+let $stepIng = CREATE EDGE FROM $step TO $recIng1.@rid SET index = 0
+let $stepTool = CREATE EDGE FROM $step TO $rt.@rid SET index = 0
+let $rStep = CREATE EDGE recipeStep FROM $r TO $step SET stepNum = 1
+
+let $step = CREATE VERTEX step SET text = "Add {i0} to same pan and melt"
+let $stepIng = CREATE EDGE FROM $step TO $recIng2.@rid SET index = 0
+let $rStep = CREATE EDGE recipeStep FROM $r TO $step SET stepNum = 2
+
+let $step = CREATE VERTEX step SET text = "Pour over {i0}, stir until well coated"
+let $stepIng = CREATE EDGE FROM $step TO $recIng3.@rid SET index = 0
+let $rStep = CREATE EDGE recipeStep FROM $r TO $step SET stepNum = 3
+
+let $step = CREATE VERTEX step SET text = "Press into 9x9 baking pan using wax paper or lightly oiled wooden spoon"
+let $rStep = CREATE EDGE recipeStep FROM $r TO $step SET stepNum = 4
+
+commit;
+end;

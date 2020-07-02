@@ -16,16 +16,20 @@ function addCors(expressApp){
   expressApp.options('*', cors())
 }
 
-module.exports = async () => {
+module.exports = async (debugging) => {
   var DI = {
     express: configExpress(),
     bcrypt: require('bcryptjs'),
+    sessions: []
   }
+  //add helper functions
+  require('./diUtilFuncs')(DI)
   //add middleware
-  require('./middleware/mwIndex.js')(DI);
+  require('./middleware/innerware')(DI, debugging)
   //set up routes
   require('./routes')(DI)
   // set up database connection
-  await require('./dbLogic')(DI)
+  var dbSetUp = await require('./dbLogic')(DI)
+  if (!dbSetUp) { return false }
   return DI
 }
