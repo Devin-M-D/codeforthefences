@@ -1,0 +1,73 @@
+#siteHeader {
+  background-color: var(--clrHeader);
+}
+.hasWingedHeader > span:nth-child(2) {
+  margin-top: 20%;
+  height: 80%;
+  overflow-y: auto;
+}
+.wingedHeader {
+  width: 100%;
+  height: 20%;
+  position: absolute;
+  top: 0px;
+}
+.wingedHeader > span:nth-child(-n+3) {}
+.wingedHeader > span:nth-child(1), .wingedHeader > span:nth-child(3) {
+  width: 10%;
+  max-width: 150px;
+}
+.wingedHeader > span:nth-child(1) {}
+.wingedHeader > span:nth-child(2) { width: unset; font-family: var(--headerFont); font-size:var(--headerSize); text-decoration:var(--headerDecoration); }
+.wingedHeader > span:nth-child(3) {}
+
+.hamburger:before {
+  background: black;
+  top: -20px;
+  height: 7px
+}
+.hamburger {
+  background: black;
+  height: 7px;
+  width: 25%;
+  position: absolute;
+  top: 50%;
+  overflow: visible;
+}
+.hamburger:after {
+  background: black;
+  top: 20px;
+  height:7px
+}
+.hamburger:before, .hamburger:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+}
+
+#iconAuth {
+  overflow: visible;
+}
+.iconAuthPiece {
+  position: absolute;
+  background-color: var(--clrSecondary);
+}
+#iconAuthHeadBox {
+  height: 40%
+}
+#iconAuthTorsoBox {
+  height: 60%
+}
+#iconAuthHead {
+  height: 50%;
+  width: 25%;
+  border-radius: 50%;
+  bottom: -5px;
+}
+#iconAuthTorso {
+  width: 50%;
+  height: 50%;
+  border-top-left-radius: 110px;
+  border-top-right-radius: 110px;
+  top: 0px;
+}

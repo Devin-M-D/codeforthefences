@@ -1,21 +1,3 @@
-/*#region css copypasta*/
-/*
-  var(--rgbaTransparent)
-  var(--clrHeader)
-  var(--clrPrimary)
-  var(--clrSecondary)
-  var(--clrBtnPrimary)
-  var(--clrBtnSecondary)
-  var(--spcInner)
-  var(--spcOuter)
-  var(--spcGradient)
-  var(--brdrOutline)
-  var(--algnStart)
-  var(--algnEnd)
-  var(--algnCenter)
-*/
-/*#endregion*/
-
 /*#region vars, dom selectors, positioning*/
 :root {
   --rgbaTransparent: rgba(0,0,0,0);
@@ -23,13 +5,10 @@
   --clrHeader: mediumaquamarine;
 
   --clrPrimary: lightblue;
-  --clrSecondary: lightseagreen;
+  --clrSecondary: teal;
 
-  --clrBtnPrimary: lightblue;
-  --clrBtnSecondary: aquamarine;
-
-  --spcInner: var(--colorSecondary);
-  --spcOuter: var(--colorPrimary);
+  --spcInner: var(--clrSecondary);
+  --spcOuter: var(--clrPrimary);
   --spcGradient: var(--rgbaTransparent) 0%, var(--spcOuter) 25%, var(--spcInner) 50%, var(--spcOuter) 75%, var(--rgbaTransparent) 100%;
 
   --brdrOutline: solid thin black;
@@ -37,12 +16,15 @@
   --algnStart: flex-start;
   --algnEnd: flex-end;
   --algnCenter: center;
+
+  --headerFont: rockwell;
+  --headerSize: 22px;
+  --headerDecoration: underline;
 }
-html{
-  justify-content: center !important; /*align on the main axis*/
-  align-content: center !important; /*align on the off axis*/
+html {
+  overflow: hidden !important;
 }
-html, body, span {
+html, body, span, input, select {
   display: inline-flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -50,146 +32,62 @@ html, body, span {
   margin: 0px;
   box-sizing: border-box;
   border-collapse: collapse;
+  text-align: center;
+  overflow: inherit;
 
   flex-grow: 1; /*flex items grow to fill unused space in main axis*/
   flex-shrink: 1; /*flex items shrink to fit evenly when flex-wrap is nowrap*/
-  flex-basis: auto; /*default main axis dimension (overrised height or width) to auto*/
+  flex-basis: auto; /*default main axis dimension (overrides height or width) to auto*/
 
+  /* off axis */
   align-items: stretch; /*flex items should expand to fill the off Axis*/
-  justify-content: inherit; /*align on the main axis*/
-  align-content: inherit; /*align on the off axis*/
+  align-content: center;
+  align-self: center;
+
+  /* main axis */
+  justify-content: center;
+	justify-self: center;
   height: 100%;
   width: 100%;
 }
 input {
-  display: inline-block;
-  position: relative;
-  width: 100%;
+  height: auto;
+  width: auto;
 }
+/*#endregion*/
 
-.algnCX { justify-content: var(--algnCenter); }
-.algnSX { justify-content: var(--algnStart); }
-.algnEX { justify-content: var(--algnEnd); }
-
-.algnXC { align-content: var(--algnCenter); }
-.algnXS { align-content: var(--algnStart); }
-.algnXE { align-content: var(--algnEnd); }
-
-.algnCC { justify-content: var(--algnCenter); align-content: var(--algnCenter); }
-.algnSS { justify-content: var(--algnStart); align-content: var(--algnStart); }
-.algnEE { justify-content: var(--algnEnd); align-content: var(--algnEnd); }
-
+/*#region basic shorthands*/
 .pad10 { padding: 10px;}
+.pillar5pct { margin: 0 5%;}
 .rows { flex-direction: row; }
 .cols { flex-direction: column; }
 .unwrap { flex-wrap: nowrap; }
+
+.fitH > * { height: unset; }
+.fitW > * { width: unset; }
+.fit > * { height: unset; width: unset; }
 /*#endregion*/
 
-/*#region typesetting & theming*/
-  /*#region fonts and text*/
-  .headline { font-size:22px; text-decoration:underline; height:30px; }
-  .subheading { font-size:20px; font-style:italic; }
-  .bodyCopy1 { font-size: 14px; }
-  .finePrint { font-size:10px; font-style:italic; line-height:1em; }
-  /*#endregion*/
+/*#region tables*/
+.table {
 
-  /*#region buttons and inputs*/
-  .btnFrame{
-    flex: 0 0 auto;
-  }
-  .btn1 {
-    background-color: var(--clrBtnPrimary);
-    border: solid thick black;
-    border-style: outset;
-    border-color: var(--clrBtnSecondary);
-    height: auto;
-    width: auto;
-    margin: 0px 25px;
-    padding: 10px 0px;
-  }
-  .inputLabelLg { font-size:16px; justify-content: flex-start; height: auto; }
-  .inputTxtBox { 
-    border: inset var(--clrSecondary);
-  }
-  .btnPlus {
-    font-size: 30pt;
-    color: limegreen;
-    font-weight: 800;
-    height: 50px;
-    width: 50px;
-    justify-content: var(--algnCenter);
-    align-content: var(--algnCenter);
-    flex-basis: 50px !important;
-    margin: auto;
-  }
-  .btnPlus::before, .btnPlus::after {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    height:100%;
-    width:100%;
-  }
-  .btnPlus::before {
-    content: "+"
-  }
-  .btnPlus::after {
-    content: "Add";
-    font-size: 10pt;
-    color: black;
-    top: 65%;
-  }
-
-  /*#endregion*/
-
-  /*#region borders*/
-    .outline { border: var(--brdrOutline); }
-  /*#endregion*/
+}
 /*#endregion*/
 
-/*#region global element styles & CSS-only micro-components*/
-  /*#region grid shims & spacers*/
-    .spacer::after {
-      background-color: gray;
-      position: absolute;
-      content: "";
-    }
-    .spacer.horiz::after {
-      background: linear-gradient(90deg, var(--spcGradient));
-      width: 100%;
-      height:2px;
-      bottom: -1px;
-    }
-    .spacer.vert::after {
-      background: linear-gradient(0deg, var(--spcGradient));
-      width: 2px;
-      height: 100%;
-      right: -1px;
-    }
-  /*#endregion*/
+/*#region typesetting and theming*/
+.headerFont { font-family: var(--headerFont); font-size:var(--headerSize); text-decoration:var(--headerDecoration); }
+/*#endregion*/
 
-  /*#region root body element children*/
-  #bodyMain {
-    flex-direction: column;
-    height: calc(100% - 100px);
-    margin: 0px 5%;
-  }
-  #bodyMain > * {
-    align-items: center;
-  }
-  #cargoHold {
-    height: 0px;
-    width: 0px;
-  }
-  /*#endregion*/
-
-  /*#region css logic*/
-    .cloneTemplate {
-      display: none;
-    }
-    .editable {  }
-    .editable.editModeOff{
-      display: none;
-    }
-  /*#endregion*/
+/*#region buttons*/
+.btnBox {
+  height: 50%;
+}
+.btn1 {
+  background-color: var(--clrPrimary);
+  border: solid thick black;
+  border-style: outset;
+  border-color: var(--clrSecondary);
+  margin: 5%;
+  padding: 5%;
+}
 /*#endregion*/

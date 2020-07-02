@@ -1,0 +1,86 @@
+<style>
+  #authBox > span > span {
+    height: auto;
+    padding: 25px;
+    text-align: left;
+  }
+  #signup, #login {
+    width: 50%;
+  }
+</style>
+<script type="text/javascript">
+  cDI.addAsyncOnclick($("#btnSignup"), async (res) => {
+    var email = $('#txtSgnEmail').val()
+    var un = $('#txtSgnUN').val()
+    var dn = $('#txtSgnDisplayName').val()
+    var pw = $('#txtSgnPW').val()
+    var confPw = $('#txtSgnConfPW').val()
+    if (pw != confPw) {
+      console.log("passwords do not match!")
+    }
+    var data = await cDI.remoteCall("/signup", {
+      "email": email,
+      "username": un,
+      "displayname": dn,
+      "password": pw,
+      "confPW": confPw
+    })
+    cDI.closeModal()
+  })
+
+  //add login function to button
+  cDI.addAsyncOnclick($("#btnLogin"), async (res) => {
+    var un = $('#txtLoginUN').val()
+    var pw = $('#txtLoginPW').val()
+    var callRes = await cDI.remoteCall("/login", {"username": un, "password": pw })
+    await cDI.h(callRes,
+      async (token) => {
+        cDI.persist("cookbook.username", un)
+        cDI.persist("cookbook.token", token)
+        cDI.username = un
+        cDI.token = token
+      },
+      async (callRes) => { console.log("login failed") }
+    )
+    cDI.closeModal()
+    await strapAuthButton()
+    return callRes
+  })
+  cDI.log(() => { console.log("Auth component loaded") })
+</script>
+<span id="authBox">
+  <span id="signup" class="spacer vert">
+    <span id="suEmail">
+      <span class="inputLabelLg">Email (optional):</span>
+      <input id="txtSgnEmail" type="text" placeholder="email" value="">
+    </span>
+    <span id="suUsername">
+      <span class="inputLabelLg">Username:</span>
+      <input id="txtSgnUN" type="text" placeholder="username" value="">
+    </span>
+    <span id="suDisplayName">
+      <span class="inputLabelLg">Display Name (optional):</span>
+      <input id="txtSgnDisplayName" type="text" placeholder="display name" value="">
+    </span>
+    <span id="suPass">
+      <span class="inputLabelLg">Password:</span>
+      <input id="txtSgnPW" type="password" placeholder="password" value="">
+    </span>
+    <span id="suConfirmPass" class="spacer horiz">
+      <span class="inputLabelLg">Confirm password:</span>
+      <input id="txtSgnConfPW" type="password" placeholder="confirm password" value="">
+    </span>
+    <span id="btnSignup" class="btn1">Signup</span>
+  </span>
+  <span id="login">
+    <span id="logUsername">
+      <span class="inputLabelLg">Username/Email:</span>
+      <input id="txtLoginUN" type="text" placeholder="username/email" value="">
+    </span>
+    <span id="logPass" class="spacer horiz">
+      <span class="inputLabelLg">Password:</span>
+      <input id="txtLoginPW" type="password" placeholder="password" value="">
+    </span>
+    <span id="btnLogin" class="btn1">Login</span>
+  </span>
+</span>

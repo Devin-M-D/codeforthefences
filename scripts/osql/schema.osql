@@ -1,0 +1,85 @@
+CREATE CLASS user EXTENDS V;
+ALTER CLASS OUser SUPERCLASS+ user;
+ALTER CLASS E SUPERCLASS+ V;
+
+CREATE CLASS recipe EXTENDS V;
+CREATE PROPERTY recipe.name STRING;
+CREATE PROPERTY recipe.duration INTEGER;
+CREATE PROPERTY recipe.servings STRING;
+
+CREATE CLASS tool EXTENDS V;
+CREATE PROPERTY tool.name STRING;
+CREATE PROPERTY tool.description STRING;
+
+CREATE CLASS recipeTool EXTENDS E;
+CREATE PROPERTY recipeTool.out LINK recipe;
+CREATE PROPERTY recipeTool.in LINK tool;
+
+CREATE CLASS UoM EXTENDS V;
+CREATE PROPERTY UoM.name STRING;
+CREATE PROPERTY UoM.abbreviation STRING;
+
+CREATE CLASS toolSize EXTENDS E;
+CREATE PROPERTY toolSize.out LINK recipeTool;
+CREATE PROPERTY toolSize.in LINK UoM;
+
+
+
+CREATE CLASS prepStyle EXTENDS V;
+CREATE PROPERTY prepStyle.name STRING;
+CREATE PROPERTY prepStyle.abbreviation STRING;
+CREATE PROPERTY prepStyle.description STRING;
+
+CREATE CLASS foodType EXTENDS V;
+CREATE PROPERTY foodType.name STRING;
+CREATE PROPERTY foodType.plural STRING;
+CREATE PROPERTY foodType.abbreviation STRING;
+CREATE PROPERTY foodType.plAbbrev STRING;
+
+CREATE CLASS foodCategory EXTENDS V;
+CREATE PROPERTY foodCategory.name STRING;
+
+CREATE CLASS foodTypeCategory EXTENDS E;
+CREATE PROPERTY foodTypeCategory.out LINK foodType;
+CREATE PROPERTY foodTypeCategory.in LINK foodCategory;
+
+CREATE CLASS ingredient EXTENDS V;
+CREATE PROPERTY ingredient.quantity FLOAT;
+
+CREATE CLASS ingredientFood EXTENDS E;
+CREATE PROPERTY ingredientFood.out LINK ingredient;
+CREATE PROPERTY ingredientFood.in LINK foodType;
+
+CREATE CLASS ingredientPrepStyle EXTENDS E;
+CREATE PROPERTY ingredientPrepStyle.out LINK ingredient;
+CREATE PROPERTY ingredientPrepStyle.in LINK prepStyle;
+CREATE PROPERTY ingredientPrepStyle.index INTEGER;
+
+CREATE CLASS ingredientUoM EXTENDS E;
+CREATE PROPERTY ingredientUoM.out LINK ingredient;
+CREATE PROPERTY ingredientUoM.in LINK UoM;
+
+CREATE CLASS recipeIngredient EXTENDS E;
+CREATE PROPERTY recipeIngredient.out LINK recipe;
+CREATE PROPERTY recipeIngredient.in LINK ingredient;
+CREATE PROPERTY recipeIngredient.ingredientNum INTEGER;
+
+
+
+CREATE CLASS step EXTENDS V;
+CREATE PROPERTY step.text STRING;
+
+CREATE CLASS stepIngredient EXTENDS E;
+CREATE PROPERTY stepIngredient.out LINK step;
+CREATE PROPERTY stepIngredient.in LINK recipeIngredient;
+CREATE PROPERTY stepIngredient.index INTEGER;
+
+CREATE CLASS stepTool EXTENDS E;
+CREATE PROPERTY stepTool.out LINK step;
+CREATE PROPERTY stepTool.in LINK recipeTool;
+CREATE PROPERTY stepTool.index INTEGER;
+
+CREATE CLASS recipeStep EXTENDS E;
+CREATE PROPERTY recipeStep.out LINK recipe;
+CREATE PROPERTY recipeStep.in LINK step;
+CREATE PROPERTY recipeStep.stepNum INTEGER;

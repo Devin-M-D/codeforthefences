@@ -1,0 +1,11 @@
+SET echo TRUE;
+SET promptDateFormat "yyy-MM-dd hh:mm:ss.sss";
+CONNECT remote:localhost root testpass123;
+LIST DATABASES;
+SET ignoreErrors TRUE;
+DROP DATABASE remote:localhost/cookbook root testpass123;
+SET ignoreErrors FALSE;
+CREATE DATABASE remote:localhost/cookbook root testpass123 PLOCAL;
+
+LOAD SCRIPT C:/node/cookbook/scripts/osql/schema.osql;
+LOAD SCRIPT C:/node/cookbook/scripts/osql/sampleData_base.osql;

@@ -1,0 +1,45 @@
+//#region//#endregion
+
+DI.utils.isDef(obj)
+
+/////////////////
+//new async route
+/////////////////
+router.post('/routePath', asyncRoute(async (req, res, next) =>
+{
+  var data = query(req, "osql", { param1: "param1Val" })
+  succeed(res, data)
+}))
+
+/////////////////////////////////
+//use DB root for single session
+/////////////////////////////////
+DI.data.useRootSession(async (session) => { query(req, "SELECT * FROM user", { username: "", password: "" }) })
+query(req, osql, data)
+command(req, osql, data)
+
+//////////////////
+//DI obj structure
+//////////////////
+DI
+  DI.express
+    DI.express.api
+    DI.express.app
+    DI.express.port
+    DI.express.router
+  DI.bcrypt
+  DI.data
+    DI.data.parseRid
+    DI.data.client
+    DI.data.startPool
+    DI.data.useRootSession
+    DI.data.rootQuery
+    DI.data.rootCommand
+    DI.data.runQuery
+    DI.data.runCommand
+  DI.sessions
+    DI.sessions.token
+    DI.sessions.username
+    DI.sessions.dbPool
+    DI.sessions.reqPayload
+    DI.sessions.resPayload
