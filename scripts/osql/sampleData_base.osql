@@ -23,13 +23,13 @@ let $uomCUP = CREATE VERTEX UoM SET name = "cup", abbreviation = "c"
 
 let $ft = CREATE VERTEX foodType SET name = "butter"
 let $ing1 = CREATE VERTEX ingredient SET quantity = '3'
-let $ingFood = CREATE EDGE FROM $ing1 TO $ft
+let $ingFood = CREATE EDGE ingredientFood FROM $ing1 TO $ft
 let $ingUoM = CREATE EDGE ingredientUoM FROM $ing1 TO $uomTBSP
 let $recIng1 = CREATE EDGE recipeIngredient FROM $r TO $ing1 SET ingredientNum = 1
 
 let $ft = CREATE VERTEX foodType SET name = "marshmallow", plural = "marshmallows"
 let $ing2 = CREATE VERTEX ingredient SET quantity = '4'
-let $ingFood = CREATE EDGE FROM $ing2 TO $ft
+let $ingFood = CREATE EDGE ingredientFood FROM $ing2 TO $ft
 let $ingUoM = CREATE EDGE ingredientUoM FROM $ing2 TO $uomCUP
 let $ps = CREATE VERTEX prepStyle SET name = 'miniature', abbreviation = 'mini'
 let $ingPrepStyle = CREATE EDGE ingredientPrepStyle FROM $ing2 TO $ps
@@ -37,23 +37,23 @@ let $recIng2 = CREATE EDGE recipeIngredient FROM $r TO $ing2 SET ingredientNum =
 
 let $ft = CREATE VERTEX foodType SET name = "cereal"
 let $ing3 = CREATE VERTEX ingredient SET quantity = '6'
-let $ingFood = CREATE EDGE FROM $ing3 TO $ft
+let $ingFood = CREATE EDGE ingredientFood FROM $ing3 TO $ft
 let $ingUoM = CREATE EDGE ingredientUoM FROM $ing3 TO $uomCUP
 let $recIng3 = CREATE EDGE recipeIngredient FROM $r TO $ing3 SET ingredientNum = 3
 
 
 
 let $step = CREATE VERTEX step SET text = "Melt {i0} in {t0} over low heat"
-let $stepIng = CREATE EDGE FROM $step TO $recIng1.@rid SET index = 0
-let $stepTool = CREATE EDGE FROM $step TO $rt.@rid SET index = 0
+let $stepIng = CREATE EDGE stepIngredient FROM $step TO $recIng1.@rid SET index = 0
+let $stepTool = CREATE EDGE stepTool FROM $step TO $rt.@rid SET index = 0
 let $rStep = CREATE EDGE recipeStep FROM $r TO $step SET stepNum = 1
 
 let $step = CREATE VERTEX step SET text = "Add {i0} to same pan and melt"
-let $stepIng = CREATE EDGE FROM $step TO $recIng2.@rid SET index = 0
+let $stepIng = CREATE EDGE stepIngredient FROM $step TO $recIng2.@rid SET index = 0
 let $rStep = CREATE EDGE recipeStep FROM $r TO $step SET stepNum = 2
 
 let $step = CREATE VERTEX step SET text = "Pour over {i0}, stir until well coated"
-let $stepIng = CREATE EDGE FROM $step TO $recIng3.@rid SET index = 0
+let $stepIng = CREATE EDGE stepIngredient FROM $step TO $recIng3.@rid SET index = 0
 let $rStep = CREATE EDGE recipeStep FROM $r TO $step SET stepNum = 3
 
 let $step = CREATE VERTEX step SET text = "Press into 9x9 baking pan using wax paper or lightly oiled wooden spoon"

@@ -66,6 +66,31 @@ input {
 .fitH > * { height: unset; }
 .fitW > * { width: unset; }
 .fit > * { height: unset; width: unset; }
+
+.algnSC { align-content: var(--algnStart); }
+
+.spacer {
+  width: 0px;
+  flex-grow: 0;
+  overflow: visible;
+}
+.spacer::after {
+  background-color: gray;
+  position: absolute;
+  content: "";
+}
+.spacer.horiz::after {
+  background: linear-gradient(90deg, var(--spcGradient));
+  width: 100%;
+  height:2px;
+  bottom: -1px;
+}
+.spacer.vert::after {
+  background: linear-gradient(0deg, var(--spcGradient));
+  width: 2px;
+  height: 100%;
+  right: -1px;
+}
 /*#endregion*/
 
 /*#region tables*/
