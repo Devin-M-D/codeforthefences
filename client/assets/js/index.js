@@ -46,21 +46,26 @@ cDI.utils = {
 
     function locateRid(itemDepth, linkrid) {
       var inEl = allPossibleChildren.filter(x => { return x["@rid"] == linkrid && x["$depth"] < itemDepth })[0]
-      if (inEl) { console.log(`${tabDist}found ${inEl["@rid"]} as ${inEl["@class"]} but at lower depth ${inEl["$depth"]}`) }
+      // if (inEl) { console.log(`${tabDist}found ${inEl["@rid"]} as ${inEl["@class"]} but at lower depth ${inEl["$depth"]}`) }
 
       var any = allPossibleChildren.filter(x => { return x["@rid"] == linkrid })[0]
-      if (!any) { console.log(`${tabDist}rid ${linkrid} not found in set`) }
+      // if (!any) { console.log(`${tabDist}rid ${linkrid} not found in set`) }
 
       var linkObj = allPossibleChildren.filter(x => { return x["@rid"] == linkrid && (x["$depth"] >= itemDepth) })[0]
-      if (!any) { console.log(`${tabDist}rid ${linkrid} not found in set`) }
+      // if (!any) { console.log(`${tabDist}rid ${linkrid} not found in set`) }
+
+      var objToReplaceWith = linkrid
       if (linkObj) {
-        var objToReplaceWith = cDI.utils.clone(linkObj)
-        console.log(`${tabDist}found ${cDI.utils.legId(objToReplaceWith)}`)
+        objToReplaceWith = cDI.utils.clone(linkObj)
+        // console.log(`${tabDist}found ${cDI.utils.legId(objToReplaceWith)}`)
         objToReplaceWith = anchorItem(objToReplaceWith)
-        return objToReplaceWith
       }
-      // else { return { rid: linkrid, class: any["@class"] } }
-      else { return linkrid }
+      else if (any){
+        if (any["$depth"] == itemDepth){
+          objToReplaceWith = cDI.utils.clone(linkObj)
+        }
+      }
+      return objToReplaceWith
     }
     function getChild(item, prop){
       var itemProp = item[prop]
@@ -320,7 +325,10 @@ async function strapApp(testSetToRun = 0) {
   await $.get("globals/header/header.html", (val) => { $("body").prepend(val) })
   await strapAuthButton()
   await $.get("components/widgets/modals.html", (val) => { $("#cargoHold").append(val) })
-  await $.get("pages/home/home.html", (val) => { $("#bodyMain").append(val) })
+  await $.get("pages/home/home.html", (val) => {
+    $("#bodyMain").append(val)
+    pageHomeOnStrap()
+  })
 
   if (testSetToRun != 0) {
     await cDI.loadScript("js/unitTests/unitTests.js")
