@@ -1,6 +1,6 @@
 async function getAllRecipes() {
   var callRes = await cDI.remoteCall("/crud/recipe/r/", { expectMany: true })
-  return cDI.utils.extrudeFlatGraph(callRes.payload)
+  return cDI.utils.extrudeFlatGraph(callRes.payload, "recipe")
 }
 async function buildRecipeCard(recipe){
   var retVal = `
@@ -27,7 +27,6 @@ async function buildRecipeCard(recipe){
   recipe.recipeStep.forEach(recipeStep => {
     var step = recipeStep.step
     var stepText = step.text
-    console.log(step)
     retVal += `
     <span class="cardStep">
       ${stepText}
@@ -36,6 +35,5 @@ async function buildRecipeCard(recipe){
   retVal += `
     </span>
   </span>`
-  console.log("retVal", retVal)
   return retVal
 }

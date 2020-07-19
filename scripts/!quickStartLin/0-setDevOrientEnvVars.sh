@@ -1,0 +1,1 @@
+TODO: set env vars ORIENTDB_HOME and COOKBOOK_HOME
