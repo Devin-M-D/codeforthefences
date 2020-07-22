@@ -18,4 +18,4 @@ cDI.config.user = {
 //unitTest 1 = run all
 //unitTest 2 = run custom scenario
 //unitTest 3 = just log in if necessary
-cDI.config.unitTest = 1
+cDI.config.unitTest = 0
