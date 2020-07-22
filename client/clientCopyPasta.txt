@@ -12,8 +12,8 @@ var clickRes = await cDI.clickRes($("#elemId"))
 cDI.clickToSpawn(elem, componentPath, destElemId, placement = 0)
 cDI.clickToModal(elem, dialogPath, async (createdElem) => { await runAnyComponentOnloadFuncs(); return createdElem; })
 cDI.addAsyncOnclick(elem, async (res) => { await res })
-await cDI.h(remoteCallVar, async (callRes) => { /*handle success*/ }, async (callRes) => { /*handle errors*/ })
-await cDI.remoteCall("/path/to/route/", { dataVal: value })
+await cDI.remote.h(remoteCallVar, async (callRes) => { /*handle success*/ }, async (callRes) => { /*handle errors*/ })
+await cDI.remote.remoteCall("/path/to/route/", { dataVal: value })
 await cDI.utils.isDef(obj)
 cDI.utils.pluck(arr, key)
 cDI.utils.unique(arr)
@@ -48,7 +48,17 @@ cDI.utils.ifTrace("msg", data, trace)
 <style></style>
 <script type="text/javascript"></script>
 <span class="componentName"></span>
-
+|| OR ||
+<link rel="stylesheet" type="text/css" href="/path/componentName.css">
+<script type="text/javascript" src="/path/componentName.js"></script>
+|| OR ||
+<script>
+  $('<link rel="stylesheet" type="text/css" href="components/globals/header/header.css" />').appendTo('head')
+  async function strapHeader() {
+    var headerJS = await cDI.asyncGetScript("components/globals/header/header.js")
+    return await strapAuthButton()
+  }
+</script>
 ////////////////////////////
 //set up growth priorities based on a parent's class
 ////////////////////////////
@@ -73,9 +83,9 @@ cDI
   cDI.loadComponent
   cDI.addAsyncOnclick
   cDI.clickToSpawn
-  cDI.h
+  cDI.remote.h
   cDI.clickToModal
-  cDI.remoteCall
+  cDI.remote.remoteCall
   cDI.logout
   cDI.clearLogin
 

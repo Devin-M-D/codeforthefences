@@ -1,13 +1,14 @@
-  async function strapAuthButton() {
-    $("#iconAuth").off("click")
-    if (cDI.utils.isDef(cDI.token)){
-      cDI.clickToModal($("#iconAuth"), "/components/dialogs/accountDash/accountDash.html", async (createdElem) => {
-        await accountDashOnStrap()
-        return createdElem
-      })
-    }
-    else {
-      cDI.clickToModal($("#iconAuth"), "/components/dialogs/auth.html")
-    }
+async function strapAuthButton() {
+  $("#iconAuth").off("click")
+  console.log("test", cDI.session.token)
+  if (cDI.utils.isDef(cDI.session.token)){
+    cDI.widgets.modal.clickToModal($("html"), "/components/dialogs/accountDash/accountDash.html", async (createdElem) => {
+      await strapAccountDash()
+      return createdElem
+    })
   }
-  cDI.log(() => { console.log("Header component loaded") })
+  else {
+    cDI.widgets.modal.clickToModal($("html"), "/components/dialogs/auth.html")
+  }
+}
+cDI.log(() => { console.log("Header component loaded") })

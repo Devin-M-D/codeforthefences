@@ -18,12 +18,12 @@ async function unitTests(runCondition) {
   }
   async function loginIfNeccessary(){
     //if not logged in, use debugConf set in bootstrap to set an impersonate
-    if (!cDI.utils.isDef(cDI.token)) {
-      console.log(`Not logged in, logging with ${cDI.debugConf.username} and ${cDI.debugConf.password}`)
+    if (!cDI.utils.isDef(cDI.session.token)) {
+      console.log(`Not logged in, logging with ${cDI.config.user.username} and ${cDI.config.user.password}`)
       await utAuth_Login()
     }
     //if we think we're logged in, verify by making a call. Triggers an implicit logout in the remoteCall func if call result has status "e".
-    else { await cDI.remoteCall("/user/testToken") }
+    else { await cDI.remote.remoteCall("/user/testToken") }
   }
   //#endregion
 
@@ -74,8 +74,8 @@ async function unitTests(runCondition) {
     async function utAuth_Login(){
       await cDI.clickRes($("#iconAuth"))
       console.log("UT: logging in")
-      $("#txtLoginUN").val(cDI.debugConf.username)
-      $("#txtLoginPW").val(cDI.debugConf.password)
+      $("#txtLoginUN").val(cDI.config.user.username)
+      $("#txtLoginPW").val(cDI.config.user.password)
       await cDI.clickRes($("#btnLogin"))
     }
     //#endregion

@@ -1,4 +1,3 @@
-/*#region vars, dom selectors, positioning*/
 :root {
   --rgbaTransparent: rgba(0,0,0,0);
 
@@ -21,8 +20,8 @@
   --headerSize: 22px;
   --headerDecoration: underline;
 }
-html {
-  overflow: hidden !important;
+html, body {
+  height: 100%; width: 100%;
 }
 html, body, span, input, select {
   display: inline-flex;
@@ -34,85 +33,15 @@ html, body, span, input, select {
   border-collapse: collapse;
   text-align: center;
   overflow: inherit;
-
-  flex-grow: 1; /*flex items grow to fill unused space in main axis*/
-  flex-shrink: 1; /*flex items shrink to fit evenly when flex-wrap is nowrap*/
-  flex-basis: auto; /*default main axis dimension (overrides height or width) to auto*/
-
-  /* off axis */
-  align-items: stretch; /*flex items should expand to fill the off Axis*/
-  align-content: center;
-  align-self: center;
-
-  /* main axis */
+  flex-grow: 1;
+  flex-shrink: 1;
   justify-content: center;
-	justify-self: center;
-  height: 100%;
-  width: 100%;
 }
-input {
-  height: auto;
-  width: auto;
-}
-/*#endregion*/
-
-/*#region basic shorthands*/
-.pad10 { padding: 10px;}
-.pillar5pct { margin: 0 5%;}
 .rows { flex-direction: row; }
 .cols { flex-direction: column; }
 .unwrap { flex-wrap: nowrap; }
-
-.fitH > * { height: unset; }
-.fitW > * { width: unset; }
-.fit > * { height: unset; width: unset; }
-
-.algnSC { align-content: var(--algnStart); }
-
-.spacer {
-  width: 0px;
-  flex-grow: 0;
-  overflow: visible;
+.fitW > span { flex-basis: auto; }
+.vCen {
+    justify-self: center;
+    align-self: center;
 }
-.spacer::after {
-  background-color: gray;
-  position: absolute;
-  content: "";
-}
-.spacer.horiz::after {
-  background: linear-gradient(90deg, var(--spcGradient));
-  width: 100%;
-  height:2px;
-  bottom: -1px;
-}
-.spacer.vert::after {
-  background: linear-gradient(0deg, var(--spcGradient));
-  width: 2px;
-  height: 100%;
-  right: -1px;
-}
-/*#endregion*/
-
-/*#region tables*/
-.table {
-
-}
-/*#endregion*/
-
-/*#region typesetting and theming*/
-.headerFont { font-family: var(--headerFont); font-size:var(--headerSize); text-decoration:var(--headerDecoration); }
-/*#endregion*/
-
-/*#region buttons*/
-.btnBox {
-  height: 50%;
-}
-.btn1 {
-  background-color: var(--clrPrimary);
-  border: solid thick black;
-  border-style: outset;
-  border-color: var(--clrSecondary);
-  margin: 5%;
-  padding: 5%;
-}
-/*#endregion*/

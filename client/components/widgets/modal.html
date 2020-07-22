@@ -1,0 +1,49 @@
+<style>
+  .modalCurtain {
+    background-color: rgba(128, 128, 128, .75);
+    position: absolute;
+    z-index: 9999;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  .modalCurtain > * {
+    height: 80%;
+    width: 80%;
+    background-color: white;
+    position:absolute;
+  }
+</style>
+<script type="text/javascript">
+  cDI.widgets.modal = {}
+  cDI.widgets.modal.drawCurtain = async (params = {}) => {
+    var target = params.target || $("html")
+    var content = params.content || ""
+    target.prepend(`<span class="modalCurtain">${content}</span>`)
+    var curtain = target.find(".modalCurtain")
+    curtain.on("click", (e) => {
+        e.stopPropagation()
+        cDI.widgets.modal.raiseCurtain()
+    })
+    curtain.find(" > *").on("click", (e) => {
+        e.stopPropagation()
+    })
+    return curtain.find(" > *")
+  }
+  cDI.widgets.modal.raiseCurtain = async (target) => {
+    if (target) { target = target.find(".modalCurtain") }
+    else { target = $(".modalCurtain").last() }
+    await target.remove()
+  }
+  cDI.widgets.modal.clickToModal = async (elem, dialogPath, fn) => {
+    await cDI.addAsyncOnclick(elem, async (e) => {
+      var content = await cDI.asyncGet(dialogPath)
+      var modalElements = await cDI.widgets.modal.drawCurtain({ target: elem, content: content })
+      if (cDI.utils.isDef(fn)) { await fn(modalElements) }
+      return modalElements
+    })
+  }
+  cDI.log(() => { console.log("Modal component added to cargo hold") })
+</script>
+<span id="modals"></span>

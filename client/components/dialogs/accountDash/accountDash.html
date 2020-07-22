@@ -1,6 +1,10 @@
-<link rel="stylesheet" type="text/css" href="/dialogs/accountDash/accountDash.css">
-<script type="text/javascript" src="/dialogs/accountDash/accountDash.js"></script>
-
+<script>
+  $('<link rel="stylesheet" type="text/css" href="components/dialogs/accountDash/accountDash.css" />').appendTo('head')
+  async function strapAccountDash() {
+    await cDI.asyncGetScript("components/dialogs/accountDash/accountDash.js")
+    return await buildAccountDash()
+  }
+</script>
 <span id="accountDash" class="hasWingedHeader">
   <span class="wingedHeader">
     <span></span>
