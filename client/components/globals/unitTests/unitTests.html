@@ -1,0 +1,8 @@
+<script>
+  $('<link rel="stylesheet" type="text/css" href="components/globals/unitTests/unitTests.css" />').appendTo('head');
+  async function strapUnitTests() {
+    var getUnitTestsJS = await cDI.asyncGetScript("components/globals/unitTests/unitTests.js")
+    return await unitTests(cDI.config.unitTest)
+  }
+</script>
+<span id="unitTests"></span>

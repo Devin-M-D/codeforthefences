@@ -18,7 +18,7 @@
     if (pw != confPw) {
       console.log("passwords do not match!")
     }
-    var data = await cDI.remoteCall("/signup", {
+    var data = await cDI.remote.remoteCall("/signup", {
       "email": email,
       "username": un,
       "displayname": dn,
@@ -32,8 +32,8 @@
   cDI.addAsyncOnclick($("#btnLogin"), async (res) => {
     var un = $('#txtLoginUN').val()
     var pw = $('#txtLoginPW').val()
-    var callRes = await cDI.remoteCall("/login", {"username": un, "password": pw })
-    await cDI.h(callRes,
+    var callRes = await cDI.remote.remoteCall("/login", {"username": un, "password": pw })
+    await cDI.remote.h(callRes,
       async (token) => {
         cDI.persist("cookbook.username", un)
         cDI.persist("cookbook.token", token)
@@ -42,7 +42,7 @@
       },
       async (callRes) => { console.log("login failed") }
     )
-    cDI.closeModal()
+    cDI.widgets.modal.closeModal()
     await strapAuthButton()
     return callRes
   })

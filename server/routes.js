@@ -5,10 +5,8 @@ var utils = require('./index')
 var recipeService = require('./services/recipe')
 
 module.exports = async (DI) => {
-  DI.express.app.use(DI.express.api.static(__dirname + '/../client/'))
+  DI.express.app.use(DI.express.api.static(__dirname + '/../client'))
   DI.express.app.use(DI.express.api.static(__dirname + '/../client/assets'))
-  DI.express.app.use(DI.express.api.static(__dirname + '/../client/components'))
-  DI.express.app.use(DI.express.api.static(__dirname + '/../client/pages'))
   var router = DI.express.api.Router()
 
   //#region helper functions (asyncRoute, query, command)
