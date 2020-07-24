@@ -3,9 +3,9 @@
   flex-grow: 1;
 }
 
-#hamburgerBox, #authBox {
+/* #hamburgerBox, #authBox {
   flex-grow: 2;
-}
+} */
 /*#region hamburger*/
 .iconHamburger:before {
   background: black;
@@ -60,10 +60,20 @@
 
 /*#region title*/
   #title {
-    flex-grow: 8;
+    /* flex-grow: 8; */
     width: unset;
     font-family: var(--headerFont);
     font-size:var(--headerSize);
     text-decoration:var(--headerDecoration);
   }
 /*#endregion*/
+
+.wingedHeader {
+
+}
+.wingedHeader:nth-child(1), .wingedHeader:nth-child(3)  {
+  flex-grow: 2;
+}
+.wingedHeader:nth-child(2) {
+  flex-grow: 8;
+}

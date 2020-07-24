@@ -249,8 +249,8 @@ cDI.remote = {
     })
   },
   h: async (res, fn1, fn2) => {
-    if (res.status == "s") { await fn1(res.payload) }
-    else if (res.status == "e") { await fn2(res.payload) }
+    if (res.status == "s") { return await fn1(res.payload) }
+    else if (res.status == "e") { return await fn2(res.payload) }
   }
 }
 //#endregion
@@ -306,7 +306,6 @@ cDI.clickToSpawn = async (elem, componentPath, placement = 0) => {
   })
 }
 cDI.wrapInPromise = (fn) => {
-  // return await fn()
   return new Promise((f, r) => {
     fn(f)
   })
@@ -345,7 +344,7 @@ cDI.persist = async (name, val) => {
   window.localStorage.setItem(name, val)
 }
 cDI.stored = async (name) => {
-  window.localStorage.gatItem(name)
+  window.localStorage.getItem(name)
 }
 cDI.unpersist = async (name) => {
   window.localStorage.removeItem(name)

@@ -70,8 +70,8 @@ cDI.utils.ifTrace("msg", data, trace)
 //DI obj structure
 //////////////////
 cDI
-  cDI.token //set on login
-  cDI.username //set on login
+  cDI.session.token //set on login
+  cDI.session.username //set on login
 
   cDI.utils
     cDI.utils.isDef
