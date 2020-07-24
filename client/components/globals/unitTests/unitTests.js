@@ -72,7 +72,7 @@ async function unitTests(runCondition) {
       }
     }
     async function utAuth_Login(){
-      await cDI.clickRes($("#iconAuth"))
+      await cDI.clickRes($(".iconAuth"))
       console.log("UT: logging in")
       $("#txtLoginUN").val(cDI.config.user.username)
       $("#txtLoginPW").val(cDI.config.user.password)

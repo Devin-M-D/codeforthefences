@@ -2,11 +2,22 @@
   #authBox > span > span {
     height: auto;
     padding: 25px;
-    text-align: left;
+    align-content: center;
   }
-  #signup, #login {
+  #authBox > span > span > * {
+    width:50%;
+    min-width: 150px;
+  }
+  #authBox > span > span > span {
+    padding: 2%;
+    justify-content: flex-start;
+  }
+  #authBox > span > span > input {
+    margin: auto;
+  }
+  /* #signup, #login {
     width: 50%;
-  }
+  } */
 </style>
 <script type="text/javascript">
   cDI.addAsyncOnclick($("#btnSignup"), async (res) => {
@@ -33,54 +44,56 @@
     var un = $('#txtLoginUN').val()
     var pw = $('#txtLoginPW').val()
     var callRes = await cDI.remote.remoteCall("/login", {"username": un, "password": pw })
+    console.log("callRes", callRes)
     await cDI.remote.h(callRes,
       async (token) => {
         cDI.persist("cookbook.username", un)
         cDI.persist("cookbook.token", token)
-        cDI.username = un
-        cDI.token = token
+        cDI.session.username = un
+        cDI.session.token = token
+        cDI.widgets.modal.raiseCurtain()
+        await strapAuthButton()
+        return callRes
       },
-      async (callRes) => { console.log("login failed") }
+      async (callRes) => { console.log("login failed"); return false; }
     )
-    cDI.widgets.modal.closeModal()
-    await strapAuthButton()
-    return callRes
   })
   cDI.log(() => { console.log("Auth component loaded") })
 </script>
-<span id="authBox">
-  <span id="signup" class="spacer vert">
-    <span id="suEmail">
-      <span class="inputLabelLg">Email (optional):</span>
+<span id="authBox" class="fit rows unwrap">
+  <span id="signup" class="cols">
+    <!-- <span id="suEmail">
+      <span class="vCen">Email (optional):</span>
       <input id="txtSgnEmail" type="text" placeholder="email" value="">
-    </span>
+    </span> -->
     <span id="suUsername">
-      <span class="inputLabelLg">Username:</span>
+      <span class="vCen">Username:</span>
       <input id="txtSgnUN" type="text" placeholder="username" value="">
     </span>
-    <span id="suDisplayName">
-      <span class="inputLabelLg">Display Name (optional):</span>
+    <!-- <span id="suDisplayName">
+      <span class="vCen">Display Name (optional):</span>
       <input id="txtSgnDisplayName" type="text" placeholder="display name" value="">
-    </span>
+    </span> -->
     <span id="suPass">
-      <span class="inputLabelLg">Password:</span>
+      <span class="vCen">Password:</span>
       <input id="txtSgnPW" type="password" placeholder="password" value="">
     </span>
     <span id="suConfirmPass" class="spacer horiz">
-      <span class="inputLabelLg">Confirm password:</span>
+      <span class="vCen">Confirm password:</span>
       <input id="txtSgnConfPW" type="password" placeholder="confirm password" value="">
     </span>
-    <span id="btnSignup" class="btn1">Signup</span>
+    <span id="btnSignup" class="btnStd">Signup</span>
   </span>
-  <span id="login">
+  <span class="spacer vert"></span>
+  <span id="login" class="cols">
     <span id="logUsername">
-      <span class="inputLabelLg">Username/Email:</span>
+      <span class="vCen">Username/Email:</span>
       <input id="txtLoginUN" type="text" placeholder="username/email" value="">
     </span>
     <span id="logPass" class="spacer horiz">
-      <span class="inputLabelLg">Password:</span>
+      <span class="vCen">Password:</span>
       <input id="txtLoginPW" type="password" placeholder="password" value="">
     </span>
-    <span id="btnLogin" class="btn1">Login</span>
+    <span id="btnLogin" class="btnStd">Login</span>
   </span>
 </span>

@@ -9,8 +9,8 @@
     justify-content: center;
   }
   .modalCurtain > * {
-    height: 80%;
-    width: 80%;
+    max-height: 80%;
+    max-width: 80%;
     background-color: white;
     position:absolute;
   }
@@ -20,7 +20,7 @@
   cDI.widgets.modal.drawCurtain = async (params = {}) => {
     var target = params.target || $("html")
     var content = params.content || ""
-    target.prepend(`<span class="modalCurtain">${content}</span>`)
+    target.prepend(`<span class="modalCurtain fit">${content}</span>`)
     var curtain = target.find(".modalCurtain")
     curtain.on("click", (e) => {
         e.stopPropagation()
@@ -39,7 +39,7 @@
   cDI.widgets.modal.clickToModal = async (elem, dialogPath, fn) => {
     await cDI.addAsyncOnclick(elem, async (e) => {
       var content = await cDI.asyncGet(dialogPath)
-      var modalElements = await cDI.widgets.modal.drawCurtain({ target: elem, content: content })
+      var modalElements = await cDI.widgets.modal.drawCurtain({ content: content })
       if (cDI.utils.isDef(fn)) { await fn(modalElements) }
       return modalElements
     })

@@ -40,8 +40,19 @@ html, body, span, input, select {
 .rows { flex-direction: row; }
 .cols { flex-direction: column; }
 .unwrap { flex-wrap: nowrap; }
-.fitW > span { flex-basis: auto; }
+.fit > span { height: unset; width: unset; }
+.fitH > span { height: unset; }
+.fitW > span { width: unset; }
 .vCen {
     justify-self: center;
     align-self: center;
+}
+.btnStd {
+  background-color: var(--clrBtnPrimary);
+  border: solid thick black;
+  border-style: outset;
+  border-color: var(--clrBtnSecondary);
+  max-height: 75px;
+  margin: 5%;
+  padding: 10px 0px;
 }
