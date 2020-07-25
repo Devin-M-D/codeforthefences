@@ -1,0 +1,17 @@
+<script>
+  $('<link rel="stylesheet" type="text/css" href="components/genericWidgets/accountDash/accountDash.css" />').appendTo('head')
+  async function strapAccountDash() {
+    await cDI.asyncGetScript("components/genericWidgets/accountDash/accountDash.js")
+    return await buildAccountDash()
+  }
+</script>
+<span id="accountDash" class="cols">
+  <span class="wingedHeader">
+    <span></span>
+    <span id="accountDashTitle" class="absCen"></span>
+    <span class="btnBox">
+      <span id="btnLogout" class="btnStd">Logout</span>
+    </span>
+  </span>
+  <span id="accountDashBody"></span>
+</span>

@@ -31,6 +31,7 @@ async function unitTests(runCondition) {
     console.log("UT: Running custom UI test scenario")
     await loginIfNeccessary()
     //custom logged in tasks
+    
   }
 
   //#region permanent tests/
@@ -45,7 +46,7 @@ async function unitTests(runCondition) {
     }
     async function utAuth_Signup(){
       console.log('UT: auth signup')
-      await cDI.clickRes($("#iconAuth"))
+      await cDI.clickRes($(".iconAuth"))
       var randomId = "utAuthUser_" + await cDI.randomString(12)
       $("#txtSgnUN").val(randomId)
       $("#txtSgnPW").val("testpass")

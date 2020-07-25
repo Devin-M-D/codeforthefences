@@ -43,15 +43,15 @@ html, body, span, input, select {
 .fit > span { height: unset; width: unset; }
 .fitH > span { height: unset; }
 .fitW > span { width: unset; }
-.vCen {
+.absCen {
     justify-self: center;
     align-self: center;
 }
 .btnStd {
-  background-color: var(--clrBtnPrimary);
+  background-color: var(--clrPrimary);
   border: solid thick black;
   border-style: outset;
-  border-color: var(--clrBtnSecondary);
+  border-color: var(--clrSecondary);
   max-height: 75px;
   margin: 5%;
   padding: 10px 0px;

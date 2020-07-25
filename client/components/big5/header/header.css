@@ -1,11 +1,10 @@
 #header {
   background-color: var(--clrPrimary);
-  flex-grow: 1;
 }
 
-/* #hamburgerBox, #authBox {
-  flex-grow: 2;
-} */
+#hamburgerBox, #authBox {
+  max-width:100px;
+}
 /*#region hamburger*/
 .iconHamburger:before {
   background: black;
@@ -69,11 +68,14 @@
 /*#endregion*/
 
 .wingedHeader {
-
+  flex-direction: row;
+  width: 100%;
+  height: 10%;
+  flex-grow: 0;
 }
-.wingedHeader:nth-child(1), .wingedHeader:nth-child(3)  {
+.wingedHeader > *:nth-child(1), .wingedHeader > *:nth-child(3)  {
   flex-grow: 2;
 }
-.wingedHeader:nth-child(2) {
-  flex-grow: 8;
+.wingedHeader > *:nth-child(2) {
+  flex-grow: 6;
 }

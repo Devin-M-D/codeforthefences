@@ -14,14 +14,24 @@
     background-color: white;
     position:absolute;
   }
+  .modalCurtain.max > * {
+    height: 80%;
+    width: 80%;
+  }
 </style>
 <script type="text/javascript">
   cDI.widgets.modal = {}
   cDI.widgets.modal.drawCurtain = async (params = {}) => {
     var target = params.target || $("html")
     var content = params.content || ""
-    target.prepend(`<span class="modalCurtain fit">${content}</span>`)
+    var maximizeDialog = params.maximizeDialog || false
+console.log(maximizeDialog)
+    target.prepend(`<span class="modalCurtain">${content}</span>`)
     var curtain = target.find(".modalCurtain")
+
+    if (maximizeDialog){
+      cDI.widgets.modal.maximizeDialog(target)
+    }
     curtain.on("click", (e) => {
         e.stopPropagation()
         cDI.widgets.modal.raiseCurtain()
@@ -36,10 +46,15 @@
     else { target = $(".modalCurtain").last() }
     await target.remove()
   }
-  cDI.widgets.modal.clickToModal = async (elem, dialogPath, fn) => {
+  cDI.widgets.modal.maximizeDialog = (target) => {
+    target = target || $("html")
+    var content = target.find(".modalCurtain").last()
+    content.addClass("max")
+  }
+  cDI.widgets.modal.clickToModal = async (elem, dialogPath, fn, maximizeDialog = false) => {
     await cDI.addAsyncOnclick(elem, async (e) => {
       var content = await cDI.asyncGet(dialogPath)
-      var modalElements = await cDI.widgets.modal.drawCurtain({ content: content })
+      var modalElements = await cDI.widgets.modal.drawCurtain({ content: content, maximizeDialog: maximizeDialog })
       if (cDI.utils.isDef(fn)) { await fn(modalElements) }
       return modalElements
     })

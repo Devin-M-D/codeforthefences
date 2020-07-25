@@ -1,7 +1,7 @@
 <script>
-  $('<link rel="stylesheet" type="text/css" href="components/globals/header/header.css" />').appendTo('head')
+  $('<link rel="stylesheet" type="text/css" href="components/big5/header/header.css" />').appendTo('head')
   async function strapHeader() {
-    await cDI.asyncGetScript("components/globals/header/header.js")
+    await cDI.asyncGetScript("components/big5/header/header.js")
     return await strapAuthButton()
   }
 </script>
@@ -11,7 +11,7 @@
   <span id="hamburgerBox">
     <span class="iconHamburger"></span>
   </span>
-  <span id="title" class="vCen">Cookbook</span>
+  <span id="title" class="absCen">Cookbook</span>
   <span id="authBox">
     <span class="iconAuth"></span>
   </span>
