@@ -1,18 +1,18 @@
 <style>
-  #authBox > span > span {
+  #signupLoginBox > span > span {
     height: auto;
     padding: 25px;
     align-content: center;
   }
-  #authBox > span > span > * {
+  #signupLoginBox > span > span > * {
     width:50%;
     min-width: 150px;
   }
-  #authBox > span > span > span {
+  #signupLoginBox > span > span > span {
     padding: 2%;
     justify-content: flex-start;
   }
-  #authBox > span > span > input {
+  #signupLoginBox > span > span > input {
     margin: auto;
   }
   /* #signup, #login {
@@ -60,40 +60,34 @@
   })
   cDI.log(() => { console.log("Auth component loaded") })
 </script>
-<span id="authBox" class="fit rows unwrap">
+<span id="signupLoginBox" class="fit rows unwrap">
   <span id="signup" class="cols">
-    <!-- <span id="suEmail">
-      <span class="vCen">Email (optional):</span>
-      <input id="txtSgnEmail" type="text" placeholder="email" value="">
-    </span> -->
-    <span id="suUsername">
-      <span class="vCen">Username:</span>
+    <span>
+      <span class="absCen">Username:</span>
       <input id="txtSgnUN" type="text" placeholder="username" value="">
     </span>
-    <!-- <span id="suDisplayName">
-      <span class="vCen">Display Name (optional):</span>
-      <input id="txtSgnDisplayName" type="text" placeholder="display name" value="">
-    </span> -->
-    <span id="suPass">
-      <span class="vCen">Password:</span>
+    <span>
+      <span class="absCen">Password:</span>
       <input id="txtSgnPW" type="password" placeholder="password" value="">
     </span>
-    <span id="suConfirmPass" class="spacer horiz">
-      <span class="vCen">Confirm password:</span>
+    <span>
+      <span class="absCen">Confirm password:</span>
       <input id="txtSgnConfPW" type="password" placeholder="confirm password" value="">
     </span>
+    <span class="spacer horiz"></span>
     <span id="btnSignup" class="btnStd">Signup</span>
   </span>
   <span class="spacer vert"></span>
   <span id="login" class="cols">
-    <span id="logUsername">
-      <span class="vCen">Username/Email:</span>
+    <span>
+      <span class="absCen">Username/Email:</span>
       <input id="txtLoginUN" type="text" placeholder="username/email" value="">
     </span>
-    <span id="logPass" class="spacer horiz">
-      <span class="vCen">Password:</span>
+    <span>
+      <span class="absCen">Password:</span>
       <input id="txtLoginPW" type="password" placeholder="password" value="">
     </span>
+    <span class="spacer horiz"></span>
     <span id="btnLogin" class="btnStd">Login</span>
   </span>
 </span>

@@ -1,0 +1,8 @@
+<script>
+  $('<link rel="stylesheet" type="text/css" href="components/big5/contentMain/contentMain.css" />').appendTo('head')
+  async function strapContentMain() {
+    await cDI.asyncGetScript("components/big5/contentMain/contentMain.js")
+    return await strapContentMain()
+  }
+</script>
+<span id="contentMain"></span>

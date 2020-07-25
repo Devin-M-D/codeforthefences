@@ -1,0 +1,8 @@
+<script>
+  $('<link rel="stylesheet" type="text/css" href="components/big5/cargoHold/cargoHold.css" />').appendTo('head')
+  async function strapCargoHold() {
+    await cDI.asyncGetScript("components/big5/cargoHold/cargoHold.js")
+    return await loadCargoHold()
+  }
+</script>
+<span id="cargoHold"></span>

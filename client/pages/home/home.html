@@ -1,24 +1,11 @@
-<script type="text/javascript" src="pages/home/home.js"></script>
-
-<style>
-  #homeBox {
-
+<script>
+  $('<link rel="stylesheet" type="text/css" href="pages/home/home.css" />').appendTo('head')
+  async function loadPageHome() {
+    var headerJS = await cDI.asyncGetScript("pages/home/home.js")
+    return await strapPageHome()
   }
-  #siteSearch{
-    height: 10%;
-  }
-  #counterTop {
-    height: 90%;
-  }
-  .recipeCard {
-    padding: 0px 5%;
-    height: 250px;
-    border-radius: 10%;
-    border: solid thin black;
-  }
-
-</style>
-<span id="homeBox" class="fitH algnSC">
+</script>
+<span id="homeBox" class="cols">
   <span id="siteSearch"></span>
   <span id="counterTop"></span>
 </span>
