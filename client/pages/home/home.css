@@ -2,14 +2,8 @@
 
 }
 #siteSearch{
-  height: 10%;
+  flex-grow: 1;
 }
 #counterTop {
-  height: 90%;
-}
-.recipeCard {
-  padding: 0px 5%;
-  height: 250px;
-  border-radius: 10%;
-  border: solid thin black;
+  flex-grow: 9;
 }

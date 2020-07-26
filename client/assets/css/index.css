@@ -17,8 +17,18 @@
   --algnCenter: center;
 
   --headerFont: rockwell;
-  --headerSize: 22px;
+  --headerSize: 28px;
   --headerDecoration: underline;
+  --headerWeight: bolder;
+
+  --subheaderFont: rockwell;
+  --subheaderSize: 22px;
+  --subheaderDecoration: underline;
+  --subheaderWeight: bold;
+
+  --spcInner: var(--clrSecondary);
+  --spcOuter: var(--clrPrimary);
+  --spcGradient: var(--rgbaTransparent) 0%, var(--spcOuter) 25%, var(--spcInner) 50%, var(--spcOuter) 75%, var(--rgbaTransparent) 100%;
 }
 html, body {
   height: 100%; width: 100%;
@@ -37,16 +47,36 @@ html, body, span, input, select {
   flex-shrink: 1;
   justify-content: center;
 }
+.displayBlock { display: inline-block;} /*allows text with nested spans to wrap*/
+.pad2 { padding: 2%; } .pad2Vert { padding: 0 2%;  } .pad2Horiz { padding: 2% 0;  }
 .rows { flex-direction: row; }
 .cols { flex-direction: column; }
 .unwrap { flex-wrap: nowrap; }
-.fit > span { height: unset; width: unset; }
-.fitH > span { height: unset; }
-.fitW > span { width: unset; }
+.noGrow > * { flex-grow: 0; }
+.fit > * { height: unset; width: unset; flex-grow: 0; }
+.fitH > * { height: unset; }
+.fitW > * { width: unset; }
+.fitEven > * { flex-basis: 100%; }
+
+/*#region justify and align shorthands*/
 .absCen {
     justify-self: center;
     align-self: center;
 }
+.algnCX { justify-content: var(--algnCenter); }
+.algnSX { justify-content: var(--algnStart); }
+.algnEX { justify-content: var(--algnEnd); }
+
+.algnXC { align-content: var(--algnCenter); }
+.algnXS { align-content: var(--algnStart); }
+.algnXE { align-content: var(--algnEnd); }
+
+.algnCC { justify-content: var(--algnCenter); align-content: var(--algnCenter); }
+.algnSS { justify-content: var(--algnStart); align-content: var(--algnStart); }
+.algnEE { justify-content: var(--algnEnd); align-content: var(--algnEnd); }
+/*#endregion*/
+
+/*#region buttons*/
 .btnStd {
   background-color: var(--clrPrimary);
   border: solid thick black;
@@ -56,3 +86,32 @@ html, body, span, input, select {
   margin: 5%;
   padding: 10px 0px;
 }
+/*#endregion*/
+
+.leftCopy { text-align: left; }
+
+/*#region spacer bars*/
+.spacer {
+  flex-grow: 0;
+  flex-basis: 0;
+}
+.spacer::after {
+  background-color: gray;
+  position: absolute;
+  content: "";
+}
+.spacer.horiz { height: 0; }
+.spacer.horiz::after {
+  background: linear-gradient(90deg, var(--spcGradient));
+  width: 100%;
+  height:2px;
+  bottom: -1px;
+}
+.spacer.vert { width: 0; }
+.spacer.vert::after {
+  background: linear-gradient(0deg, var(--spcGradient));
+  width: 2px;
+  height: 100%;
+  right: -1px;
+}
+/*#endregion*/

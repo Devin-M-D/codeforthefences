@@ -11,7 +11,7 @@ let $ba = CREATE USER balomepe IDENTIFIED BY test ROLE admin;
 let $r = CREATE VERTEX recipe SET name = 'Cereal Treats', duration = 10, servings = "16 treats"
 
 let $t = CREATE VERTEX tool SET name = 'pan', description = "Typical stovetop pan"
-let $rt = CREATE EDGE recipeTool FROM $r TO $t
+let $rt = CREATE EDGE recipeTool FROM $r TO $t SET toolNum = 1
 let $uom = CREATE VERTEX UoM SET name = "large", abbreviation = "lg"
 
 let $rts = CREATE EDGE toolSize FROM $rt.@rid TO $uom
@@ -48,11 +48,11 @@ let $stepIng = CREATE EDGE stepIngredient FROM $step TO $recIng1.@rid SET index 
 let $stepTool = CREATE EDGE stepTool FROM $step TO $rt.@rid SET index = 0
 let $rStep = CREATE EDGE recipeStep FROM $r TO $step SET stepNum = 1
 
-let $step = CREATE VERTEX step SET text = "Add {i0} to same pan and melt"
+let $step = CREATE VERTEX step SET text = "Add {i1} to same {t0} and melt"
 let $stepIng = CREATE EDGE stepIngredient FROM $step TO $recIng2.@rid SET index = 0
 let $rStep = CREATE EDGE recipeStep FROM $r TO $step SET stepNum = 2
 
-let $step = CREATE VERTEX step SET text = "Pour over {i0}, stir until well coated"
+let $step = CREATE VERTEX step SET text = "Pour over {i2}, stir until well coated"
 let $stepIng = CREATE EDGE stepIngredient FROM $step TO $recIng3.@rid SET index = 0
 let $rStep = CREATE EDGE recipeStep FROM $r TO $step SET stepNum = 3
 

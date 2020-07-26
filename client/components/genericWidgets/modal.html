@@ -25,7 +25,6 @@
     var target = params.target || $("html")
     var content = params.content || ""
     var maximizeDialog = params.maximizeDialog || false
-console.log(maximizeDialog)
     target.prepend(`<span class="modalCurtain">${content}</span>`)
     var curtain = target.find(".modalCurtain")
 

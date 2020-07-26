@@ -1,0 +1,26 @@
+.recipeCard {
+  padding: 0px 5%;
+  height: 250px;
+  border-radius: 25px;
+  border: solid thin black;
+  margin: 0 5%;
+}
+
+.cardStep {
+  margin-bottom: 5px
+}
+
+.cardIngredient {
+  margin-bottom: 5px
+}
+
+.stepIngredient, .stepTool {
+
+}
+.stepIngredient {
+  background-color: var(--clrPrimary);
+}
+
+.stepTool {
+  background-color: var(--clrSecondary);
+}

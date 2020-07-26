@@ -106,7 +106,7 @@ module.exports = async (DI) => {
       succeed(res, data)
     }))
     router.post('/crud/recipe/r/', asyncRoute(async (req, res, next) => {
-      var data = await query(req, recipeService.getAllRecipes.query)
+      var data = await DI.data.rootQuery(recipeService.getAllRecipes.query)
       succeed(res, data)
     }))
   DI.express.app.use(router)

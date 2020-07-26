@@ -1,5 +1,7 @@
-#header {
+#siteHeader {
   background-color: var(--clrPrimary);
+  box-shadow: 0px 5px 5px var(--clrSecondary);
+  z-index: 1;
 }
 
 #hamburgerBox, #authBox {
@@ -30,6 +32,7 @@
   width: 100%;
 }
 /*#endregion*/
+
 /*#region auth*/
 #authBox {
   overflow: visible;
@@ -57,20 +60,25 @@
 }
 /*#endregion*/
 
-/*#region title*/
-  #title {
-    /* flex-grow: 8; */
-    width: unset;
+/*#region fonts*/
+  .header{
     font-family: var(--headerFont);
-    font-size:var(--headerSize);
-    text-decoration:var(--headerDecoration);
+    font-size: var(--headerSize);
+    text-decoration: var(--headerDecoration);
+    font-weight: var(--headerWeight)
+  }
+  .subheader{
+    font-family: var(--subheaderFont);
+    font-size: var(--subheaderSize);
+    text-decoration: var(--subheaderDecoration);
+    font-weight: var(--subheaderWeight)
   }
 /*#endregion*/
 
 .wingedHeader {
   flex-direction: row;
   width: 100%;
-  height: 10%;
+  height: calc(1% * var(--headerheight));
   flex-grow: 0;
 }
 .wingedHeader > *:nth-child(1), .wingedHeader > *:nth-child(3)  {
@@ -79,3 +87,5 @@
 .wingedHeader > *:nth-child(2) {
   flex-grow: 6;
 }
+[data-headerheight="10"] { --headerheight: 10; }
+[data-headerheight="20"] { --headerheight: 20; }
