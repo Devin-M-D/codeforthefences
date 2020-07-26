@@ -1,10 +1,7 @@
 async function strapPageHome(){
   var recipes = await getAllRecipes()
-  console.log("recipes", recipes[0])
-  recipes.forEach(async (recipe) => {
-    var card = await buildRecipeCard(recipe)
-    $("#counterTop").append(card)
-  })
+  var favorites = await buildRecipeCardList(recipes)
+  $("#counterTop").append(favorites)
 
   $.get("/components/genericWidgets/search.html", val => { $("#siteSearch").html(val) })
 }

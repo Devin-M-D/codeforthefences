@@ -4,6 +4,7 @@ async function loadCargoHold(){
   $("#cargoHold").append(modal)
 
   //project widgets
-  var recipeCards = await cDI.asyncGet("components/projectWidgets/recipeCard/recipeCard.html")
-  $("#cargoHold").append(recipeCards)
+  var recipeCard = await cDI.asyncGet("components/projectWidgets/recipeCard/recipeCard.html")
+  $("#cargoHold").append(recipeCard)
+  await loadWidgetRecipeCard()
 }
