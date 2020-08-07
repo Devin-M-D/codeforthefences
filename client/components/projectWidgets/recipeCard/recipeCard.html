@@ -1,7 +1,7 @@
 <script>
   $('<link rel="stylesheet" type="text/css" href="components/projectWidgets/recipeCard/recipeCard.css" />').appendTo('head')
   async function loadWidgetRecipeCard() {
-    var headerJS = await cDI.asyncGetScript("components/projectWidgets/recipeCard/recipeCard.js")
+    var js = await cDI.asyncGetScript("components/projectWidgets/recipeCard/recipeCard.js")
   }
 </script>
 <span class="recipeCard cols unwrap">
@@ -11,11 +11,11 @@
     <span class="recipeTime"></span>
   </span>
   <span class="recipeBody rows unwrap fitEven">
-    <span class="cardLeft cols algnSX fit">
+    <span class="cardLeft cols algnSX fit shyScroll">
 
     </span>
     <span class="spacer vert"></span>
-    <span class="cardRight cols algnSX fit pad2Vert">
+    <span class="cardRight cols algnSX fit pad2Vert shyScroll test unwrap">
 
     </span>
   </span>
