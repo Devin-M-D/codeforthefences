@@ -5,5 +5,8 @@
   flex-grow: 1;
 }
 #counterTop {
-  flex-grow: 9;
+  flex-grow: 4;
+}
+.carousel {
+  flex-grow: 5;
 }

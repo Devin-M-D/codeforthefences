@@ -42,7 +42,7 @@ html, body, span, input, select {
   box-sizing: border-box;
   border-collapse: collapse;
   text-align: center;
-  overflow: inherit;
+  overflow: hidden;
   flex-grow: 1;
   flex-shrink: 1;
   justify-content: center;
@@ -52,11 +52,16 @@ html, body, span, input, select {
 .rows { flex-direction: row; }
 .cols { flex-direction: column; }
 .unwrap { flex-wrap: nowrap; }
+.overflow { flex-shrink: 0; }
+.overflow, .overflow > * { /*flex-shrink: 0;*/ }
 .noGrow > * { flex-grow: 0; }
 .fit > * { height: unset; width: unset; flex-grow: 0; }
 .fitH > * { height: unset; }
 .fitW > * { width: unset; }
 .fitEven > * { flex-basis: 100%; }
+.outline.red { border: solid thin red; }
+.outline.green { border: solid thin green; }
+.outline.blue { border: solid thin blue; }
 
 /*#region justify and align shorthands*/
 .absCen {
@@ -89,6 +94,19 @@ html, body, span, input, select {
 /*#endregion*/
 
 .leftCopy { text-align: left; }
+/* .shyScroll { overflow: hidden; overflow-y: scroll; } */
+/* .shyScroll { overflow: hidden; }
+.shyScroll:hover { overflow-y: auto; } */
+/* .shyScroll.test { overflow-y: auto; margin-right: -15px;} */
+.shyScroll {
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+.shyScroll::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+}
 
 /*#region spacer bars*/
 .spacer {

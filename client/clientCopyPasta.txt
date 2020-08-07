@@ -8,6 +8,8 @@
 <input id="inputId" type="text" placeholder="" value="">
 <span id="btnId" class="btn1">Text</span>
 
+[data-headerheight="10"] { --headerheight: 10; }
+
 var clickRes = await cDI.clickRes($("#elemId"))
 cDI.clickToSpawn(elem, componentPath, destElemId, placement = 0)
 cDI.clickToModal(elem, dialogPath, async (createdElem) => { await runAnyComponentOnloadFuncs(); return createdElem; })
@@ -55,7 +57,7 @@ cDI.utils.ifTrace("msg", data, trace)
 <script>
   $('<link rel="stylesheet" type="text/css" href="components/globals/header/header.css" />').appendTo('head')
   async function strapHeader() {
-    var headerJS = await cDI.asyncGetScript("components/globals/header/header.js")
+    var js = await cDI.asyncGetScript("components/globals/header/header.js")
     return await strapAuthButton()
   }
 </script>

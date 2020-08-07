@@ -48,7 +48,7 @@ let $stepIng = CREATE EDGE stepIngredient FROM $step TO $recIng1.@rid SET index 
 let $stepTool = CREATE EDGE stepTool FROM $step TO $rt.@rid SET index = 0
 let $rStep = CREATE EDGE recipeStep FROM $r TO $step SET stepNum = 1
 
-let $step = CREATE VERTEX step SET text = "Add {i1} to same {t0} and melt"
+let $step = CREATE VERTEX step SET text = "Add {i1} to {t0} and melt"
 let $stepIng = CREATE EDGE stepIngredient FROM $step TO $recIng2.@rid SET index = 0
 let $rStep = CREATE EDGE recipeStep FROM $r TO $step SET stepNum = 2
 
