@@ -7,7 +7,7 @@ $(async () => {
 
   var header = await cDI.asyncGet("components/big5/header/header.html")
   $("body").append(header);
-  await strapHeader()
+  await loadBig5Header()
 
   var contentMain = await cDI.asyncGet("components/big5/contentMain/contentMain.html")
   $("body").append(contentMain);

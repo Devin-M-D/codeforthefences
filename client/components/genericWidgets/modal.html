@@ -18,6 +18,20 @@
     height: 80%;
     width: 80%;
   }
+  .loadingSpinner {
+    display: inline-block;
+    width: 100px !important;
+    height: 100px !important;
+    border: 8px solid rgba(141,198,63,.8);
+    border-radius: 50%;
+    border-top-color: var(--clrPrimary);
+    border-right-color: var(--clrSecondary);
+    border-bottom-color: var(--clrPrimary);
+    border-left-color: var(--clrSecondary);
+    position: absolute;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+}
 </style>
 <script type="text/javascript">
   cDI.widgets.modal = {}

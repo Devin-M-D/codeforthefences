@@ -1,8 +1,8 @@
 <script>
   $('<link rel="stylesheet" type="text/css" href="components/big5/header/header.css" />').appendTo('head')
-  async function strapHeader() {
+  async function loadBig5Header() {
     await cDI.asyncGetScript("components/big5/header/header.js")
-    return await strapAuthButton()
+    await strapBig5Header()
   }
 </script>
 <span id="siteHeader" class="wingedHeader" data-headerheight="10">
