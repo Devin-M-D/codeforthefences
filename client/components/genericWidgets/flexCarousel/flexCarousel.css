@@ -1,0 +1,83 @@
+.flexCarousel {
+  height: 100%;
+  width: 100%;
+}
+/*#region NAV*/
+.crslPrevWrapper, .crslNextWrapper {
+  position:absolute;
+  height: 50px;
+  width: 50px;
+  z-index: 1;
+  top: calc(50% - 25px);
+  overflow: visible;
+}
+.crslPrevWrapper {
+  left: 25px;
+}
+.crslNextWrapper {
+  right: 25px;
+}
+@keyframes bounceLeft {
+    0% { left: 0px; }
+    100% { left: -10px; }
+}
+@keyframes bounceRight {
+    0% { right: 0px; }
+    100% { right: -10px; }
+}
+.crslPrevWrapper:hover >.crslPrev, .crslNextWrapper:hover > .crslNext {
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+.crslPrevWrapper:hover > .crslPrev { animation-name: bounceLeft; }
+.crslNextWrapper:hover > .crslNext { animation-name: bounceRight; }
+
+.crslPrev, .crslNext {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  border-top: solid 3px purple;
+}
+.crslPrev {
+  border-left: solid 3px purple; transform: rotate(-45deg);
+}
+.crslNext {
+  border-right: solid 3px purple; transform: rotate(45deg);
+}
+
+/*#endregion*/
+
+.crslSeatPanel {
+  flex-wrap: nowrap;
+}
+.flexCarouselSlot {
+  height: 100%;
+  width: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  order: : var(--idx);
+}
+/* a:nth-child(2) { left:65% }
+.arrow-up    { transform:rotate(135deg) }
+.arrow-right { transform:rotate(225deg) }
+.arrow-down  { transform:rotate(-45deg) }
+.arrow-left  { transform:rotate(45deg) }
+
+.flexCarouselSlot {
+  margin: 1%;
+  height: auto;
+  flex-shrink: 0;
+  order: : var(--idx);
+}
+.flexCarouselSlot:before {
+  content: var(--idx);
+  display: block;
+  position: absolute;
+}
+
+.flexCarouselImg {
+  height: 200px;
+  width: 300px;
+} */

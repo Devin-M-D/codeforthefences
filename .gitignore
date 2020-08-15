@@ -1,3 +1,7 @@
+#DMD Section
+/client/assets/img/shoot
+############
+
 # Logs
 logs
 *.log
