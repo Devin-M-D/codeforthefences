@@ -166,6 +166,22 @@ var cDI = {
       var  hierarchicalObj = anchorSet(rootLayer)
       return hierarchicalObj
     },
+    getDIByCIName: (name) => {
+      var compKeys = Object.keys(cDI.components).reduce((keys, k) => {
+        keys[k.toLowerCase()] = k;
+        return keys
+      }, {});
+      var pageKeys = Object.keys(cDI.pages).reduce((keys, k) => {
+        keys[k.toLowerCase()] = k;
+        return keys
+      }, {});
+      if (cDI.components[compKeys[name.toLowerCase()]]){
+        return cDI.components[compKeys[name.toLowerCase()]]
+      }
+      else if (cDI.pages[pageKeys[name.toLowerCase()]]){
+        return cDI.pages[pageKeys[name.toLowerCase()]]
+      }
+    }
   }
 }
 
@@ -263,13 +279,10 @@ cDI.remote.loadComponent = async (elem, folderPath, componentName, placement = 1
   if (placement == 0) { elem.prepend(html) }
   else if (placement == 1) { elem.append(html) }
 
-  console.log(`loading ${componentName}`)
-  if (cDI.components[componentName]){
-    await cDI.components[componentName].init()
-  }
-  else if (cDI.pages[componentName]){
-    await cDI.pages[componentName].init()
-  }
+  console.log(`loading ${path}`)
+  var DI = cDI.utils.getDIByCIName(componentName)
+  await DI.init()
+  return DI
 }
 //#endregion
 

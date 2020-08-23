@@ -49,6 +49,10 @@ module.exports = async (DI) => {
   router.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/../client/index.html'))
   })
+  //catch all route to redirect all gets to the SPA root index.html
+  router.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/../client/index.html'))
+  })
   //#endregion
 
   //#region test/playground routes
@@ -110,10 +114,5 @@ module.exports = async (DI) => {
       var data = await DI.data.rootQuery(recipeService.getAllRecipes.query)
       succeed(res, data)
     }))
-    //catch all route to redirect all gets to the SPA root index.html
-    router.get('*', (req, res) => {
-      res.redirect('/')
-    })
-
   DI.express.app.use(router)
 }

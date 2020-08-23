@@ -57,6 +57,7 @@ html, body, span, input, select {
 .unwrap { flex-wrap: nowrap; }
 .overflow { flex-shrink: 0; }
 .overflow, .overflow > * { /*flex-shrink: 0;*/ }
+.noGrow { flex-grow: 0; }
 .noGrow > * { flex-grow: 0; }
 .fit > * { height: unset; width: unset; flex-grow: 0; }
 .fitH > * { height: unset; }
@@ -131,6 +132,7 @@ html, body, span, input, select {
 .spacer {
   flex-grow: 0;
   flex-basis: 0;
+  overflow: visible;
 }
 .spacer::after {
   background-color: gray;

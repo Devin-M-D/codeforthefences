@@ -3,6 +3,7 @@ cDI.components.contentMain = {
 
   },
   loadPage: async (name) => {
-    cDI.remote.loadComponent($("#contentMain"), "pages", name)
+    $("#contentMain").empty()
+    return await cDI.remote.loadComponent($("#contentMain"), "pages", name)
   }
 }
