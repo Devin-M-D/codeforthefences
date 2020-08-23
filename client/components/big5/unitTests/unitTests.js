@@ -1,22 +1,11 @@
-async function unitTests(runCondition) {
-  //#region if 1 run all if 2 run custom if 3 log in
-  if (runCondition == 1){
-    //list all test sections here
-    await runAllAuth()
-  }
-  else if (runCondition == 2){
-    await customTestScenario()
-  }
-  else if (runCondition == 3){
+cDI.components.unitTests = {
+  customDevScenario: async () => {
+    console.log("UT: Running custom dev scenario")
     await loginIfNeccessary()
-  }
-  //#endregion
+    //custom logged in tasks
 
-  //#region utility functions
-  function utlog(){
-
-  }
-  async function loginIfNeccessary(){
+  },
+  loginIfNeccessary: async () => {
     //if not logged in, use debugConf set in bootstrap to set an impersonate
     if (!cDI.utils.isDef(cDI.session.token)) {
       console.log(`Not logged in, logging with ${cDI.config.user.username} and ${cDI.config.user.password}`)
@@ -24,15 +13,26 @@ async function unitTests(runCondition) {
     }
     //if we think we're logged in, verify by making a call. Triggers an implicit logout in the remoteCall func if call result has status "e".
     else { await cDI.remote.remoteCall("/user/testToken") }
+  },
+  runAllUnitTests: async () => {
+    await runAllAuth()
   }
-  //#endregion
-
-  async function customTestScenario() {
-    console.log("UT: Running custom UI test scenario")
-    await loginIfNeccessary()
-    //custom logged in tasks
-    
+}
+cDI.components.unitTests.init = async () => {
+  var unitTestLevel = cDI.config.unitTest
+  if (unitTestLevel == 1){
+    console.log("Unit tests set to level 1: run all")
+    await cDI.components.unitTests.runAllUnitTests()
   }
+  else if (unitTestLevel == 2){
+    console.log("Unit tests set to level 2: custom dev scenario")
+    await cDI.components.unitTests.customDevScenario()
+  }
+  else if (unitTestLevel == 3){
+    console.log("Unit tests set to level 3: just login if the session has expired")
+    await cDI.components.unitTests.loginIfNeccessary()
+  }
+}
 
   //#region permanent tests/
     //#region auth tests
@@ -82,4 +82,3 @@ async function unitTests(runCondition) {
     //#endregion
 
   //#endregion
-}

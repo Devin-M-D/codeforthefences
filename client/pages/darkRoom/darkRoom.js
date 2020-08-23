@@ -1,9 +1,4 @@
-async function strapPageHome(){
-  var recipes = await getAllRecipes()
-  var favorites = await buildRecipeCardList(recipes)
-  $("#counterTop").append(favorites)
-
-  $.get("/components/genericWidgets/search.html", val => { $("#siteSearch").html(val) })
+async function strapPageDarkRoom(){
   var imgs = []
   imgs.push("img/shoot/tiny1jpg.jpg")
   imgs.push("img/shoot/tiny2jpg.jpg")

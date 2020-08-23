@@ -1,7 +1,7 @@
 <script>
   $('<link rel="stylesheet" type="text/css" href="components/projectWidgets/recipeCard/recipeCard.css" />').appendTo('head')
   async function loadWidgetRecipeCard() {
-    var js = await cDI.asyncGetScript("components/projectWidgets/recipeCard/recipeCard.js")
+    var js = await cDI.remote.asyncGetScript("components/projectWidgets/recipeCard/recipeCard.js")
   }
 </script>
 <span class="recipeCard cols unwrap">
