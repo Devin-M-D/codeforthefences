@@ -29,6 +29,8 @@
   --spcInner: var(--clrSecondary);
   --spcOuter: var(--clrPrimary);
   --spcGradient: var(--rgbaTransparent) 0%, var(--spcOuter) 25%, var(--spcInner) 50%, var(--spcOuter) 75%, var(--rgbaTransparent) 100%;
+
+  --icon_size: 1em;
 }
 html, body {
   height: 100%; width: 100%;
@@ -49,6 +51,7 @@ html, body, span, input, select {
 }
 .displayBlock { display: inline-block;} /*allows text with nested spans to wrap*/
 .pad2 { padding: 2%; } .pad2Vert { padding: 0 2%;  } .pad2Horiz { padding: 2% 0;  }
+.bumpBottom { margin-bottom: 25px; }
 .rows { flex-direction: row; }
 .cols { flex-direction: column; }
 .unwrap { flex-wrap: nowrap; }
@@ -90,14 +93,12 @@ html, body, span, input, select {
   max-height: 75px;
   margin: 5%;
   padding: 10px 0px;
+  justify-content: center;
+  align-items: center;
 }
 /*#endregion*/
 
-.leftCopy { text-align: left; }
-/* .shyScroll { overflow: hidden; overflow-y: scroll; } */
-/* .shyScroll { overflow: hidden; }
-.shyScroll:hover { overflow-y: auto; } */
-/* .shyScroll.test { overflow-y: auto; margin-right: -15px;} */
+/*#region shyScroll*/
 .shyScroll {
     overflow-y: scroll;
     scrollbar-width: none; /* Firefox */
@@ -107,6 +108,24 @@ html, body, span, input, select {
     width: 0;
     height: 0;
 }
+/*#endregion*/
+
+/*#region fonts*/
+.leftCopy { text-align: left; }
+.header{
+  font-family: var(--headerFont);
+  font-size: var(--headerSize);
+  text-decoration: var(--headerDecoration);
+  font-weight: var(--headerWeight)
+}
+.subheader{
+  font-family: var(--subheaderFont);
+  font-size: var(--subheaderSize);
+  text-decoration: var(--subheaderDecoration);
+  font-weight: var(--subheaderWeight)
+}
+.noUnderline { text-decoration: none !important; }
+/*#endregion*/
 
 /*#region spacer bars*/
 .spacer {

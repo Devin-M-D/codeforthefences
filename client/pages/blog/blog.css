@@ -1,0 +1,9 @@
+#blogMain {
+
+}
+#blogPostList{
+  flex-grow: 1;
+}
+#displayBlogPost {
+  flex-grow: 4;
+}

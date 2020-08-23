@@ -1,18 +1,22 @@
-async function loadCargoHold(){
-  //generic widgets
-  var modal = await cDI.asyncGet("components/genericWidgets/modal.html")
-  $("#cargoHold").append(modal)
+cDI.components.cargoHold = {
+  init: async() => {
+    //generic widgets
+    // await cDI.remote.loadComponent($("#cargoHold"), "components/genericWidgets", "modal")
 
-  //project widgets
-  var recipeCard = await cDI.asyncGet("components/projectWidgets/recipeCard/recipeCard.html")
-  $("#cargoHold").append(recipeCard)
-  await loadWidgetRecipeCard()
+    var modal = await cDI.remote.asyncGet("components/genericWidgets/modal.html")
+    $("#cargoHold").append(modal)
 
-  var drawerPane = await cDI.asyncGet("components/genericWidgets/drawerPane/drawerPane.html")
-  $("#cargoHold").append(drawerPane)
-  await loadWidgetDrawerPane()
+    var drawerPane = await cDI.remote.asyncGet("components/genericWidgets/drawerPane/drawerPane.html")
+    $("#cargoHold").append(drawerPane)
+    await loadWidgetDrawerPane()
 
-  var flexCarousel = await cDI.asyncGet("components/genericWidgets/flexCarousel/flexCarousel.html")
-  $("#cargoHold").append(flexCarousel)
-  await loadFlexCarousel()
+    var flexCarousel = await cDI.remote.asyncGet("components/genericWidgets/flexCarousel/flexCarousel.html")
+    $("#cargoHold").append(flexCarousel)
+    await loadFlexCarousel()
+
+    //project widgets
+    var recipeCard = await cDI.remote.asyncGet("components/projectWidgets/recipeCard/recipeCard.html")
+    $("#cargoHold").append(recipeCard)
+    await loadWidgetRecipeCard()
+  }
 }

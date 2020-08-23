@@ -1,15 +1,8 @@
-<script>
-  $('<link rel="stylesheet" type="text/css" href="components/big5/header/header.css" />').appendTo('head')
-  async function loadBig5Header() {
-    await cDI.asyncGetScript("components/big5/header/header.js")
-    await strapBig5Header()
-  }
-</script>
 <span id="siteHeader" class="wingedHeader" data-headerheight="10">
   <span id="hamburgerBox">
-    <span class="iconHamburger"></span>
+    <span class="shpHamburger"></span>
   </span>
-  <span class="absCen header">Cookbook</span>
+  <span id="siteHeaderText" class="absCen header"></span>
   <span id="authBox">
     <span class="iconAuth"></span>
   </span>

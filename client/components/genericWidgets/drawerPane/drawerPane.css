@@ -1,12 +1,13 @@
 .drawerPane {
   position: fixed;
   height: 100%;
-  width: 40%;
+  min-width: 400px;
+  width: auto;
   z-index: 1;
   box-shadow: 15px 5px 15px grey;
   background-color: var(--clrPrimary);
   transition: 1s;
   left: -50%;
 }
-.drawerPane:not(.open){ left: -45%; }
+.drawerPane:not(.open){ left: -405px; }
 .drawerPane.open { left: 0%; }

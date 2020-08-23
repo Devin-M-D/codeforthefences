@@ -5,6 +5,7 @@ var utils = require('./index')
 var recipeService = require('./services/recipe')
 
 module.exports = async (DI) => {
+
   DI.express.app.use(DI.express.api.static(__dirname + '/../client'))
   DI.express.app.use(DI.express.api.static(__dirname + '/../client/assets'))
   var router = DI.express.api.Router()
@@ -109,5 +110,10 @@ module.exports = async (DI) => {
       var data = await DI.data.rootQuery(recipeService.getAllRecipes.query)
       succeed(res, data)
     }))
+    //catch all route to redirect all gets to the SPA root index.html
+    router.get('*', (req, res) => {
+      res.redirect('/')
+    })
+
   DI.express.app.use(router)
 }

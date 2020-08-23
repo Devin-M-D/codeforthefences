@@ -1,0 +1,51 @@
+/*#region arrow*/
+  .shpArrow {
+    border-color: var(--clrPrimary);
+    border-size: 3px;
+    transform: rotate(-45deg);
+  }
+  .shpArrLeft {
+    border-top-style: solid;
+    border-left-style: solid;
+  }
+  .shpArrRight {
+    border-right-style: solid;
+    border-bottom-style: solid;
+  }
+/*#endregion*/
+
+/*#region star*/
+
+/*#endregion*/
+
+/*#region gear*/
+.shpGear {
+  background: white;
+}
+/*#endregion*/
+
+/*#region hamburger*/
+.shpHamburger:before {
+  background: black;
+  top: -20px;
+  height: 7px
+}
+.shpHamburger {
+  background: black;
+  height: 7px;
+  width: 25%;
+  position: absolute;
+  top: 50%;
+  overflow: visible;
+}
+.shpHamburger:after {
+  background: black;
+  top: 20px;
+  height:7px
+}
+.shpHamburger:before, .shpHamburger:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+}
+/*#endregion*/

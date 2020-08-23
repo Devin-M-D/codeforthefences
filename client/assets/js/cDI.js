@@ -1,169 +1,172 @@
-var cDI = {}
-cDI.config = {}
-cDI.widgets = []
-cDI.session = {
-  username: window.localStorage.getItem("cookbook.username"),
-  token: window.localStorage.getItem("cookbook.token")
-}
-cDI.utils = {
-  isDef: (obj) => { return (obj != null && obj != undefined) },
-  debounce: async () => {
-    console.log("debouncing")
+var cDI = {
+  config: {},
+  widgets: [],
+  components: {},
+  pages: {},
+  session: {
+    username: window.localStorage.getItem("cookbook.username"),
+    token: window.localStorage.getItem("cookbook.token"),
   },
-  ifTrace: (msg, data = null, trace = false) => {
-    if (trace) {
-      if (cDI.utils.isDef(data)) { return () => { console.trace(msg, data) } }
-      else { return () => { console.trace(msg) } }
-    }
-    else {
-      if (cDI.utils.isDef(data)) { return () => { console.log(msg, data) } }
-      else { return () => { console.log(msg) } }
-    }
-  },
-  filterSplice: (arr, handlerTake, handlerLeave) => {
-    var take = arr.filter(handlerTake)
-    arr = arr.filter(handlerLeave)
-    return take
-  },
-  pluck: (arr, key) => {
-    return arr.map(x => { return x[key] })
-  },
-  unique: (arr, key) => {
-    return [...new Set(cDI.utils.pluck(arr, key))]
-  },
-  legId: (dataObj) => {
-    return `${dataObj["@class"]} ${dataObj["@rid"]}`
-  },
-  clone: (obj) => {
-    return $.extend(true, {}, obj)
-  },
-  extrudeFlatGraph: (dataset, rootClass) => {
-    var indent = () => { tabDist = tabDist + "  " }
-    var outdent = () => { tabDist = tabDist.substr(2) }
-    var tabDist = ""
-    var allPossibleChildren = dataset
-    var allClasses = cDI.utils.unique(allPossibleChildren, "@class")
-    // console.log(`${tabDist}allClasses`, allClasses)
-
-    function locateRid(itemDepth, linkrid, classChain) {
-      var objToReplaceWith = linkrid
-      var noCycle = allPossibleChildren.filter(x => { return x["@rid"] == linkrid && classChain.indexOf(x["@class"]) == -1 })[0]
-      // if (noCycle) { console.log(`${tabDist}found ${noCycle["@rid"]} as ${noCycle["@class"]} in nocycle set`) }
-
-      var inEl = allPossibleChildren.filter(x => { return x["@rid"] == linkrid && x["$depth"] < itemDepth })[0]
-      // if (inEl) { console.log(`${tabDist}found ${inEl["@rid"]} as ${inEl["@class"]} but at lower depth ${inEl["$depth"]}`) }
-
-      var any = allPossibleChildren.filter(x => { return x["@rid"] == linkrid })[0]
-      // if (!any) { console.log(`${tabDist}rid ${linkrid} not found in set`) }
-
-      var linkObj = allPossibleChildren.filter(x => { return x["@rid"] == linkrid && (x["$depth"] >= itemDepth) })[0]
-      // if (linkObj) { console.log(`${tabDist}rid ${linkrid} found at greater depth`) }
-
-      if (noCycle) {
-        objToReplaceWith = cDI.utils.clone(noCycle)
-        classChain.push(noCycle["@class"])
-        // console.log(`${tabDist}found ${cDI.utils.legId(objToReplaceWith)}`)
-        objToReplaceWith = anchorItem(objToReplaceWith, classChain)
-        classChain.pop()
-      }
-      return objToReplaceWith
-    }
-    function getChild(item, prop, classChain){
-      var itemProp = item[prop]
-      var newProp
-      if (Array.isArray(itemProp)){
-        newProp = []
-        itemProp.map(linkrid => {
-          newProp.push(locateRid(item["$depth"], linkrid, classChain))
-        });
+  utils: {
+    isDef: (obj) => { return (obj != null && obj != undefined) },
+    debounce: async () => {
+      console.log("debouncing")
+    },
+    ifTrace: (msg, data = null, trace = false) => {
+      if (trace) {
+        if (cDI.utils.isDef(data)) { return () => { console.trace(msg, data) } }
+        else { return () => { console.trace(msg) } }
       }
       else {
-        newProp = locateRid(item["$depth"], itemProp, classChain)
+        if (cDI.utils.isDef(data)) { return () => { console.log(msg, data) } }
+        else { return () => { console.log(msg) } }
       }
-      return newProp
-    }
+    },
+    filterSplice: (arr, handlerTake, handlerLeave) => {
+      var take = arr.filter(handlerTake)
+      arr = arr.filter(handlerLeave)
+      return take
+    },
+    pluck: (arr, key) => {
+      return arr.map(x => { return x[key] })
+    },
+    unique: (arr, key) => {
+      return [...new Set(cDI.utils.pluck(arr, key))]
+    },
+    legId: (dataObj) => {
+      return `${dataObj["@class"]} ${dataObj["@rid"]}`
+    },
+    clone: (obj) => {
+      return $.extend(true, {}, obj)
+    },
+    extrudeFlatGraph: (dataset, rootClass) => {
+      var indent = () => { tabDist = tabDist + "  " }
+      var outdent = () => { tabDist = tabDist.substr(2) }
+      var tabDist = ""
+      var allPossibleChildren = dataset
+      var allClasses = cDI.utils.unique(allPossibleChildren, "@class")
+      // console.log(`${tabDist}allClasses`, allClasses)
 
-    function extrudeUnclassedVar(item, prop, classChain) {
-      var itemProp = item[prop]
-      var opIdx = 0
-      if (prop == "in") { opIdx = 1 }
-      if (itemProp) {
-          // console.log(`${tabDist}${opIdx}. replacing ${prop} var`, itemProp)
-          var newProp = getChild(item, prop, classChain)
-          // console.log(`${tabDist}with ---> `, newProp)
-          var cleanPropName = prop
-          if (newProp["@class"]) { cleanPropName = `${((prop == "in") ? `in_` : ``)}${newProp["@class"]}` }
-          else if (Array.isArray(newProp)){ cleanPropName = newProp[0]["@class"] }
-          // console.log(`${tabDist}removing old property ${prop}`)
-          delete item[prop]
-          // console.log(`${tabDist}setting new property ${cleanPropName}`)
-          item[cleanPropName] = newProp
+      function locateRid(itemDepth, linkrid, classChain) {
+        var objToReplaceWith = linkrid
+        var noCycle = allPossibleChildren.filter(x => { return x["@rid"] == linkrid && classChain.indexOf(x["@class"]) == -1 })[0]
+        // if (noCycle) { console.log(`${tabDist}found ${noCycle["@rid"]} as ${noCycle["@class"]} in nocycle set`) }
+
+        var inEl = allPossibleChildren.filter(x => { return x["@rid"] == linkrid && x["$depth"] < itemDepth })[0]
+        // if (inEl) { console.log(`${tabDist}found ${inEl["@rid"]} as ${inEl["@class"]} but at lower depth ${inEl["$depth"]}`) }
+
+        var any = allPossibleChildren.filter(x => { return x["@rid"] == linkrid })[0]
+        // if (!any) { console.log(`${tabDist}rid ${linkrid} not found in set`) }
+
+        var linkObj = allPossibleChildren.filter(x => { return x["@rid"] == linkrid && (x["$depth"] >= itemDepth) })[0]
+        // if (linkObj) { console.log(`${tabDist}rid ${linkrid} found at greater depth`) }
+
+        if (noCycle) {
+          objToReplaceWith = cDI.utils.clone(noCycle)
+          classChain.push(noCycle["@class"])
+          // console.log(`${tabDist}found ${cDI.utils.legId(objToReplaceWith)}`)
+          objToReplaceWith = anchorItem(objToReplaceWith, classChain)
+          classChain.pop()
+        }
+        return objToReplaceWith
       }
-      // else { console.log(`${tabDist}${opIdx}. ${prop} prop not found on ${cDI.utils.legId(item)}`) }
-    }
-    function extrudeClassedVars(item, prop, classChain) {
-      var i =  0
-      function getAndSetAndRemove(exTtem, replaceName, cleanName, classChain) {
-        i++
-        // console.log(`${tabDist}*****`)
-        // console.log(`${tabDist}${i}. CLASS FOUND in ${cDI.utils.legId(exTtem)}: ${cleanName}`)
-        // console.log(`${tabDist}replacing ${cDI.utils.legId(exTtem)} prop ${replaceName}`, exTtem[replaceName])
-        var newProp = getChild(exTtem, replaceName, classChain)
-        if (cleanName == "OUser") { cleanName = "user" }
-        exTtem[cleanName] = newProp
-        // console.log(`${tabDist}with ---> ${cleanName}`, exTtem[cleanName])
-        // console.log(`${tabDist}removing old property ${replaceName}`)
-        delete item[replaceName]
-      }
-      var opIdx = 0
-      if (prop == "in") { opIdx = 1 }
-      // console.log(`${tabDist}${opIdx}. ${prop} class vars`)
-      indent()
-      var classesNotFound = []
-      allClasses.map((className) => {
-        var oldPropName = `${prop}_${className}`
-        var newName = className
-        if (!item[oldPropName]) { oldPropName = `${prop}_${className}A`; newName = `${className}A` }
-        if (!item[oldPropName]) { oldPropName = `${prop}_${className}B`; newName = `${className}B` }
-        if (item[oldPropName]) {
-          getAndSetAndRemove(item, oldPropName, newName, classChain)
-          if (oldPropName == `${prop}_${className}A`) { getAndSetAndRemove(item, `${prop}_${className}B`, `${className}B`, classChain) }
+      function getChild(item, prop, classChain){
+        var itemProp = item[prop]
+        var newProp
+        if (Array.isArray(itemProp)){
+          newProp = []
+          itemProp.map(linkrid => {
+            newProp.push(locateRid(item["$depth"], linkrid, classChain))
+          });
         }
         else {
-          classesNotFound.push(className)
+          newProp = locateRid(item["$depth"], itemProp, classChain)
         }
-      });
-      // console.log(`${tabDist} ${classesNotFound.length} CLASSES NOT FOUND`, classesNotFound)
-      outdent()
-    }
-    function anchorItem(item, classChain) {
-      // console.log(`${tabDist}anchoring item ${cDI.utils.legId(item)}`, classChain)
-      // console.log(`${tabDist}-------------`)
-      indent()
-      var replacedOuts = extrudeUnclassedVar(item, "out", classChain)
-      var replacedClassedOuts = extrudeClassedVars(item, "out", classChain)
-      var replacedIns = extrudeUnclassedVar(item, "in", classChain)
-      var replacedClassedIns = extrudeClassedVars(item, "in", classChain)
-      outdent()
-      // console.log(`${tabDist}///----------`)
-      return item
-    }
-    function anchorSet(set) {
-      // console.log(`${tabDist}anchoring set `, set)
-      // console.log(`${tabDist}@@@@@@@@@@@@@`)
-      indent()
-      set = set.map(item => {
-        return anchorItem(item, [item["@class"]])
-      })
-      outdent()
-      return set
-      // console.log(`${tabDist}///@@@@@@@@@@`)
-    }
+        return newProp
+      }
 
-    var rootLayer = dataset.filter(rec => { return rec["@class"] == rootClass })
-    var  hierarchicalObj = anchorSet(rootLayer)
-    return hierarchicalObj
-  },
+      function extrudeUnclassedVar(item, prop, classChain) {
+        var itemProp = item[prop]
+        var opIdx = 0
+        if (prop == "in") { opIdx = 1 }
+        if (itemProp) {
+            // console.log(`${tabDist}${opIdx}. replacing ${prop} var`, itemProp)
+            var newProp = getChild(item, prop, classChain)
+            // console.log(`${tabDist}with ---> `, newProp)
+            var cleanPropName = prop
+            if (newProp["@class"]) { cleanPropName = `${((prop == "in") ? `in_` : ``)}${newProp["@class"]}` }
+            else if (Array.isArray(newProp)){ cleanPropName = newProp[0]["@class"] }
+            // console.log(`${tabDist}removing old property ${prop}`)
+            delete item[prop]
+            // console.log(`${tabDist}setting new property ${cleanPropName}`)
+            item[cleanPropName] = newProp
+        }
+        // else { console.log(`${tabDist}${opIdx}. ${prop} prop not found on ${cDI.utils.legId(item)}`) }
+      }
+      function extrudeClassedVars(item, prop, classChain) {
+        var i =  0
+        function getAndSetAndRemove(exTtem, replaceName, cleanName, classChain) {
+          i++
+          // console.log(`${tabDist}*****`)
+          // console.log(`${tabDist}${i}. CLASS FOUND in ${cDI.utils.legId(exTtem)}: ${cleanName}`)
+          // console.log(`${tabDist}replacing ${cDI.utils.legId(exTtem)} prop ${replaceName}`, exTtem[replaceName])
+          var newProp = getChild(exTtem, replaceName, classChain)
+          if (cleanName == "OUser") { cleanName = "user" }
+          exTtem[cleanName] = newProp
+          // console.log(`${tabDist}with ---> ${cleanName}`, exTtem[cleanName])
+          // console.log(`${tabDist}removing old property ${replaceName}`)
+          delete item[replaceName]
+        }
+        var opIdx = 0
+        if (prop == "in") { opIdx = 1 }
+        // console.log(`${tabDist}${opIdx}. ${prop} class vars`)
+        indent()
+        var classesNotFound = []
+        allClasses.map((className) => {
+          var oldPropName = `${prop}_${className}`
+          var newName = className
+          if (!item[oldPropName]) { oldPropName = `${prop}_${className}A`; newName = `${className}A` }
+          if (!item[oldPropName]) { oldPropName = `${prop}_${className}B`; newName = `${className}B` }
+          if (item[oldPropName]) {
+            getAndSetAndRemove(item, oldPropName, newName, classChain)
+            if (oldPropName == `${prop}_${className}A`) { getAndSetAndRemove(item, `${prop}_${className}B`, `${className}B`, classChain) }
+          }
+          else {
+            classesNotFound.push(className)
+          }
+        });
+        // console.log(`${tabDist} ${classesNotFound.length} CLASSES NOT FOUND`, classesNotFound)
+        outdent()
+      }
+      function anchorItem(item, classChain) {
+        // console.log(`${tabDist}anchoring item ${cDI.utils.legId(item)}`, classChain)
+        // console.log(`${tabDist}-------------`)
+        indent()
+        var replacedOuts = extrudeUnclassedVar(item, "out", classChain)
+        var replacedClassedOuts = extrudeClassedVars(item, "out", classChain)
+        var replacedIns = extrudeUnclassedVar(item, "in", classChain)
+        var replacedClassedIns = extrudeClassedVars(item, "in", classChain)
+        outdent()
+        // console.log(`${tabDist}///----------`)
+        return item
+      }
+      function anchorSet(set) {
+        // console.log(`${tabDist}anchoring set `, set)
+        // console.log(`${tabDist}@@@@@@@@@@@@@`)
+        indent()
+        set = set.map(item => {
+          return anchorItem(item, [item["@class"]])
+        })
+        outdent()
+        return set
+        // console.log(`${tabDist}///@@@@@@@@@@`)
+      }
+
+      var rootLayer = dataset.filter(rec => { return rec["@class"] == rootClass })
+      var  hierarchicalObj = anchorSet(rootLayer)
+      return hierarchicalObj
+    },
+  }
 }
 
 //#region sequencer
@@ -196,22 +199,6 @@ cDI.sequencer.runInSequence = (funcs) => {
 
 //#region remote
 cDI.remote = {
-  loadScript: async (hrefURL) => {
-    return promise = new Promise(function (fulfill, reject) {
-      script = document.createElement("script")
-      script.type = "text/javascript"
-      script.src = hrefURL
-      script.addEventListener("error", function (e) { fulfill("failed") }, true)
-      script.addEventListener("load", function (e) { fulfill("loaded") }, false)
-      document.head.appendChild(script)
-    })
-  },
-  loadComponent: async (elem, assetPath, placement = 0) => {
-    await $.get(assetPath, async html => {
-      if (placement == 0) { elem.prepend(html) }
-      else if (placement == 1) { elem.append(html) }
-    })
-  },
   remoteCall: async (remoteURL, postData = {}, enable_logging = false) => {
     if (enable_logging) { cDI.utils.ifTrace(`Building call to ${remoteURL} with initial data:`,  postData) }
 
@@ -251,6 +238,37 @@ cDI.remote = {
   h: async (res, fn1, fn2) => {
     if (res.status == "s") { return await fn1(res.payload) }
     else if (res.status == "e") { return await fn2(res.payload) }
+  },
+  asyncGet: (path) => {
+    return $.get(path).promise()
+  },
+  asyncGetScript: (path) => {
+    return new Promise((f, r) => {
+      $.getScript(path, (res) => {
+        $("head").append(`<script>${res}</script>`)
+        f(res)
+      })
+    })
+  },
+  asyncGetCSS: (path) => {
+    $(`<link rel="stylesheet" type="text/css" href="${path}" />`).appendTo('head')
+  }
+}
+cDI.remote.loadComponent = async (elem, folderPath, componentName, placement = 1) => {
+  var path = `${folderPath}/${componentName}/${componentName}`
+  await cDI.remote.asyncGetCSS(`${path}.css`)
+  await cDI.remote.asyncGetScript(`${path}.js`)
+  var html = await cDI.remote.asyncGet(`${path}.html`)
+
+  if (placement == 0) { elem.prepend(html) }
+  else if (placement == 1) { elem.append(html) }
+
+  console.log(`loading ${componentName}`)
+  if (cDI.components[componentName]){
+    await cDI.components[componentName].init()
+  }
+  else if (cDI.pages[componentName]){
+    await cDI.pages[componentName].init()
   }
 }
 //#endregion
@@ -300,25 +318,9 @@ cDI.clickRes = async (elem) => {
   })
   return clickRes
 }
-cDI.clickToSpawn = async (elem, componentPath, placement = 0) => {
-  cDI.addAsyncOnclick(elem, async () => {
-    cDI.loadComponent(componentPath, elem, placement)
-  })
-}
 cDI.wrapInPromise = (fn) => {
   return new Promise((f, r) => {
     fn(f)
-  })
-}
-cDI.asyncGet = (path) => {
-  return $.get(path).promise()
-}
-cDI.asyncGetScript = (path) => {
-  return new Promise((f, r) => {
-    $.getScript(path, (res) => {
-      $("head").append(`<script>${res}</script>`)
-      f(res)
-    })
   })
 }
 cDI.randomString = async (len) => {
@@ -361,7 +363,6 @@ cDI.clearLogin = () => {
   cDI.unpersist("cookbook.token")
   location.reload(false)
 }
-
 //#region functional toolbelt
 var ftbLog = cDI.log
 //#endregion

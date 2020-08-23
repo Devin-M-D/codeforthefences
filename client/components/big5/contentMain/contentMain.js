@@ -1,6 +1,8 @@
-async function strapContentMain() {
-  await $.get("pages/home/home.html", (val) => {
-    $("#contentMain").append(val)
-    loadPageHome()
-  })
+cDI.components.contentMain = {
+  init: async () => {
+
+  },
+  loadPage: async (name) => {
+    cDI.remote.loadComponent($("#contentMain"), "pages", name)
+  }
 }
