@@ -1,4 +1,5 @@
-cDI.components.cookbook = {
+cDI.pages.cookbook = {
+  siteHeaderText: "Cookbook",
   init: async () => {
     var recipes = await getAllRecipes()
     var favorites = await buildRecipeCardList(recipes)

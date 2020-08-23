@@ -13,7 +13,7 @@ async function strapAuthButton() {
   if (cDI.utils.isDef(cDI.session.token)){
     cDI.widgets.modal.clickToModal($("#authBox"), "/components/genericWidgets/accountDash/accountDash.html", async (createdElem) => {
       await strapAccountDash()
-      return createdEle
+      return createdElem
     }, true)
   }
   else {
