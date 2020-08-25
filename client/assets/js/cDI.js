@@ -261,6 +261,7 @@ cDI.remote = {
   asyncGetScript: (path) => {
     return new Promise((f, r) => {
       $.getScript(path, (res) => {
+        console.log(res)
         $("head").append(`<script>${res}</script>`)
         f(res)
       })
