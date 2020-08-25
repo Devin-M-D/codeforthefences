@@ -261,7 +261,6 @@ cDI.remote = {
   asyncGetScript: (path) => {
     return new Promise((f, r) => {
       $.getScript(path, (res) => {
-        console.log(res)
         $("head").append(`<script>${res}</script>`)
         f(res)
       })
@@ -272,7 +271,7 @@ cDI.remote = {
   }
 }
 cDI.remote.loadComponent = async (elem, folderPath, componentName, placement = 1) => {
-  var path = `${folderPath}/${componentName}/${componentName}`
+  var path = `/${folderPath}/${componentName}/${componentName}`
   await cDI.remote.asyncGetCSS(`${path}.css`)
   await cDI.remote.asyncGetScript(`${path}.js`)
   var html = await cDI.remote.asyncGet(`${path}.html`)
