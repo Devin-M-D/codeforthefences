@@ -30,10 +30,10 @@ async function strapHeaderHamburger(){
       <span class="header noUnderline absCen bumpBottom" onclick="closeDrawerPane($(this).parent().parent())">X</span>
     </span>
     <span class="cols algnSX">
-      <span class="btnStd subheader" onclick="cDI.components.router.getRoute('/Blog')">Blog</span>
-      <span class="btnStd subheader" onclick="cDI.components.router.getRoute('/Cookbook')">Cookbook</span>
-      <span class="btnStd subheader" onclick="cDI.components.router.getRoute('/DarkRoom')">Dark Room</span>
-      <span class="btnStd subheader" onclick="cDI.components.router.getRoute('/BrewGames')">Brew Games</span>
+      <span class="btnStd subheader" onclick="cDI.components.router.getRoute('/blog')">Blog</span>
+      <span class="btnStd subheader" onclick="cDI.components.router.getRoute('/cookbook')">Cookbook</span>
+      <span class="btnStd subheader" onclick="cDI.components.router.getRoute('/darkRoom')">Dark Room</span>
+      <span class="btnStd subheader" onclick="cDI.components.router.getRoute('/brewGames')">Brew Games</span>
     </span>
   `)
   pane.addClass("cols")
