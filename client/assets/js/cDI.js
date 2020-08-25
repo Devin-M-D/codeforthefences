@@ -281,7 +281,12 @@ cDI.remote.loadComponent = async (elem, folderPath, componentName, placement = 1
 
   console.log(`loading ${path}`)
   var DI = cDI.utils.getDIByCIName(componentName)
-  await DI.init()
+  if (DI) {
+    await DI.init()
+  }
+  else {
+    console.log(DI)
+  }
   return DI
 }
 //#endregion
