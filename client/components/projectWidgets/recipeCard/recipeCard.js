@@ -37,8 +37,8 @@ async function buildRecipeCard(recipe) {
     var ingList = ``
     ingList += `
     <span class="cardIngredient algnSS leftCopy unwrap">
-      <span style="flex-grow: 1;min-width:20px;">${x + 1})&nbsp;</span>
-      <span class="displayBlock leftCopy"  style="flex-grow: 9;">${ingredient.quantity} ${ingredient.ingredientUoM[0].UoM.abbreviation} ${ingName}</span>
+      <span class="noGrow" style="width:20px;">${x + 1})&nbsp;</span>
+      <span class="displayBlock leftCopy">${ingredient.quantity} ${ingredient.ingredientUoM[0].UoM.abbreviation} ${ingName}</span>
     </span>`
     card.find(".cardLeft").append(ingList)
   })
@@ -56,7 +56,7 @@ async function buildRecipeCard(recipe) {
     var stepList = ``
     stepList += `
     <span class="cardStep rows unwrap overflow">
-      <span style="flex-grow: 1;min-width:20px;">${x + 1})&nbsp;</span>
+      <span class="noGrow" style="width:20px;">${x + 1})&nbsp;</span>
       <span class="displayBlock leftCopy fitH"  style="flex-grow: 9;">${step.text}</span>
     </span>`
     card.find(".cardRight").append(stepList)

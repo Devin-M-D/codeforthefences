@@ -60,8 +60,8 @@ html, body, span, input, select {
 .noGrow { flex-grow: 0; }
 .noGrow > * { flex-grow: 0; }
 .fit > * { height: unset; width: unset; flex-grow: 0; }
-.fitH > * { height: unset; }
-.fitW > * { width: unset; }
+.fitH > * { height: unset; flex-grow: 0; }
+.fitW > * { width: unset; flex-grow: 0; }
 .fitEven > * { flex-basis: 100%; }
 .outline.red { border: solid thin red; }
 .outline.green { border: solid thin green; }

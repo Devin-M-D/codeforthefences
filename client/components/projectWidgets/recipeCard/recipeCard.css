@@ -3,9 +3,10 @@
   height: 250px;
   border-radius: 25px;
   border: solid thin black;
-  margin: 0 5%;
 }
-
+.cardLeft, .cardRight {
+    margin: 10px;
+}
 .cardStep {
   margin-bottom: 5px
 }
