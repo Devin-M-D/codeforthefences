@@ -9,9 +9,6 @@ var cDI = {
   },
   utils: {
     isDef: (obj) => { return (obj != null && obj != undefined) },
-    debounce: async () => {
-      console.log("debouncing")
-    },
     ifTrace: (msg, data = null, trace = false) => {
       if (trace) {
         if (cDI.utils.isDef(data)) { return () => { console.trace(msg, data) } }
@@ -210,6 +207,20 @@ cDI.sequencer.runInSequence = (funcs) => {
     });
     sequence = sequence.then(function () { fulfillSeq(); });
   });
+}
+cDI.sequencer.debounceFuncs = []
+cDI.sequencer.debounce = async (key, fn, delay) => {
+  var existing = cDI.sequencer.debounceFuncs.filter(x => x.key == key)[0]
+  if (existing) {
+    clearTimeout(existing.fn)
+    existing.fn = setTimeout(fn, delay)
+  }
+  else {
+    cDI.sequencer.debounceFuncs.push({
+      key: key,
+      fn: setTimeout(fn(), delay)
+    })
+  }
 }
 //#endregion
 
