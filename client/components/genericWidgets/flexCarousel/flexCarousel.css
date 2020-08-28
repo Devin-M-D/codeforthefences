@@ -1,29 +1,30 @@
 .flexCarousel {
   height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 /*#region NAV*/
 .crslPrevWrapper, .crslNextWrapper {
   position:absolute;
-  height: 50px;
-  width: 50px;
+  height: 100px;
+  width: 100px;
   z-index: 1;
-  top: calc(50% - 25px);
+  top: calc(50% - 50px);
   overflow: visible;
 }
 .crslPrevWrapper {
-  left: 25px;
+  left: 50px;
 }
 .crslNextWrapper {
-  right: 25px;
+  right: 50px;
 }
 @keyframes bounceLeft {
-    0% { left: 0px; }
-    100% { left: -10px; }
+    0% { left: 25px; }
+    100% { left: 0px; }
 }
 @keyframes bounceRight {
-    0% { right: 0px; }
-    100% { right: -10px; }
+    0% { right: 25px; }
+    100% { right: 0px; }
 }
 .crslPrevWrapper:hover >.crslPrev, .crslNextWrapper:hover > .crslNext {
   animation-duration: 1s;
@@ -34,13 +35,15 @@
 .crslNextWrapper:hover > .crslNext { animation-name: bounceRight; }
 
 .crslPrev, .crslNext {
-  height: 100%;
-  width: 100%;
+  height: 50px;
+  width: 50px;
+  top: 25px;
   position: absolute;
   border-top: solid 3px purple;
 }
 .crslPrev {
   border-left: solid 3px purple; transform: rotate(-45deg);
+  left:
 }
 .crslNext {
   border-right: solid 3px purple; transform: rotate(45deg);
@@ -48,36 +51,20 @@
 
 /*#endregion*/
 
-.crslSeatPanel {
-  flex-wrap: nowrap;
+.crslSlotPane {
+
 }
-.flexCarouselSlot {
+.crslSlot {
+  position: absolute;
   height: 100%;
   width: 100%;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  order: : var(--idx);
-}
-/* a:nth-child(2) { left:65% }
-.arrow-up    { transform:rotate(135deg) }
-.arrow-right { transform:rotate(225deg) }
-.arrow-down  { transform:rotate(-45deg) }
-.arrow-left  { transform:rotate(45deg) }
-
-.flexCarouselSlot {
-  margin: 1%;
-  height: auto;
-  flex-shrink: 0;
-  order: : var(--idx);
-}
-.flexCarouselSlot:before {
-  content: var(--idx);
-  display: block;
-  position: absolute;
+  left: calc(100% * var(--idx) - 100%);
+  transition-duration: .75s;
 }
 
-.flexCarouselImg {
-  height: 200px;
-  width: 300px;
-} */
+.crslAnchorHorse {
+  display: none;
+}
