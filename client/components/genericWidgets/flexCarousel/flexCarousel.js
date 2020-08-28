@@ -4,6 +4,8 @@ async function buildCarousel(params){
   var options = params.options || {
 
   }
+  target.empty()
+
   console.log(imagePaths)
   var carouselHTML = $("#cargoHold > .flexCarousel").clone()
   imagePaths.forEach((x, i) => {
