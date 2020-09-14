@@ -1,1 +1,1 @@
-/opt/orientdb/bin/console.sh /www/cookbook/scripts/osql/resetDb.sh.osql
+/opt/orientdb/bin/console.sh /www/codeforthefences/scripts/osql/resetDb.sh.osql

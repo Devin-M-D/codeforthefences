@@ -25,3 +25,7 @@
 .stepTool {
   background-color: var(--clrSecondary);
 }
+
+.txtIngQuant { width: 25px; }
+.txtIngUoM { width: calc(40% - 25px); }
+.txtIngFood { width: 60%; }

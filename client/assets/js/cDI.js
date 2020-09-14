@@ -1,5 +1,6 @@
 var cDI = {
   config: {},
+  services: {},
   widgets: [],
   components: {},
   pages: {},
