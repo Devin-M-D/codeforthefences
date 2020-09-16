@@ -1,5 +1,6 @@
 var cDI = {
   config: {},
+  services: {},
   widgets: [],
   components: {},
   pages: {},
@@ -292,7 +293,7 @@ cDI.remote.loadComponent = async (elem, folderPath, componentName, placement = 1
 
   console.log(`loading ${path}`)
   var DI = cDI.utils.getDIByCIName(componentName)
-  if (DI) {
+  if (DI.init) {
     await DI.init()
   }
   else {

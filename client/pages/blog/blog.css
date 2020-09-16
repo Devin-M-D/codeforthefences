@@ -2,8 +2,29 @@
 
 }
 #blogPostList{
-  flex-grow: 1;
+  width: 25%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 50px;
+
+}
+#blogPostList > span {
+  text-align: left;
+  justify-content: flex-start;
+  border-bottom: solid thin black;
+  width: 90%;
 }
 #displayBlogPost {
-  flex-grow: 4;
+  width: 80%;
+}
+#displayBlogPost > span {
+  text-align: left;
+  justify-content: flex-start;
+}
+#blogPostHeader > span {
+  text-align: left;
+  justify-content: flex-start;
+}
+.blogContent {
+  font-size: 20px;
 }

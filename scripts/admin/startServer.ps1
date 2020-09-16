@@ -1,4 +1,4 @@
-ECHO Starting Cookbook server
-cd c:/node/cookbook/server/
+ECHO Starting CodefortheFences server
+cd c:/node/codeforthefences/server/
 npm start
 $host.enternestedprompt()

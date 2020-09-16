@@ -3,9 +3,9 @@ SET promptDateFormat "yyy-MM-dd hh:mm:ss.sss";
 CONNECT remote:localhost root testpass123;
 LIST DATABASES;
 SET ignoreErrors TRUE;
-DROP DATABASE remote:localhost/cookbook root testpass123;
+DROP DATABASE remote:localhost/codeforthefences root testpass123;
 SET ignoreErrors FALSE;
-CREATE DATABASE remote:localhost/cookbook root testpass123 PLOCAL;
+CREATE DATABASE remote:localhost/codeforthefences root testpass123 PLOCAL;
 
-LOAD SCRIPT /www/cookbook/scripts/osql/schema.osql;
-LOAD SCRIPT /www/cookbook/scripts/osql/sampleData_base.osql;
+LOAD SCRIPT /www/codeforthefences/scripts/osql/schema.osql;
+LOAD SCRIPT /www/codeforthefences/scripts/osql/sampleData_base.osql;

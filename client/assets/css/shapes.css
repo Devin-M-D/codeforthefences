@@ -75,3 +75,40 @@
   left: calc(50% - 25px);
 }
 /*#endregion*/
+
+/*#region pencil*/
+.shpPencil {
+  width: 25px;
+  height: 10px;
+  background-color: goldenrod;
+  transform: rotate(-45deg);
+  flex-grow: 0;
+  top: calc(50% - 12.5px);
+  overflow: visible;
+}
+.shpPencil:before, .shpPencil:after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  box-sizing: border-box;
+}
+.shpPencil:before {
+  border-left: solid 1px darkgray;
+  border-bottom: solid 1px darkgray;
+  width: 7px;
+  height: 7px;
+  left: -3px;
+  top: 1.5px;
+  background-color: gray;
+  transform: rotate(45deg);
+}
+.shpPencil:after {
+  background-color: pink;
+  border: solid 1px pink;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  height: 10px;
+  width: 5px;
+  right: -5px;
+}
+/*#endregion*/

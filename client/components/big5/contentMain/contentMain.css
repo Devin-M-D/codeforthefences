@@ -1,3 +1,5 @@
 #contentMain {
   padding: 2% 5%;
+  height: calc(1% * var(--height));
 }
+[data-height="80"] { --height: 80; }

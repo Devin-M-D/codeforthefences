@@ -1,2 +1,2 @@
-cd /www/cookbook/server
+cd /www/codeforthefences/server
 npm start

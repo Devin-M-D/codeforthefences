@@ -5,9 +5,9 @@ REM echo (Press enter for default) %opath%:
 REM set /p opath=
 REM setx ORIENTDB_HOME %opath%
 
-set npath="C:\node\cookbook"
-echo Enter path to cookbook root folder:
+set npath="C:\node\codeforthefences"
+echo Enter path to Code for the Fences root folder:
 echo (Press enter for default) %npath%:
 set /p npath=
-setx COOKBOOK_HOME %npath%
+setx CFTF_HOME %npath%
 pause
