@@ -118,5 +118,9 @@ module.exports = async (DI) => {
       var data = await DI.data.rootQuery("SELECT * FROM UoM")
       succeed(res, data)
     }))
+    router.post('/crud/blog/r/', asyncRoute(async (req, res, next) => {
+      var data = await DI.data.rootQuery(`SELECT * FROM blogPost WHERE title = :title`, { title: req.body.title})
+      succeed(res, data)
+    }))
   DI.express.app.use(router)
 }

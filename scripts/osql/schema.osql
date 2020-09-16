@@ -85,3 +85,14 @@ CREATE CLASS recipeStep EXTENDS E;
 CREATE PROPERTY recipeStep.out LINK recipe;
 CREATE PROPERTY recipeStep.in LINK step;
 CREATE PROPERTY recipeStep.stepNum INTEGER;
+
+
+
+
+
+
+
+CREATE CLASS blogPost EXTENDS V;
+CREATE PROPERTY blogPost.title STRING;
+CREATE PROPERTY blogPost.date STRING;
+CREATE PROPERTY blogPost.content STRING;

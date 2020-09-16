@@ -26,7 +26,7 @@ async function strapHeaderHamburger(){
   populateDrawerPane(pane, `
     <span class='wingedHeader' data-headerheight="10">
       <span class="header noUnderline absCen bumpBottom">{}</span>
-      <span class="header absCen">Code for the Fences</span>
+      <span class="header absCen">Main Menu</span>
       <span class="header noUnderline absCen bumpBottom" onclick="closeDrawerPane($(this).parent().parent())">X</span>
     </span>
     <span class="cols algnSX">

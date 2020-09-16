@@ -3,7 +3,7 @@ var OrientDBClient = OrientDB.OrientDBClient
 
 const config = {
   host: "localhost",
-  db: "cookbook",
+  db: "codeforthefences",
   rootUser: "root",
   rootPassword: "testpass123"
 }
@@ -34,7 +34,7 @@ module.exports = async (DI) => {
     else { return params }
   }
   async function makeRootSession() {
-    return await client.session({ name: "cookbook", username: "root", password: "testpass123" })
+    return await client.session({ name: "codeforthefences", username: "root", password: "testpass123" })
   }
   async function runQuery(session, query, params) {
     params = setParams(params)

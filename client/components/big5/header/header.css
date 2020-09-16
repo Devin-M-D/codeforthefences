@@ -49,3 +49,5 @@
 }
 [data-headerheight="10"] { --headerheight: 10; }
 [data-headerheight="20"] { --headerheight: 20; }
+[data-headerheight="25"] { --headerheight: 25; }
+[data-headerheight="40"] { --headerheight: 40; }
