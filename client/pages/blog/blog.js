@@ -1,12 +1,17 @@
 cDI.pages.blog = {
   siteHeaderText: `<span class="cols"><span class="header">Code for the Fences</span><span class="iSubheader">Software is eating the world, and it is delicious</span>`,
   init: async () => {
-    await cDI.pages.blog.loadPost("This Blog Post is Hardcoded")
+    cDI.pages.blog.buildPostList()
   },
-  loadPost: async (title) => {
-    var post = await cDI.remote.remoteCall("/crud/blog/r", {title: title})
-    post = post.payload[0]
-    console.log(post)
+  buildPostList: async () => {
+    var posts = await cDI.services.blog.getPostList()
+    var postlist = ``
+    posts.forEach(x => postlist += `<span onclick="cDI.pages.blog.buildPost('${x.title}')">${x.title}</span>`)
+
+    $("#blogPostList").html(postlist)
+  },
+  buildPost: async (title) => {
+    var post = await cDI.services.blog.getPost(title)
     var post = `
       <span id="blogPostHeader" class="cols unwrap fitH">
         <span class="blogTitle subheader">${post.title}</span>
