@@ -60,9 +60,9 @@ let $step = CREATE VERTEX step SET text = "Press into 9x9 baking pan using wax p
 let $rStep = CREATE EDGE recipeStep FROM $r TO $step SET stepNum = 4
 
 
-let $post1 = CREATE VERTEX blogPost SET title = "Test", date = "2020-09-15", content = "test1"
-let $post2 = CREATE VERTEX blogPost SET title = "Blog Post #2", date = "2020-09-15", content = "post changes!"
-let $post3 = CREATE VERTEX blogPost SET title = "This Blog Post is Hardcoded", date = "2020-09-15", content = "foo"
+let $post1 = CREATE VERTEX blogPost SET title = "Test 1", date = "2020-09-15", content = "test"
+let $post2 = CREATE VERTEX blogPost SET title = "Test 2", date = "2020-09-15", content = "post changes!"
+let $post3 = CREATE VERTEX blogPost SET title = "Test 3", date = "2020-09-15", content = "post changes again!"
 
 commit;
 end;
