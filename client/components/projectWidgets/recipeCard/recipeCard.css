@@ -1,18 +1,22 @@
 .recipeCard {
   padding: 0px 5%;
-  height: 250px;
+  height: 400px;
   border-radius: 25px;
   border: solid thin black;
 }
-.cardLeft, .cardRight {
+.cardIngs, .cardSteps {
     margin: 10px;
+    justify-content: space-around;
+}
+.rowNumber {
+  width: auto;
 }
 .cardStep {
   margin-bottom: 5px
 }
 
 .cardIngredient {
-  margin-bottom: 5px
+  /* margin-bottom: 5px */
 }
 
 .stepIngredient, .stepTool {

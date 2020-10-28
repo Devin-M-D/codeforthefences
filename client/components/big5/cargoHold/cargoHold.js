@@ -10,6 +10,9 @@ cDI.components.cargoHold = {
     $("#cargoHold").append(drawerPane)
     await loadWidgetDrawerPane()
 
+    var searchSelect = await cDI.remote.asyncGet("components/genericWidgets/searchSelect/searchSelect.html")
+    $("#cargoHold").append(searchSelect)
+
     var flexCarousel = await cDI.remote.asyncGet("components/genericWidgets/flexCarousel/flexCarousel.html")
     $("#cargoHold").append(flexCarousel)
     await loadFlexCarousel()

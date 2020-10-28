@@ -84,9 +84,12 @@ html, body, span, input, select {
 .algnXS { align-content: var(--algnStart); }
 .algnXE { align-content: var(--algnEnd); }
 
-.algnCC { justify-content: var(--algnCenter); align-content: var(--algnCenter); }
-.algnSS { justify-content: var(--algnStart); align-content: var(--algnStart); }
-.algnEE { justify-content: var(--algnEnd); align-content: var(--algnEnd); }
+.algnCC { justify-content: var(--algnCenter); align-items: var(--algnCenter); }
+.algnSS { justify-content: var(--algnStart); align-items: var(--algnStart); }
+.algnEE { justify-content: var(--algnEnd); align-items: var(--algnEnd); }
+
+.algnSC { justify-content: var(--algnStart); align-items: var(--algnCenter); }
+.algnCS { justify-content: var(--algnCenter); align-items: var(--algnStart); }
 /*#endregion*/
 
 /*#region buttons*/

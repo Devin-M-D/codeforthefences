@@ -14,12 +14,12 @@ cDI.widgets.recipeCard = {
     var ing = `<span class="cardIngredient algnSS leftCopy fitW unwrap">`
     if (editable){
       ing += `<input class="txtIngQuant Ing${ingNum}" type="text" value="${ingredient.quantity}" />`
-      ing += `<input class="txtIngUoM Ing${ingNum}" type="text" value="${ingredient.ingredientUoM[0].UoM.name}" />`
-      ing += `<input class="txtIngFood Ing${ingNum}" type="text" value="${ingName}" onfocus="cDI.services.recipe.searchUoM()" />`
+      ing += `<input class="txtIngUoM Ing${ingNum}" type="text" value="${ingredient.ingredientUoM[0].UoM.name}" onfocus="cDI.components.searchSelect.init($(this), '/crud/UoM/r')"/>`
+      ing += `<input class="txtIngFood Ing${ingNum}" type="text" value="${ingName}" onfocus="cDI.components.searchSelect.init($(this), '/crud/Food/r')" />`
     }
     else {
       ing += `
-        <span class="noGrow" style="width:20px;">${ingNum})&nbsp;</span>
+        <span class="noGrow">${ingNum})&nbsp;</span>
         <span class="displayBlock leftCopy">${ingredient.quantity} ${ingredient.ingredientUoM[0].UoM.abbreviation} ${ingName}</span>
         `
     }
@@ -39,10 +39,10 @@ cDI.widgets.recipeCard = {
   },
   createIngPane: (target, editable = false) => {
     var recipe = target.data("recipe")
-    target.find(".cardLeft").empty()
+    target.find(".cardIngs").empty()
     recipe.recipeIngredient.forEach((ingredient, x) => {
       var ingLine = cDI.widgets.recipeCard.createIngLine(ingredient, editable)
-      target.find(".cardLeft").append(ingLine)
+      target.find(".cardIngs").append(ingLine)
     })
   }
 }
@@ -50,7 +50,9 @@ cDI.widgets.recipeCard = {
 async function buildRecipeCardList(recipes) {
   var cardList = []
   recipes.map(async recipe => {
-    cardList.push(await buildRecipeCard(recipe))
+    for (var x = 0; x < 11; x++){
+      cardList.push(await buildRecipeCard(recipe))
+    }
   })
   return cardList
 }
@@ -77,10 +79,6 @@ async function buildRecipeCard(recipe) {
 
   //ingredients
   cDI.widgets.recipeCard.createIngPane(card, false)
-  // recipe.recipeIngredient.forEach((ingredient, x) => {
-  //   var ingLine = cDI.widgets.recipeCard.createIngLine(ingredient)
-  //   card.find(".cardLeft").append(ingLine)
-  // })
 
   //steps
   recipe.steps = recipe.recipeStep
@@ -94,11 +92,11 @@ async function buildRecipeCard(recipe) {
 
     var stepList = ``
     stepList += `
-    <span class="cardStep rows unwrap overflow">
-      <span class="noGrow" style="width:20px;">${x + 1})&nbsp;</span>
-      <span class="displayBlock leftCopy fitH"  style="flex-grow: 9;">${step.text}</span>
+    <span class="cardStep rows unwrap">
+      <span class="rowNumber">${x + 1})&nbsp;</span>
+      <span class="displayBlock leftCopy">${step.text}</span>
     </span>`
-    card.find(".cardRight").append(stepList)
+    card.find(".cardSteps").append(stepList)
   })
   cDI.widgets.recipeCard.setEditMode(card, 0)
   return card

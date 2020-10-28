@@ -118,6 +118,10 @@ module.exports = async (DI) => {
       var data = await DI.data.rootQuery("SELECT * FROM UoM")
       succeed(res, data)
     }))
+    router.post('/crud/Food/r/', asyncRoute(async (req, res, next) => {
+      var data = await DI.data.rootQuery("SELECT * FROM foodType")
+      succeed(res, data)
+    }))
     router.post('/crud/blog/r/', asyncRoute(async (req, res, next) => {
       if (req.body.title){
         var data = await DI.data.rootQuery(`SELECT * FROM blogPost WHERE title = :title`, { title: req.body.title})
