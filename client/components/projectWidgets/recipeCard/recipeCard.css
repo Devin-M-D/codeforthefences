@@ -1,8 +1,11 @@
 .recipeCard {
   padding: 0px 5%;
-  height: 400px;
+  height: auto;
   border-radius: 25px;
   border: solid thin black;
+}
+.recipeBody {
+  height:auto;
 }
 .cardIngs, .cardSteps {
     margin: 10px;
@@ -16,6 +19,7 @@
 }
 
 .cardIngredient {
+  overflow: visible;
   /* margin-bottom: 5px */
 }
 
@@ -31,5 +35,5 @@
 }
 
 .txtIngQuant { width: 25px; }
-.txtIngUoM { width: calc(40% - 25px); }
+.txtIngUoM { width: calc(40% - 25px); overflow: visible; }
 .txtIngFood { width: 60%; }

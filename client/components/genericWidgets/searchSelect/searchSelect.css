@@ -1,3 +1,22 @@
 .searchSelect {
+  background-color: white;
+  position: absolute;
+  top: 100%;
+  z-index: 9999;
+  border: solid thin black;
+}
 
+.searchSelectInputTemp {
+  width: 100% !important;
+  height: 100px;
+  flex-grow: 0;
+}
+
+.searchSelectResults {
+
+}
+
+.searchSelectOption {
+  height: 100px;
+  flex-grow: 0;
 }

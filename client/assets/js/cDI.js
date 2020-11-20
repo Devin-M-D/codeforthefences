@@ -219,7 +219,7 @@ cDI.sequencer.debounce = async (key, fn, delay) => {
   else {
     cDI.sequencer.debounceFuncs.push({
       key: key,
-      fn: setTimeout(fn(), delay)
+      fn: setTimeout(async () => { await fn() }, delay)
     })
   }
 }
@@ -241,13 +241,14 @@ cDI.remote = {
 
     return new Promise((fulfill, reject) => {
       if (enable_logging) { cDI.utils.ifTrace(`Sending call to ${remoteURL} with postData data:`,  postData) }
+
       $.ajax({
         type: callType,
         url: remoteURL,
         data: postData,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        async: false,
+        async: true,
         success: function (callRes) {
           if (enable_logging == 1) { console.log("Call to:  " + remoteURL + " - Succeeded: ", callRes) }
           cDI.log(cDI.utils.ifTrace(`Resolved call to ${remoteURL} - succeeded:`, callRes), 4)
@@ -297,7 +298,7 @@ cDI.remote.loadComponent = async (elem, folderPath, componentName, placement = 1
     await DI.init()
   }
   else {
-    console.log(DI)
+    // console.log(DI)
   }
   return DI
 }

@@ -11,11 +11,11 @@ cDI.widgets.recipeCard = {
       ingName = ingredient.ingredientFood[0].foodType.plural
     }
 
-    var ing = `<span class="cardIngredient algnSS leftCopy fitW unwrap">`
+    var ing = `<span class="cardIngredient algnSS leftCopy fitW unwrap Ing${ingNum}">`
     if (editable){
       ing += `<input class="txtIngQuant Ing${ingNum}" type="text" value="${ingredient.quantity}" />`
-      ing += `<input class="txtIngUoM Ing${ingNum}" type="text" value="${ingredient.ingredientUoM[0].UoM.name}" onfocus="cDI.components.searchSelect.init($(this), '/crud/UoM/r')"/>`
-      ing += `<input class="txtIngFood Ing${ingNum}" type="text" value="${ingName}" onfocus="cDI.components.searchSelect.init($(this), '/crud/Food/r')" />`
+      ing += `<input class="txtIngUoM Ing${ingNum}" type="text" value="${ingredient.ingredientUoM[0].UoM.name}" />`
+      ing += `<input class="txtIngFood Ing${ingNum}" type="text" value="${ingName}" onfocus="cDI.components.searchSelect.focus($(this), '/crud/Food/r')" />`
     }
     else {
       ing += `
@@ -28,11 +28,15 @@ cDI.widgets.recipeCard = {
   },
   setEditMode: (target, mode = 0) => {
     if (mode == 0){
-      target.find(".recipeEdit").html(`<span class="shpPencil" onclick="cDI.widgets.recipeCard.editCard($(this).parent().parent().parent())"></span>`)
+      var editBox = target.find(".recipeEdit")
+      editBox.html(`<span class="shpPencil"></span>`)
+      cDI.addAsyncOnclick(editBox.find(".shpPencil"), async (e) => {
+        cDI.widgets.recipeCard.editCard($(e.target).parent().parent().parent())
+      })
     }
     else {
       target.find(".recipeEdit").html(`
-        <span class="shpCheck" onclick="cDI.widgets.recipeCard.saveEdits($(this).parent().parent().parent())">WAG</span>
+        <span class="shpCheck" onclick="cDI.widgets.recipeCard.saveEdits($(this).parent().parent().parent())">Save</span>
         <span class="shpX" onclick="cDI.widgets.recipeCard.setEditMode($(this).parent().parent().parent())"></span>
       `)
     }
@@ -43,6 +47,10 @@ cDI.widgets.recipeCard = {
     recipe.recipeIngredient.forEach((ingredient, x) => {
       var ingLine = cDI.widgets.recipeCard.createIngLine(ingredient, editable)
       target.find(".cardIngs").append(ingLine)
+
+      var line = target.find(`.cardIngs > .cardIngredient.Ing${ingredient.ingredientNum}`)
+      var txtIngUoM = line.find(`.txtIngUoM.Ing${ingredient.ingredientNum}`)
+      txtIngUoM.on("focusin", (e, s) => { cDI.components.searchSelect.focus($(e.target), '/crud/UoM/r', 'name') })
     })
   }
 }
@@ -50,9 +58,9 @@ cDI.widgets.recipeCard = {
 async function buildRecipeCardList(recipes) {
   var cardList = []
   recipes.map(async recipe => {
-    for (var x = 0; x < 11; x++){
+    // for (var x = 0; x < 11; x++){
       cardList.push(await buildRecipeCard(recipe))
-    }
+    // }
   })
   return cardList
 }

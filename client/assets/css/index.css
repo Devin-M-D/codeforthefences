@@ -67,6 +67,7 @@ html, body, span, input, select {
 .fitW > * { width: unset; flex-grow: 0; flex-shrink: 0; }
 .fitEven > * { flex-basis: 100%; }
 .fill { height: 100%; width: 100%; }
+.fill > * { height: 100%; width: 100%; }
 .outline.red { border: solid thin red; }
 .outline.green { border: solid thin green; }
 .outline.blue { border: solid thin blue; }
@@ -75,6 +76,7 @@ html, body, span, input, select {
 .absCen {
     justify-self: center;
     align-self: center;
+    align-content: center;
 }
 .algnCX { justify-content: var(--algnCenter); }
 .algnSX { justify-content: var(--algnStart); }

@@ -10,10 +10,10 @@ cDI.components.router = {
 }
 cDI.components.router.init = async () => {
   if (window.location.pathname.length == 1) {
-    cDI.components.router.getRoute("blog")
+    await cDI.components.router.getRoute("blog")
   }
   else {
-    cDI.components.router.getRoute(window.location.pathname)
+    await cDI.components.router.getRoute(window.location.pathname)
   }
 }
 

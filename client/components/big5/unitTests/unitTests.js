@@ -1,9 +1,9 @@
 cDI.components.unitTests = {
   customDevScenario: async () => {
     console.log("UT: Running custom dev scenario")
-    await loginIfNeccessary()
-    //custom logged in tasks
-
+    await cDI.components.unitTests.loginIfNeccessary()
+    await cDI.clickRes($(".shpPencil"))
+    $(".txtIngUoM.Ing1").focus()
   },
   loginIfNeccessary: async () => {
     //if not logged in, use debugConf set in bootstrap to set an impersonate
@@ -73,7 +73,7 @@ cDI.components.unitTests.init = async () => {
       }
     }
     async function utAuth_Login(){
-      await cDI.clickRes($(".iconAuth"))
+      await cDI.clickRes($("#authBox"))
       console.log("UT: logging in")
       $("#txtLoginUN").val(cDI.config.user.username)
       $("#txtLoginPW").val(cDI.config.user.password)
