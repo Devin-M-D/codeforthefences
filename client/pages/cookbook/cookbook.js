@@ -4,5 +4,6 @@ cDI.pages.cookbook = {
     var recipes = await getAllRecipes()
     var favorites = await buildRecipeCardList(recipes)
     $("#counterTop").append(favorites)
+    $("#counterTop").append("<span></span>")
   }
 }

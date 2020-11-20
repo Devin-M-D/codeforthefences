@@ -1,17 +1,30 @@
-async function createDrawerPane(target){
-  var pane = $("#cargoHold > .drawerPane").clone()
-  $(target).append(pane)
-  return $(target).find(".drawerPane")
+cDI.components.drawerPane = {
+  createDrawerPane: async (target) => {
+    $(".drawerPane:not(.drawerPaneTemplate)").remove()
+
+    var pane = $(".drawerPane.drawerPaneTemplate").clone()
+    $(target).append(pane)
+    pane.removeClass("drawerPaneTemplate")
+    var createdPane = $(target).children(".drawerPane")
+
+    return createdPane
+  },
+  populateDrawerPane: async (pane, content) => {
+    $(pane).append(content)
+  },
+  openDrawerPane: async (pane) => {
+    $(pane).addClass("open")
+  },
+  closeDrawerPane: async (pane) => {
+    $(pane).removeClass("open")
+    setTimeout(() => { pane.remove() }, 1000)
+  }
 }
 
-async function populateDrawerPane(pane, content) {
-  $(pane).append(content)
-}
-
-async function openDrawerPane(pane) {
-  $(pane).addClass("open")
-}
-
-async function closeDrawerPane(pane) {
-  $(pane).removeClass("open")
-}
+//USAGE
+///////
+// var pane = await cDI.components.drawerPane.createDrawerPane($("html"))
+// cDI.components.drawerPane.populateDrawerPane(pane, `
+//   <span>Content</span>
+// `)
+// cDI.components.drawerPane.openDrawerPane(pane)

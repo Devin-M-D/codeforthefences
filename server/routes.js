@@ -115,7 +115,12 @@ module.exports = async (DI) => {
       succeed(res, data)
     }))
     router.post('/crud/UoM/r/', asyncRoute(async (req, res, next) => {
-      var data = await DI.data.rootQuery("SELECT * FROM UoM")
+      if (req.body.name){
+        var data = await DI.data.rootQuery(`SELECT * FROM UoM WHERE name LIKE '%' + :name + '%'`, { name: req.body.name})
+      }
+      else {
+        var data = await DI.data.rootQuery(`SELECT * FROM UoM`)
+      }
       succeed(res, data)
     }))
     router.post('/crud/Food/r/', asyncRoute(async (req, res, next) => {
