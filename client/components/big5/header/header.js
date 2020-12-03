@@ -15,7 +15,7 @@ cDI.components.header = {
       }, true)
     }
     else {
-      cDI.widgets.modal.clickToModal($("#authBox"), "/components/genericWidgets/auth.html", async () => {})
+      cDI.widgets.modal.clickToModal($("#authBox"), "/components/genericWidgets/auth/auth.html", async () => {})
     }
   },
   strapHeaderHamburger: () => {

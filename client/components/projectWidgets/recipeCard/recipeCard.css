@@ -37,3 +37,7 @@
 .txtIngQuant { width: 25px; }
 .txtIngUoM { width: calc(40% - 25px); overflow: visible; }
 .txtIngFood { width: 60%; }
+
+.recipeEdit {
+  height:100%;
+}

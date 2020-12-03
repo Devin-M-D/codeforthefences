@@ -1,12 +1,4 @@
-.searchSelect {
-  background-color: white;
-  position: absolute;
-  top: 100%;
-  z-index: 9999;
-  border: solid thin black;
-}
-
-.searchSelectInputTemp {
+.searchSelectInputContainer {
   width: 100% !important;
   height: 100px;
   flex-grow: 0;

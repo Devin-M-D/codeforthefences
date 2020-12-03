@@ -2,8 +2,8 @@ cDI.components.unitTests = {
   customDevScenario: async () => {
     console.log("UT: Running custom dev scenario")
     await cDI.components.unitTests.loginIfNeccessary()
-    await cDI.clickRes($(".shpPencil"))
-    $(".txtIngUoM.Ing1").focus()
+    //await cDI.clickRes($(".recipeEdit"))
+    //$(".txtIngFood.Ing1").click()
   },
   loginIfNeccessary: async () => {
     //if not logged in, use debugConf set in bootstrap to set an impersonate
