@@ -1,24 +1,27 @@
 cDI.components.searchSelect = {
-  focus: async (target, searchRoute, propName) => {
+  buildSearchPane: async (target, searchRoute, propName) => {
     var pane = await cDI.components.drawerPane.createDrawerPane($("html"))
-    await cDI.components.drawerPane.populateDrawerPane(pane, ``)
-    var tempInput = target.clone()
-    tempInput.prependTo(pane)
     pane.addClass("algnSX")
+    await cDI.components.drawerPane.populateDrawerPane(pane, ``)
 
+    var tempInput = target.clone()
+    var inputContainer = `<span class="searchSelectInputContainer"><span class="btnClearInput centerRight">X</span></span>`
+    pane.prepend(inputContainer)
+    inputContainer = pane.find(".searchSelectInputContainer")
+
+    inputContainer.append(tempInput)
     tempInput.off("onfocus")
-    tempInput.on("focusout", (e, s) => { cDI.components.searchSelect.loseFocus(tempInput, target) })
     tempInput.addClass("searchSelectInputTemp")
     tempInput.focus()
 
+    inputContainer.find(".btnClearInput").on("click", () => { cDI.components.searchSelect.clear(tempInput) })
+
     cDI.components.drawerPane.openDrawerPane(pane)
 
-    tempInput.val(target.val())
-
     tempInput.on("keyup", (e) => {
-      cDI.sequencer.debounce("testtest", async () => {
-        console.log("searchFiring")
+      cDI.sequencer.debounce("searchSelect", async () => {
         $(".searchSelectResults").remove()
+
         var searchRes = await cDI.remote.remoteCall(searchRoute, { name: $(e.target).val() })
         var paneHTML = `<span class="searchSelectResults cols algnSX">`
         searchRes.payload.forEach(x => {
@@ -26,12 +29,24 @@ cDI.components.searchSelect = {
         })
         paneHTML += `</span>`
         pane.append(paneHTML)
+
+        $(".searchSelectOption").map((i, x) => {
+          var option = $(x)
+          option.on("click", () => {
+            target.val(option.html())
+            cDI.components.drawerPane.closeDrawerPane(option.parent().parent())
+          })
+        });
       }, 500)
     })
 
     tempInput.trigger("keyup")
   },
-  loseFocus: async(tempInput, target) => {
-    //cDI.components.drawerPane.closeDrawerPane($(tempInput).parent())
+  clear: async (input) => {
+    input.val("")
+    input.trigger("keyup")
+  },
+  close: async(tempInput, target) => {
+    cDI.components.drawerPane.closeDrawerPane($(tempInput).parent())
   }
 }

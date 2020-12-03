@@ -114,6 +114,9 @@ module.exports = async (DI) => {
       var data = await DI.data.rootQuery(recipeService.getAllRecipes.query)
       succeed(res, data)
     }))
+    router.post('/crud/recipe/u/', asyncRoute(async (req, res, next) => {
+      succeed(res, "reached /crud/recipe/u/")
+    }))
     router.post('/crud/UoM/r/', asyncRoute(async (req, res, next) => {
       if (req.body.name){
         var data = await DI.data.rootQuery(`SELECT * FROM UoM WHERE name LIKE '%' + :name + '%'`, { name: req.body.name})
@@ -123,8 +126,13 @@ module.exports = async (DI) => {
       }
       succeed(res, data)
     }))
-    router.post('/crud/Food/r/', asyncRoute(async (req, res, next) => {
-      var data = await DI.data.rootQuery("SELECT * FROM foodType")
+    router.post('/crud/foodType/r/', asyncRoute(async (req, res, next) => {
+      if (req.body.name){
+        var data = await DI.data.rootQuery(`SELECT * FROM foodType WHERE name LIKE '%' + :name + '%'`, { name: req.body.name})
+      }
+      else {
+        var data = await DI.data.rootQuery("SELECT * FROM foodType")
+      }
       succeed(res, data)
     }))
     router.post('/crud/blog/r/', asyncRoute(async (req, res, next) => {

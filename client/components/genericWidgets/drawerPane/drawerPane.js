@@ -2,10 +2,16 @@ cDI.components.drawerPane = {
   createDrawerPane: async (target) => {
     $(".drawerPane:not(.drawerPaneTemplate)").remove()
 
+    var curtain = "<span class='drawerCurtain'></span>"
+    $(target).prepend(curtain)
+    curtain = $(target).find(".drawerCurtain")
+
     var pane = $(".drawerPane.drawerPaneTemplate").clone()
     $(target).append(pane)
     pane.removeClass("drawerPaneTemplate")
     var createdPane = $(target).children(".drawerPane")
+
+    $(curtain).on("click", () => { cDI.components.drawerPane.closeDrawerPane(createdPane) })
 
     return createdPane
   },
@@ -17,7 +23,10 @@ cDI.components.drawerPane = {
   },
   closeDrawerPane: async (pane) => {
     $(pane).removeClass("open")
-    setTimeout(() => { pane.remove() }, 1000)
+    setTimeout(() => {
+      pane.remove()
+      $(".drawerCurtain").remove()
+    }, 500)
   }
 }
 

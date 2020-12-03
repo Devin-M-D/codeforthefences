@@ -68,6 +68,8 @@ html, body, span, input, select {
 .fitEven > * { flex-basis: 100%; }
 .fill { height: 100%; width: 100%; }
 .fill > * { height: 100%; width: 100%; }
+.fillH { height: 100%; }
+.fillW { width: 100%; }
 .outline.red { border: solid thin red; }
 .outline.green { border: solid thin green; }
 .outline.blue { border: solid thin blue; }
@@ -94,6 +96,15 @@ html, body, span, input, select {
 .algnCS { justify-content: var(--algnCenter); align-items: var(--algnStart); }
 /*#endregion*/
 
+/*#region position*/
+.centerRight {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+}
+/*#endregion*/
+
 /*#region buttons*/
 .btnStd {
   background-color: var(--clrPrimary);
@@ -105,6 +116,25 @@ html, body, span, input, select {
   padding: 10px 0px;
   justify-content: center;
   align-items: center;
+}
+.btnClearInput {
+  color: darkgray;
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  font-family: arial;
+}
+.btnCancel {
+  color: red;
+  height: 40px;
+  width: 40px;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  font-family: arial;
 }
 /*#endregion*/
 

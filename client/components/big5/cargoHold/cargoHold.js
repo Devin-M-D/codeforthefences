@@ -3,15 +3,13 @@ cDI.components.cargoHold = {
     //generic widgets
     // await cDI.remote.loadComponent($("#cargoHold"), "components/genericWidgets", "modal")
 
-    var modal = await cDI.remote.asyncGet("components/genericWidgets/modal.html")
+    var modal = await cDI.remote.asyncGet("components/genericWidgets/modal/modal.html")
     $("#cargoHold").append(modal)
 
     var drawerPane = await cDI.remote.asyncGet("components/genericWidgets/drawerPane/drawerPane.html")
     $("#cargoHold").append(drawerPane)
     await loadWidgetDrawerPane()
 
-    // var searchSelect = await cDI.remote.asyncGet("components/genericWidgets/searchSelect/searchSelect.html")
-    // $("#cargoHold").append(searchSelect)
     await cDI.remote.loadComponent($("#cargoHold"), "components/genericWidgets", "searchSelect")
 
     var flexCarousel = await cDI.remote.asyncGet("components/genericWidgets/flexCarousel/flexCarousel.html")
