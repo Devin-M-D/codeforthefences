@@ -217,9 +217,13 @@ cDI.sequencer.debounce = async (key, fn, delay) => {
     existing.fn = setTimeout(fn, delay)
   }
   else {
-    cDI.sequencer.debounceFuncs.push({
-      key: key,
-      fn: setTimeout(async () => { await fn() }, delay)
+    return new Promise((fulfill, reject) => {
+      cDI.sequencer.debounceFuncs.push({
+        key: key,
+        fn: setTimeout(async () => {
+              fulfill(await fn())
+            }, delay)
+      })
     })
   }
 }
@@ -335,19 +339,20 @@ cDI.log = async (logFn, levelOfMessage = 1, callbackFn = null) => {
   else if (levelOfMessage == 2 && allowVerbose) { await send(logFn, callbackFn) }
   else if (levelOfMessage == 4 && allowAJAX) { await send(logFn, callbackFn) }
 }
-cDI.addAsyncOnclick = async (elem, fn, trace = false, debounce = true) => {
-  await elem.click(async (e) => {
-    cDI.log(cDI.utils.ifTrace(`clicked elem: `, $(elem), trace), 2)
+cDI.addAwaitableInput = async (inputType, elem, fn, trace = false, debounce = true) => {
+  await elem.on(inputType, async (e) => {
+    cDI.log(cDI.utils.ifTrace(`${inputType} occurred on elem: `, $(elem), trace), 2)
     cDI.log(cDI.utils.ifTrace(`result is: `, $(data), trace), 2)
     var data = await fn(e)
     return data
   })
 }
-cDI.clickRes = async (elem) => {
-  var clickRes = await $.when(elem.triggerHandler("click")).then(async (res) => {
-    return res
+cDI.awaitableInput = async (inputType, elem) => {
+  return new Promise((fulfill, reject) => {
+    $.when(elem.triggerHandler(inputType)).then(async (res) => {
+      fulfill(res)
+    })
   })
-  return clickRes
 }
 cDI.wrapInPromise = (fn) => {
   return new Promise((f, r) => {

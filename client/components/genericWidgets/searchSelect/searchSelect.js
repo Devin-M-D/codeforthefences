@@ -1,5 +1,5 @@
 cDI.components.searchSelect = {
-  buildSearchPane: async (target, searchRoute, propName) => {
+  buildSearchPane: async (target, searchRoute, propName, fn) => {
     var pane = await cDI.components.drawerPane.createDrawerPane($("html"))
     pane.addClass("algnSX")
     await cDI.components.drawerPane.populateDrawerPane(pane, ``)
@@ -18,29 +18,33 @@ cDI.components.searchSelect = {
 
     cDI.components.drawerPane.openDrawerPane(pane)
 
-    tempInput.on("keyup", (e) => {
-      cDI.sequencer.debounce("searchSelect", async () => {
+    cDI.addAwaitableInput("keyup", tempInput, async (e) => {
+      return cDI.sequencer.debounce("searchSelect", async () => {
         $(".searchSelectResults").remove()
 
         var searchRes = await cDI.remote.remoteCall(searchRoute, { name: $(e.target).val() })
-        var paneHTML = `<span class="searchSelectResults cols algnSX">`
-        searchRes.payload.forEach(x => {
-          paneHTML += `<span class="searchSelectOption absCen">${x[propName]}</span>`
+        var paneHTML = $(`<span class="searchSelectResults cols algnSX"></span>`)
+        searchRes.payload.forEach((x, i) => {
+          var searchOption = $(`<span class="searchSelectOption absCen option${i}">${x[propName]}</span>`)
+          searchOption.data("dbrecord", x)
+          paneHTML.append(searchOption)
         })
-        paneHTML += `</span>`
         pane.append(paneHTML)
 
         $(".searchSelectOption").map((i, x) => {
-          var option = $(x)
-          option.on("click", () => {
-            target.val(option.html())
-            cDI.components.drawerPane.closeDrawerPane(option.parent().parent())
+          var searchOption = $(x)
+          searchOption.on("click", () => {
+            target.val(searchOption.html())
+            target.data("searchselectrecord", searchOption.data("dbrecord"))
+            if (fn) { fn(target) }
+            cDI.components.drawerPane.closeDrawerPane(searchOption.parent().parent())
           })
         });
+        return pane
       }, 500)
     })
 
-    tempInput.trigger("keyup")
+    return await cDI.awaitableInput("keyup", tempInput)
   },
   clear: async (input) => {
     input.val("")

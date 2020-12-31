@@ -1,9 +1,28 @@
 cDI.components.unitTests = {
+  init: async () => {
+    var unitTestLevel = cDI.config.unitTest
+    if (unitTestLevel == 1){
+      console.log("Unit tests set to level 1: run all")
+      await cDI.components.unitTests.runAllUnitTests()
+    }
+    else if (unitTestLevel == 2){
+      console.log("Unit tests set to level 2: custom dev scenario")
+      await cDI.components.unitTests.customDevScenario()
+    }
+    else if (unitTestLevel == 3){
+      console.log("Unit tests set to level 3: just login if the session has expired")
+      await cDI.components.unitTests.loginIfNeccessary()
+    }
+  },
   customDevScenario: async () => {
     console.log("UT: Running custom dev scenario")
     await cDI.components.unitTests.loginIfNeccessary()
-    //await cDI.clickRes($(".recipeEdit"))
-    //$(".txtIngFood.Ing1").click()
+
+    var editButton = $("[data-rid='#45:0']").find(".recipeEdit")
+    await cDI.awaitableInput("click", editButton)
+
+    var searchSelectPane = await cDI.awaitableInput("click", $(".txtIngFood.Ing1"))
+    await cDI.awaitableInput("click", searchSelectPane.find(".option0"))
   },
   loginIfNeccessary: async () => {
     //if not logged in, use debugConf set in bootstrap to set an impersonate
@@ -18,21 +37,6 @@ cDI.components.unitTests = {
     await runAllAuth()
   }
 }
-cDI.components.unitTests.init = async () => {
-  var unitTestLevel = cDI.config.unitTest
-  if (unitTestLevel == 1){
-    console.log("Unit tests set to level 1: run all")
-    await cDI.components.unitTests.runAllUnitTests()
-  }
-  else if (unitTestLevel == 2){
-    console.log("Unit tests set to level 2: custom dev scenario")
-    await cDI.components.unitTests.customDevScenario()
-  }
-  else if (unitTestLevel == 3){
-    console.log("Unit tests set to level 3: just login if the session has expired")
-    await cDI.components.unitTests.loginIfNeccessary()
-  }
-}
 
   //#region permanent tests/
     //#region auth tests
@@ -42,11 +46,11 @@ cDI.components.unitTests.init = async () => {
       await utAuth_Login()
     }
     async function utAuth_clickAuthIcon(){
-      await cDI.clickRes($("#iconAuth"))
+      await cDI.awaitableInput("click", $("#iconAuth"))
     }
     async function utAuth_Signup(){
       console.log('UT: auth signup')
-      await cDI.clickRes($(".iconAuth"))
+      await cDI.awaitableInput("click", $(".iconAuth"))
       var randomId = "utAuthUser_" + await cDI.randomString(12)
       $("#txtSgnUN").val(randomId)
       $("#txtSgnPW").val("testpass")
@@ -73,11 +77,11 @@ cDI.components.unitTests.init = async () => {
       }
     }
     async function utAuth_Login(){
-      await cDI.clickRes($("#authBox"))
+      await cDI.awaitableInput("click", $("#authBox"))
       console.log("UT: logging in")
       $("#txtLoginUN").val(cDI.config.user.username)
       $("#txtLoginPW").val(cDI.config.user.password)
-      await cDI.clickRes($("#btnLogin"))
+      await cDI.awaitableInput("click", $("#btnLogin"))
     }
     //#endregion
 

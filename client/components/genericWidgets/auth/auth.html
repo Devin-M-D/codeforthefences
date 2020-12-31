@@ -20,7 +20,7 @@
   } */
 </style>
 <script type="text/javascript">
-  cDI.addAsyncOnclick($("#btnSignup"), async (res) => {
+  cDI.addAwaitableInput("click", $("#btnSignup"), async (res) => {
     var email = $('#txtSgnEmail').val()
     var un = $('#txtSgnUN').val()
     var dn = $('#txtSgnDisplayName').val()
@@ -40,7 +40,7 @@
   })
 
   //add login function to button
-  cDI.addAsyncOnclick($("#btnLogin"), async (res) => {
+  cDI.addAwaitableInput("click", $("#btnLogin"), async (res) => {
     var un = $('#txtLoginUN').val()
     var pw = $('#txtLoginPW').val()
     var callRes = await cDI.remote.remoteCall("/login", {"username": un, "password": pw })
