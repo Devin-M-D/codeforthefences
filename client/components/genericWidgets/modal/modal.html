@@ -65,7 +65,7 @@
     content.addClass("max")
   }
   cDI.widgets.modal.clickToModal = async (elem, dialogPath, fn, maximizeDialog = false) => {
-    await cDI.addAsyncOnclick(elem, async (e) => {
+    await cDI.addAwaitableInput("click", elem, async (e) => {
       var content = await cDI.remote.asyncGet(dialogPath)
       var modalElements = await cDI.widgets.modal.drawCurtain({ content: content, maximizeDialog: maximizeDialog })
       if (cDI.utils.isDef(fn)) { await fn(modalElements) }
