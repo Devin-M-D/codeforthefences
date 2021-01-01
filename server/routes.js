@@ -115,6 +115,9 @@ module.exports = async (DI) => {
       succeed(res, data)
     }))
     router.post('/crud/recipe/u/', asyncRoute(async (req, res, next) => {
+      if (req.body.recipe){
+        console.log(req.body.recipe)
+      }
       succeed(res, "reached /crud/recipe/u/")
     }))
     router.post('/crud/UoM/r/', asyncRoute(async (req, res, next) => {

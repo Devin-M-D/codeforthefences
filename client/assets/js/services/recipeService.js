@@ -3,12 +3,18 @@ cDI.services.recipe = {
     var callRes = await cDI.remote.remoteCall("/crud/recipe/r/", { expectMany: true })
     return cDI.utils.extrudeFlatGraph(callRes.payload, "recipe")
   },
+  parsePieces: (recipe) => {
+    var ingredients = recipe.recipeIngredient.sort((a, b) => a.ingredientNum < b.ingredientNum).map(x => x.ingredient)
+    var tools = recipe.recipeTool.sort((a, b) => a.toolNum < b.toolNum).map(x => x.tool)
+    var steps = recipe.recipeStep.sort((a, b) => a.stepNum < b.stepNum).map(x => x.step)
+    return { ingredients: ingredients, tools: tools, steps: steps }
+  },
   searchUoM: async () => {
-    var foo = await cDI.remote.remoteCall("/crud/UoM/r/")
-    console.log(foo)
+    var res = await cDI.remote.remoteCall("/crud/UoM/r/")
+    console.log(res)
   },
   save: async (recipe) => {
-    var foo = await cDI.remote.remoteCall("/crud/recipe/u/")
-    console.log(foo)
+    var res = await cDI.remote.remoteCall("/crud/recipe/u/", { recipe: recipe })
+    console.log(res)
   }
 }
