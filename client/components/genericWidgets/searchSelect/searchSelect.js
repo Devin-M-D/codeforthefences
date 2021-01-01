@@ -14,7 +14,7 @@ cDI.components.searchSelect = {
     tempInput.addClass("searchSelectInputTemp")
     tempInput.focus()
 
-    inputContainer.find(".btnClearInput").on("click", () => { cDI.components.searchSelect.clear(tempInput) })
+    cDI.addAwaitableInput("click", inputContainer.find(".btnClearInput"), async () => { return await cDI.components.searchSelect.clear(tempInput) })
 
     cDI.components.drawerPane.openDrawerPane(pane)
 
@@ -48,7 +48,7 @@ cDI.components.searchSelect = {
   },
   clear: async (input) => {
     input.val("")
-    input.trigger("keyup")
+    return await cDI.awaitableInput("keyup", input)
   },
   close: async(tempInput, target) => {
     cDI.components.drawerPane.closeDrawerPane($(tempInput).parent())

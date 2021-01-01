@@ -14,12 +14,8 @@ cDI.widgets.recipeCard = {
     card.data("recipe", recipe)
     card.attr("data-rid", recipe["@rid"])
 
-    var ingredients = recipe.recipeIngredient.map(x => x.ingredient)
-    var tools = recipe.recipeTool.map(x => x.tool)
-    var steps = recipe.recipeStep.sort((a, b) => a.stepNum < b.stepNum).map(x => x.step)
-
-    var filledStepText = cDI.widgets.recipeCard.getFilledSteps(steps, ingredients, tools)
-    card.find(".cardSteps").append(filledStepText)
+    var pieces = cDI.services.recipe.parsePieces(recipe)
+    cDI.widgets.recipeCard.createStepPane(card, pieces.steps, pieces.ingredients, pieces.tools)
 
     cDI.widgets.recipeCard.setEditMode(card, false)
     return card
@@ -71,14 +67,51 @@ cDI.widgets.recipeCard = {
     return ing
   },
   acceptIngChange: (input) => {
-    console.log(input)
-    console.log(input.data())
     var card = input.closest(".recipeCard")
-    console.log(card.data())
+    var recipe
+    if (card.data("editedrecipe")){
+      recipe = card.data("editedrecipe")
+    }
+    else {
+      recipe = card.data("recipe")
+    }
+    var inputClasses = input.attr('class').split(" ")
+    var ingNum = inputClasses.filter(x => x.indexOf("Ing") == 0)[0].replace("Ing", "")
+    var origIng = recipe.recipeIngredient.filter(x => x.ingredientNum == ingNum)[0].ingredient.ingredientFood[0].foodType
+    var newIng = input.data("searchselectrecord")
+
+    if (origIng["@rid"] != newIng["@rid"]){
+      var editedRecipe = card.data("editedrecipe")
+      editedRecipe.recipeIngredient.find(x => x.ingredientNum == ingNum).ingredient.ingredientFood[0].foodType = newIng
+      card.data("editedrecipe", editedRecipe)
+      cDI.widgets.recipeCard.createStepPane(card, null, null, null, true)
+    }
   },
   //#endregion
 
-  //#region strap step test
+  //#region step pane
+  createStepPane: async (card, steps, ingredients, tools, useEdited = false) => {
+    var stepsPane = card.find(".cardSteps")
+    var build = () => {
+      if (steps == null || ingredients == null || tools == null){
+        var recipe = ((useEdited) ? card.data("editedrecipe") : card.data("recipe"))
+        var pieces = cDI.services.recipe.parsePieces(recipe)
+        steps = pieces.steps
+        ingredients = pieces.ingredients
+        tools = pieces.tools
+      }
+      var filledStepText = cDI.widgets.recipeCard.getFilledSteps(steps, ingredients, tools)
+      stepsPane.html(filledStepText)
+    }
+
+    if (useEdited) {
+      stepsPane.fadeOut(500, () => {
+        build();
+        stepsPane.fadeIn(500);
+      })
+    }
+    else { build() }
+  },
   getFilledSteps: (steps, ingredients, tools) => {
     var stepList = ``
     steps.forEach((step, x) => {
@@ -145,26 +178,28 @@ cDI.widgets.recipeCard = {
     }
   },
   saveChanges: async (card) => {
-    var recipe = card.data("recipe")
-    var editedRecipe = card.data("editedrecipe")
-    console.log(recipe)
-    recipe.recipeIngredient.forEach((ingredient, i) => {
-      // console.log(i, ingredient)
-      var recipeFoodType = ingredient.ingredient.ingredientFood[0].foodType.name
-      console.log(recipeFoodType)
-      var ingLine = card.find(`.cardIngredient.Ing${i + 1}`)
-      if (ingLine != null){
-        var foodInput = ingLine.find(".txtIngFood")
-        var inputFoodType = foodInput.val()
-        console.log(inputFoodType)
-        if (inputFoodType != ingredient.ingredient.ingredientFood[0].foodType.name && inputFoodType != ingredient.ingredient.ingredientFood[0].foodType.plural){
-          console.log(`update ing ${i + 1}: ${recipeFoodType} to ${inputFoodType}`)
-          editedRecipe.recipeIngredient[i] = inputFoodType
-        }
-      }
-    })
-    console.log(card.data("editedrecipe"))
-    cDI.services.recipe.save(recipe)
+    cDI.services.recipe.save(card.data("editedrecipe"))
+
+    // var recipe = card.data("recipe")
+    // var editedRecipe = card.data("editedrecipe")
+    // console.log(recipe)
+    // recipe.recipeIngredient.forEach((ingredient, i) => {
+    //   // console.log(i, ingredient)
+    //   var recipeFoodType = ingredient.ingredient.ingredientFood[0].foodType.name
+    //   console.log(recipeFoodType)
+    //   var ingLine = card.find(`.cardIngredient.Ing${i + 1}`)
+    //   if (ingLine != null){
+    //     var foodInput = ingLine.find(".txtIngFood")
+    //     var inputFoodType = foodInput.val()
+    //     console.log(inputFoodType)
+    //     if (inputFoodType != ingredient.ingredient.ingredientFood[0].foodType.name && inputFoodType != ingredient.ingredient.ingredientFood[0].foodType.plural){
+    //       console.log(`update ing ${i + 1}: ${recipeFoodType} to ${inputFoodType}`)
+    //       editedRecipe.recipeIngredient[i] = inputFoodType
+    //     }
+    //   }
+    // })
+    // console.log(card.data("editedrecipe"))
+    // cDI.services.recipe.save(recipe)
     //cDI.widgets.recipeCard.setEditMode(target, 0)
   }
   //#endregion

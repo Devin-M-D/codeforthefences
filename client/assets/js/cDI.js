@@ -214,7 +214,11 @@ cDI.sequencer.debounce = async (key, fn, delay) => {
   var existing = cDI.sequencer.debounceFuncs.filter(x => x.key == key)[0]
   if (existing) {
     clearTimeout(existing.fn)
-    existing.fn = setTimeout(fn, delay)
+    return new Promise((fulfill, reject) => {
+      existing.fn = setTimeout(async () => {
+                      fulfill(await fn())
+                    }, delay)
+    })
   }
   else {
     return new Promise((fulfill, reject) => {
