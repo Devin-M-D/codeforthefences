@@ -1,1 +1,4 @@
-PowerShell -NoProfile -ExecutionPolicy Unrestricted -Command "& {Start-Process PowerShell -ArgumentList '-NoProfile -ExecutionPolicy Unrestricted -File ""C:/node/codeforthefences/scripts/admin/startServer.ps1""' -Verb RunAs}";
+@echo off
+ECHO Starting CodefortheFences server
+cd c:/node/codeforthefences/server/
+npm start

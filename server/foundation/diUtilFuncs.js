@@ -151,5 +151,39 @@ module.exports = (DI) => {
       var  hierarchicalObj = anchorSet(rootLayer)
       return hierarchicalObj
     }
+  },
+  DI.rh = {
+    asyncRoute: (callback) => {
+      return function (req, res, next) {
+        callback(req, res, next).catch(next)
+      }
+    },
+    transformExpectMany: (req, data) => {
+      if (!DI.utils.isDef(req.body.expectMany) && data.length == 1) { return data[0] }
+      else return data
+    },
+    query: async (req, osql, params = null) => {
+      if (!DI.utils.isDef(req.dbPool)) { return false }
+      var data = await DI.data.runQuery(req.dbPool, osql, params)
+      return DI.rh.transformExpectMany(req, data)
+    },
+    command: async (req, osql, params = null) => {
+      if (!DI.utils.isDef(req.dbPool)) { return false }
+      var data = await DI.data.runCommand(req.dbPool, osql, params)
+      return DI.rh.transformExpectMany(req, data)
+    },
+    batch: async (req, osql, params = null) => {
+      if (!DI.utils.isDef(req.dbPool)) { return false }
+      var query = `BEGIN; ${osql} COMMIT;`
+      if (osql.indexOf("$res") != -1) { query += `RETURN $res;` }
+      var data = await DI.data.runBatch(req.dbPool, query, params)
+      return DI.rh.transformExpectMany(req, data)
+    },
+    succeed: async (res, payload) => {
+      res.json({ status: "s", payload: payload })
+    },
+    fail: async (res, payload) => {
+      res.json({ status: "e", payload: payload })
+    }
   }
 }

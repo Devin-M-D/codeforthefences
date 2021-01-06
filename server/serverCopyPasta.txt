@@ -5,7 +5,7 @@ DI.utils.isDef(obj)
 /////////////////
 //new async route
 /////////////////
-router.post('/routePath', asyncRoute(async (req, res, next) =>
+DI.router.post('/routePath', DI.rh.asyncRoute(async (req, res, next) =>
 {
   var data = query(req, "osql", { param1: "param1Val" })
   succeed(res, data)
@@ -27,7 +27,6 @@ DI
     DI.express.app
     DI.express.port
     DI.express.router
-  DI.bcrypt
   DI.data
     DI.data.parseRid
     DI.data.client

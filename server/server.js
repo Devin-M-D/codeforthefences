@@ -1,5 +1,5 @@
 var debug = false
-var DI = require('./serverLogic')(debug)
+var DI = require('./foundation/serverLogic')(debug)
 if (DI == false) { process.exit() }
 else {
   DI.then((di) => {
