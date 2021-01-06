@@ -18,12 +18,17 @@ cDI.components.unitTests = {
     console.log("UT: Running custom dev scenario")
     await cDI.components.unitTests.loginIfNeccessary()
 
-    var editButton = $("[data-rid='#45:0']").find(".recipeEdit")
+    var recipeCard = $("[data-rid='#45:0']")
+    var editButton = recipeCard.find(".recipeEdit")
     await cDI.awaitableInput("click", editButton)
 
     var searchSelectPane = await cDI.awaitableInput("click", $(".txtIngFood.Ing1"))
     await cDI.awaitableInput("click", searchSelectPane.find(".btnClearInput"))
     await cDI.awaitableInput("click", searchSelectPane.find(".option1"))
+
+    var saveButton = recipeCard.find(".shpCheck")
+    console.log(saveButton)
+    await cDI.awaitableInput("click", saveButton)
   },
   loginIfNeccessary: async () => {
     //if not logged in, use debugConf set in bootstrap to set an impersonate
@@ -86,4 +91,7 @@ cDI.components.unitTests = {
     }
     //#endregion
 
+    //#region edit recipe
+
+    //#endregion
   //#endregion

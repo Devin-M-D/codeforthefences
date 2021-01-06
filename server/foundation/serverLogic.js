@@ -19,13 +19,12 @@ function addCors(expressApp){
 module.exports = async (debugging) => {
   var DI = {
     express: configExpress(),
-    bcrypt: require('bcryptjs'),
     sessions: []
   }
   //add helper functions
   require('./diUtilFuncs')(DI)
   //add middleware
-  require('./middleware/innerware')(DI, debugging)
+  require('../middleware/innerware')(DI, debugging)
   //set up routes
   require('./routes')(DI)
   // set up database connection

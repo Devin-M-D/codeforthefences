@@ -1,4 +1,5 @@
 cDI.widgets.recipeCard = {
+//#region main loop
   buildRecipeCardList: async (recipes) => {
     var cardList = []
     recipes.forEach(async recipe => {
@@ -20,6 +21,7 @@ cDI.widgets.recipeCard = {
     cDI.widgets.recipeCard.setEditMode(card, false)
     return card
   },
+//#endregion
 
 //#region ing pane
   createIngPane: (card, editable = false) => {
@@ -89,7 +91,7 @@ cDI.widgets.recipeCard = {
   },
   //#endregion
 
-  //#region step pane
+//#region step pane
   createStepPane: async (card, steps, ingredients, tools, useEdited = false) => {
     var stepsPane = card.find(".cardSteps")
     var build = () => {
@@ -139,9 +141,9 @@ cDI.widgets.recipeCard = {
     })
     return stepText
   },
-  //#endregion
+//#endregion
 
-  //#region editMode and save
+//#region editMode and save
   setEditMode: (card, mode = 0) => {
     cDI.widgets.recipeCard.buildEditBox(card, mode)
     if (mode == 0){
@@ -177,6 +179,8 @@ cDI.widgets.recipeCard = {
       })
     }
   },
+//#endregion
+
   saveChanges: async (card) => {
     cDI.services.recipe.save(card.data("editedrecipe"))
 
@@ -202,5 +206,4 @@ cDI.widgets.recipeCard = {
     // cDI.services.recipe.save(recipe)
     //cDI.widgets.recipeCard.setEditMode(target, 0)
   }
-  //#endregion
 }
