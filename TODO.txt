@@ -1,0 +1,1 @@
+1. return curtain from drawCurtain(), simplify component load in clickToModal()

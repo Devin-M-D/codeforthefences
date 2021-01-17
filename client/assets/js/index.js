@@ -1,5 +1,5 @@
 $(async () => {
-  console.log("Document ready, firing strap function")
+  ftbLog("Document ready, firing strap function")
   await cDI.remote.loadComponent($("body"), "components/big5", "contentMain")
   await cDI.remote.loadComponent($("body"), "components/big5", "cargoHold", 0)
   await cDI.remote.loadComponent($("body"), "components/big5", "header", 0)
