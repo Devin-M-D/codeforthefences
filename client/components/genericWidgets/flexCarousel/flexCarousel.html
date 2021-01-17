@@ -1,9 +1,3 @@
-<script>
-  $('<link rel="stylesheet" type="text/css" href="components/genericWidgets/flexCarousel/flexCarousel.css" />').appendTo('head')
-  async function loadFlexCarousel() {
-    await cDI.remote.asyncGetScript("components/genericWidgets/flexCarousel/flexCarousel.js")
-  }
-</script>
 <span class="flexCarousel">
   <span class="crslPrevWrapper">
     <span class="crslPrev" onclick="crslCycle(event, this, 'prev')"></span>

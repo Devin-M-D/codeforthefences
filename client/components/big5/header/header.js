@@ -9,13 +9,13 @@ cDI.components.header = {
   strapAuthButton: async () => {
     $("#authBox").off("click")
     if (cDI.utils.isDef(cDI.session.token)){
-      cDI.widgets.modal.clickToModal($("#authBox"), "/components/genericWidgets/accountDash/accountDash.html", async (createdElem) => {
-        await strapAccountDash()
+      cDI.components.modal.clickToModal($("#authBox"), "components/genericWidgets", "accountDash", async (createdElem) => {
+        await cDI.components.accountDash.strapAccountDash()
         return createdElem
       }, true)
     }
     else {
-      cDI.widgets.modal.clickToModal($("#authBox"), "/components/genericWidgets/auth/auth.html", async () => {})
+      cDI.components.modal.clickToModal($("#authBox"), "components/genericWidgets", "auth", async () => {})
     }
   },
   strapHeaderHamburger: () => {
@@ -45,4 +45,3 @@ cDI.components.header = {
     return pane
   }
 }
-cDI.log(() => { console.log("Header component loaded") })

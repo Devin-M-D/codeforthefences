@@ -1,12 +1,5 @@
 module.exports = {
   getAllRecipes: {
-    // query: `
-    // SELECT @rid, @class, $depth, * FROM (
-    // 	TRAVERSE out(), inV() FROM (
-    //     SELECT FROM recipe
-    //   )
-    // )
-    // ORDER BY @class`,
     query: `
     SELECT @class, @rid, * FROM (
       TRAVERSE
@@ -34,4 +27,10 @@ module.exports = {
     `,
     params: {},
   },
+  saveEditedRecipe: async (editedRecipe) => {
+    console.log(editedRecipe["@rid"])
+    var recipeIngs = editedRecipe.recipeIngredient
+    console.log(recipeIngs)
+    return "hooray!"
+  }
 }

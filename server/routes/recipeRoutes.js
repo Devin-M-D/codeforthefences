@@ -6,10 +6,10 @@ module.exports = (DI) => {
     DI.rh.succeed(res, data)
   }))
   DI.router.post('/crud/recipe/u/', DI.rh.asyncRoute(async (req, res, next) => {
-    if (req.body.recipe){
-      console.log(req.body.recipe)
+    if (req.body.editedRecipe){
+      var data = await recipeService.saveEditedRecipe(req.body.editedRecipe)
     }
-    DI.rh.succeed(res, "reached /crud/recipe/u/")
+    DI.rh.succeed(res, data)
   }))
   DI.router.post('/crud/UoM/r/', DI.rh.asyncRoute(async (req, res, next) => {
     if (req.body.name){
@@ -18,7 +18,7 @@ module.exports = (DI) => {
     else {
       var data = await DI.data.rootQuery(`SELECT * FROM UoM`)
     }
-    succeed(res, data)
+    DI.rh.succeed(res, data)
   }))
   DI.router.post('/crud/foodType/r/', DI.rh.asyncRoute(async (req, res, next) => {
     if (req.body.name){

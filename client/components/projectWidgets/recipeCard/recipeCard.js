@@ -1,10 +1,10 @@
-cDI.widgets.recipeCard = {
+cDI.components.recipeCard = {
 //#region main loop
   buildRecipeCardList: async (recipes) => {
     var cardList = []
     recipes.forEach(async recipe => {
       // for (var x = 0; x < 11; x++){
-        cardList.push(await cDI.widgets.recipeCard.buildRecipeCard(recipe))
+        cardList.push(await cDI.components.recipeCard.buildRecipeCard(recipe))
       // }
     })
     return cardList
@@ -16,9 +16,9 @@ cDI.widgets.recipeCard = {
     card.attr("data-rid", recipe["@rid"])
 
     var pieces = cDI.services.recipe.parsePieces(recipe)
-    cDI.widgets.recipeCard.createStepPane(card, pieces.steps, pieces.ingredients, pieces.tools)
+    cDI.components.recipeCard.createStepPane(card, pieces.steps, pieces.ingredients, pieces.tools)
 
-    cDI.widgets.recipeCard.setEditMode(card, false)
+    cDI.components.recipeCard.setEditMode(card, false)
     return card
   },
 //#endregion
@@ -28,7 +28,7 @@ cDI.widgets.recipeCard = {
     var recipe = card.data("recipe")
     card.find(".cardIngs").empty()
     recipe.recipeIngredient.forEach((ingredient, x) => {
-      var ingLine = cDI.widgets.recipeCard.createIngLine(ingredient, editable)
+      var ingLine = cDI.components.recipeCard.createIngLine(ingredient, editable)
       card.find(".cardIngs").append(ingLine)
       if (editable){
         var line = card.find(`.cardIngs > .cardIngredient.Ing${ingredient.ingredientNum}`)
@@ -40,7 +40,7 @@ cDI.widgets.recipeCard = {
 
         var txtIngFood = line.find(`.txtIngFood.Ing${ingredient.ingredientNum}`)
         cDI.addAwaitableInput("click", txtIngFood, async (e, s) => {
-          return await cDI.components.searchSelect.buildSearchPane($(e.target), '/crud/foodType/r', 'name', cDI.widgets.recipeCard.acceptIngChange)
+          return await cDI.components.searchSelect.buildSearchPane($(e.target), '/crud/foodType/r', 'name', cDI.components.recipeCard.acceptIngChange)
         })
       }
     })
@@ -86,7 +86,7 @@ cDI.widgets.recipeCard = {
       var editedRecipe = card.data("editedrecipe")
       editedRecipe.recipeIngredient.find(x => x.ingredientNum == ingNum).ingredient.ingredientFood[0].foodType = newIng
       card.data("editedrecipe", editedRecipe)
-      cDI.widgets.recipeCard.createStepPane(card, null, null, null, true)
+      cDI.components.recipeCard.createStepPane(card, null, null, null, true)
     }
   },
   //#endregion
@@ -102,7 +102,7 @@ cDI.widgets.recipeCard = {
         ingredients = pieces.ingredients
         tools = pieces.tools
       }
-      var filledStepText = cDI.widgets.recipeCard.getFilledSteps(steps, ingredients, tools)
+      var filledStepText = cDI.components.recipeCard.getFilledSteps(steps, ingredients, tools)
       stepsPane.html(filledStepText)
     }
 
@@ -118,8 +118,8 @@ cDI.widgets.recipeCard = {
     var stepList = ``
     steps.forEach((step, x) => {
       var stepText = step.text
-      if (step.text.indexOf("{i") != -1) { stepText = cDI.widgets.recipeCard.addIngredientsToStep(ingredients, stepText) }
-      if (step.text.indexOf("{t") != -1) { stepText = cDI.widgets.recipeCard.addToolsToSteps(tools, stepText) }
+      if (step.text.indexOf("{i") != -1) { stepText = cDI.components.recipeCard.addIngredientsToStep(ingredients, stepText) }
+      if (step.text.indexOf("{t") != -1) { stepText = cDI.components.recipeCard.addToolsToSteps(tools, stepText) }
 
       stepList += `
       <span class="cardStep rows unwrap">
@@ -145,13 +145,13 @@ cDI.widgets.recipeCard = {
 
 //#region editMode and save
   setEditMode: (card, mode = 0) => {
-    cDI.widgets.recipeCard.buildEditBox(card, mode)
+    cDI.components.recipeCard.buildEditBox(card, mode)
     if (mode == 0){
-      cDI.widgets.recipeCard.createIngPane(card, false)
+      cDI.components.recipeCard.createIngPane(card, false)
     }
     else {
       card.data("editedrecipe", cDI.utils.clone(card.data("recipe")))
-      cDI.widgets.recipeCard.createIngPane(card, true)
+      cDI.components.recipeCard.createIngPane(card, true)
     }
   },
   buildEditBox: (card, mode = 0) => {
@@ -159,7 +159,7 @@ cDI.widgets.recipeCard = {
     if (mode == 0){
       editBox.html(`<span class="shpPencil absCen"></span>`)
       cDI.addAwaitableInput("click", editBox, async (e) => {
-        cDI.widgets.recipeCard.setEditMode($(e.target).parent().parent(), 1)
+        cDI.components.recipeCard.setEditMode($(e.target).parent().parent(), 1)
       })
     }
     else {
@@ -172,10 +172,10 @@ cDI.widgets.recipeCard = {
         </span>
       `)
       cDI.addAwaitableInput("click", card.find(".recipeEdit").find(".shpCheck"), async (e) => {
-        cDI.widgets.recipeCard.saveChanges($(e.target).parent().parent().parent().parent(), 0)
+        cDI.components.recipeCard.saveChanges($(e.target).parent().parent().parent().parent(), 0)
       })
       cDI.addAwaitableInput("click", card.find(".recipeEdit").find(".btnCancel"), async (e) => {
-        cDI.widgets.recipeCard.setEditMode($(e.target).parent().parent().parent().parent(), 0)
+        cDI.components.recipeCard.setEditMode($(e.target).parent().parent().parent().parent(), 0)
       })
     }
   },
@@ -204,6 +204,6 @@ cDI.widgets.recipeCard = {
     // })
     // console.log(card.data("editedrecipe"))
     // cDI.services.recipe.save(recipe)
-    //cDI.widgets.recipeCard.setEditMode(target, 0)
+    //cDI.components.recipeCard.setEditMode(target, 0)
   }
 }
