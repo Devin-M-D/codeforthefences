@@ -159,7 +159,7 @@ cDI.components.recipeCard = {
     if (mode == 0){
       editBox.html(`<span class="shpPencil absCen"></span>`)
       cDI.addAwaitableInput("click", editBox, async (e) => {
-        cDI.components.recipeCard.setEditMode($(e.target).parent().parent(), 1)
+        cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 1)
       })
     }
     else {
@@ -172,10 +172,10 @@ cDI.components.recipeCard = {
         </span>
       `)
       cDI.addAwaitableInput("click", card.find(".recipeEdit").find(".shpCheck"), async (e) => {
-        cDI.components.recipeCard.saveChanges($(e.target).parent().parent().parent().parent(), 0)
+        cDI.components.recipeCard.saveChanges($(e.target).closest(".recipeCard"), 0)
       })
       cDI.addAwaitableInput("click", card.find(".recipeEdit").find(".btnCancel"), async (e) => {
-        cDI.components.recipeCard.setEditMode($(e.target).parent().parent().parent().parent(), 0)
+        cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 0)
       })
     }
   },
