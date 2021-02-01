@@ -5,6 +5,7 @@ cDI.components.unitTests.recipe = {
     await cDI.awaitableInput("click", editButton)
 
     var searchSelectPane = await cDI.awaitableInput("click", $(".txtIngFood.Ing1"))
+    console.log(searchSelectPane)
     await cDI.awaitableInput("click", searchSelectPane.find(".btnClearInput"))
     await cDI.awaitableInput("click", searchSelectPane.find(".option1"))
 
