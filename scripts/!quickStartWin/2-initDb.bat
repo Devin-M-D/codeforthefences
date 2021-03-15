@@ -1,2 +1,2 @@
-CALL %ORIENTDB_HOME%\bin\console.bat %CFTF_HOME%\scripts\osql\resetDb.osql
-pause
+REM %CFTF_HOME%/scripts/!quickStartWin/osql/2-initOrientDb.bat
+%CFTF_HOME%/scripts/!quickStartWin/mysql/2-initMySqlDb.bat

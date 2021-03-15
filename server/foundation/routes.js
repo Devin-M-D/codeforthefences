@@ -1,6 +1,8 @@
 var path = require('path')
-var recipeRoutes = require('../routes/recipeRoutes')
+var userRoutes = require('../routes/userRoutes')
 var authRoutes = require('../routes/authRoutes')
+var blogRoutes = require('../routes/blogRoutes')
+var recipeRoutes = require('../routes/recipeRoutes')
 
 module.exports = async (DI) => {
 
@@ -30,24 +32,9 @@ module.exports = async (DI) => {
   )
   //#endregion
 
+  userRoutes(DI)
   authRoutes(DI)
-
-  //#region crud routes
-    router.post('/crud/users/r/', DI.rh.asyncRoute(async (req, res, next) => {
-      var data = await DI.rh.query(req, "SELECT * FROM user")
-      DI.rh.succeed(res, data)
-    }))
-    router.post('/crud/blog/r/', DI.rh.asyncRoute(async (req, res, next) => {
-      if (req.body.title){
-        var data = await DI.data.rootQuery(`SELECT * FROM blogPost WHERE title = :title`, { title: req.body.title})
-      }
-      else {
-        var data = await DI.data.rootQuery(`SELECT title, date FROM blogPost`)
-      }
-      DI.rh.succeed(res, data)
-    }))
-  //#endregion
-
+  blogRoutes(DI)
   recipeRoutes(DI)
 
   DI.express.app.use(router)

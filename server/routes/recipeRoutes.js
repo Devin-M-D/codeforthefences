@@ -7,7 +7,7 @@ module.exports = (DI) => {
   }))
   DI.router.post('/crud/recipe/u/', DI.rh.asyncRoute(async (req, res, next) => {
     if (req.body.editedRecipe){
-      var data = await recipeService.saveEditedRecipe(req.body.editedRecipe)
+      var data = await recipeService.saveEditedRecipe(req.body.editedRecipe, DI.data)
     }
     DI.rh.succeed(res, data)
   }))
