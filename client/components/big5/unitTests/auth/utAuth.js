@@ -1,45 +1,67 @@
 cDI.components.unitTests.auth = {
   runAllAuth: async () => {
+    ftbIndent()
+    ftbLog('UT: runAllAuth')
+    ftbIndent()
     await cDI.components.unitTests.auth.signup()
     await cDI.components.unitTests.auth.failCreateExistingUser()
     await cDI.components.unitTests.auth.login()
+    ftbOutdent()
+    ftbLog('UT: runAllAuth passed')
+    ftbOutdent()
   },
-  clickAuthIcon: async () => {
-    await cDI.awaitableInput("click", $("#iconAuth"))
+  clickAuthIcon: async () => { return await cDI.awaitableInput("click", $("#authBox")) },
+  clickSignup: async () => { return await cDI.awaitableInput("click", $("#btnSignup")) },
+  clickLogin: async () => { return await cDI.awaitableInput("click", $("#btnLogin")) },
+  setSignupVals: async (un) => {
+    $("#txtSgnUN").val(un)
+    $("#txtSgnPW").val("testpass")
+    $("#txtSgnConfPW").val("testpass")
   },
   signup: async () => {
-    console.log('UT: auth signup')
-    await cDI.awaitableInput("click", $(".iconAuth"))
+    ftbLog('UT: auth - 1. signup')
+    await cDI.session.logout()
+    await cDI.components.unitTests.auth.clickAuthIcon()
     var randomId = "utAuthUser_" + await cDI.utils.randomString(12)
-    $("#txtSgnUN").val(randomId)
-    $("#txtSgnPW").val("testpass")
-    $("#txtSgnConfPW").val("testpass")
-    await $("#btnSignup").triggerHandler("click")
+    await cDI.components.unitTests.auth.setSignupVals(randomId)
+    await cDI.awaitableInput("click", $("#btnSignup"))
+
+    if (cDI.session.username == randomId){ ftbLog("UT: auth - signup passed") }
+    else { ftbLog("UT: auth - signup failed") }
   },
   failCreateExistingUser: async () => {
-    $("#txtSgnUN").val("foo")
-    $("#txtSgnPW").val("testpass")
-    $("#txtSgnConfPW").val("testpass")
+    ftbLog('UT: auth - 2. failCreateExistingUser')
+    await cDI.session.logout()
     var errStr = "Unable to create new user, username is taken."
 
     var firstSignup = ""
-    var secondSignup = ""
-    firstSignup = await clickRes($("#iconAuth"))
-    await $("#btnSignup").triggerHandler("click")
+    firstSignup = await cDI.components.unitTests.auth.clickAuthIcon()
+    cDI.components.unitTests.auth.setSignupVals("foo")
+    firstSignup = await cDI.components.unitTests.auth.clickSignup()
 
+    await cDI.session.logout()
+
+    var secondSignup = ""
     if (firstSignup != errStr) {
-      secondSignup = await clickRes($("#iconAuth"))
-      await $("#btnSignup").triggerHandler("click")
+      secondSignup = await cDI.components.unitTests.auth.clickAuthIcon()
+      cDI.components.unitTests.auth.setSignupVals("foo")
+      secondSignup = await cDI.components.unitTests.auth.clickSignup()
     }
-    if (firstSignup == errStr || secondSignup == errStr) {
-      console.log('UT: auth failCreateExistingUser succeeded to fail')
+
+    if (firstSignup == errStr || secondSignup == errStr) { ftbLog('UT: auth - failCreateExistingUser passed') }
+    else {
+      ftbLog('UT: auth - failCreateExistingUser failed')
     }
   },
   login: async () => {
-    await cDI.awaitableInput("click", $("#authBox"))
-    console.log("UT: logging in")
+    ftbLog("UT: auth - 3. login")
+    await cDI.session.logout()
+    await cDI.components.unitTests.auth.clickAuthIcon()
     $("#txtLoginUN").val(cDI.config.user.username)
     $("#txtLoginPW").val(cDI.config.user.password)
-    await cDI.awaitableInput("click", $("#btnLogin"))
+    await cDI.components.unitTests.auth.clickLogin()
+
+    if (cDI.session.username == cDI.config.user.username){ ftbLog("UT: auth - login passed") }
+    else { ftbLog("UT: auth - login failed") }
   }
 }

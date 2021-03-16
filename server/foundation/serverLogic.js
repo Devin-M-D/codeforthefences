@@ -1,8 +1,13 @@
+var express = require('express')
+var cookieParser = require('cookie-parser')
+var session = require('express-session')
+var cors = require('cors')
+
 function configExpress() {
-  var express = require('express')
   var expressApp = express()
   expressApp.use(express.json())
   addCors(expressApp)
+  addSessions(expressApp)
   return {
     api: express,
     app: expressApp,
@@ -11,15 +16,23 @@ function configExpress() {
   }
 }
 function addCors(expressApp){
-  var cors = require('cors')
   expressApp.use(cors())
   expressApp.options('*', cors())
+}
+function addSessions(expressApp){
+  expressApp.use(cookieParser())
+  expressApp.use(session({
+    secret: "Shh, its a secret!",
+  	resave: true,
+  	saveUninitialized: true
+  }));
 }
 
 module.exports = async (debugging) => {
   var DI = {
     express: configExpress(),
-    sessions: []
+    //used by orientdb to query with the db user as query executor
+    //sessions: []
   }
   //add helper functions
   require('./diUtilFuncs')(DI)
@@ -28,7 +41,7 @@ module.exports = async (debugging) => {
   //set up routes
   require('./routes')(DI)
   // set up database connection
-  var dbSetUp = await require('./dbLogic')(DI)
+  var dbSetUp = await require('./dbLogicMySql')(DI)
   if (!dbSetUp) { return false }
   return DI
 }
