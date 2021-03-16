@@ -32,9 +32,12 @@ cDI.components.unitTests = {
   },
   customDevScenario: async () => {
     ftbLog("UT: Running custom dev scenario")
-    await cDI.components.unitTests.loginIfNeccessary()
+    //await cDI.components.unitTests.loginIfNeccessary()
 
-    await cDI.components.unitTests.recipe.runAllEditRecipe()
+    //await cDI.components.unitTests.recipe.runAllEditRecipe()
+
+    await cDI.components.unitTests.auth.runAllAuth()
+
   },
   loginIfNeccessary: async () => {
     //if not logged in, use debugConf set in bootstrap to set an impersonate

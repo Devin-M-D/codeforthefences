@@ -4,6 +4,7 @@ cDI.components.accountDash = {
   },
   strapAccountDash: async () => {
     $("#accountDashTitle").html(`${cDI.session.username}'s<br />Account Dash`)
-    $("#btnLogout").click(async () => { cDI.logout() })
+    $("#btnLogout").off()
+    cDI.addAwaitableInput("click", $("#btnLogout"), async () => { return await cDI.session.logout() })
   }
 }

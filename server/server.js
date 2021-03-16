@@ -1,9 +1,9 @@
 var debug = false
-var DI = require('./foundation/serverLogic')(debug)
-if (DI == false) { process.exit() }
+var DIstrapper = require('./foundation/serverLogic')(debug)
+if (DIstrapper == false) { process.exit() }
 else {
-  DI.then((di) => {
-    di.express.app.listen(di.express.port)
-    console.log('Magic happens on port ' + di.express.port)
+  DIstrapper.then((DI) => {
+    DI.express.app.listen(DI.express.port)
+    console.log('Magic happens on port ' + DI.express.port)
   })
 }

@@ -7,6 +7,7 @@ cDI.components.header = {
     $("#siteHeaderText").html(text)
   },
   strapAuthButton: async () => {
+    $("#iconAuth").empty()
     $("#authBox").off("click")
     if (cDI.utils.isDef(cDI.session.token)){
       cDI.components.modal.clickToModal($("#authBox"), "components/genericWidgets", "accountDash", async (createdElem) => {

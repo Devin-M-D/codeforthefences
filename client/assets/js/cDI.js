@@ -4,10 +4,7 @@ var cDI = {
   widgets: [],
   components: {},
   pages: {},
-  session: {
-    username: window.localStorage.getItem("cookbook.username"),
-    token: window.localStorage.getItem("cookbook.token"),
-  },
+  session: {},
 }
 
 //#region utils
@@ -256,8 +253,8 @@ cDI.remote = {
     if (enable_logging) { cDI.utils.ifTrace(`Building call to ${remoteURL} with initial data:`,  postData) }
 
     postData = postData || {}
-    if (cDI.utils.isDef(window.localStorage.getItem("cookbook.token"))) {
-      postData.token = window.localStorage.getItem("cookbook.token")
+    if (cDI.utils.isDef(window.localStorage.getItem("codeforthefences.token"))) {
+      postData.token = window.localStorage.getItem("codeforthefences.token")
     }
     postData = JSON.stringify(postData)
 
@@ -398,12 +395,12 @@ cDI.awaitableInput = async (inputType, elem) => {
 
 //#endregion
 
-//#region session and auth
+//#region localstorage
 cDI.persist = async (name, val) => {
   window.localStorage.setItem(name, val)
 }
-cDI.stored = async (name) => {
-  window.localStorage.getItem(name)
+cDI.stored = (name) => {
+  return window.localStorage.getItem(name)
 }
 cDI.unpersist = async (name) => {
   window.localStorage.removeItem(name)
@@ -411,14 +408,27 @@ cDI.unpersist = async (name) => {
 cDI.unpersistAll = async () => {
   window.localStorage.clear()
 }
-cDI.logout = async () => {
-  var callRes = await cDI.remote.remoteCall("/logout")
-  cDI.clearLogin()
-}
-cDI.clearLogin = () => {
-  cDI.unpersist("cookbook.username")
-  cDI.unpersist("cookbook.token")
-  location.reload(false)
+//#endregion
+
+//#region session
+cDI.session = {
+  setSession: async (un, token) => {
+    await cDI.persist("codeforthefences.username", un)
+    await cDI.persist("codeforthefences.token", token)
+    cDI.session.username = cDI.stored("codeforthefences.username")
+    cDI.session.token = cDI.stored("codeforthefences.token")
+  },
+  logout: async () => {
+    var callRes = await cDI.remote.remoteCall("/logout")
+    await cDI.session.clearLogin()
+  },
+  clearLogin: async () => {
+    await cDI.unpersist("codeforthefences.username")
+    await cDI.unpersist("codeforthefences.token")
+    await cDI.components.header.strapAuthButton()
+  },
+  username: cDI.stored("codeforthefences.username"),
+  token: cDI.stored("codeforthefences.token")
 }
 //#endregion
 

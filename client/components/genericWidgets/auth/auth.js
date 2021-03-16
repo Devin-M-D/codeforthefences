@@ -16,7 +16,20 @@ cDI.components.auth = {
         "password": pw,
         "confPW": confPw
       })
-      cDI.closeModal()
+      if (data.status == "s"){
+        user = data.payload
+        await cDI.session.setSession(user.username, user.sessionId)
+        await cDI.components.modal.raiseCurtain()
+        await cDI.components.header.strapAuthButton()
+      }
+      else if (data.payload == "Unable to create new user, username is taken.") {
+        $("#txtSgnUN").css("background-color", "coral")
+      }
+      else {
+        $("#btnSignup").css("background-color", "red")
+        $("#btnSignup").css("border-color", "coral")
+      }
+      return data.payload
     })
 
     cDI.addAwaitableInput("click", $("#btnLogin"), async (res) => {
@@ -26,10 +39,7 @@ cDI.components.auth = {
       console.log("callRes", callRes)
       await cDI.remote.h(callRes,
         async (token) => {
-          cDI.persist("cookbook.username", un)
-          cDI.persist("cookbook.token", token)
-          cDI.session.username = un
-          cDI.session.token = token
+          cDI.session.setSession(un, token)
           cDI.components.modal.raiseCurtain()
           await cDI.components.header.strapAuthButton()
           return callRes

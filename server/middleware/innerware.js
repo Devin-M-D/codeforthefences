@@ -31,25 +31,25 @@ module.exports = (DI, debugging) => {
     }
     next()
   })
-
-  //attach user db session to req
-  DI.express.app.use(async(req, res, next) => {
-    // console.log("Active Server Sessions: ",
-    //   DI.sessions.map((session) => { return { token: session.token, username: session.username, hasPool: DI.utils.isDef(session.dbPool) } })
-    // )
-    if (DI.utils.isDef(req.body.token)){
-      var userSession = DI.utils.findSession(req)
-      if (DI.utils.isDef(userSession)) {
-        req.username = userSession.username
-        req.dbPool = userSession.dbPool
-        req.token = userSession.token
-      }
-      else {
-        console.log("Token sent but userSession not found")
-        res.json({ status: "e", payload: "Unable to locate user session" })
-        return
-      }
-    }
-    next()
-  })
+  //
+  // //attach user db session to req
+  // DI.express.app.use(async(req, res, next) => {
+  //   // console.log("Active Server Sessions: ",
+  //   //   DI.sessions.map((session) => { return { token: session.token, username: session.username, hasPool: DI.utils.isDef(session.dbPool) } })
+  //   // )
+  //   if (DI.utils.isDef(req.body.token)){
+  //     var userSession = DI.utils.findSession(req)
+  //     if (DI.utils.isDef(userSession)) {
+  //       req.username = userSession.username
+  //       req.dbPool = userSession.dbPool
+  //       req.token = userSession.token
+  //     }
+  //     else {
+  //       console.log("Token sent but userSession not found")
+  //       res.json({ status: "e", payload: "Unable to locate user session" })
+  //       return
+  //     }
+  //   }
+  //   next()
+  // })
 }

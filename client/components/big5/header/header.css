@@ -12,19 +12,19 @@
 #authBox {
   overflow: visible;
 }
-.iconAuth:before, .iconAuth:after {
+#iconAuth:before, #iconAuth:after {
   position: absolute;
   background-color: var(--clrSecondary);
   content: '';
 }
-.iconAuth:before {
+#iconAuth:before {
   height: 25%;
   width: 25%;
   border-radius: 50%;
   top: 25%;
   content: '';
 }
-.iconAuth:after {
+#iconAuth:after {
   width: 50%;
   height: 25%;
   border-top-left-radius: 110px;
