@@ -2,23 +2,24 @@ USE codeforthefences;
 
 CREATE TABLE user (
   `id` int AUTO_INCREMENT primary key NOT NULL,
-  `username` nvarchar(64) NOT NULL UNIQUE,
+  `username` nvarchar(64) UNIQUE NOT NULL,
   `password` nvarchar(128) NOT NULL,
-  `sessionId` nvarchar(128) NULL
+  `sessionId` nvarchar(128) NULL,
+  `lastLogin` datetime NULL
 );
 
 CREATE TABLE blogPost (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `title` nvarchar(64) NOT NULL,
-  `date` nvarchar(48) NOT NULL,
-  `content` nvarchar(48) NOT NULL
+  `date` datetime NOT NULL,
+  `content` mediumtext NOT NULL
 );
 
 CREATE TABLE recipe (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `name` nvarchar(64) NOT NULL,
-  `duration` nvarchar(48) NOT NULL,
-  `servings` nvarchar(48) NOT NULL
+  `duration` nvarchar(64) NOT NULL,
+  `servings` nvarchar(64) NOT NULL
 );
 
 CREATE TABLE toolType (
@@ -54,15 +55,9 @@ CREATE TABLE foodCategory (
 CREATE TABLE foodType (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `name` nvarchar(32) NOT NULL,
-  `plural` nvarchar(32) NOT NULL,
-  `abbreviation` nvarchar(16) NOT NULL,
-  `plAbbrev` nvarchar(16) NOT NULL
-);
-
-CREATE TABLE foodTypeCategory (
-  `id` int AUTO_INCREMENT primary key NOT NULL,
-  `foodTypeId` int NOT NULL,
-  `foodCategoryId` int(64) NOT NULL
+  `plural` nvarchar(32) NULL,
+  `abbreviation` nvarchar(16) NULL,
+  `plAbbrev` nvarchar(16) NULL
 );
 
 CREATE TABLE prepStyle (
@@ -72,18 +67,35 @@ CREATE TABLE prepStyle (
   `description` nvarchar(16) NOT NULL
 );
 
+CREATE TABLE foodTypeCategory (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `foodTypeId` int NOT NULL,
+  `foodCategoryId` int(64) NOT NULL
+);
+
+CREATE TABLE food (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `foodTypeId` int NOT NULL,
+  `prepStyleId` int NULL
+);
+
+CREATE TABLE measureOfFood (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `foodId` int NOT NULL,
+  `UoMId` int NOT NULL
+);
+
 CREATE TABLE ingredient (
   `id` int AUTO_INCREMENT primary key NOT NULL,
-  `UoMId` int NOT NULL,
-  `prepStyleId` int NULL,
-  `foodTypeId` int NOT NULL
+  `measureOfFoodId` int NOT NULL,
+  `quantity` float NOT NULL
 );
 
 CREATE TABLE recipeIngredient (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `recipeId` int NOT NULL,
   `ingredientId` int NOT NULL,
-  `quantity` float NOT NULL
+  `ingredientIndex` int NOT NULL
 );
 
 CREATE TABLE step (
@@ -101,11 +113,13 @@ CREATE TABLE recipeStep (
 CREATE TABLE recipeStepTool (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `recipeStepId` int NOT NULL,
-  `recipeToolId` int NOT NULL
+  `barsIndex` int NOT NULL,
+  `recipeToolIndex` int NOT NULL
 );
 
 CREATE TABLE recipeStepIngredient (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `recipeStepId` int NOT NULL,
-  `recipeIngredientId` int NOT NULL
+  `barsIndex` int NOT NULL,
+  `recipeIngredientIndex` int NOT NULL
 );

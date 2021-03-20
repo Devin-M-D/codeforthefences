@@ -31,15 +31,13 @@ cDI.components.unitTests = {
     cDI.config.debugMode = currDebugMode
   },
   customDevScenario: async () => {
-    ftbLog("UT: Running custom dev scenario")
-    //await cDI.components.unitTests.loginIfNeccessary()
+    ftbLog("UT: customDevScenario")
+    await cDI.components.unitTests.loginIfNeccessary()
 
-    //await cDI.components.unitTests.recipe.runAllEditRecipe()
-
-    await cDI.components.unitTests.auth.runAllAuth()
-
+    // await cDI.components.unitTests.recipe.runAllEditRecipe()
   },
   loginIfNeccessary: async () => {
+    ftbLog("UT: loginIfNeccessary")
     //if not logged in, use debugConf set in bootstrap to set an impersonate
     if (!cDI.utils.isDef(cDI.session.token)) {
       ftbLog(`Not logged in, logging with ${cDI.config.user.username} and ${cDI.config.user.password}`)
@@ -49,6 +47,7 @@ cDI.components.unitTests = {
     else { await cDI.remote.remoteCall("/user/testToken") }
   },
   runAllUnitTests: async () => {
+    ftbLog("UT: runAllUnitTests")
     await cDI.components.unitTests.auth.runAllAuth()
     await cDI.components.unitTests.recipe.runAllEditRecipe()
   }

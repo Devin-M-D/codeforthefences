@@ -36,11 +36,10 @@ cDI.components.auth = {
       var un = $('#txtLoginUN').val()
       var pw = $('#txtLoginPW').val()
       var callRes = await cDI.remote.remoteCall("/login", {"username": un, "password": pw })
-      console.log("callRes", callRes)
       await cDI.remote.h(callRes,
         async (token) => {
-          cDI.session.setSession(un, token)
-          cDI.components.modal.raiseCurtain()
+          await cDI.session.setSession(un, token)
+          await cDI.components.modal.raiseCurtain()
           await cDI.components.header.strapAuthButton()
           return callRes
         },

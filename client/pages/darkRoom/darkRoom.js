@@ -22,7 +22,7 @@ cDI.pages.darkRoom = {
       imgs.push("img/shoot2/hl5.jpg")
       imgs.push("img/shoot2/hl6.jpg")
     }
-    buildCarousel({ target: $(".carousel"), imagePaths: imgs })
+    cDI.components.flexCarousel.buildCarousel({ target: $(".carousel"), imagePaths: imgs })
   }
 
 }
