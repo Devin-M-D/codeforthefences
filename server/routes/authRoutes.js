@@ -1,5 +1,3 @@
-const { v4: uuidv4 } = require('uuid');
-
 module.exports = (DI) => {
   DI.router.post('/signup', DI.rh.asyncRoute(async (req, res, next) =>
   {
@@ -24,7 +22,10 @@ module.exports = (DI) => {
     var user = await DI.data.runQuery(`SELECT * FROM user WHERE username = ? AND password = ?`, [ login.username, login.password ])
     console.log(user)
     if (user.id) {
-      await DI.data.runQuery(`UPDATE user SET sessionId = ? WHERE id = ?`, [ req.cookies['connect.sid'], user.id ])
+      await DI.data.runQuery(
+        `UPDATE user SET sessionId = ?, lastLogin = ? WHERE id = ?`,
+        [ req.cookies['connect.sid'], DI.datetimes.utcNow(), user.id ]
+      )
       DI.rh.succeed(res, req.cookies['connect.sid'])
     }
     else {
@@ -33,15 +34,10 @@ module.exports = (DI) => {
   }))
   DI.router.post('/logout', DI.rh.asyncRoute(async (req, res, next) =>
   {
-    // var userSession = DI.utils.findSession(req)
-    // if (!DI.utils.isDef(userSession)){
-    //   DI.rh.fail(res, "Couldn't locate user session to log out")
-    // }
-    // DI.sessions = DI.sessions.map((x) => {
-    //   if (x){
-    //     if (x.token != userSession.token) { return x }
-    //   }
-    // })
+    var user = await DI.data.runQuery(`SELECT * FROM user WHERE sessionId = ?`, [ req.cookies['connect.sid'] ])
+    if (user.length == 0){
+      DI.rh.fail(res, "Couldn't locate user session to log out")
+    }
     DI.rh.succeed(res, "User logged out")
   }))
   DI.router.post('/user/testToken', DI.rh.asyncRoute(async (req, res, next) =>

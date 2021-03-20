@@ -7,6 +7,7 @@ cDI.components.header = {
     $("#siteHeaderText").html(text)
   },
   strapAuthButton: async () => {
+    if ($("#accountDash") || $("#signupLoginBox")) { cDI.components.modal.raiseCurtain() }
     $("#iconAuth").empty()
     $("#authBox").off("click")
     if (cDI.utils.isDef(cDI.session.token)){

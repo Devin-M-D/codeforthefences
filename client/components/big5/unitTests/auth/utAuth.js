@@ -13,7 +13,7 @@ cDI.components.unitTests.auth = {
   clickAuthIcon: async () => { return await cDI.awaitableInput("click", $("#authBox")) },
   clickSignup: async () => { return await cDI.awaitableInput("click", $("#btnSignup")) },
   clickLogin: async () => { return await cDI.awaitableInput("click", $("#btnLogin")) },
-  setSignupVals: async (un) => {
+  setSignupVals: (un) => {
     $("#txtSgnUN").val(un)
     $("#txtSgnPW").val("testpass")
     $("#txtSgnConfPW").val("testpass")
