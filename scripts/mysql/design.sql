@@ -37,7 +37,7 @@ CREATE TABLE UoM (
 CREATE TABLE tool (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `toolTypeId` int NOT NULL,
-  `UoMId` int NOT NULL
+  `UoMId` int NULL
 );
 
 CREATE TABLE recipeTool (

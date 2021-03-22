@@ -41,7 +41,7 @@ module.exports = async (debugging) => {
   //set up routes
   require('./routes')(DI)
   // set up database connection
-  var dbSetUp = await require('./dbLogicMySql')(DI)
+  var dbSetUp = await require('./dbLogics/dbLogicNeo4j')
   if (!dbSetUp) { return false }
   return DI
 }

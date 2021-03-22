@@ -42,9 +42,9 @@ module.exports = async (DI) => {
   //#endregion
 
   userRoutes(DI)
-  authRoutes(DI)
-  blogRoutes(DI)
-  // recipeRoutes(DI)
+  // authRoutes(DI)
+  // blogRoutes(DI)
+  recipeRoutes(DI)
 
   DI.express.app.use(router)
 }
