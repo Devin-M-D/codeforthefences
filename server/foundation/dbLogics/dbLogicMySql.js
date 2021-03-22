@@ -7,7 +7,8 @@ function createConn(){
       	host     : 'localhost',
       	user     : 'root',
       	password : 'password',
-      	database : 'codeforthefences'
+      	database : 'codeforthefences',
+        multipleStatements: true
       })
     )
   })

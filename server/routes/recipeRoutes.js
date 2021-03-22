@@ -1,8 +1,9 @@
-var recipeService = require('../services/recipe')
+var recipeService = require('../services/recipeService')
 
 module.exports = (DI) => {
+  recipeService = recipeService(DI)
   DI.router.post('/crud/recipe/r/', DI.rh.asyncRoute(async (req, res, next) => {
-    var recipes = await DI.data.runQuery(`SELECT * FROM recipe WHERE username = ?`, [ newUser.username ])
+    var recipes = await recipeService.getAll()
     DI.rh.succeed(res, recipes)
   }))
   // DI.router.post('/crud/recipe/u/', DI.rh.asyncRoute(async (req, res, next) => {
