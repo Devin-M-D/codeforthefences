@@ -29,19 +29,17 @@ function addSessions(expressApp){
 }
 
 module.exports = async (debugging) => {
-  var DI = {
-    express: configExpress(),
-    //used by orientdb to query with the db user as query executor
-    //sessions: []
-  }
-  //add helper functions
-  require('./diUtilFuncs')(DI)
+  var express = configExpress()
+
   //add middleware
-  require('../middleware/innerware')(DI, debugging)
+  require('../middleware/innerware')(express.app, debugging)
+
   //set up routes
-  require('./routes')(DI)
+  require('./routes')(express.app, express.api)
+
   // set up database connection
-  var dbSetUp = await require('./dbLogics/dbLogicNeo4j')
+  var dbSetUp = require('./dbLogic')
+
   if (!dbSetUp) { return false }
-  return DI
+  return express.app
 }
