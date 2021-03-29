@@ -29,15 +29,12 @@ function queryConn(conn, query, params) {
     })
   })
 }
-module.exports = async (DI) => {
-  DI.data = {
-    runQuery: async (query, params = null) => {
-      var conn = await createConn()
-      var result = await queryConn(conn, query, params)
-      await closeConn(conn)
-      if (result.length == 1){ return result[0] }
-      return result
-    },
+module.exports = {
+  runQuery: async (query, params = null) => {
+    var conn = await createConn()
+    var result = await queryConn(conn, query, params)
+    await closeConn(conn)
+    if (result.length == 1){ return result[0] }
+    return result
   }
-  return true;
 }

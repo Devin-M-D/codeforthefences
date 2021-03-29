@@ -1,47 +1,51 @@
-module.exports = (DI) => {
-  DI.router.post('/signup', DI.rh.asyncRoute(async (req, res, next) =>
+var db = require('../foundation/dbLogic')
+var DI = require('../foundation/DICore')
+var userService = require("../services/userService")
+
+module.exports = (router) => {
+
+  router.post('/signup', DI.rh.asyncRoute(async (req, res, next) =>
   {
-    var newUser = req.body
-    var existingUser = await DI.data.runQuery(`SELECT * FROM user WHERE username = ?`, [ newUser.username ])
-    if (existingUser.length == 0){
-      var createdUser = await DI.data.runQuery(
-        `INSERT INTO user (username, password, sessionId) VALUES (?, ?, ?)`,
-        [ newUser.username, newUser.password, req.cookies['connect.sid'] ]
-      )
-      if (createdUser.insertId){
-        createdUser = await DI.data.runQuery(`SELECT * FROM user WHERE id = ?`, [ createdUser.insertId ])
-        DI.rh.succeed(res, createdUser)
+    try {
+      var newUser = req.body
+      var existingUser = await userService.findByName(newUser.username)
+      if (existingUser.length == 0){
+        var createdUser = await userService.createNew(newUser.username, newUser.password, req.cookies['connect.sid'])
+        if (createdUser.insertId){
+          createdUser = await userService.findById(createdUser.insertId)
+          DI.rh.succeed(res, createdUser)
+        }
       }
+      else { DI.rh.fail(res, "Unable to create new user, username is taken.") }
     }
-    else { DI.rh.fail(res, "Unable to create new user, username is taken.") }
-    DI.rh.fail(res, "Unable to create user, reason unknown.")
+    catch {
+      DI.rh.fail(res, "Unable to create user, reason unknown.")
+    }
   }))
-  DI.router.post('/login', DI.rh.asyncRoute(async (req, res, next) =>
+  router.post('/login', DI.rh.asyncRoute(async (req, res, next) =>
   {
     let login = req.body
-    var user = await DI.data.runQuery(`SELECT * FROM user WHERE username = ? AND password = ?`, [ login.username, login.password ])
-    console.log(user)
+    var user = await userService.findByLogin(login.username, login.password)
     if (user.id) {
-      await DI.data.runQuery(
-        `UPDATE user SET sessionId = ?, lastLogin = ? WHERE id = ?`,
-        [ req.cookies['connect.sid'], DI.datetimes.utcNow(), user.id ]
-      )
+      await userService.setSession(req.cookies['connect.sid'], user.id)
       DI.rh.succeed(res, req.cookies['connect.sid'])
     }
     else {
       DI.rh.fail(res, "Incorrect username or password")
     }
   }))
-  DI.router.post('/logout', DI.rh.asyncRoute(async (req, res, next) =>
+  router.post('/logout', DI.rh.asyncRoute(async (req, res, next) =>
   {
-    var user = await DI.data.runQuery(`SELECT * FROM user WHERE sessionId = ?`, [ req.cookies['connect.sid'] ])
+    var user = await userService.logout(req.cookies['connect.sid'])
     if (user.length == 0){
       DI.rh.fail(res, "Couldn't locate user session to log out")
     }
-    DI.rh.succeed(res, "User logged out")
+    else {
+      DI.rh.succeed(res, "User logged out")
+    }
   }))
-  DI.router.post('/user/testToken', DI.rh.asyncRoute(async (req, res, next) =>
+  router.post('/user/testToken', DI.rh.asyncRoute(async (req, res, next) =>
   {
-    await DI.rh.succeed(res, "landed on /user/testToken")
+    DI.rh.succeed(res, "landed on /user/testToken")
   }))
 }

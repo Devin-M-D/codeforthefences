@@ -1,21 +1,10 @@
-var v8 = require('v8');
-var moment = require('moment')
+var v8 = require('v8')
+var datetimes = require('../services/datetimes')
 
-module.exports = (DI) => {
-  DI.moment = moment
-  DI.datetimes = {
-    utcNow: () => {
-      return DI.moment.utc().format("YYYY-MM-DD hh:mm:ss")
-    }
-  }
-  DI.utils = {
+module.exports = {
+  datetimes: datetimes,
+  utils: {
     isDef: (obj) => { return (obj != null && obj != undefined) },
-    findSession: (req) => {
-      // return DI.sessions.find((session) => {
-      //   if (DI.utils.isDef(session)){ return session.token == req.body.token; }
-      //   else { return false }
-      // })
-    },
     pluck: (arr, key) => {
       return arr.map(x => { return x[key] })
     },
@@ -28,8 +17,8 @@ module.exports = (DI) => {
     clone: (obj) => {
       return v8.deserialize(v8.serialize(obj));
     },
-  }
-  DI.rh = {
+  },
+  rh: {
     asyncRoute: (callback) => {
       return function (req, res, next) {
         callback(req, res, next).catch(next)
@@ -56,10 +45,10 @@ module.exports = (DI) => {
       var data = await DI.data.runBatch(req.dbPool, query, params)
       return DI.rh.transformExpectMany(req, data)
     },
-    succeed: async (res, payload) => {
+    succeed: (res, payload) => {
       res.json({ status: "s", payload: payload })
     },
-    fail: async (res, payload) => {
+    fail: (res, payload) => {
       res.json({ status: "e", payload: payload })
     }
   }

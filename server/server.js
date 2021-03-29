@@ -1,9 +1,12 @@
-var debug = false
-var DIstrapper = require('./foundation/serverLogic')(debug)
-if (DIstrapper == false) { process.exit() }
-else {
-  DIstrapper.then((DI) => {
-    DI.express.app.listen(DI.express.port)
-    console.log('Magic happens on port ' + DI.express.port)
-  })
+var config = require("./config/config")
+
+async function run() {
+  var app = await require('./foundation/serverLogic')(config.debug)
+  if (app == false) { process.exit() }
+  else {
+    app.listen(config.port)
+    console.log('Magic happens on port ' + config.port)
+  }
 }
+
+run()

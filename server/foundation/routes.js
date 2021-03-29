@@ -1,15 +1,15 @@
 var path = require('path')
+var DI = require('./DICore')
 var userRoutes = require('../routes/userRoutes')
 var authRoutes = require('../routes/authRoutes')
-var blogRoutes = require('../routes/blogRoutes')
-var recipeRoutes = require('../routes/recipeRoutes')
+// var blogRoutes = require('../routes/blogRoutes')
+// var recipeRoutes = require('../routes/recipeRoutes')
 
-module.exports = async (DI) => {
+module.exports = async (expressApp, expressApi) => {
 
-  DI.express.app.use(DI.express.api.static(__dirname + '/../../client'))
-  DI.express.app.use(DI.express.api.static(__dirname + '/../../client/assets'))
-  var router = DI.express.api.Router()
-  DI.router = router
+  expressApp.use(expressApi.static(__dirname + '/../../client'))
+  expressApp.use(expressApi.static(__dirname + '/../../client/assets'))
+  var router = expressApi.Router()
 
   //#region main route that serves client html
   router.get('/', function(req, res) {
@@ -41,10 +41,10 @@ module.exports = async (DI) => {
   )
   //#endregion
 
-  userRoutes(DI)
-  // authRoutes(DI)
+  userRoutes(router)
+  authRoutes(router)
   // blogRoutes(DI)
-  recipeRoutes(DI)
+  // recipeRoutes()
 
-  DI.express.app.use(router)
+  expressApp.use(router)
 }

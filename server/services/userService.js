@@ -1,4 +1,6 @@
-var user = require("../models/mysql/userModel")
+var userModel = require("../models/mysql/userModel")
+var DI = require('../foundation/DICore')
+var db = require('../foundation/dbLogic')
 
 module.exports = {
   getAll: async () => {
@@ -8,7 +10,22 @@ module.exports = {
     // console.log(`users: ${located.length}`, located)
     return "foo"
   },
-  createNew: () => {
-    return new user({ username: 'user1' })
+  createNew: async (username, password, sessionId) => {
+    return await db.runQuery(userModel.create, [ username, password, sessionId ])
+  },
+  findByName: async (username) => {
+    return await db.runQuery(userModel.findByName, [ username ])
+  },
+  findById: async (id) => {
+    return await db.runQuery(userModel.findById, [ id ])
+  },
+  findByLogin: async (username, password) => {
+    return await db.runQuery(userModel.findByLogin, [ username, password ])
+  },
+  setSession: async (sessionId, id) => {
+    return await db.runQuery(userModel.setSession, [ sessionId, DI.datetimes.utcNow(), id ])
+  },
+  logout: async (sessionId) => {
+    return await db.runQuery(userModel.logout, [ sessionId ])
   }
 }

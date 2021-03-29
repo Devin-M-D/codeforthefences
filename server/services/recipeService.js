@@ -1,4 +1,4 @@
-var recipeModel = require("../models/mongo/recipeModel")
+var recipeModel = require("../models/mysql/recipeModel")
 
 module.exports = (DI) => {
   return {
