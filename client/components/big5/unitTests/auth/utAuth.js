@@ -1,13 +1,13 @@
 cDI.components.unitTests.auth = {
   runAllAuth: async () => {
     ftbIndent()
-    ftbLog('UT: runAllAuth')
+    ftbLogUT('UT: runAllAuth')
     ftbIndent()
     await cDI.components.unitTests.auth.signup()
     await cDI.components.unitTests.auth.failCreateExistingUser()
     await cDI.components.unitTests.auth.login()
     ftbOutdent()
-    ftbLog('UT: runAllAuth passed')
+    ftbLogUT('UT: runAllAuth passed')
     ftbOutdent()
   },
   clickAuthIcon: async () => { return await cDI.awaitableInput("click", $("#authBox")) },
@@ -19,18 +19,18 @@ cDI.components.unitTests.auth = {
     $("#txtSgnConfPW").val("testpass")
   },
   signup: async () => {
-    ftbLog('UT: auth - 1. signup')
+    ftbLogUT('UT: auth - 1. signup')
     await cDI.session.logout()
     await cDI.components.unitTests.auth.clickAuthIcon()
     var randomId = "utAuthUser_" + await cDI.utils.randomString(12)
     await cDI.components.unitTests.auth.setSignupVals(randomId)
     await cDI.awaitableInput("click", $("#btnSignup"))
 
-    if (cDI.session.username == randomId){ ftbLog("UT: auth - signup passed") }
-    else { ftbLog("UT: auth - signup failed") }
+    if (cDI.session.username == randomId){ ftbLogUT("passed") }
+    else { ftbLogUT("UT: auth - signup failed") }
   },
   failCreateExistingUser: async () => {
-    ftbLog('UT: auth - 2. failCreateExistingUser')
+    ftbLogUT('UT: auth - 2. failCreateExistingUser')
     await cDI.session.logout()
     var errStr = "Unable to create new user, username is taken."
 
@@ -48,20 +48,20 @@ cDI.components.unitTests.auth = {
       secondSignup = await cDI.components.unitTests.auth.clickSignup()
     }
 
-    if (firstSignup == errStr || secondSignup == errStr) { ftbLog('UT: auth - failCreateExistingUser passed') }
+    if (firstSignup == errStr || secondSignup == errStr) { ftbLogUT('passed') }
     else {
-      ftbLog('UT: auth - failCreateExistingUser failed')
+      ftbLogUT('UT: auth - failCreateExistingUser failed')
     }
   },
   login: async () => {
-    ftbLog("UT: auth - 3. login")
+    ftbLogUT("UT: auth - 3. login")
     await cDI.session.logout()
     await cDI.components.unitTests.auth.clickAuthIcon()
     $("#txtLoginUN").val(cDI.config.user.username)
     $("#txtLoginPW").val(cDI.config.user.password)
     await cDI.components.unitTests.auth.clickLogin()
 
-    if (cDI.session.username == cDI.config.user.username){ ftbLog("UT: auth - login passed") }
-    else { ftbLog("UT: auth - login failed") }
+    if (cDI.session.username == cDI.config.user.username){ ftbLogUT("passed") }
+    else { ftbLogUT("UT: auth - login failed") }
   }
 }

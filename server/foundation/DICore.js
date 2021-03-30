@@ -46,10 +46,14 @@ module.exports = {
       return DI.rh.transformExpectMany(req, data)
     },
     succeed: (res, payload) => {
-      res.json({ status: "s", payload: payload })
+      if (res._headerSent == false){
+        res.json({ status: "s", payload: payload })
+      }
     },
     fail: (res, payload) => {
-      res.json({ status: "e", payload: payload })
+      if (res._headerSent == false){
+        res.json({ status: "e", payload: payload })
+      }
     }
   }
 }
