@@ -187,7 +187,7 @@ cDI.remote.loadComponent = async (elem, folderPath, componentName, placement = 1
   if (placement == 0) { elem.prepend(html) }
   else if (placement == 1) { elem.append(html) }
 
-  ftbLog(`loading ${path}`)
+  ftbLogDev(`loading ${path}`)
   var DI = cDI.utils.getDIByCIName(componentName)
   if (DI.init) {
     await DI.init()
@@ -201,7 +201,7 @@ cDI.remote.loadComponent = async (elem, folderPath, componentName, placement = 1
 
 //#region logging
 cDI.logging = {
-  log: (message, data = null, levelOfMessage = 1, trace = false, callbackFn = null) => {
+  log: async (message, data = null, levelOfMessage = 1, trace = false, callbackFn = null) => {
     async function send(msg, obj, trace, fn) {
       cDI.logging.ifTrace(`${cDI.logging.tabSize}${msg}`, obj, trace)()
 
@@ -229,9 +229,9 @@ cDI.logging = {
       tmpDebugMode -= 1
     }
 
-    if (levelOfMessage == 1 && allowDev) { send(message, data, trace, callbackFn) }
-    else if (levelOfMessage == 2 && allowVerbose) { send(message, data, trace, callbackFn) }
-    else if (levelOfMessage == 4 && allowAJAX) { send(message, data, trace, callbackFn) }
+    if (levelOfMessage == 1 && allowDev) { await send(message, data, trace, callbackFn) }
+    else if (levelOfMessage == 2 && allowVerbose) { await send(message, data, trace, callbackFn) }
+    else if (levelOfMessage == 4 && allowAJAX) { await send(message, data, trace, callbackFn) }
   },
   ifTrace: (msg, data = null, trace = false) => {
     if (trace) {
@@ -252,8 +252,8 @@ cDI.logging = {
 //#region async inputs
 cDI.addAwaitableInput = async (inputType, elem, fn, trace = false, debounce = true) => {
   await elem.on(inputType, async (e) => {
-    ftbLog(`${inputType} occurred on elem: `, $(elem), 2, trace)
-    ftbLog(`result is: `, $(data), 2, trace)
+    ftbLogDev(`${inputType} occurred on elem: `, $(elem), 2, trace)
+    ftbLogDev(`result is: `, $(data), 2, trace)
     var data = await fn(e)
     return data
   })
@@ -311,4 +311,14 @@ cDI.session = {
 var ftbLog = cDI.logging.log
 var ftbIndent = cDI.logging.indent
 var ftbOutdent = cDI.logging.outdent
+var ftbLogDev = (() => {
+  return async (message, data = null, trace = false, callbackFn = null) => {
+    await ftbLog(message, data, 1, trace, callbackFn)
+  }
+})()
+var ftbLogUT = (() => {
+  return async (message, data = null, trace = false, callbackFn = null) => {
+    await ftbLog(message, data, 2, trace, callbackFn)
+  }
+})()
 //#endregion
