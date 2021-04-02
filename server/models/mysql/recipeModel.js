@@ -1,44 +1,62 @@
-module.exports = (DI) => {
-  var recipeService = {
-    getAllQuery: `
-    SET @recipeIds = (SELECT id FROM recipe ORDER BY name);
-    SELECT * FROM recipe ORDER BY name LIMIT 10;
+var DI = require('../../foundation/DICore')
+var db = require('../../foundation/dbLogic')
 
-    SELECT toolType.name as tool, toolType.description as 'desc', toolIndex as idx
+var recipeModel = {
+  getAllQuery: `
+    CREATE TEMPORARY TABLE recipeIds (id int);
+
+    INSERT INTO recipeIds
+    SELECT id FROM recipe ORDER BY name LIMIT 10;
+
+    SELECT * FROM recipe WHERE id IN (SELECT id FROM recipeIds);
+
+    SELECT recipeTool.recipeId, toolType.name as tool, toolType.description as 'desc', toolIndex as idx
     FROM recipeTool
     INNER JOIN tool ON tool.id = recipeTool.toolId
     LEFT JOIN UoM ON UoM.id = tool.UoMId
     INNER JOIN toolType ON toolType.id = tool.toolTypeId
-    WHERE recipeTool.recipeId IN (@recipeIds);
+    WHERE recipeTool.recipeId IN (SELECT id FROM recipeIds);
 
-    SELECT foodType.name, foodType.plural, ingredientIndex as idx, quantity, UoM.name, UoM.abbreviation
+    SELECT recipeIngredient.recipeId,
+      quantity,
+      UoM.name as UoMName, UoM.abbreviation as UoMAbbreviation,
+      foodType.name, foodType.plural, ingredientIndex as idx
     FROM recipeIngredient
     INNER JOIN ingredient ON ingredient.id = recipeIngredient.ingredientId
     INNER JOIN measureOfFood ON measureOfFood.id = ingredient.measureOfFoodId
     INNER JOIN UoM ON UoM.id = measureOfFood.UoMId
     INNER JOIN food ON food.id = measureOfFood.foodId
     INNER JOIN foodType ON foodType.id = food.foodTypeId
-    WHERE recipeIngredient.recipeId IN (@recipeIds);
-    `,
-    getAll: async () => {
-      var data = await DI.data.runQuery(recipeService.getAllQuery)
-      var recipe = data[1]
-      var tools = data[2]
-      var ingredients = data[3]
-      var extruded = await recipeService.extrudeRecipe(recipe, tools, ingredients)
-      console.log(extruded)
-      return extruded
-    },
-    extrudeRecipe: async (recipe, tools, ingredients) => {
-      return {
-        recipe: recipe,
-        tools: tools,
-        ingredients: ingredients
-      }
-    }
-  }
-  return recipeService
-  //SELECT * FROM recipe WHERE name LIKE '%?%'
-  // for ()
-  // return
+    WHERE recipeIngredient.recipeId IN (SELECT id FROM recipeIds);
+
+    SELECT recipeStep.recipeId, step.id, step.text,
+      recipeStepTool.barsIndex as toolBarsIndex, recipeStepTool.recipeToolIndex,
+      recipeStepIngredient.barsIndex as ingredientBarsIndex, recipeStepIngredient.recipeIngredientIndex
+    FROM recipeStep
+    INNER JOIN step ON step.id = recipeStep.stepId
+    INNER JOIN recipeStepTool ON recipeStep.id = recipeStepTool.recipeStepId
+    INNER JOIN recipeStepIngredient ON recipeStep.id = recipeStepIngredient.recipeStepId
+    WHERE recipeStep.recipeId IN (SELECT id FROM recipeIds);
+  `
 }
+recipeModel.getAll = async () => {
+  var data = await db.runQuery(recipeModel.getAllQuery)
+  // console.log(data)
+  var recipes = data[0]
+  var tools = data[1]
+  var ingredients = data[2]
+  var steps = data[3]
+  var extruded = await recipeModel.extrudeRecipe(recipes, tools, ingredients, steps)
+  return extruded
+}
+recipeModel.extrudeRecipe = async (recipes, tools, ingredients, steps) => {
+  recipes = recipes.map(x => {
+    x.tools = tools.filter(y => { return y.recipeId == x.id })
+    x.ingredients = ingredients.filter(y => { return y.recipeId == x.id })
+    x.steps = steps.filter(y => { return y.recipeId == x.id })
+    return x
+  })
+  return recipes
+}
+
+module.exports = recipeModel

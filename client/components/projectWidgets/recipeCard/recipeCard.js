@@ -2,6 +2,7 @@ cDI.components.recipeCard = {
 //#region main loop
   buildRecipeCardList: async (recipes) => {
     var cardList = []
+    console.log(recipes)
     recipes.forEach(async recipe => {
       // for (var x = 0; x < 11; x++){
         cardList.push(await cDI.components.recipeCard.buildRecipeCard(recipe))
@@ -13,10 +14,9 @@ cDI.components.recipeCard = {
     var card = $("#cargoHold").find(".recipeCard").clone()
     card.find(".recipeName").html(recipe.name)
     card.data("recipe", recipe)
-    card.attr("data-rid", recipe["@rid"])
+    card.attr("recipeId", recipe["id"])
 
-    var pieces = cDI.services.recipe.parsePieces(recipe)
-    cDI.components.recipeCard.createStepPane(card, pieces.steps, pieces.ingredients, pieces.tools)
+    cDI.components.recipeCard.createStepPane(card, recipe.steps, recipe.ingredients, recipe.tools)
 
     cDI.components.recipeCard.setEditMode(card, false)
     return card
@@ -27,7 +27,7 @@ cDI.components.recipeCard = {
   createIngPane: (card, editable = false) => {
     var recipe = card.data("recipe")
     card.find(".cardIngs").empty()
-    recipe.recipeIngredient.forEach((ingredient, x) => {
+    recipe.ingredients.forEach((ingredient, x) => {
       var ingLine = cDI.components.recipeCard.createIngLine(ingredient, editable)
       card.find(".cardIngs").append(ingLine)
       if (editable){
@@ -46,23 +46,22 @@ cDI.components.recipeCard = {
     })
   },
   createIngLine: (ingredient, editable = false) => {
-    var ingNum = ingredient.ingredientNum
-    ingredient = ingredient.ingredient
-    var ingName = ingredient.ingredientFood[0].foodType.name
-    if (ingredient.quantity != 1 && cDI.utils.isDef(ingredient.ingredientFood[0].foodType.plural)) {
-      ingName = ingredient.ingredientFood[0].foodType.plural
+    var ingNum = ingredient.idx
+    var ingName = ingredient.name
+    if (ingredient.quantity != 1 && cDI.utils.isDef(ingredient.plural)) {
+      ingName = ingredient.plural
     }
 
     var ing = `<span class="cardIngredient algnSS leftCopy fitW unwrap Ing${ingNum}">`
     if (editable){
       ing += `<input class="txtIngQuant Ing${ingNum}" type="text" value="${ingredient.quantity}" />`
-      ing += `<input class="txtIngUoM Ing${ingNum}" type="text" value="${ingredient.ingredientUoM[0].UoM.name}" />`
+      ing += `<input class="txtIngUoM Ing${ingNum}" type="text" value="${ingredient.UoMName}" />`
       ing += `<input class="txtIngFood Ing${ingNum}" type="text" value="${ingName}" />`
     }
     else {
       ing += `
         <span class="noGrow">${ingNum})&nbsp;</span>
-        <span class="displayBlock leftCopy">${ingredient.quantity} ${ingredient.ingredientUoM[0].UoM.abbreviation} ${ingName}</span>
+        <span class="displayBlock leftCopy">${ingredient.quantity} ${ingredient.UoMAbbreviation} ${ingName}</span>
         `
     }
     ing += `</span>`
@@ -97,10 +96,9 @@ cDI.components.recipeCard = {
     var build = () => {
       if (steps == null || ingredients == null || tools == null){
         var recipe = ((useEdited) ? card.data("editedrecipe") : card.data("recipe"))
-        var pieces = cDI.services.recipe.parsePieces(recipe)
-        steps = pieces.steps
-        ingredients = pieces.ingredients
-        tools = pieces.tools
+        steps = recipe.steps
+        ingredients = recipe.ingredients
+        tools = recipe.tools
       }
       var filledStepText = cDI.components.recipeCard.getFilledSteps(steps, ingredients, tools)
       stepsPane.html(filledStepText)
@@ -131,7 +129,7 @@ cDI.components.recipeCard = {
   },
   addIngredientsToStep: (ingredients, stepText) => {
     ingredients.forEach((ingredient, x) => {
-      stepText = stepText.replace(`{i${x}}`, `<span class="stepIngredient">${ingredient.ingredientFood[0].foodType.name}</span>`)
+      stepText = stepText.replace(`{i${x}}`, `<span class="stepIngredient">${ingredient.name}</span>`)
     })
     return stepText
   },
@@ -182,7 +180,8 @@ cDI.components.recipeCard = {
 //#endregion
 
   saveChanges: async (card) => {
-    cDI.services.recipe.save(card.data("editedrecipe"))
+    console.log(card.data("editedrecipe"))
+    //cDI.services.recipe.save(card.data("editedrecipe"))
 
     // var recipe = card.data("recipe")
     // var editedRecipe = card.data("editedrecipe")

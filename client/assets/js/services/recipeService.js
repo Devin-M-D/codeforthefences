@@ -1,7 +1,7 @@
 cDI.services.recipe = {
   getAllRecipes: async () => {
     var callRes = await cDI.remote.remoteCall("/crud/recipe/r/", { expectMany: true })
-    console.log(callRes)
+    return callRes.payload
   },
   parsePieces: (recipe) => {
     var ingredients = recipe.recipeIngredient.sort((a, b) => a.ingredientNum < b.ingredientNum).map(x => x.ingredient)

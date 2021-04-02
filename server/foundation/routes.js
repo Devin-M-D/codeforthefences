@@ -3,7 +3,7 @@ var DI = require('./DICore')
 var userRoutes = require('../routes/userRoutes')
 var authRoutes = require('../routes/authRoutes')
 // var blogRoutes = require('../routes/blogRoutes')
-// var recipeRoutes = require('../routes/recipeRoutes')
+var recipeRoutes = require('../routes/recipeRoutes')
 
 module.exports = async (expressApp, expressApi) => {
 
@@ -44,7 +44,7 @@ module.exports = async (expressApp, expressApi) => {
   userRoutes(router)
   authRoutes(router)
   // blogRoutes(DI)
-  // recipeRoutes()
+  recipeRoutes(router)
 
   expressApp.use(router)
 }
