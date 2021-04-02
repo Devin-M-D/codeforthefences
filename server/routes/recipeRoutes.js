@@ -1,8 +1,8 @@
 var recipeService = require('../services/recipeService')
+var DI = require('../foundation/DICore')
 
-module.exports = (DI) => {
-  recipeService = recipeService(DI)
-  DI.router.post('/crud/recipe/r/', DI.rh.asyncRoute(async (req, res, next) => {
+module.exports = (router) => {
+  router.post('/crud/recipe/r/', DI.rh.asyncRoute(async (req, res, next) => {
     var recipes = await recipeService.getAll()
     DI.rh.succeed(res, recipes)
   }))

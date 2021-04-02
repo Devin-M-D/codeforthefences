@@ -6,4 +6,8 @@ module.exports = (router) => {
     var users = await userService.getAll()
     DI.rh.succeed(res, users)
   }))
+  router.post('/users/findByName', DI.rh.asyncRoute(async (req, res, next) => {
+    var users = await userService.findByName(req.body.name)
+    DI.rh.succeed(res, users)
+  }))
 }
