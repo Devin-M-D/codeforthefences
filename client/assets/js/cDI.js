@@ -122,20 +122,17 @@ cDI.sequencer.debounce = async (key, fn, delay) => {
 
 //#region remote
 cDI.remote = {
-  remoteCall: async (remoteURL, postData = {}, enable_logging = false) => {
-    if (enable_logging) { cDI.utils.ifTrace(`Building call to ${remoteURL} with initial data:`,  postData) }
+  remoteCall: async (remoteURL, postData = {}) => {
+    ftbLogAjax(`Building call to ${remoteURL} with initial data:`,  postData, true)
 
     postData = postData || {}
-    if (cDI.utils.isDef(window.localStorage.getItem("codeforthefences.token"))) {
-      postData.token = window.localStorage.getItem("codeforthefences.token")
-    }
     postData = JSON.stringify(postData)
 
     var callType = "POST"
     if (remoteURL.indexOf(".json") != -1) { callType = "GET" }
 
     return new Promise((fulfill, reject) => {
-      if (enable_logging) { cDI.utils.ifTrace(`Sending call to ${remoteURL} with postData data:`,  postData) }
+      ftbLogAjax(`Sending call to ${remoteURL} with postData data:`,  postData, true)
 
       $.ajax({
         type: callType,
@@ -145,15 +142,12 @@ cDI.remote = {
         dataType: "json",
         async: true,
         success: function (callRes) {
-          if (enable_logging == 1) { console.log("Call to:  " + remoteURL + " - Succeeded: ", callRes) }
-          ftbLog(`Resolved call to ${remoteURL} - succeeded:`, callRes, 4)
+          ftbLogAjax("Call to:  " + remoteURL + " - Succeeded: ", callRes)
           if (callRes.status == "e" && callRes.payload == "Unable to locate user session") { cDI.clearLogin()  }
           fulfill(callRes)
         },
         error: function (callRes) {
-          ftbLog("XHR failed, really shouldn't ever land here from requests to Cookbook", callRes, 4)
-          // if (enable_logging == 1) { console.error("Call to: " + remoteURL + " - Failed:", callRes) }
-          // ftbLog(`Resolved call to ${remoteURL} - failed:`, callRes, 4)
+          console.error("Call to: " + remoteURL + " - Failed:", callRes)
           reject(callRes);
         },
       })
@@ -319,6 +313,11 @@ var ftbLogDev = (() => {
 var ftbLogUT = (() => {
   return async (message, data = null, trace = false, callbackFn = null) => {
     await ftbLog(message, data, 2, trace, callbackFn)
+  }
+})()
+var ftbLogAjax = (() => {
+  return async (message, data = null, trace = false, callbackFn = null) => {
+    await ftbLog(message, data, 4, trace, callbackFn)
   }
 })()
 //#endregion

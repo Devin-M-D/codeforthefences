@@ -28,18 +28,14 @@ function addSessions(expressApp){
   }));
 }
 
+var innerware = require('../middleware/innerware')
+var routes = require('./routes')
+var outerware = require('../middleware/outerware')
+
 module.exports = async (debugging) => {
   var express = configExpress()
-
-  //add middleware
-  require('../middleware/innerware')(express.app, debugging)
-
-  //set up routes
-  require('./routes')(express.app, express.api)
-
-  // set up database connection
-  var dbSetUp = require('./dbLogic')
-
-  if (!dbSetUp) { return false }
+  innerware(express.app, debugging)
+  routes(express.app, express.api)
+  outerware(express.app, debugging)
   return express.app
 }
