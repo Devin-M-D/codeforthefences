@@ -1,4 +1,5 @@
 var recipeService = require('../services/recipeService')
+var ingredientService = require('../services/ingredientService')
 var DI = require('../foundation/DICore')
 
 module.exports = (router) => {
@@ -21,13 +22,13 @@ module.exports = (router) => {
   //   }
   //   DI.rh.succeed(res, data)
   // }))
-  // DI.router.post('/crud/foodType/r/', DI.rh.asyncRoute(async (req, res, next) => {
-  //   if (req.body.name){
-  //     var data = await DI.data.rootQuery(`SELECT * FROM foodType WHERE name LIKE '%' + :name + '%'`, { name: req.body.name})
-  //   }
-  //   else {
-  //     var data = await DI.data.rootQuery("SELECT * FROM foodType")
-  //   }
-  //   DI.rh.succeed(res, data)
-  // }))
+  router.post('/crud/foodType/r/', DI.rh.asyncRoute(async (req, res, next) => {
+    if (req.body.name){
+      var data = await ingredientService.findFoodTypeByName(req.body.name)
+    }
+    else {
+      var data = await ingredientService.getAllFoodTypes()
+    }
+    DI.rh.succeed(res, data)
+  }))
 }

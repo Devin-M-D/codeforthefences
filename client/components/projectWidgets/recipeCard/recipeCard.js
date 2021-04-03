@@ -25,20 +25,24 @@ cDI.components.recipeCard = {
 
 //#region ing pane
   createIngPane: (card, editable = false) => {
-    var recipe = card.data("recipe")
+    var recipe = null
+
+    if (editable) recipe = card.data("editedrecipe")
+    else recipe = card.data("recipe")
+
     card.find(".cardIngs").empty()
     recipe.ingredients.forEach((ingredient, x) => {
       var ingLine = cDI.components.recipeCard.createIngLine(ingredient, editable)
       card.find(".cardIngs").append(ingLine)
       if (editable){
-        var line = card.find(`.cardIngs > .cardIngredient.Ing${ingredient.ingredientNum}`)
+        var line = card.find(`.cardIngs > .cardIngredient.Ing${ingredient.idx}`)
 
-        var txtIngUoM = line.find(`.txtIngUoM.Ing${ingredient.ingredientNum}`)
+        var txtIngUoM = line.find(`.txtIngUoM.Ing${ingredient.idx}`)
         cDI.addAwaitableInput("click", txtIngUoM, async (e, s) => {
           return await cDI.components.searchSelect.buildSearchPane($(e.target), '/crud/UoM/r', 'name')
         })
 
-        var txtIngFood = line.find(`.txtIngFood.Ing${ingredient.ingredientNum}`)
+        var txtIngFood = line.find(`.txtIngFood.Ing${ingredient.idx}`)
         cDI.addAwaitableInput("click", txtIngFood, async (e, s) => {
           return await cDI.components.searchSelect.buildSearchPane($(e.target), '/crud/foodType/r', 'name', cDI.components.recipeCard.acceptIngChange)
         })
@@ -78,12 +82,12 @@ cDI.components.recipeCard = {
     }
     var inputClasses = input.attr('class').split(" ")
     var ingNum = inputClasses.filter(x => x.indexOf("Ing") == 0)[0].replace("Ing", "")
-    var origIng = recipe.recipeIngredient.filter(x => x.ingredientNum == ingNum)[0].ingredient.ingredientFood[0].foodType
+    var origIng = recipe.ingredients.filter(x => x.idx == ingNum)[0].name
     var newIng = input.data("searchselectrecord")
 
     if (origIng["@rid"] != newIng["@rid"]){
       var editedRecipe = card.data("editedrecipe")
-      editedRecipe.recipeIngredient.find(x => x.ingredientNum == ingNum).ingredient.ingredientFood[0].foodType = newIng
+      editedRecipe.ingredients.find(x => x.idx == ingNum).name = newIng
       card.data("editedrecipe", editedRecipe)
       cDI.components.recipeCard.createStepPane(card, null, null, null, true)
     }

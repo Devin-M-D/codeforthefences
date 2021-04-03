@@ -33,8 +33,10 @@ cDI.components.unitTests = {
   customDevScenario: async () => {
     await cDI.components.unitTests.loginIfNeccessary()
     ftbLogUT("UT: customDevScenario")
-
-    // await cDI.components.unitTests.recipe.runAllEditRecipe()
+    ftbIndent()
+    await cDI.components.unitTests.recipe.runAllEditRecipe()
+    ftbOutdent()
+    ftbLogUT("UT: customDevScenario completed")
   },
   loginIfNeccessary: async () => {
     ftbLogUT("UT: loginIfNeccessary")
