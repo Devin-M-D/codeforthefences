@@ -23,11 +23,17 @@ module.exports = (router) => {
   //   DI.rh.succeed(res, data)
   // }))
   router.post('/crud/foodType/r/', DI.rh.asyncRoute(async (req, res, next) => {
-    if (req.body.name){
-      var data = await ingredientService.findFoodTypeByName(req.body.name)
+    if (req.body.searchString){
+      var data = await ingredientService.findFoodTypeByName(req.body.searchString)
     }
     else {
       var data = await ingredientService.getAllFoodTypes()
+    }
+    DI.rh.succeed(res, data)
+  }))
+  router.post('/crud/foodType/c/', DI.rh.asyncRoute(async (req, res, next) => {
+    if (req.body.newValue){
+      var data = await ingredientService.createFoodType(req.body.newValue)
     }
     DI.rh.succeed(res, data)
   }))

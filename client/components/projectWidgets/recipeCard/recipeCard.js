@@ -44,7 +44,11 @@ cDI.components.recipeCard = {
 
         var txtIngFood = line.find(`.txtIngFood.Ing${ingredient.idx}`)
         cDI.addAwaitableInput("click", txtIngFood, async (e, s) => {
-          return await cDI.components.searchSelect.buildSearchPane($(e.target), '/crud/foodType/r', 'name', cDI.components.recipeCard.acceptIngChange)
+          return await cDI.components.searchSelect.buildSearchPane(
+            $(e.target), '/crud/foodType/r', 'name',
+            cDI.components.recipeCard.acceptIngChange,
+            true, "crud/foodType/c"
+          )
         })
       }
     })

@@ -29,11 +29,15 @@ function queryConn(conn, query, params) {
     })
   })
 }
+
 module.exports = {
   runQuery: async (query, params = null) => {
     var conn = await createConn()
     var result = await queryConn(conn, query, params)
     await closeConn(conn)
+    if (result.constructor.name == "OkPacket"){
+      return result.insertId
+    }
     result = result.filter(x => { return x.constructor.name != "OkPacket" })
     result = JSON.parse(JSON.stringify(result))
     if (result.length == 1 && result[0].constructor.name != "Array"){ return result[0] }

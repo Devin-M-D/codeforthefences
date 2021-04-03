@@ -7,5 +7,8 @@ module.exports = {
   },
   findFoodTypeByName: async (name) => {
     return await ingredientModel.findFoodTypeByName(name)
+  },
+  createFoodType: async (name) => {
+    return await ingredientModel.createFoodType(name)
   }
 }

@@ -17,27 +17,30 @@ cDI.components.searchSelect = {
     cDI.addAwaitableInput("click", inputContainer.find(".btnClearInput"), async () => {
       return await cDI.components.searchSelect.clear(tempInput)
     })
-    cDI.components.searchSelect.setKeyup(source, pane, tempInput, searchRoute, propName)
+    cDI.components.searchSelect.setKeyup(source, pane, tempInput, searchRoute, propName, allowAdd, addRoute)
     cDI.components.drawerPane.openDrawerPane(pane)
 
     return await cDI.awaitableInput("keyup", tempInput)
   },
-  setKeyup: async (source, pane, tempInput, searchRoute, propName) => {
+  setKeyup: async (source, pane, tempInput, searchRoute, propName, allowAdd, addRoute) => {
     cDI.addAwaitableInput("keyup", tempInput, async (e) => {
-      var searchString = $(e.target).val()
+      $(".searchSelectResults").remove()
+      pane.append(`
+        <span class="searchSelectResults cols algnSX fitH">
+          <span id="spinnerContainer" class="fitW"><span class="spinner"></span></span>
+        </span>
+      `)
 
       return cDI.sequencer.debounce("searchSelect", async () => {
-        console.log("running search")
-        $(".searchSelectResults").remove()
+        var searchString = $(e.target).val()
+        ftbLogDev(`running search at ${searchRoute} for ${searchString}`)
+        var searchRes = await cDI.remote.remoteCall(searchRoute, { expectMany: true, searchString: searchString })
+        $("#spinnerContainer").remove()
 
-        var searchRes = await cDI.remote.remoteCall(searchRoute, { name: searchString })
-        pane.append(`<span class="searchSelectResults cols algnSX fitH"></span>`)
-        $(".searchSelectResults").append(`<span class="fitW"><span class="spinner"></span></span>`)
-
-        if (searchRes.payload.length == 0){
+        if (searchRes.payload.length == 0 && allowAdd){
           $(".searchSelectResults").append(`<span id="searchSelectAddNew" class="shpPlus"></span>`)
-          cDI.addAwaitableInput("click", $("#searchSelectAddNew"), () => {
-            cDI.components.searchSelect.addNew(searchString)
+          cDI.addAwaitableInput("click", $("#searchSelectAddNew"), async () => {
+            await cDI.components.searchSelect.addNew(addRoute, searchString)
           })
         }
         else {
@@ -60,8 +63,8 @@ cDI.components.searchSelect = {
       }, 500)
     })
   },
-  addNew: async(value) => {
-    console.log(value)
+  addNew: async(addRoute, newValue) => {
+    var addRes = await cDI.remote.remoteCall(addRoute, { newValue: newValue })
   },
   clear: async (input) => {
     input.val("")
