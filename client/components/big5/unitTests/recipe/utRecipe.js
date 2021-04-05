@@ -6,11 +6,7 @@ cDI.components.unitTests.recipe = {
 
     var searchSelectPane = await cDI.awaitableInput("click", $(".txtIngFood.Ing1"))
     await cDI.awaitableInput("click", searchSelectPane.find(".btnClearInput"))
-
-    searchSelectPane.find(".searchSelectInputTemp").val("test")
-    cDI.awaitableInput("keyup", searchSelectPane.find(".searchSelectInputTemp"))
-
-    // await cDI.awaitableInput("click", searchSelectPane.find(".option1"))
+    await cDI.awaitableInput("click", searchSelectPane.find(".option1"))
 
     // var saveButton = recipeCard.find(".shpCheck")
     // await cDI.awaitableInput("click", saveButton)

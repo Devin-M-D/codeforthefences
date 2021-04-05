@@ -10,14 +10,14 @@ var recipeModel = {
 
     SELECT * FROM recipe WHERE id IN (SELECT id FROM recipeIds);
 
-    SELECT recipeTool.recipeId, toolType.name as tool, toolType.description as 'desc', toolIndex as idx
+    SELECT recipeTool.recipeId, toolType.name as name, toolType.description as 'desc', toolIndex as idx
     FROM recipeTool
     INNER JOIN tool ON tool.id = recipeTool.toolId
     LEFT JOIN UoM ON UoM.id = tool.UoMId
     INNER JOIN toolType ON toolType.id = tool.toolTypeId
     WHERE recipeTool.recipeId IN (SELECT id FROM recipeIds);
 
-    SELECT recipeIngredient.recipeId,
+    SELECT recipeIngredient.recipeId, recipeIngredient.id,
       quantity,
       UoM.name as UoMName, UoM.abbreviation as UoMAbbreviation,
       foodType.name, foodType.plural, ingredientIndex as idx
