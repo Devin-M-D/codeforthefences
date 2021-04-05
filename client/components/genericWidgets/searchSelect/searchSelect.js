@@ -10,6 +10,7 @@ cDI.components.searchSelect = {
     inputContainer = pane.find(".searchSelectInputContainer")
 
     inputContainer.append(tempInput)
+    tempInput.val("")
     tempInput.off("onfocus")
     tempInput.addClass("searchSelectInputTemp")
     tempInput.focus()
@@ -17,12 +18,12 @@ cDI.components.searchSelect = {
     cDI.addAwaitableInput("click", inputContainer.find(".btnClearInput"), async () => {
       return await cDI.components.searchSelect.clear(tempInput)
     })
-    cDI.components.searchSelect.setKeyup(source, pane, tempInput, searchRoute, propName, allowAdd, addRoute)
+    cDI.components.searchSelect.setKeyup(source, pane, tempInput, searchRoute, propName, fn, allowAdd, addRoute)
     cDI.components.drawerPane.openDrawerPane(pane)
 
     return await cDI.awaitableInput("keyup", tempInput)
   },
-  setKeyup: async (source, pane, tempInput, searchRoute, propName, allowAdd, addRoute) => {
+  setKeyup: async (source, pane, tempInput, searchRoute, propName, fn, allowAdd, addRoute) => {
     cDI.addAwaitableInput("keyup", tempInput, async (e) => {
       $(".searchSelectResults").remove()
       pane.append(`

@@ -78,22 +78,19 @@ cDI.components.recipeCard = {
   acceptIngChange: (input) => {
     var card = input.closest(".recipeCard")
     var recipe
-    if (card.data("editedrecipe")){
-      recipe = card.data("editedrecipe")
-    }
-    else {
-      recipe = card.data("recipe")
-    }
+    if (card.data("editedrecipe")){ recipe = card.data("editedrecipe") }
+    else { recipe = card.data("recipe") }
     var inputClasses = input.attr('class').split(" ")
     var ingNum = inputClasses.filter(x => x.indexOf("Ing") == 0)[0].replace("Ing", "")
     var origIng = recipe.ingredients.filter(x => x.idx == ingNum)[0].name
     var newIng = input.data("searchselectrecord")
 
-    if (origIng["@rid"] != newIng["@rid"]){
+    if (origIng.id != newIng.id){
       var editedRecipe = card.data("editedrecipe")
-      editedRecipe.ingredients.find(x => x.idx == ingNum).name = newIng
+      editedRecipe.ingredients.find(x => x.idx == ingNum).name = newIng.name
       card.data("editedrecipe", editedRecipe)
-      cDI.components.recipeCard.createStepPane(card, null, null, null, true)
+      console.log("editedrecipe", editedRecipe)
+      cDI.components.recipeCard.createStepPane(card, editedRecipe.steps, editedRecipe.ingredients, editedRecipe.tools, true)
     }
   },
   //#endregion
@@ -102,12 +99,6 @@ cDI.components.recipeCard = {
   createStepPane: async (card, steps, ingredients, tools, useEdited = false) => {
     var stepsPane = card.find(".cardSteps")
     var build = () => {
-      if (steps == null || ingredients == null || tools == null){
-        var recipe = ((useEdited) ? card.data("editedrecipe") : card.data("recipe"))
-        steps = recipe.steps
-        ingredients = recipe.ingredients
-        tools = recipe.tools
-      }
       var filledStepText = cDI.components.recipeCard.getFilledSteps(steps, ingredients, tools)
       stepsPane.html(filledStepText)
     }
@@ -143,7 +134,7 @@ cDI.components.recipeCard = {
   },
   addToolsToSteps: (tools, stepText) => {
     tools.forEach((tool, x) => {
-      stepText = stepText.replace(`{t${x}}`, `<span class="stepTool">${tool.name}</span>`)
+      stepText = stepText.replace(`{t${x}}`, `<span class="stepTool">${tool.name.toLowerCase()}</span>`)
     })
     return stepText
   },
