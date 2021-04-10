@@ -3,12 +3,21 @@ var db = require('../foundation/dbLogic')
 
 module.exports = {
   getAllFoodTypes: async (name) => {
-    return await ingredientModel.getAllFoodTypes()
+    return await db.runQuery(ingredientModel.getAllFoodTypes)
   },
-  findFoodTypeByName: async (name) => {
-    return await ingredientModel.findFoodTypeByName(name)
+  findFoodTypesByName: async (name) => {
+    return await db.runQuery(ingredientModel.findFoodTypesByName, [ `%${name}%` ])
   },
   createFoodType: async (name) => {
-    return await ingredientModel.createFoodType(name)
+    return await db.runQuery(ingredientModel.createFoodType, [ name ])
+  },
+
+  getUoMsByName: async (name) => {
+    return await db.runQuery(ingredientModel.getUoMsByName, [ `%${name}%` ])
+  },
+
+  findMeasureOfFood: async(recipeId, quantity, UoMName, variantName, foodTypeName, prepStyleName) => {
+    var paramSet = [ recipeId, quantity, UoMName, foodTypeName, variantName, prepStyleName ]
+    return await db.runQuery(ingredientModel.findMeasureOfFood(variantName, prepStyleName), paramSet)
   }
 }

@@ -5,7 +5,7 @@ cDI.components.unitTests.recipe = {
     await cDI.awaitableInput("click", editButton)
 
     var searchSelectPane = await cDI.awaitableInput("click", $(".txtIngFood.Ing0"))
-    await cDI.awaitableInput("click", searchSelectPane.find(".option3"))
+    await cDI.awaitableInput("click", searchSelectPane.find(":contains('parsley'):last"))
 
     var saveButton = recipeCard.find(".shpCheck")
     await cDI.awaitableInput("click", saveButton)
