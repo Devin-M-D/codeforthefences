@@ -89,7 +89,6 @@ cDI.components.recipeCard = {
       var editedRecipe = card.data("editedrecipe")
       editedRecipe.ingredients.find(x => x.idx == ingNum).name = newIng.name
       card.data("editedrecipe", editedRecipe)
-      console.log("editedrecipe", editedRecipe)
       cDI.components.recipeCard.createStepPane(card, editedRecipe.steps, editedRecipe.ingredients, editedRecipe.tools, true)
     }
   },
@@ -179,29 +178,7 @@ cDI.components.recipeCard = {
 //#endregion
 
   saveChanges: async (card) => {
-    console.log(card.data("editedrecipe"))
-    //cDI.services.recipe.save(card.data("editedrecipe"))
-
-    // var recipe = card.data("recipe")
-    // var editedRecipe = card.data("editedrecipe")
-    // console.log(recipe)
-    // recipe.recipeIngredient.forEach((ingredient, i) => {
-    //   // console.log(i, ingredient)
-    //   var recipeFoodType = ingredient.ingredient.ingredientFood[0].foodType.name
-    //   console.log(recipeFoodType)
-    //   var ingLine = card.find(`.cardIngredient.Ing${i + 1}`)
-    //   if (ingLine != null){
-    //     var foodInput = ingLine.find(".txtIngFood")
-    //     var inputFoodType = foodInput.val()
-    //     console.log(inputFoodType)
-    //     if (inputFoodType != ingredient.ingredient.ingredientFood[0].foodType.name && inputFoodType != ingredient.ingredient.ingredientFood[0].foodType.plural){
-    //       console.log(`update ing ${i + 1}: ${recipeFoodType} to ${inputFoodType}`)
-    //       editedRecipe.recipeIngredient[i] = inputFoodType
-    //     }
-    //   }
-    // })
-    // console.log(card.data("editedrecipe"))
-    // cDI.services.recipe.save(recipe)
-    //cDI.components.recipeCard.setEditMode(target, 0)
+    console.log("saving", card.data("editedrecipe"))
+    cDI.services.recipe.save(card.data("editedrecipe"))
   }
 }

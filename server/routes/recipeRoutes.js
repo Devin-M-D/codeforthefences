@@ -7,12 +7,10 @@ module.exports = (router) => {
     var recipes = await recipeService.getAll()
     DI.rh.succeed(res, recipes)
   }))
-  // DI.router.post('/crud/recipe/u/', DI.rh.asyncRoute(async (req, res, next) => {
-  //   if (req.body.editedRecipe){
-  //     var data = await recipeService.saveEditedRecipe(req.body.editedRecipe, DI.data)
-  //   }
-  //   DI.rh.succeed(res, data)
-  // }))
+  router.post('/crud/recipe/u/', DI.rh.asyncRoute(async (req, res, next) => {
+    var recipes = await recipeService.saveEditedRecipe(req.body.editedRecipe)
+    DI.rh.succeed(res, "foo")
+  }))
   // DI.router.post('/crud/UoM/r/', DI.rh.asyncRoute(async (req, res, next) => {
   //   if (req.body.name){
   //     var data = await DI.data.rootQuery(`SELECT * FROM UoM WHERE name LIKE '%' + :name + '%'`, { name: req.body.name})

@@ -15,6 +15,5 @@ cDI.services.recipe = {
   },
   save: async (editedRecipe) => {
     var res = await cDI.remote.remoteCall("/crud/recipe/u/", { editedRecipe: editedRecipe })
-    ftbLog("", res)
   }
 }
