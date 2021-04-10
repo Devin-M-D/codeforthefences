@@ -31,19 +31,28 @@ INSERT INTO foodType (name, plural) VALUES ('marshmallow', 'marshmallows');
 SET @marshId = LAST_INSERT_ID();
 INSERT INTO foodType (name) VALUES ('cereal');
 SET @cerealId = LAST_INSERT_ID();
+INSERT INTO foodType (name) VALUES ('sausage');
+INSERT INTO foodType (name) VALUES ('parsley');
 
-INSERT INTO food (foodTypeId, prepStyleId) VALUES (@butterId, NULL);
+INSERT INTO food (foodTypeId, foodVariantId) VALUES (@butterId, NULL);
 SET @butterFoodId = LAST_INSERT_ID();
-INSERT INTO food (foodTypeId, prepStyleId) VALUES (@marshId, NULL);
+INSERT INTO food (foodTypeId, foodVariantId) VALUES (@marshId, NULL);
 SET @marshFoodId = LAST_INSERT_ID();
-INSERT INTO food (foodTypeId, prepStyleId) VALUES (@cerealId, NULL);
+INSERT INTO food (foodTypeId, foodVariantId) VALUES (@cerealId, NULL);
 SET @cerealFoodId = LAST_INSERT_ID();
 
-INSERT INTO measureOfFood (foodId, UoMId) VALUES (@butterFoodId, @UoMTbspID);
+INSERT INTO preppedFood (foodId, prepStyleId) VALUES (@butterFoodId, NULL);
+SET @butterPreppedFoodId = LAST_INSERT_ID();
+INSERT INTO preppedFood (foodId, prepStyleId) VALUES (@marshFoodId, NULL);
+SET @marshPreppedFoodId = LAST_INSERT_ID();
+INSERT INTO preppedFood (foodId, prepStyleId) VALUES (@cerealFoodId, NULL);
+SET @cerealPreppedFoodId = LAST_INSERT_ID();
+
+INSERT INTO measureOfFood (preppedFoodId, UoMId) VALUES (@butterPreppedFoodId, @UoMTbspID);
 SET @butterMeasure = LAST_INSERT_ID();
-INSERT INTO measureOfFood (foodId, UoMId) VALUES (@marshFoodId, @UoMCupID);
+INSERT INTO measureOfFood (preppedFoodId, UoMId) VALUES (@marshPreppedFoodId, @UoMCupID);
 SET @marshMeasure = LAST_INSERT_ID();
-INSERT INTO measureOfFood (foodId, UoMId) VALUES (@cerealFoodId, @UoMCupID);
+INSERT INTO measureOfFood (preppedFoodId, UoMId) VALUES (@cerealPreppedFoodId, @UoMCupID);
 SET @cerealMeasure = LAST_INSERT_ID();
 
 INSERT INTO ingredient (measureOfFoodId, quantity) VALUES (@butterMeasure, 3);

@@ -47,11 +47,6 @@ CREATE TABLE recipeTool (
   `toolIndex` int NOT NULL
 );
 
-CREATE TABLE foodCategory (
-  `id` int AUTO_INCREMENT primary key NOT NULL,
-  `name` nvarchar(64) NOT NULL
-);
-
 CREATE TABLE foodType (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `name` nvarchar(32) NOT NULL,
@@ -60,28 +55,45 @@ CREATE TABLE foodType (
   `plAbbrev` nvarchar(16) NULL
 );
 
-CREATE TABLE prepStyle (
+CREATE TABLE foodVariant (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `name` nvarchar(32) NOT NULL,
   `abbreviation` nvarchar(32) NOT NULL,
-  `description` nvarchar(16) NOT NULL
-);
-
-CREATE TABLE foodTypeCategory (
-  `id` int AUTO_INCREMENT primary key NOT NULL,
-  `foodTypeId` int NOT NULL,
-  `foodCategoryId` int(64) NOT NULL
+  `description` nvarchar(64) NOT NULL
 );
 
 CREATE TABLE food (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `foodTypeId` int NOT NULL,
+  `foodVariantId` int NULL
+);
+
+CREATE TABLE foodCategory (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `name` nvarchar(64) NOT NULL
+);
+
+CREATE TABLE categorizedFood (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `foodId` int NOT NULL,
+  `foodCategoryId` int NOT NULL
+);
+
+CREATE TABLE prepStyle (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `name` nvarchar(32) NOT NULL,
+  `description` nvarchar(64) NOT NULL
+);
+
+CREATE TABLE preppedFood (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `foodId` int NOT NULL,
   `prepStyleId` int NULL
 );
 
 CREATE TABLE measureOfFood (
   `id` int AUTO_INCREMENT primary key NOT NULL,
-  `foodId` int NOT NULL,
+  `preppedFoodId` int NULL,
   `UoMId` int NOT NULL
 );
 

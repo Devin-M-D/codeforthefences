@@ -1,5 +1,6 @@
 var DI = require('../../foundation/DICore')
 var db = require('../../foundation/dbLogic')
+var ingredientModel = require("./ingredientModel")
 
 var recipeModel = {
   getAllQuery: `
@@ -20,13 +21,8 @@ var recipeModel = {
     SELECT recipeIngredient.recipeId, recipeIngredient.id,
       quantity,
       UoM.name as UoMName, UoM.abbreviation as UoMAbbreviation,
-      foodType.name, foodType.plural, ingredientIndex as idx
-    FROM recipeIngredient
-    INNER JOIN ingredient ON ingredient.id = recipeIngredient.ingredientId
-    INNER JOIN measureOfFood ON measureOfFood.id = ingredient.measureOfFoodId
-    INNER JOIN UoM ON UoM.id = measureOfFood.UoMId
-    INNER JOIN food ON food.id = measureOfFood.foodId
-    INNER JOIN foodType ON foodType.id = food.foodTypeId
+      foodVariant.name as foodVariant, foodType.name as name, foodType.plural, prepStyle.name as prepStyle, ingredientIndex as idx
+    FROM ${ingredientModel.ingredientJoins}
     WHERE recipeIngredient.recipeId IN (SELECT id FROM recipeIds);
 
     SELECT recipeStep.recipeId, step.id, step.text,
