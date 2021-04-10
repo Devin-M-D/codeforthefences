@@ -7,5 +7,8 @@ module.exports = {
   },
   createNew: () => {
 
+  },
+  saveEditedRecipe: (editedRecipe) => {
+    console.log(editedRecipe)
   }
 }
