@@ -87,7 +87,10 @@ cDI.components.recipeCard = {
 
     if (origIng.id != newIng.id){
       var editedRecipe = card.data("editedrecipe")
+      console.log(editedRecipe.ingredients.find(x => x.idx == ingNum))
+      console.log(newIng)
       editedRecipe.ingredients.find(x => x.idx == ingNum).name = newIng.name
+      editedRecipe.ingredients.find(x => x.idx == ingNum).foodTypeId = newIng.id
       card.data("editedrecipe", editedRecipe)
       cDI.components.recipeCard.createStepPane(card, editedRecipe.steps, editedRecipe.ingredients, editedRecipe.tools, true)
     }

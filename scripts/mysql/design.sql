@@ -49,7 +49,7 @@ CREATE TABLE recipeTool (
 
 CREATE TABLE foodType (
   `id` int AUTO_INCREMENT primary key NOT NULL,
-  `name` nvarchar(32) NOT NULL,
+  `name` nvarchar(32) NOT NULL UNIQUE,
   `plural` nvarchar(32) NULL,
   `abbreviation` nvarchar(16) NULL,
   `plAbbrev` nvarchar(16) NULL
@@ -58,14 +58,15 @@ CREATE TABLE foodType (
 CREATE TABLE foodVariant (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `name` nvarchar(32) NOT NULL,
-  `abbreviation` nvarchar(32) NOT NULL,
-  `description` nvarchar(64) NOT NULL
+  `abbreviation` nvarchar(32) NULL,
+  `description` nvarchar(64) NULL
 );
 
 CREATE TABLE food (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `foodTypeId` int NOT NULL,
-  `foodVariantId` int NULL
+  `foodVariantId` int NULL,
+  CONSTRAINT uc_food UNIQUE (foodTypeId, foodVariantId)
 );
 
 CREATE TABLE foodCategory (

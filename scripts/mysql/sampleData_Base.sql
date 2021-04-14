@@ -31,8 +31,25 @@ INSERT INTO foodType (name, plural) VALUES ('marshmallow', 'marshmallows');
 SET @marshId = LAST_INSERT_ID();
 INSERT INTO foodType (name) VALUES ('cereal');
 SET @cerealId = LAST_INSERT_ID();
+
 INSERT INTO foodType (name) VALUES ('sausage');
 INSERT INTO foodType (name) VALUES ('parsley');
+
+INSERT INTO foodType (name) VALUES ('chicken');
+SET @chickenId = LAST_INSERT_ID();
+INSERT INTO foodType (name) VALUES ('peas');
+SET @peasId = LAST_INSERT_ID();
+INSERT INTO foodVariant (name) VALUES ('blackened');
+SET @blackenedId = LAST_INSERT_ID();
+INSERT INTO foodVariant (name) VALUES ('canned');
+SET @cannedId = LAST_INSERT_ID();
+INSERT INTO foodVariant (name) VALUES ('mushy');
+SET @mushyId = LAST_INSERT_ID();
+INSERT INTO food (foodTypeId, foodVariantId) VALUES (@chickenId, @blackenedId);
+INSERT INTO food (foodTypeId, foodVariantId) VALUES (@chickenId, @cannedId);
+INSERT INTO food (foodTypeId, foodVariantId) VALUES (@peasId, @cannedId);
+INSERT INTO food (foodTypeId, foodVariantId) VALUES (@peasId, @mushyId);
+
 
 INSERT INTO food (foodTypeId, foodVariantId) VALUES (@butterId, NULL);
 SET @butterFoodId = LAST_INSERT_ID();

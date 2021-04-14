@@ -10,11 +10,12 @@ module.exports = {
 
   },
   saveEditedRecipe: async (editedRecipe) => {
+    var origRecipe = await recipeModel.getFullById(editedRecipe.id)
+    console.log(origRecipe.ingredients.find(x => x.idx == 0))
+    console.log(editedRecipe.ingredients.find(x => x.idx == 0))
     for (var x = 0; x < editedRecipe.ingredients.length; x++){
       var curr = editedRecipe.ingredients[x]
-      console.log(curr)
-      var data = await ingredientService.findMeasureOfFood(curr.recipeId, curr.quantity, curr.UoMName, curr.foodVariant, curr.name, curr.prepStyle)
-      console.log(data)
+      //var data = await ingredientService.findMeasureOfFood(curr.recipeId, curr.quantity, curr.UoMName, curr.foodVariant, curr.name, curr.prepStyle)
     }
   }
 }
