@@ -17,7 +17,11 @@ module.exports = {
   },
 
   findMeasureOfFood: async(recipeId, quantity, UoMName, variantName, foodTypeName, prepStyleName) => {
+    var query = ingredientModel.findMeasureOfFood(variantName, prepStyleName)
     var paramSet = [ recipeId, quantity, UoMName, foodTypeName, variantName, prepStyleName ]
-    return await db.runQuery(ingredientModel.findMeasureOfFood(variantName, prepStyleName), paramSet)
+
+    console.log(query)
+    console.log(paramSet)
+    // return await db.runQuery(query, paramSet)
   }
 }
