@@ -1,12 +1,30 @@
 var v8 = require('v8')
 var datetimes = require('../services/datetimes')
 
-module.exports = {
+var DI = {
   datetimes: datetimes,
   utils: {
     isDef: (obj) => { return (obj != null && obj != undefined) },
     pluck: (arr, key) => {
       return arr.map(x => { return x[key] })
+    },
+    isArray: (toTest) => {
+        return Array.isArray(toTest)
+    },
+    isLiteralObj: (toTest) => {
+        return (!!toTest) && (toTest.constructor === Object) && (!Array.isArray(toTest)) && !(typeof toTest == "string")
+    },
+    //DI.utils.doIfLiteralObj(obj, x => { })
+    doIfLiteralObj: (toTest, fn) => {
+      if (DI.utils.isLiteralObj(toTest)) {
+        fn(toTest)
+      }
+    },
+    //DI.utils.doIfArray(obj, x => { })
+    doIfArray: (toTest, fn) => {
+      if (DI.utils.isArray(toTest)){
+        fn(toTest)
+      }
     },
     unique: (arr, key) => {
       return [...new Set(DI.utils.pluck(arr, key))]
@@ -65,3 +83,8 @@ module.exports = {
     }
   }
 }
+DI.pPrint = (json) => {
+  console.log(JSON.stringify(json, null, "  "))
+}
+
+module.exports = DI
