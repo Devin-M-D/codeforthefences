@@ -11,9 +11,25 @@ INSERT INTO quantity (deci, frac) VALUES (0.25, '1/4');
 SET @quantity14Id = LAST_INSERT_ID();
 
 INSERT INTO UoM (name, abbreviation) VALUES ('tablespoon', 'tbsp');
-SET @UoMTbspID = LAST_INSERT_ID();
+SET @UoMTbspId = LAST_INSERT_ID();
 INSERT INTO UoM (name, abbreviation) VALUES ('cup', 'c');
-SET @UoMCupID = LAST_INSERT_ID();
+SET @UoMCupId = LAST_INSERT_ID();
+INSERT INTO UoM (name, abbreviation) VALUES ('large', 'lg');
+SET @UoMLgId = LAST_INSERT_ID();
+
+INSERT INTO toolType (name, description) VALUES ('Pan', 'Metal pan used on the stovetop');
+SET @panToolId = LAST_INSERT_ID();
+INSERT INTO toolType (name, description) VALUES ('Wax paper', 'Non-stick wax or parchment paper');
+SET @waxPaperId = LAST_INSERT_ID();
+
+INSERT INTO tool (toolTypeId, UoMId) VALUES (@panToolId, @UoMLgID);
+SET @lgPanId = LAST_INSERT_ID();
+INSERT INTO tool (toolTypeId, UoMId) VALUES (@waxPaperId, NULL);
+SET @plainWaxPaperId = LAST_INSERT_ID();
+
+INSERT INTO recipe_tool (recipeId, toolId, toolIndex) VALUES (@cerealTreatsId, @lgPanId, 0);
+INSERT INTO recipe_tool (recipeId, toolId, toolIndex) VALUES (@cerealTreatsId, @plainWaxPaperId, 1);
+
 
 INSERT INTO substance (name) VALUES ('butter');
 SET @butterId = LAST_INSERT_ID();

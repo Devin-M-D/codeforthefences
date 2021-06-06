@@ -27,6 +27,23 @@ CREATE TABLE recipe (
   `servings` nvarchar(64) NOT NULL
 );
 
+CREATE TABLE toolType (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `name` nvarchar(64) NOT NULL,
+  `description` nvarchar(256) NOT NULL
+);
+CREATE TABLE tool (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `toolTypeId` int NOT NULL,
+  `UoMId` int NULL
+);
+CREATE TABLE recipe_tool (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `recipeId` int NOT NULL,
+  `toolId` int NOT NULL,
+  `toolIndex` int NOT NULL
+);
+
 CREATE TABLE ingredient (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `quantityId` int NOT NULL,
