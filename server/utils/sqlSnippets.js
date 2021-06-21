@@ -17,6 +17,7 @@ function buildJoin (dir) {
 
 function projections (table) {
   var retVal = []
+    retVal.push(`${table.tableName}.id AS ${table.tableName}_id`)
     for (var field in table["fields"]){
       field = table["fields"][field]
       retVal.push(`${table.tableName}.${field} AS ${table.tableName}_${field}`)
@@ -29,8 +30,8 @@ function addSet (alias) {
   return {
     body: (queryBody) => {
       var retVal =
-`CREATE TEMPORARY TABLE tmp_tool (${queryBody});
-SELECT * FROM tmp_tool;`
+`CREATE TEMPORARY TABLE ${alias} (${queryBody});
+SELECT * FROM ${alias};`
       return retVal
     }
   }
