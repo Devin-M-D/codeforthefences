@@ -1,14 +1,50 @@
 var db = require('./foundation/dbLogic')
-var SQLgraph = require('./foundation/SQLgraph')(db)
-var recipeModel = require('./models/mysql/graphRecipeModel')
+var SQLgraph = require('./foundation/SQLgraph')
+var ss = require('./foundation/sqlSnippets2')
+//var qb = require('./foundation/queryBuilder')
+var recipeModel = require('./models/mysql/graphModels2')
 
+// var run = async () => {
+//   console.log(JSON.stringify([recipeModel], null, "  "))
+//
+//   console.log(
+//     await SQLgraph.read([recipeModel]).send()
+//   )
+// }
 var run = async () => {
-  console.log(JSON.stringify([recipeModel], null, "  "))
+  var query =
+`
+${ss.addSet("tmp_recipe").body(`SELECT
+  ${ss.projections(recipeModel.recipe)},
+  FROM recipe
+  WHERE recipe.name LIKE '%treat%'
+`)}
 
-  console.log(
-    await SQLgraph.read([recipeModel]).send()
-  )
+${ss.addSet("tmp_tool").body(`SELECT
+  ${ss.projections(recipeModel.recipe_tool)},
+  ${ss.projections(recipeModel.toolType)},
+  ${ss.projections(recipeModel.UoM)}
+  FROM tool
+  ${ss.join("tool", "toolType")}
+  ${ss.lJoin("tool", "UoM")}
+  ${ss.join("tool", "recipe_tool", "id", "toolId")}
+  ${ss.join("recipe_tool", "tmp_recipe", "recipeId", "id")}
+`)}
+`
+  console.log(query)
+
+  // var query = `${ss.tempTable("recipe").body(ss.select())}`
+  // console.log(query)
+
+  // var queryObjs = SQLgraph.read(recipeModel)
+  // console.log(queryObjs.query)
+  // console.log(queryObjs.params)
+  //
+  // console.log(
+  //   await db.runQuery(queryObjs.query, queryObjs.params)
+  // )
 }
+
 
 run()
         //       // quantity: null
