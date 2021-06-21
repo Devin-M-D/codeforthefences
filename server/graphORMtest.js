@@ -1,60 +1,32 @@
 var db = require('./foundation/dbLogic')
-var SQLgraph = require('./foundation/SQLgraph')
-var ss = require('./foundation/sqlSnippets2')
-//var qb = require('./foundation/queryBuilder')
-var recipeModel = require('./models/mysql/graphModels2')
+var ss = require('./utils/sqlSnippets')
+var recipeModels = require('./models/recipe')
 
-// var run = async () => {
-//   console.log(JSON.stringify([recipeModel], null, "  "))
-//
-//   console.log(
-//     await SQLgraph.read([recipeModel]).send()
-//   )
-// }
 var run = async () => {
   var query =
 `
-${ss.addSet("tmp_recipe").body(`SELECT
-  ${ss.projections(recipeModel.recipe)},
+${ss.addSet("tmp_recipe").body(`
+  SELECT
+    ${ss.projections(recipeModels.recipe)}
   FROM recipe
   WHERE recipe.name LIKE '%treat%'
 `)}
 
-${ss.addSet("tmp_tool").body(`SELECT
-  ${ss.projections(recipeModel.recipe_tool)},
-  ${ss.projections(recipeModel.toolType)},
-  ${ss.projections(recipeModel.UoM)}
+${ss.addSet("tmp_tool").body(`
+  SELECT
+    ${ss.projections(recipeModels.tools.recipe_tool)},
+    ${ss.projections(recipeModels.tools.toolType)},
+    ${ss.projections(recipeModels.tools.UoM)}
   FROM tool
   ${ss.join("tool", "toolType")}
   ${ss.lJoin("tool", "UoM")}
   ${ss.join("tool", "recipe_tool", "id", "toolId")}
-  ${ss.join("recipe_tool", "tmp_recipe", "recipeId", "id")}
+  ${ss.join("recipe_tool", "tmp_recipe", "recipeId", "recipe_id")}
 `)}
 `
   console.log(query)
-
-  // var query = `${ss.tempTable("recipe").body(ss.select())}`
-  // console.log(query)
-
-  // var queryObjs = SQLgraph.read(recipeModel)
-  // console.log(queryObjs.query)
-  // console.log(queryObjs.params)
-  //
-  // console.log(
-  //   await db.runQuery(queryObjs.query, queryObjs.params)
-  // )
 }
-
-
 run()
-        //       // quantity: null
-        //     // UoM: null,
-        //     // foodVariant: null,
-        //     // substance: null,
-        //     // prepStyle: null
-        // }],
-        //   // _WHERE: "id = 1",
-        //   // _ORDERBY: "name"
 
 // SELECT recipeTool.recipeId, toolType.name as name, toolType.description as 'desc', toolIndex as idx
 // FROM recipeTool
