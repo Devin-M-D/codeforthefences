@@ -55,21 +55,21 @@ cDI.components.recipeCard = {
   },
   createIngLine: (ingredient, editable = false) => {
     var ingNum = ingredient.idx
-    var ingName = ingredient.name
-    if (ingredient.quantity != 1 && cDI.utils.isDef(ingredient.plural)) {
+    var ingName = ingredient.substanceName
+    if (ingredient.quantityDecimal != 1 && cDI.utils.isDef(ingredient.plural)) {
       ingName = ingredient.plural
     }
 
     var ing = `<span class="cardIngredient algnSS leftCopy fitW unwrap Ing${ingNum}">`
     if (editable){
-      ing += `<input class="txtIngQuant Ing${ingNum}" type="text" value="${ingredient.quantity}" />`
+      ing += `<input class="txtIngQuant Ing${ingNum}" type="text" value="${ingredient.quantityDecimal}" />`
       ing += `<input class="txtIngUoM Ing${ingNum}" type="text" value="${ingredient.UoMName}" />`
       ing += `<input class="txtIngFood Ing${ingNum}" type="text" value="${ingName}" />`
     }
     else {
       ing += `
         <span class="noGrow">${ingNum})&nbsp;</span>
-        <span class="displayBlock leftCopy">${ingredient.quantity} ${ingredient.UoMAbbreviation} ${ingName}</span>
+        <span class="displayBlock leftCopy">${ingredient.quantityDecimal} ${ingredient.UoMAbbr} ${ingName}</span>
         `
     }
     ing += `</span>`
@@ -136,7 +136,7 @@ cDI.components.recipeCard = {
   },
   addToolsToSteps: (tools, stepText) => {
     tools.forEach((tool, x) => {
-      stepText = stepText.replace(`{t${x}}`, `<span class="stepTool">${tool.name.toLowerCase()}</span>`)
+      stepText = stepText.replace(`{t${x}}`, `<span class="stepTool">${tool.toolTypeName.toLowerCase()}</span>`)
     })
     return stepText
   },

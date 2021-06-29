@@ -1,4 +1,5 @@
 module.exports = {
   tableName: "recipe_tool",
-  fields: ["toolIndex"]
+  fields: ["recipeId", "toolIndex"],
+  aliases: ["recipeId", "toolIdx"]
 }
