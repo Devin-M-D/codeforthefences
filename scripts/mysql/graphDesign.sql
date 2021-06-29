@@ -1,24 +1,24 @@
 USE codeforthefences;
 
--- CREATE TABLE user (
---   `id` int AUTO_INCREMENT primary key NOT NULL,
---   `username` nvarchar(64) UNIQUE NOT NULL,
---   `password` nvarchar(128) NOT NULL,
---   `sessionId` nvarchar(128) NULL,
---   `lastLogin` datetime NULL
--- );
---
--- CREATE TABLE blogPost (
---   `id` int AUTO_INCREMENT primary key NOT NULL,
---   `title` nvarchar(64) NOT NULL,
---   `date` datetime NOT NULL,
---   `content` mediumtext NOT NULL
--- );
---
--- CREATE TABLE user_blogPost (
---   `userId` int NOT NULL,
---   `blogPostId` nvarchar(64) NOT NULL,
--- );
+CREATE TABLE user (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `username` nvarchar(64) UNIQUE NOT NULL,
+  `password` nvarchar(128) NOT NULL,
+  `sessionId` nvarchar(128) NULL,
+  `lastLogin` datetime NULL
+);
+
+CREATE TABLE blogPost (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `title` nvarchar(64) NOT NULL,
+  `date` datetime NOT NULL,
+  `content` mediumtext NOT NULL
+);
+
+CREATE TABLE user_blogPost (
+  `userId` int NOT NULL,
+  `blogPostId` nvarchar(64) NOT NULL
+);
 
 CREATE TABLE recipe (
   `id` int AUTO_INCREMENT primary key NOT NULL,
@@ -86,39 +86,34 @@ CREATE TABLE prepStyle (
   `description` nvarchar(64) NOT NULL
 );
 
--- CREATE TABLE ingredient_quantity (
---   `id` int AUTO_INCREMENT primary key NOT NULL,
---   `ingredientId` int NOT NULL,
---   `quantityId` int NOT NULL,
--- );
---
--- CREATE TABLE ingredient_UoM (
---   `id` int AUTO_INCREMENT primary key NOT NULL,
---   `ingredientId` int NOT NULL,
---   `UoMId` int NOT NULL,
--- );
---
--- CREATE TABLE ingredient_foodVariant (
---   `id` int AUTO_INCREMENT primary key NOT NULL,
---   `ingredientId` int NOT NULL,
---   `foodVariantId` int NOT NULL,
--- );
---
--- CREATE TABLE ingredient_substance (
---   `id` int AUTO_INCREMENT primary key NOT NULL,
---   `ingredientId` int NOT NULL,
---   `substanceId` int NOT NULL,
--- );
---
--- CREATE TABLE ingredient_prepStyle (
---   `id` int AUTO_INCREMENT primary key NOT NULL,
---   `ingredientId` int NOT NULL,
---   `prepStyleId` int NOT NULL,
--- );
-
 CREATE TABLE recipe_ingredient (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `recipeId` int NOT NULL,
   `ingredientId` int NOT NULL,
   `ingredientIndex` int NOT NULL
+);
+
+CREATE TABLE step (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `text` nvarchar(4000) NOT NULL
+);
+
+CREATE TABLE recipe_step (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `recipeId` int NOT NULL,
+  `stepId` int NOT NULL,
+  `stepIndex` int NOT NULL
+);
+
+CREATE TABLE stepMapType (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `mapType` nvarchar(32) NOT NULL
+);
+
+CREATE TABLE stepMap (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `recipeStepId` int NOT NULL,
+  `stepMapTypeId` int NOT NULL,
+  `barsIndex` int NOT NULL,
+  `recipeIndex` int NOT NULL
 );

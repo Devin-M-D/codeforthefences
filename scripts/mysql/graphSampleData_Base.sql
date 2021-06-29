@@ -51,3 +51,30 @@ SET @cerealIngredient = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex) VALUES (@cerealTreatsId, @butterIngredient, 0);
 INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex) VALUES (@cerealTreatsId, @marshIngredient, 1);
 INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex) VALUES (@cerealTreatsId, @cerealIngredient, 2);
+
+INSERT INTO step (text) VALUES ('Melt {i0} in {t0} over low heat');
+SET @step0Id = LAST_INSERT_ID();
+INSERT INTO step (text) VALUES ('Add {i0} to {t0} and melt');
+SET @step1Id = LAST_INSERT_ID();
+INSERT INTO step (text) VALUES ('Pour over {i0}, stir until well coated');
+SET @step2Id = LAST_INSERT_ID();
+
+INSERT INTO recipe_step (recipeId, stepId, stepIndex) VALUES (@cerealTreatsId, @step0Id, 0);
+SET @recipeStep0Id = LAST_INSERT_ID();
+INSERT INTO recipe_step (recipeId, stepId, stepIndex) VALUES (@cerealTreatsId, @step1Id, 1);
+SET @recipeStep1Id = LAST_INSERT_ID();
+INSERT INTO recipe_step (recipeId, stepId, stepIndex) VALUES (@cerealTreatsId, @step2Id, 2);
+SET @recipeStep2Id = LAST_INSERT_ID();
+
+INSERT INTO stepMapType (mapType) VALUES ('tool');
+SET @stepMapType0 = LAST_INSERT_ID();
+INSERT INTO stepMapType (mapType) VALUES ('ingredient');
+SET @stepMapType1 = LAST_INSERT_ID();
+
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@recipeStep0Id, @stepMapType0, 0, 0);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@recipeStep0Id, @stepMapType1, 0, 0);
+
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@recipeStep1Id, @stepMapType0, 0, 0);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@recipeStep1Id, @stepMapType1, 0, 1);
+
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@recipeStep2Id, @stepMapType1, 0, 2);

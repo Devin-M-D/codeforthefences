@@ -1,4 +1,5 @@
 module.exports = {
   tableName: "toolType",
-  fields: ["name", "description"]
+  fields: ["name", "description"],
+  aliases: ["toolTypeName", "toolTypeDesc"]
 }

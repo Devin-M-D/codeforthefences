@@ -15,13 +15,15 @@ function buildJoin (dir) {
   }
 }
 
-function projections (table) {
+function projections (table, aliased) {
+  aliased = aliased == 0 ? aliased : 1
   var retVal = []
-    retVal.push(`${table.tableName}.id AS ${table.tableName}_id`)
-    for (var field in table["fields"]){
-      field = table["fields"][field]
-      retVal.push(`${table.tableName}.${field} AS ${table.tableName}_${field}`)
-    }
+  retVal.push(`${table.tableName}.id AS ${aliased ? `${table.tableName}Id` : "id"}`)
+  for (var field in table["fields"]){
+    var alias = table["aliases"][field]
+    field = table["fields"][field]
+    retVal.push(`${table.tableName}.${field} AS ${aliased ? alias : field}`)
+  }
   retVal = retVal.join(`, `)
   return retVal
 }

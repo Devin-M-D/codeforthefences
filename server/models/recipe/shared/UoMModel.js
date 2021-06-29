@@ -1,4 +1,5 @@
 module.exports = {
   tableName: "UoM",
-  fields: ["name", "abbreviation"]
+  fields: ["name", "abbreviation"],
+  aliases: ["UoMName", "UoMAbbr"]
 }

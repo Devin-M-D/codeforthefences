@@ -1,11 +1,11 @@
 var db = require('../foundation/dbLogic')
 var recipeService = require('../services/recipeService')
-var ingredientService = require('../services/ingredientService')
+// var ingredientService = require('../services/ingredientService')
 var DI = require('../foundation/DICore')
 
 module.exports = (router) => {
   router.post('/crud/recipe/r/', DI.rh.asyncRoute(async (req, res, next) => {
-    var recipes = await recipeService.getAll()
+    var recipes = await recipeService.getObjByName("cereal")
     DI.rh.succeed(res, recipes)
   }))
   router.post('/crud/recipe/u/', DI.rh.asyncRoute(async (req, res, next) => {
@@ -26,19 +26,19 @@ module.exports = (router) => {
   //   }
   //   DI.rh.succeed(res, data)
   // }))
-  router.post('/crud/foodType/r/', DI.rh.asyncRoute(async (req, res, next) => {
-    if (req.body.searchString){
-      var data = await ingredientService.findFoodTypesByName(req.body.searchString)
-    }
-    else {
-      var data = await ingredientService.getAllFoodTypes()
-    }
-    DI.rh.succeed(res, data)
-  }))
-  router.post('/crud/foodType/c/', DI.rh.asyncRoute(async (req, res, next) => {
-    if (req.body.newValue){
-      var data = await ingredientService.createFoodType(req.body.newValue)
-    }
-    DI.rh.succeed(res, data)
-  }))
+  // router.post('/crud/foodType/r/', DI.rh.asyncRoute(async (req, res, next) => {
+  //   if (req.body.searchString){
+  //     var data = await ingredientService.findFoodTypesByName(req.body.searchString)
+  //   }
+  //   else {
+  //     var data = await ingredientService.getAllFoodTypes()
+  //   }
+  //   DI.rh.succeed(res, data)
+  // }))
+  // router.post('/crud/foodType/c/', DI.rh.asyncRoute(async (req, res, next) => {
+  //   if (req.body.newValue){
+  //     var data = await ingredientService.createFoodType(req.body.newValue)
+  //   }
+  //   DI.rh.succeed(res, data)
+  // }))
 }
