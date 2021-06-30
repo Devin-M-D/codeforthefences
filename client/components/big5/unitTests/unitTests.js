@@ -31,7 +31,7 @@ cDI.components.unitTests = {
     cDI.config.debugMode = currDebugMode
   },
   customDevScenario: async () => {
-    await cDI.components.unitTests.loginIfNeccessary()
+    // await cDI.components.unitTests.loginIfNeccessary()
     ftbLogUT("UT: customDevScenario")
     ftbIndent()
     await cDI.components.unitTests.recipe.runAllEditRecipe()
