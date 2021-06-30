@@ -45,9 +45,9 @@ cDI.components.recipeCard = {
         var txtIngFood = line.find(`.txtIngFood.Ing${ingredient.idx}`)
         cDI.addAwaitableInput("click", txtIngFood, async (e, s) => {
           return await cDI.components.searchSelect.buildSearchPane(
-            $(e.target), '/crud/foodType/r', 'name',
+            $(e.target), '/crud/substance/r', 'name',
             cDI.components.recipeCard.acceptIngChange,
-            true, "crud/foodType/c"
+            true, "crud/substance/c"
           )
         })
       }
@@ -143,25 +143,23 @@ cDI.components.recipeCard = {
 //#endregion
 
 //#region editMode and save
-  setEditMode: (card, mode = 0) => {
-    cDI.components.recipeCard.buildEditBox(card, mode)
-    if (mode == 0){
-      cDI.components.recipeCard.createIngPane(card, false)
-    }
-    else {
+  setEditMode: async (card, mode = 0) => {
+    if (mode == 1 && card.data("editedrecipe") == undefined){
       card.data("editedrecipe", cDI.utils.clone(card.data("recipe")))
-      cDI.components.recipeCard.createIngPane(card, true)
     }
+    cDI.components.recipeCard.createIngPane(card, mode)
+    await cDI.components.recipeCard.buildEditBox(card, mode)
   },
-  buildEditBox: (card, mode = 0) => {
+  buildEditBox: async (card, mode = 0) => {
     var editBox = card.find(".recipeEdit")
     if (mode == 0){
       editBox.html(`<span class="shpPencil absCen"></span>`)
       cDI.addAwaitableInput("click", editBox, async (e) => {
-        cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 1)
+        await cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 1)
       })
     }
     else {
+      editBox.off("click")
       editBox.html(`
         <span class="absCen fillH">
           <span class="shpCheck"></span>
@@ -170,11 +168,12 @@ cDI.components.recipeCard = {
           <span class="btnCancel">X</span>
         </span>
       `)
-      cDI.addAwaitableInput("click", card.find(".recipeEdit").find(".shpCheck"), async (e) => {
-        cDI.components.recipeCard.saveChanges($(e.target).closest(".recipeCard"), 0)
-      })
-      cDI.addAwaitableInput("click", card.find(".recipeEdit").find(".btnCancel"), async (e) => {
+      cDI.addAwaitableInput("click", editBox.find(".shpCheck"), async (e) => {
+        await cDI.components.recipeCard.saveChanges($(e.target).closest(".recipeCard"), 0)
+    })
+      cDI.addAwaitableInput("click", editBox.find(".btnCancel"), async (e) => {
         cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 0)
+        e.stopPropagation()
       })
     }
   },
@@ -182,6 +181,7 @@ cDI.components.recipeCard = {
 
   saveChanges: async (card) => {
     console.log("saving", card.data("editedrecipe"))
-    cDI.services.recipe.save(card.data("editedrecipe"))
+    await cDI.services.recipe.save(card.data("editedrecipe"))
+    cDI.components.recipeCard.setEditMode(card, 0)
   }
 }

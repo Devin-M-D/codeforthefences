@@ -244,8 +244,8 @@ cDI.logging = {
 //#endregion
 
 //#region async inputs
-cDI.addAwaitableInput = async (inputType, elem, fn, trace = false, debounce = true) => {
-  await elem.on(inputType, async (e) => {
+cDI.addAwaitableInput = (inputType, elem, fn, trace = false, debounce = true) => {
+  elem.on(inputType, async (e) => {
     ftbLogDev(`${inputType} occurred on elem: `, $(elem), trace)
     var data = await fn(e)
     ftbLogDev(`result is: `, $(data), trace)
