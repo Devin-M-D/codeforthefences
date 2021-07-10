@@ -1,4 +1,7 @@
 cDI.components.recipeCard = {
+  init: async () => {
+    await cDI.remote.asyncGetScript(`components/projectWidgets/recipeCard/ingredientPane/ingredientPane.js`)
+  },
 //#region main loop
   buildRecipeCardList: async (recipes) => {
     var cardList = []
@@ -23,85 +26,13 @@ cDI.components.recipeCard = {
   },
 //#endregion
 
-//#region ing pane
-  createIngPane: (card, editable = false) => {
-    var recipe = null
-
-    if (editable) recipe = card.data("editedrecipe")
-    else recipe = card.data("recipe")
-
-    card.find(".cardIngs").empty()
-    recipe.ingredients.forEach((ingredient, x) => {
-      var ingLine = cDI.components.recipeCard.createIngLine(ingredient, editable)
-      card.find(".cardIngs").append(ingLine)
-      if (editable){
-        var line = card.find(`.cardIngs > .cardIngredient.Ing${ingredient.idx}`)
-
-        var txtIngUoM = line.find(`.txtIngUoM.Ing${ingredient.idx}`)
-        cDI.addAwaitableInput("click", txtIngUoM, async (e, s) => {
-          return await cDI.components.searchSelect.buildSearchPane($(e.target), '/crud/UoM/r', 'name')
-        })
-
-        var txtIngFood = line.find(`.txtIngFood.Ing${ingredient.idx}`)
-        cDI.addAwaitableInput("click", txtIngFood, async (e, s) => {
-          return await cDI.components.searchSelect.buildSearchPane(
-            $(e.target), '/crud/substance/r', 'name',
-            cDI.components.recipeCard.acceptIngChange,
-            true, "crud/substance/c"
-          )
-        })
-      }
-    })
-  },
-  createIngLine: (ingredient, editable = false) => {
-    var ingNum = ingredient.idx
-    var ingName = ingredient.substanceName
-    if (ingredient.quantityDecimal != 1 && cDI.utils.isDef(ingredient.plural)) {
-      ingName = ingredient.plural
-    }
-
-    var ing = `<span class="cardIngredient algnSS leftCopy fitW unwrap Ing${ingNum}">`
-    if (editable){
-      ing += `<input class="txtIngQuant Ing${ingNum}" type="text" value="${ingredient.quantityDecimal}" />`
-      ing += `<input class="txtIngUoM Ing${ingNum}" type="text" value="${ingredient.UoMName}" />`
-      ing += `<input class="txtIngFood Ing${ingNum}" type="text" value="${ingName}" />`
-    }
-    else {
-      ing += `
-        <span class="noGrow">${ingNum})&nbsp;</span>
-        <span class="displayBlock leftCopy">${ingredient.quantityDecimal} ${ingredient.UoMAbbr} ${ingName}</span>
-        `
-    }
-    ing += `</span>`
-    return ing
-  },
-  acceptIngChange: (input) => {
-    var card = input.closest(".recipeCard")
-    var recipe
-    if (card.data("editedrecipe")){ recipe = card.data("editedrecipe") }
-    else { recipe = card.data("recipe") }
-    var inputClasses = input.attr('class').split(" ")
-    var ingNum = inputClasses.filter(x => x.indexOf("Ing") == 0)[0].replace("Ing", "")
-    var origIng = recipe.ingredients.filter(x => x.idx == ingNum)[0].name
-    var newIng = input.data("searchselectrecord")
-
-    if (origIng.id != newIng.id){
-      var editedRecipe = card.data("editedrecipe")
-      console.log(editedRecipe.ingredients.find(x => x.idx == ingNum))
-      console.log(newIng)
-      editedRecipe.ingredients.find(x => x.idx == ingNum).name = newIng.name
-      editedRecipe.ingredients.find(x => x.idx == ingNum).foodTypeId = newIng.id
-      card.data("editedrecipe", editedRecipe)
-      cDI.components.recipeCard.createStepPane(card, editedRecipe.steps, editedRecipe.ingredients, editedRecipe.tools, true)
-    }
-  },
-  //#endregion
 
 //#region step pane
   createStepPane: async (card, steps, ingredients, tools, useEdited = false) => {
     var stepsPane = card.find(".cardSteps")
+    var stepMaps = (useEdited ? card.data("editedrecipe") : card.data("recipe")).stepMaps
     var build = () => {
-      var filledStepText = cDI.components.recipeCard.getFilledSteps(steps, ingredients, tools)
+      var filledStepText = cDI.components.recipeCard.getFilledSteps(steps, ingredients, tools, stepMaps)
       stepsPane.html(filledStepText)
     }
 
@@ -113,12 +44,14 @@ cDI.components.recipeCard = {
     }
     else { build() }
   },
-  getFilledSteps: (steps, ingredients, tools) => {
+  getFilledSteps: (steps, ingredients, tools, stepMaps) => {
     var stepList = ``
+    var currMaps
     steps.forEach((step, x) => {
       var stepText = step.text
-      if (step.text.indexOf("{i") != -1) { stepText = cDI.components.recipeCard.addIngredientsToStep(ingredients, stepText) }
-      if (step.text.indexOf("{t") != -1) { stepText = cDI.components.recipeCard.addToolsToSteps(tools, stepText) }
+      currMaps = stepMaps.filter(x => x.recipeStepId == step.id)
+      if (step.text.indexOf("{i") != -1) { stepText = cDI.components.recipeCard.addIngredientsToStep(ingredients, stepText, currMaps.filter(x => x.mapType == "ingredient")) }
+      if (step.text.indexOf("{t") != -1) { stepText = cDI.components.recipeCard.addToolsToSteps(tools, stepText, currMaps.filter(x => x.mapType == "tool")) }
 
       stepList += `
       <span class="cardStep rows unwrap">
@@ -128,13 +61,13 @@ cDI.components.recipeCard = {
     })
     return stepList
   },
-  addIngredientsToStep: (ingredients, stepText) => {
-    ingredients.forEach((ingredient, x) => {
-      stepText = stepText.replace(`{i${x}}`, `<span class="stepIngredient">${ingredient.name}</span>`)
+  addIngredientsToStep: (ingredients, stepText, maps) => {
+    maps.forEach((map) => {
+      stepText = stepText.replace(`{i${map.barsIndex}}`, `<span class="stepIngredient">${ingredients.filter(x => x.idx == map.recipeIndex)[0].substanceName}</span>`)
     })
     return stepText
   },
-  addToolsToSteps: (tools, stepText) => {
+  addToolsToSteps: (tools, stepText, maps) => {
     tools.forEach((tool, x) => {
       stepText = stepText.replace(`{t${x}}`, `<span class="stepTool">${tool.toolTypeName.toLowerCase()}</span>`)
     })
@@ -147,7 +80,7 @@ cDI.components.recipeCard = {
     if (mode == 1 && card.data("editedrecipe") == undefined){
       card.data("editedrecipe", cDI.utils.clone(card.data("recipe")))
     }
-    cDI.components.recipeCard.createIngPane(card, mode)
+    cDI.components.recipeCard.ingredientPane.createIngPane(card, mode)
     await cDI.components.recipeCard.buildEditBox(card, mode)
   },
   buildEditBox: async (card, mode = 0) => {
@@ -180,7 +113,6 @@ cDI.components.recipeCard = {
 //#endregion
 
   saveChanges: async (card) => {
-    console.log("saving", card.data("editedrecipe"))
     await cDI.services.recipe.save(card.data("editedrecipe"))
     cDI.components.recipeCard.setEditMode(card, 0)
   }

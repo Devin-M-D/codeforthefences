@@ -38,6 +38,9 @@ SET @marshId = LAST_INSERT_ID();
 INSERT INTO substance (name) VALUES ('cereal');
 SET @cerealId = LAST_INSERT_ID();
 
+INSERT INTO substance (name) VALUES ('parsley');
+INSERT INTO substance (name) VALUES ('sausage');
+
 INSERT INTO foodVariant (name) VALUES ('mini');
 SET @miniId = LAST_INSERT_ID();
 

@@ -14,6 +14,7 @@ cDI.services.recipe = {
     console.log(res)
   },
   save: async (editedRecipe) => {
+    console.log(editedRecipe)
     var res = await cDI.remote.remoteCall("/crud/recipe/u/", { editedRecipe: editedRecipe })
   }
 }

@@ -1,3 +1,5 @@
 module.exports = {
-  tableName: "ingredient"
+  tableName: "ingredient",
+  // fields: [ `quantityId`, `UoMId`, `foodVariantId`, `substanceId`, `prepStyleId` ],
+  // aliases: []
 }

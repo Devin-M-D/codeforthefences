@@ -5,16 +5,27 @@ var ingredientQueries = require('./ingredient/ingredientQueries')
 var stepQueries = require('./step/stepQueries')
 var stepMapsQueries = require('./step')
 
-module.exports = {
-  getRecipeObjByName: () => {
-    var query =
+var recipeQueriesIndex = {}
+recipeQueriesIndex.descendentTree =
 `
-${recipeQueries.getByName()}
 ${toolQueries.getForRecipeSet("tmp_recipe")}
 ${ingredientQueries.getForRecipeSet("tmp_recipe")}
 ${stepQueries.getForRecipeSet("tmp_recipe")}
 ${stepMapsQueries.getMapsForStepSet("tmp_step")}
 `
-    return query
-  }
+
+recipeQueriesIndex.getByName = () => {
+  return `
+${recipeQueries.getByName()}
+${recipeQueriesIndex.descendentTree}
+`
 }
+
+recipeQueriesIndex.getById = () => {
+  return `
+${recipeQueries.getById()}
+${recipeQueriesIndex.descendentTree}
+`
+}
+
+module.exports =recipeQueriesIndex
