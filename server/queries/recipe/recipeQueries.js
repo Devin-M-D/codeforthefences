@@ -1,18 +1,29 @@
 var ss = require('../../utils/sqlSnippets')
 var recipeModels = require('../../models/recipe')
 
-module.exports = {
-  getByName: (setName) => {
-    setName = setName || "tmp_recipe"
-    var query =
+var recipeQueries = {}
+recipeQueries.selectBase =
 `
-${ss.addSet(setName).body(`
-  SELECT
-    ${ss.projections(recipeModels.recipe, 0)}
-  FROM recipe
-  WHERE recipe.name LIKE ?
+SELECT
+${ss.projections(recipeModels.recipe, 0)}
+FROM recipe`
+
+recipeQueries.getByName = (setName) => {
+  return `
+${ss.addSet(setName || "tmp_recipe").body(`
+${recipeQueries.selectBase}
+WHERE recipe.name LIKE ?
 `)}
 `
-    return query
-  }
 }
+
+recipeQueries.getById = (setName) => {
+  return `
+${ss.addSet(setName || "tmp_recipe").body(`
+${recipeQueries.selectBase}
+WHERE recipe.id LIKE ?
+`)}
+`
+}
+
+module.exports = recipeQueries

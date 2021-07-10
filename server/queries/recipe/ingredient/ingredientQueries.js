@@ -30,4 +30,17 @@ ingredientQueries.getForRecipeSet = (recipeSetName, setName) => {
   return query
 }
 
+ingredientQueries.updateSubstance = `
+SELECT @existingIng:=id FROM ingredient
+WHERE quantityId = ?
+  AND UoMId = ?
+  AND foodVariantId = ?
+  AND substanceId = ?
+  AND prepStyleId = ?;
+
+INSERT INTO ingredient (quantityId, UoMId, foodVariantId, substanceId, prepStyleId)
+SELECT ?, ?, ?, ?, ? WHERE @existingIng IS NULL;
+SET @existingIng = LAST_INSERT_ID();
+UPDATE recipe_ingredient SET ingredientId = @existingIng WHERE id = ?;`
+
 module.exports = ingredientQueries

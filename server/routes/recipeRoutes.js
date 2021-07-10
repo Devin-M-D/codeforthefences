@@ -1,15 +1,15 @@
 var db = require('../foundation/dbLogic')
-var recipeService = require('../services/recipeService')
+var recipe = require('../services/recipeService')
 var ingredientService = require('../services/ingredientService')
 var DI = require('../foundation/DICore')
 
 module.exports = (router) => {
   router.post('/crud/recipe/r/', DI.rh.asyncRoute(async (req, res, next) => {
-    var recipes = await recipeService.getObjByName("cereal")
+    var recipes = await recipe.getByName("cereal")
     DI.rh.succeed(res, recipes)
   }))
   router.post('/crud/recipe/u/', DI.rh.asyncRoute(async (req, res, next) => {
-    var recipes = await recipeService.saveEditedRecipe(req.body.editedRecipe)
+    var recipes = await recipe.saveEditedRecipe(req.body.editedRecipe)
     DI.rh.succeed(res, "foo")
   }))
   // router.post('/objectionTest/', DI.rh.asyncRoute(async (req, res, next) => {

@@ -9,6 +9,12 @@ module.exports = {
   findSubstancesByName: async (name) => {
     return await db.runQuery(substanceQueries.getByName, [ `%${name}%` ])
   },
+  updateSubstance: async (run) => {
+    return ingredientQueries.updateSubstance
+    // run
+    //   ? await db.runQuery(ingredientQueries.updateSubstance, [ substanceId, recipe_ingredientId ])
+    //   : ingredientQueries.updateSubstance
+  }
   // createFoodType: async (name) => {
   //   return await db.runQuery(ingredientQueries.createFoodType, [ name ])
   // },
