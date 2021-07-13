@@ -3,12 +3,12 @@ USE codeforthefences;
 INSERT INTO recipe (name, duration, servings) VALUES ('Cereal Treats', 10, '16 treats');
 SET @cerealTreatsId = LAST_INSERT_ID();
 
-INSERT INTO quantity (deci, frac) VALUES (3, '3');
-SET @quantity3Id = LAST_INSERT_ID();
-INSERT INTO quantity (deci, frac) VALUES (6, '6');
-SET @quantity6Id = LAST_INSERT_ID();
-INSERT INTO quantity (deci, frac) VALUES (0.25, '1/4');
-SET @quantity14Id = LAST_INSERT_ID();
+-- INSERT INTO quantity (deci, frac) VALUES (3, '3');
+-- SET @quantity3Id = LAST_INSERT_ID();
+-- INSERT INTO quantity (deci, frac) VALUES (6, '6');
+-- SET @quantity6Id = LAST_INSERT_ID();
+-- INSERT INTO quantity (deci, frac) VALUES (0.25, '1/4');
+-- SET @quantity4Id = LAST_INSERT_ID();
 
 INSERT INTO UoM (name, abbreviation) VALUES ('tablespoon', 'tbsp');
 SET @UoMTbspId = LAST_INSERT_ID();
@@ -44,16 +44,16 @@ INSERT INTO substance (name) VALUES ('sausage');
 INSERT INTO foodVariant (name) VALUES ('mini');
 SET @miniId = LAST_INSERT_ID();
 
-INSERT INTO ingredient (quantityId, UoMId, foodVariantId, substanceId, prepStyleId) VALUES (@quantity3Id, @UoMTbspID, null, @butterId, null);
+INSERT INTO ingredient (UoMId, foodVariantId, substanceId, prepStyleId) VALUES (@UoMTbspID, null, @butterId, null);
 SET @butterIngredient = LAST_INSERT_ID();
-INSERT INTO ingredient (quantityId, UoMId, foodVariantId, substanceId, prepStyleId) VALUES (@quantity14Id, @UoMCupID, @miniId, @marshId, null);
+INSERT INTO ingredient (UoMId, foodVariantId, substanceId, prepStyleId) VALUES (@UoMCupID, @miniId, @marshId, null);
 SET @marshIngredient = LAST_INSERT_ID();
-INSERT INTO ingredient (quantityId, UoMId, foodVariantId, substanceId, prepStyleId) VALUES (@quantity6Id, @UoMCupID, null, @cerealId, null);
+INSERT INTO ingredient (UoMId, foodVariantId, substanceId, prepStyleId) VALUES (@UoMCupID, null, @cerealId, null);
 SET @cerealIngredient = LAST_INSERT_ID();
 
-INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex) VALUES (@cerealTreatsId, @butterIngredient, 0);
-INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex) VALUES (@cerealTreatsId, @marshIngredient, 1);
-INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex) VALUES (@cerealTreatsId, @cerealIngredient, 2);
+INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity) VALUES (@cerealTreatsId, @butterIngredient, 0, 3);
+INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity) VALUES (@cerealTreatsId, @marshIngredient, 1, 0.25);
+INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity) VALUES (@cerealTreatsId, @cerealIngredient, 2, 6);
 
 INSERT INTO step (text) VALUES ('Melt {i0} in {t0} over low heat');
 SET @step0Id = LAST_INSERT_ID();

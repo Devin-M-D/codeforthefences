@@ -1,4 +1,5 @@
 var db = require('../foundation/dbLogic')
+var queryBuilder = require('../utils/queryBuilder')
 var recipeQueries = require("../queries/recipe")
 var ingredientService = require('../services/ingredientService')
 
@@ -24,28 +25,29 @@ recipeService.getById = async (id) => {
 }
 recipeService.saveEditedRecipe = async (editedRecipe) => {
   var origRecipe = await recipeService.getById(editedRecipe.id)
-  editedRecipe.ingredients.forEach(async x => {
-    if (x.edited) {
-      if (x.edited.indexOf("new") != -1) { console.log("new ingredient") }
-      if (x.edited.indexOf("substance") != -1) {
-        console.log(x)
-        console.log(await ingredientService.updateSubstance())
-        console.log("edited", x.edited)
-        console.log(origRecipe.ingredients.map(x => `${x.substanceId}-${x.substanceName}`))
-        console.log(editedRecipe.ingredients.map(x => `${x.substanceId}-${x.substanceName}`))
-        var res = await db.runQuery(await ingredientService.updateSubstance(), [
-          x.quantityId, x.UoMId, x.foodVariantId, x.substanceId, x.prepStyleId,
-          x.quantityId, x.UoMId, x.foodVariantId, x.substanceId, x.prepStyleId,
-          x.recipe_ingredientId
-        ])
-        console.log(res)
-      }
+  var query = ""
+  var params = []
+  var qb = queryBuilder.new()
+
+  for (var x = 0; x < editedRecipe.ingredients.length; x++){
+    var ingredient = editedRecipe.ingredients[x]
+    if (ingredient.edited) {
+      await ingredientService.upsertIngredient(qb, ingredient.UoMId, ingredient.foodVariantId, ingredient.substanceId, ingredient.prepStyle)
+
+      if (ingredient.edited.indexOf("new") != -1) { console.log("new ingredient") }
+
+      qb.insertQuery(recipeQueries.setIngredient)
+      qb.insertParam(ingredient.recipe_ingredientId)
+
     }
-  });
-  // for (var x = 0; x < editedRecipe.ingredients.length; x++){
-  //   var curr = editedRecipe.ingredients[x]
-  //   //var data = await ingredientService.findMeasureOfFood(curr.recipeId, curr.quantity, curr.UoMName, curr.foodVariant, curr.name, curr.prepStyle)
-  // }
+  }
+  if (qb.query != "") {
+    console.log(qb.printRunnable())
+
+    // console.log(qb.params())
+    // console.log(qb.query())
+    var res = await qb.run()
+  }
 }
 
 module.exports = recipeService
