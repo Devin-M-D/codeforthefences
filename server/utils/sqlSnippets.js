@@ -42,8 +42,12 @@ SELECT * FROM ${alias};`
 module.exports = {
   addSet: addSet,
   projections: projections,
+
   join: (l, r, lf, rf) => { return buildJoin(0)(l, r)(lf, rf) },
   lJoin: (l, r, lf, rf) => { return buildJoin(1)(l, r)(lf, rf) },
   rJoin: (l, r, lf, rf) => { return buildJoin(2)(l, r)(lf, rf) },
-  oJoin: (l, r, lf, rf) => { return buildJoin(3)(l, r)(lf, rf) }
+  oJoin: (l, r, lf, rf) => { return buildJoin(3)(l, r)(lf, rf) },
+
+  ifNull: (val, string) => { return val != null ? string : `` },
+  nullableParam: (val) => { return val != null ? `?` : `NULL` }
 }

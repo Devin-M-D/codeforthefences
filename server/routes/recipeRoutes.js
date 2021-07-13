@@ -17,15 +17,15 @@ module.exports = (router) => {
   //   console.log(food)
   //   DI.rh.succeed(res, "foo")
   // }))
-  // DI.router.post('/crud/UoM/r/', DI.rh.asyncRoute(async (req, res, next) => {
-  //   if (req.body.name){
-  //     var data = await DI.data.rootQuery(`SELECT * FROM UoM WHERE name LIKE '%' + :name + '%'`, { name: req.body.name})
-  //   }
-  //   else {
-  //     var data = await DI.data.rootQuery(`SELECT * FROM UoM`)
-  //   }
-  //   DI.rh.succeed(res, data)
-  // }))
+  router.post('/crud/UoM/r/', DI.rh.asyncRoute(async (req, res, next) => {
+    if (req.body.searchString){
+      var data = await ingredientService.findUoMsByName(req.body.searchString)
+    }
+    else {
+      var data = await ingredientService.getAllUoMs()
+    }
+    DI.rh.succeed(res, data)
+  }))
   router.post('/crud/substance/r/', DI.rh.asyncRoute(async (req, res, next) => {
     if (req.body.searchString){
       var data = await ingredientService.findSubstancesByName(req.body.searchString)
