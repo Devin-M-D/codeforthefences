@@ -125,8 +125,8 @@ cDI.remote = {
   remoteCall: async (remoteURL, postData = {}) => {
     ftbLogAjax(`Building call to ${remoteURL} with initial data:`,  postData, true)
 
-    postData = postData || {}
-    postData = JSON.stringify(postData)
+    postDataObj = postData || {}
+    postData = JSON.stringify(postDataObj)
 
     var callType = "POST"
     if (remoteURL.indexOf(".json") != -1) { callType = "GET" }
@@ -144,6 +144,7 @@ cDI.remote = {
         success: function (callRes) {
           ftbLogAjax("Call to:  " + remoteURL + " - Succeeded: ", callRes)
           if (callRes.status == "e" && callRes.payload == "Unable to locate user session") { cDI.clearLogin()  }
+          if (postDataObj.expectOne){ fulfill(callRes.payload[0]) }
           fulfill(callRes)
         },
         error: function (callRes) {

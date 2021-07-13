@@ -31,7 +31,7 @@ function queryConn(conn, query, params) {
 }
 
 module.exports = {
-  runQuery: async (query, params = null) => {
+  runQuery: async (query, params = null, expectOne = 0) => {
     var conn = await createConn()
     var result = await queryConn(conn, query, params)
     await closeConn(conn)
@@ -40,7 +40,8 @@ module.exports = {
     }
     result = result.filter(x => { return x.constructor.name != "OkPacket" })
     result = JSON.parse(JSON.stringify(result))
-    if (result.length == 1 && result[0].constructor.name != "Array"){ return result[0] }
+    if (result.length == 1 && expectOne){ return result[0] }
+    else if (result.length > 1 && expectOne){ return { status: "e", payload: "Expected one result but got multiple" } }
     return result
   }
 }

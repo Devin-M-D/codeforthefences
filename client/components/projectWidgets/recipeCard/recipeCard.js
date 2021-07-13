@@ -1,7 +1,7 @@
 cDI.components.recipeCard = {
   init: async () => {
-    await cDI.remote.asyncGetScript(`components/projectWidgets/recipeCard/ingredientPane/ingredientPane.js`)
-    await cDI.remote.asyncGetScript(`components/projectWidgets/recipeCard/stepPane/stepPane.js`)
+    await cDI.remote.asyncGetScript(`components/projectWidgets/recipeCard/ingredientPane.js`)
+    await cDI.remote.asyncGetScript(`components/projectWidgets/recipeCard/stepPane.js`)
   },
 //#region main loop
   buildRecipeCardList: async (recipes) => {
@@ -25,18 +25,16 @@ cDI.components.recipeCard = {
 //#endregion
 
 //#region editMode and save
-  setEditMode: async (card, mode = 0) => {
-    if (mode == 1 && card.data("editedrecipe") == undefined){
+  setEditMode: async (card, editMode = 0) => {
+    if (editMode == 1 && card.data("editedrecipe") == undefined){
       card.data("editedrecipe", cDI.utils.clone(card.data("recipe")))
     }
-    // else if (mode == 0) { card.removeData("editedrecipe") }
-    cDI.components.recipeCard.ingredientPane.createIngPane(card, mode)
-    cDI.components.recipeCard.stepPane.createStepPane(card, mode)
-    await cDI.components.recipeCard.buildEditBox(card, mode)
+    cDI.components.recipeCard.loadPanes(card, editMode)
+    await cDI.components.recipeCard.buildEditBox(card, editMode)
   },
-  buildEditBox: async (card, mode = 0) => {
+  buildEditBox: async (card, editMode = 0) => {
     var editBox = card.find(".recipeEdit")
-    if (mode == 0){
+    if (editMode == 0){
       editBox.html(`<span class="shpPencil absCen"></span>`)
       cDI.addAwaitableInput("click", editBox, async (e) => {
         await cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 1)
@@ -60,6 +58,10 @@ cDI.components.recipeCard = {
         e.stopPropagation()
       })
     }
+  },
+  loadPanes: (card, editMode) => {
+    cDI.components.recipeCard.ingredientPane.createIngPane(card, editMode)
+    cDI.components.recipeCard.stepPane.createStepPane(card, editMode)
   },
 //#endregion
 

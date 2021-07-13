@@ -41,7 +41,9 @@ cDI.components.searchSelect = {
         if (searchRes.payload.length == 0 && allowAdd){
           $(".searchSelectResults").append(`<span id="searchSelectAddNew" class="shpPlus"></span>`)
           cDI.addAwaitableInput("click", $("#searchSelectAddNew"), async () => {
-            await cDI.components.searchSelect.addNew(addRoute, searchString)
+            var newOption = await cDI.components.searchSelect.addNew(addRoute, searchString)
+            // $(e.target).data("searchselectrecord", newOption)
+            cDI.components.searchSelect.makeSelection($(e.target).parent().parent(), source, propName, newOption, fn)
           })
         }
         else {
@@ -52,11 +54,8 @@ cDI.components.searchSelect = {
           })
           $(".searchSelectOption").map((i, x) => {
             var searchOption = $(x)
-            searchOption.on("click", () => {
-              source.val(searchOption.html())
-              source.data("searchselectrecord", searchOption.data("dbrecord"))
-              if (fn) { fn(source) }
-              cDI.components.drawerPane.closeDrawerPane(searchOption.parent().parent())
+            searchOption.on("click", (e) => {
+              cDI.components.searchSelect.makeSelection(searchOption.parent().parent(), source, propName, searchOption.data("dbrecord"), fn)
             })
           });
         }
@@ -64,8 +63,15 @@ cDI.components.searchSelect = {
       }, 500)
     })
   },
+  makeSelection: (instance, source, propName, data, fn) => {
+    source.val(data[propName])
+    source.data("searchselectrecord", data)
+    if (fn) { fn(source) }
+    cDI.components.drawerPane.closeDrawerPane(instance)
+  },
   addNew: async(addRoute, newValue) => {
-    var addRes = await cDI.remote.remoteCall(addRoute, { newValue: newValue })
+    var addRes = await cDI.remote.remoteCall(addRoute, { newValue: newValue, expectOne: true })
+    return addRes
   },
   clear: async (input) => {
     input.val("")

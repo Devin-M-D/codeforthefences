@@ -34,7 +34,7 @@
   background-color: var(--clrSecondary);
 }
 
-.txtIngQuant { width: 60px; }
+.txtIngQuantity { width: 60px; }
 .txtIngUoM { width: calc(40% - 25px); overflow: visible; }
 .txtIngSubstance { width: 60%; }
 

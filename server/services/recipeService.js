@@ -37,10 +37,12 @@ recipeService.saveEditedRecipe = async (editedRecipe) => {
       if (ingredient.edited.indexOf("new") != -1) { console.log("new ingredient") }
 
       qb.insertQuery(recipeQueries.setIngredient)
+      qb.insertParam(ingredient.ingredientQuantity)
       qb.insertParam(ingredient.recipe_ingredientId)
 
     }
   }
+  qb.query()
   if (qb.query != "") {
     console.log(qb.printRunnable())
 
