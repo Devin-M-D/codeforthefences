@@ -1,27 +1,44 @@
 cDI.components.unitTests.recipe = {
   runAllEditRecipe: async () => {
-    var recipeCard = $(".recipeCard[recipeid = 1]")
-    var editButton = recipeCard.find(".recipeEdit")
-    if (0) {
-      await cDI.awaitableInput("click", editButton)
+    if (0) await cDI.components.unitTests.recipe.runAllCerealTreats()
+  },
+  editCard: async (card) => {
+    var editButton = card.find(".recipeEdit")
+    await cDI.awaitableInput("click", editButton)
+  },
+  setIngProp: async (card, index, prop, val) => {
+    var input = await cDI.awaitableInput("click", card.find(`.txtIng${prop}.Ing${index}`))
+    await cDI.awaitableInput("click", input.find(`:contains('${val}'):last`))
+  },
+  saveEdits: async (card) => {
+    var saveButton = card.find(".shpCheck")
+    await cDI.awaitableInput("click", saveButton)
+  },
+  runAllCerealTreats: async () => {
+    var card = $(".recipeCard[recipeid = 1]")
+    await cDI.components.unitTests.recipe.editCard(card)
 
-      var searchSelectPane = await cDI.awaitableInput("click", $(".txtIngSubstance.Ing0"))
-      await cDI.awaitableInput("click", searchSelectPane.find(":contains('parsley'):last"))
+    if (card.find(`.txtIngSubstance.Ing0`).val() == "butter"){
+      await cDI.components.unitTests.recipe.setIngProp(card, 0, "Substance", "parsley")
+      await cDI.components.unitTests.recipe.setIngProp(card, 0, "UoM", "cup")
 
-      var searchSelectPane = await cDI.awaitableInput("click", $(".txtIngUoM.Ing0"))
-      await cDI.awaitableInput("click", searchSelectPane.find(":contains('cup'):last"))
+      await cDI.components.unitTests.recipe.setIngProp(card, 1, "UoM", "tablespoon")
+      await cDI.components.unitTests.recipe.setIngProp(card, 1, "Quantity", "4")
 
-      var searchSelectPane = await cDI.awaitableInput("click", $(".txtIngUoM.Ing1"))
-      await cDI.awaitableInput("click", searchSelectPane.find(":contains('tablespoon'):last"))
-
-      var searchSelectPane = await cDI.awaitableInput("click", $(".txtIngSubstance.Ing2"))
-      await cDI.awaitableInput("click", searchSelectPane.find(":contains('sausage'):last"))
-
-      var searchSelectPane = await cDI.awaitableInput("click", $(".txtIngUoM.Ing2"))
-      await cDI.awaitableInput("click", searchSelectPane.find(":contains('large'):last"))
-
-      // var saveButton = recipeCard.find(".shpCheck")
-      // await cDI.awaitableInput("click", saveButton)
+      await cDI.components.unitTests.recipe.setIngProp(card, 2, "Substance", "sausage")
+      await cDI.components.unitTests.recipe.setIngProp(card, 2, "UoM", "large")
     }
-  }
+    else {
+      await cDI.components.unitTests.recipe.setIngProp(card, 0, "Substance", "butter")
+      await cDI.components.unitTests.recipe.setIngProp(card, 0, "UoM", "tablespoon")
+
+      await cDI.components.unitTests.recipe.setIngProp(card, 1, "UoM", "cup")
+      await cDI.components.unitTests.recipe.setIngProp(card, 1, "Quantity", "1/4")
+
+      await cDI.components.unitTests.recipe.setIngProp(card, 2, "Substance", "cereal")
+      await cDI.components.unitTests.recipe.setIngProp(card, 2, "UoM", "cup")
+    }
+
+    await cDI.components.unitTests.recipe.saveEdits(card)
+  },
 }

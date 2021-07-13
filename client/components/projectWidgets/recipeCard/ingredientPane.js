@@ -2,15 +2,23 @@ cDI.components.recipeCard.ingredientPane = {
   init: () => {
 
   },
-  createIngPane: (card, editable = false) => {
+  createIngPane: (card, editMode = false) => {
     var recipe = card.data("editedrecipe") != undefined ? card.data("editedrecipe") : card.data("recipe")
 
     card.find(".cardIngs").empty()
     recipe.ingredients.sort((a, b) => a.idx < b.idx).forEach((ingredient, x) => {
-      var ingLine = cDI.components.recipeCard.ingredientPane.createIngLine(ingredient, editable)
+      var ingLine = cDI.components.recipeCard.ingredientPane.createIngLine(ingredient, editMode)
       card.find(".cardIngs").append(ingLine)
-      if (editable){
+      if (editMode){
         var line = card.find(`.cardIngs > .cardIngredient.Ing${ingredient.idx}`)
+
+        var txtIngQuantity = line.find(`.txtIngQuantity.Ing${ingredient.idx}`)
+        cDI.addAwaitableInput("click", txtIngQuantity, async (e, s) => {
+          return $(e.target)
+        })
+        cDI.addAwaitableInput("keyup", txtIngQuantity, async (e, s) => {
+          await cDI.components.recipeCard.ingredientPane.acceptIngChange(e.target)
+        })
 
         var txtIngUoM = line.find(`.txtIngUoM.Ing${ingredient.idx}`)
         cDI.addAwaitableInput("click", txtIngUoM, async (e, s) => {
@@ -32,29 +40,32 @@ cDI.components.recipeCard.ingredientPane = {
       }
     })
   },
-  createIngLine: (ingredient, editable = false) => {
+  createIngLine: (ingredient, editMode = false) => {
     var ingNum = ingredient.idx
     var ingName = ingredient.substanceName
-    if (ingredient.quantityDecimal != 1 && cDI.utils.isDef(ingredient.plural)) {
+    if (ingredient.ingredientQuantity != 1 && cDI.utils.isDef(ingredient.plural)) {
       ingName = ingredient.plural
     }
+    var UoMName = !editMode && ingredient.UoMAbbr ? UoMName = ingredient.UoMAbbr : ingredient.UoMName
 
     var ing = `<span class="cardIngredient algnSS leftCopy fitW unwrap Ing${ingNum}">`
-    if (editable){
-      ing += `<input class="txtIngQuant Ing${ingNum}" type="text" value="${(new Fraction(ingredient.ingredientQuantity)).toFraction()}" />`
-      ing += `<input class="txtIngUoM Ing${ingNum}" type="text" value="${ingredient.UoMName}" />`
+    if (editMode){
+      ing += `<input class="txtIngQuantity Ing${ingNum}" type="text" value="${(new Fraction(ingredient.ingredientQuantity)).toFraction()}" />`
+      ing += `<input class="txtIngUoM Ing${ingNum}" type="text" value="${UoMName}" />`
       ing += `<input class="txtIngSubstance Ing${ingNum}" type="text" value="${ingName}" />`
     }
     else {
       ing += `
         <span class="noGrow">${ingNum})&nbsp;</span>
-        <span class="displayBlock leftCopy">${ingredient.ingredientQuantity} ${ingredient.UoMAbbr} ${ingName}</span>
+        <span class="displayBlock leftCopy">${ingredient.ingredientQuantity} ${UoMName} ${ingName}</span>
         `
     }
     ing += `</span>`
     return ing
   },
   acceptIngChange: (input) => {
+    console.log("here")
+    console.log(input)
     var card = input.closest(".recipeCard")
     var origRecipe = card.data("recipe")
     var editedRecipe = card.data("editedrecipe")
@@ -67,6 +78,16 @@ cDI.components.recipeCard.ingredientPane = {
     var newVal = input.data("searchselectrecord")
 
     editedIng.edited = editedIng.edited || []
+
+    if (inputClasses.indexOf("txtIngQuantity") != -1) {
+      if (origIng.ingredientQuantity != $(input).val()) {
+        editedIng.ingredientQuantity = $(input).val()
+        if (editedIng.edited.indexOf("quantity") == -1)  { editedIng.edited.push("quantity") }
+      }
+      else {
+        editedIng.edited = editedIng.edited.filter(x => x != "quantity")
+      }
+    }
 
     if (inputClasses.indexOf("txtIngSubstance") != -1) {
       if (origIng.substanceId != newVal.id) {
@@ -94,5 +115,7 @@ cDI.components.recipeCard.ingredientPane = {
       }
     }
     if (editedIng.edited.length == 0) { delete editedIng.edited }
+
+    cDI.components.recipeCard.stepPane.createStepPane(card, 1)
   }
 }

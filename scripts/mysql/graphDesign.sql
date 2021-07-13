@@ -62,7 +62,7 @@ CREATE TABLE ingredient (
 CREATE TABLE UoM (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `name` nvarchar(64) NOT NULL,
-  `abbreviation` nvarchar(32) NOT NULL
+  `abbreviation` nvarchar(32) NULL
 );
 
 CREATE TABLE foodVariant (

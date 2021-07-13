@@ -28,7 +28,7 @@ ${recipeQueriesIndex.descendentTree}
 `
 }
 
-recipeQueriesIndex.setIngredient = `UPDATE recipe_ingredient SET ingredientId = @ingId WHERE id = ?;
+recipeQueriesIndex.setIngredient = `UPDATE recipe_ingredient SET ingredientId = @ingId, quantity = ? WHERE id = ?;
 SET @ingId = NULL;
 `
 
