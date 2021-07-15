@@ -1,36 +1,40 @@
 cDI.components.recipeCard.stepPane = {
   createStepPane: async (card, editMode) => {
-    var recipe = editMode ? card.data("editedrecipe") : card.data("recipe")
     var stepsPane = card.find(".cardSteps")
-    var build = () => {
-      var filledStepText = cDI.components.recipeCard.stepPane.getFilledSteps(recipe.steps, recipe.ingredients, recipe.tools, recipe.stepMaps)
-      stepsPane.html(filledStepText)
-    }
 
     if (editMode) {
       stepsPane.fadeOut(500, () => {
-        build();
+        stepsPane.html(cDI.components.recipeCard.stepPane.buildPane(card, editMode))
         stepsPane.fadeIn(500);
       })
     }
-    else { build() }
+    else { stepsPane.html(cDI.components.recipeCard.stepPane.buildPane(card, editMode)) }
   },
-  getFilledSteps: (steps, ingredients, tools, stepMaps) => {
-    var stepList = ``
-    var currMaps
-    steps.forEach((step, x) => {
-      var stepText = step.text
-      currMaps = stepMaps.filter(x => x.recipeStepId == step.id)
-      if (step.text.indexOf("{i") != -1) { stepText = cDI.components.recipeCard.stepPane.addIngredientsToStep(ingredients, stepText, currMaps.filter(x => x.mapType == "ingredient")) }
-      if (step.text.indexOf("{t") != -1) { stepText = cDI.components.recipeCard.stepPane.addToolsToSteps(tools, stepText, currMaps.filter(x => x.mapType == "tool")) }
-
-      stepList += `
-      <span class="cardStep rows unwrap">
-        <span class="rowNumber">${x + 1})&nbsp;</span>
-        <span class="displayBlock leftCopy">${stepText}</span>
-      </span>`
-    })
-    return stepList
+  buildPane: (card, editMode) => {
+    var recipe = editMode ? card.data("editedrecipe") : card.data("recipe")
+    var paneHtml = ``
+    recipe.steps.sort((a, b) => a.idx < b.idx).forEach(step => {
+      var stepHTML = `
+        <span class="cardStep rows unwrap">
+          <span class="rowNumber">${step.idx})&nbsp;</span>
+      `
+      var currMaps = recipe.stepMaps.filter(x => x.recipeStepId == step.id)
+      if (editMode) {
+        stepHTML += `<textarea class="txtStep step${step.idx}"  cols="40" rows="3">${step.text}</textarea>`
+      }
+      else {
+        var filledStepText = cDI.components.recipeCard.stepPane.addIngredientsToStepText(step.text, currMaps, recipe.ingredients, recipe.tools)
+        stepHTML += `<span class="displayBlock leftCopy">${filledStepText}</span>`
+      }
+      stepHTML += `</span>`
+      paneHtml += stepHTML
+    });
+    return paneHtml
+  },
+  addIngredientsToStepText: (stepText, maps, ingredients, tools) => {
+    if (stepText.indexOf("{i") != -1) { stepText = cDI.components.recipeCard.stepPane.addIngredientsToStep(ingredients, stepText, maps.filter(x => x.mapType == "ingredient")) }
+    if (stepText.indexOf("{t") != -1) { stepText = cDI.components.recipeCard.stepPane.addToolsToSteps(tools, stepText, maps.filter(x => x.mapType == "tool")) }
+    return stepText
   },
   addIngredientsToStep: (ingredients, stepText, maps) => {
     maps.forEach((map) => {
@@ -43,5 +47,6 @@ cDI.components.recipeCard.stepPane = {
       stepText = stepText.replace(`{t${x}}`, `<span class="stepTool">${tool.toolTypeName.toLowerCase()}</span>`)
     })
     return stepText
-  }
+  },
+
 }

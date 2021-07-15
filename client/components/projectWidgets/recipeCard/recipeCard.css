@@ -38,6 +38,10 @@
 .txtIngUoM { width: calc(40% - 25px); overflow: visible; }
 .txtIngSubstance { width: 60%; }
 
+.txtStep {
+  
+}
+
 .recipeEdit {
   height:100%;
 }
