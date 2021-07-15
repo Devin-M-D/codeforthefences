@@ -1,6 +1,6 @@
 cDI.components.unitTests.recipe = {
   runAllEditRecipe: async () => {
-    if (0) await cDI.components.unitTests.recipe.runAllCerealTreats()
+    await cDI.components.unitTests.recipe.editCard($(".recipeCard[recipeid = 1]"))
   },
   editCard: async (card) => {
     var editButton = card.find(".recipeEdit")
