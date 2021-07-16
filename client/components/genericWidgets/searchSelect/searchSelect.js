@@ -33,7 +33,7 @@ cDI.components.searchSelect = {
       `)
 
       return cDI.sequencer.debounce("searchSelect", async () => {
-        var searchString = $(e.target).val()
+        var searchString = $(e.target).html()
         ftbLogDev(`running search at ${searchRoute} for ${searchString}`)
         var searchRes = await cDI.remote.remoteCall(searchRoute, { expectMany: true, searchString: searchString })
         $("#spinnerContainer").remove()
@@ -64,7 +64,7 @@ cDI.components.searchSelect = {
     })
   },
   makeSelection: (instance, source, propName, data, fn) => {
-    source.val(data[propName])
+    source.html(data[propName])
     source.data("searchselectrecord", data)
     if (fn) { fn(source) }
     cDI.components.drawerPane.closeDrawerPane(instance)

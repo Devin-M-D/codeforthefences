@@ -1,24 +1,29 @@
 .recipeCard {
   padding: 0px 5%;
-  height: auto;
+  flex-basis: auto;
   border-radius: 25px;
   border: solid thin black;
+  height: auto;
+  max-height: 800px;
 }
 .recipeBody {
-  /* height:auto; */
+    flex-basis: auto;
 }
 .cardIngs, .cardSteps {
     flex-basis: auto;
-    justify-content: space-around;
+    padding: 5px;
+    height: auto;
 }
 .rowNumber {
   width: auto;
 }
 .cardIngredient {
   flex-basis: auto;
+  height: auto;
+  padding: 0px 10px;
 }
 .cardStep {
-  margin-bottom: 5px
+  margin: 5px 0px
 }
 
 .stepIngredient, .stepTool {
@@ -33,9 +38,9 @@
   background-color: var(--clrSecondary);
 }
 
-.txtIngQuantity { width: 60px; }
-.txtIngUoM { width: calc(40% - 25px); overflow: visible; }
-.txtIngSubstance { width: 60%; }
+.txtIngQuantity, .txtIngUoM, .txtIngSubstance {
+  flex-basis: auto;
+}
 
 .txtStep {
 

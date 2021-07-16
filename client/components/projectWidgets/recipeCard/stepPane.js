@@ -20,7 +20,7 @@ cDI.components.recipeCard.stepPane = {
       `
       var currMaps = recipe.stepMaps.filter(x => x.recipeStepId == step.id)
       if (editMode) {
-        stepHTML += `<textarea class="txtStep step${step.idx}"  cols="40" rows="3">${step.text}</textarea>`
+        stepHTML += `<textarea class="txtStep step${step.idx}" rows="5">${step.text}</textarea>`
       }
       else {
         var filledStepText = cDI.components.recipeCard.stepPane.addIngredientsToStepText(step.text, currMaps, recipe.ingredients, recipe.tools)

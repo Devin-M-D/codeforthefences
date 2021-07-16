@@ -48,25 +48,28 @@ cDI.components.recipeCard.ingredientPane = {
     }
     var UoMName = !editMode && ingredient.UoMAbbr ? UoMName = ingredient.UoMAbbr : ingredient.UoMName
 
-    var ing = `<span class="cardIngredient rows algnSS leftCopy Ing${ingNum}">`
+    var ing = `
+      <span class="cardIngredient leftCopy Ing${ingNum} rows algnSS fauxrderWide">
+        <span class="algnSS" style="flex-basis:50px;">-&nbsp;</span>
+    `
+      // <span style="flex-basis:50px;">${ingNum}.&nbsp;</span>
     if (editMode){
-      ing += `<input class="txtIngQuantity Ing${ingNum}" type="text" value="${(new Fraction(ingredient.ingredientQuantity)).toFraction()}" />`
-      ing += `<input class="txtIngUoM Ing${ingNum}" type="text" value="${UoMName}" />`
-      ing += `<input class="txtIngSubstance Ing${ingNum}" type="text" value="${ingName}" />`
+      ing += `<span class="wrap autoH algnSS">`
+        ing += `<span class="fauxrder autoW autoH"><span class="txtIngQuantity Ing${ingNum} autoW autoH rounded" contenteditable="true">${(new Fraction(ingredient.ingredientQuantity)).toFraction()}</span></span>`
+        ing += `<span class="fauxrder autoW autoH"><span class="txtIngUoM Ing${ingNum} autoW autoH rounded" contenteditable="true">${UoMName}</span></span>`
+        ing += `<span class="fauxrder autoW autoH"><span class="txtIngSubstance Ing${ingNum} autoW autoH rounded" contenteditable="true">${ingName}</span></span>`
+      ing += `</span>`
     }
     else {
-      // <span style="flex-basis:50px;">${ingNum}.&nbsp;</span>
       ing += `
-        <span style="flex-basis:50px;">-&nbsp;</span>
         <span class="displayBlock leftCopy">${ingredient.ingredientQuantity} ${UoMName} ${ingName}</span>
         `
     }
     ing += `</span>`
+    ing += `<span class="spacer horiz slim"></span>`
     return ing
   },
   acceptIngChange: (input) => {
-    console.log("here")
-    console.log(input)
     var card = input.closest(".recipeCard")
     var origRecipe = card.data("recipe")
     var editedRecipe = card.data("editedrecipe")
@@ -81,8 +84,8 @@ cDI.components.recipeCard.ingredientPane = {
     editedIng.edited = editedIng.edited || []
 
     if (inputClasses.indexOf("txtIngQuantity") != -1) {
-      if (origIng.ingredientQuantity != $(input).val()) {
-        editedIng.ingredientQuantity = $(input).val()
+      if (origIng.ingredientQuantity != $(input).html()) {
+        editedIng.ingredientQuantity = $(input).html()
         if (editedIng.edited.indexOf("quantity") == -1)  { editedIng.edited.push("quantity") }
       }
       else {
