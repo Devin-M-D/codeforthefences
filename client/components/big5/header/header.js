@@ -33,15 +33,15 @@ cDI.components.header = {
     var pane = await cDI.components.drawerPane.createDrawerPane($("html"))
     await cDI.components.drawerPane.populateDrawerPane(pane, `
       <span class='wingedHeader' data-headerheight="10">
-        <span class="header noUnderline absCen bumpBottom">{}</span>
-        <span class="header absCen">Main Menu</span>
-        <span class="header noUnderline absCen bumpBottom" onclick="cDI.components.drawerPane.closeDrawerPane($(this).parent().parent())">X</span>
+        <span class="header noUnderline">{}</span>
+        <span class="header">Main Menu</span>
+        <span class="header noUnderline" onclick="cDI.components.drawerPane.closeDrawerPane($(this).parent().parent())">X</span>
       </span>
       <span class="cols algnSX">
-        <span class="btnStd subheader" onclick="cDI.components.router.getRoute('/blog')">Blog</span>
-        <span class="btnStd subheader" onclick="cDI.components.router.getRoute('/cookbook')">Cookbook</span>
-        <span class="btnStd subheader" onclick="cDI.components.router.getRoute('/darkRoom')">Dark Room</span>
-        <span class="btnStd subheader" onclick="cDI.components.router.getRoute('/brewGames')">Brew Games</span>
+        <span class="btnStd subheader" style="flex-basis: 100px;" onclick="cDI.components.router.getRoute('/blog')">Blog</span>
+        <span class="btnStd subheader" style="flex-basis: 100px;"  onclick="cDI.components.router.getRoute('/cookbook')">Cookbook</span>
+        <span class="btnStd subheader" style="flex-basis: 100px;"  onclick="cDI.components.router.getRoute('/darkRoom')">Dark Room</span>
+        <span class="btnStd subheader" style="flex-basis: 100px;"  onclick="cDI.components.router.getRoute('/brewGames')">Brew Games</span>
       </span>
     `)
     return pane
