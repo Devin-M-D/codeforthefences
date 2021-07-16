@@ -1,4 +1,4 @@
-cDI.components.footer = {
+cDI.components.dev = {
   init: async () => {
 
   }

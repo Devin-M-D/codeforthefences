@@ -2,8 +2,8 @@
 
 }
 #counterTop {
-  height: calc(100% - 100px);
+  /* height: calc(100% - 100px); */
 }
 #addNewRecipe {
-  height: 100px;
+  flex-basis: 100px;
 }

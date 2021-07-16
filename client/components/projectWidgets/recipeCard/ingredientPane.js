@@ -48,15 +48,16 @@ cDI.components.recipeCard.ingredientPane = {
     }
     var UoMName = !editMode && ingredient.UoMAbbr ? UoMName = ingredient.UoMAbbr : ingredient.UoMName
 
-    var ing = `<span class="cardIngredient algnSS leftCopy fitW unwrap Ing${ingNum}">`
+    var ing = `<span class="cardIngredient rows algnSS leftCopy Ing${ingNum}">`
     if (editMode){
       ing += `<input class="txtIngQuantity Ing${ingNum}" type="text" value="${(new Fraction(ingredient.ingredientQuantity)).toFraction()}" />`
       ing += `<input class="txtIngUoM Ing${ingNum}" type="text" value="${UoMName}" />`
       ing += `<input class="txtIngSubstance Ing${ingNum}" type="text" value="${ingName}" />`
     }
     else {
+      // <span style="flex-basis:50px;">${ingNum}.&nbsp;</span>
       ing += `
-        <span class="noGrow">${ingNum})&nbsp;</span>
+        <span style="flex-basis:50px;">-&nbsp;</span>
         <span class="displayBlock leftCopy">${ingredient.ingredientQuantity} ${UoMName} ${ingName}</span>
         `
     }

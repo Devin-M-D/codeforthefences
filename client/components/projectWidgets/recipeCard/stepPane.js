@@ -15,8 +15,8 @@ cDI.components.recipeCard.stepPane = {
     var paneHtml = ``
     recipe.steps.sort((a, b) => a.idx < b.idx).forEach(step => {
       var stepHTML = `
-        <span class="cardStep rows unwrap">
-          <span class="rowNumber">${step.idx})&nbsp;</span>
+        <span class="cardStep rows algnSX">
+          <span class="rowNumber" style="flex-basis: 50px;">${step.idx}.&nbsp;</span>
       `
       var currMaps = recipe.stepMaps.filter(x => x.recipeStepId == step.id)
       if (editMode) {
@@ -24,7 +24,7 @@ cDI.components.recipeCard.stepPane = {
       }
       else {
         var filledStepText = cDI.components.recipeCard.stepPane.addIngredientsToStepText(step.text, currMaps, recipe.ingredients, recipe.tools)
-        stepHTML += `<span class="displayBlock leftCopy">${filledStepText}</span>`
+        stepHTML += `<span class="leftCopy" style="flex-basis:auto;">${filledStepText}</span>`
       }
       stepHTML += `</span>`
       paneHtml += stepHTML
@@ -38,13 +38,13 @@ cDI.components.recipeCard.stepPane = {
   },
   addIngredientsToStep: (ingredients, stepText, maps) => {
     maps.forEach((map) => {
-      stepText = stepText.replace(`{i${map.barsIndex}}`, `<span class="stepIngredient">${ingredients.find(x => x.idx == map.recipeIndex).substanceName}</span>`)
+      stepText = stepText.replace(`{i${map.barsIndex}}`, `<p class="stepIngredient">${ingredients.find(x => x.idx == map.recipeIndex).substanceName}</p>`)
     })
     return stepText
   },
   addToolsToSteps: (tools, stepText, maps) => {
     tools.forEach((tool, x) => {
-      stepText = stepText.replace(`{t${x}}`, `<span class="stepTool">${tool.toolTypeName.toLowerCase()}</span>`)
+      stepText = stepText.replace(`{t${x}}`, `<p class="stepTool">${tool.toolTypeName.toLowerCase()}</p>`)
     })
     return stepText
   },
