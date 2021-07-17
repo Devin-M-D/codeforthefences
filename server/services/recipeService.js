@@ -2,6 +2,7 @@ var db = require('../foundation/dbLogic')
 var queryBuilder = require('../utils/queryBuilder')
 var recipeQueries = require("../queries/recipe")
 var ingredientService = require('../services/ingredientService')
+var stepService = require('../services/stepService')
 
 var recipeService = {}
 recipeService.parseObj = (data) => {
@@ -34,20 +35,23 @@ recipeService.saveEditedRecipe = async (editedRecipe) => {
     if (ingredient.edited) {
       await ingredientService.upsertIngredient(qb, ingredient.UoMId, ingredient.foodVariantId, ingredient.substanceId, ingredient.prepStyle)
 
-      if (ingredient.edited.indexOf("new") != -1) { console.log("new ingredient") }
-
       qb.insertQuery(recipeQueries.setIngredient)
       qb.insertParam(ingredient.ingredientQuantity)
       qb.insertParam(ingredient.recipe_ingredientId)
+    }
+  }
 
+  for (var x = 0; x < editedRecipe.steps.length; x++){
+    var step = editedRecipe.steps[x]
+    if (step.edited) {
+      await stepService.upsert(qb, step.text)
+      qb.insertQuery(recipeQueries.setStep)
+      qb.insertParam(step.recipe_stepId)
     }
   }
   qb.query()
   if (qb.query != "") {
-    console.log(qb.printRunnable())
-
-    // console.log(qb.params())
-    // console.log(qb.query())
+    // console.log(qb.printRunnable())
     var res = await qb.run()
   }
 }

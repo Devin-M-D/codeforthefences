@@ -14,6 +14,12 @@ cDI.services.recipe = {
     console.log(res)
   },
   save: async (editedRecipe) => {
-    var res = await cDI.remote.remoteCall("/crud/recipe/u/", { editedRecipe: editedRecipe })
+    var retVal
+    var editedIngs = editedRecipe.ingredients.filter(x => !!x.edited)
+    var editedSteps = editedRecipe.steps.filter(x => !!x.edited)
+
+    if ([...editedIngs, ...editedSteps].length > 0){ retVal = await cDI.remote.remoteCall("/crud/recipe/u/", { editedRecipe: editedRecipe }) }
+    else { retVal = "No changes to save" }
+    return retVal
   }
 }

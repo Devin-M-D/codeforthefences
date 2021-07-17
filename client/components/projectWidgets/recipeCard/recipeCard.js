@@ -7,11 +7,8 @@ cDI.components.recipeCard = {
   buildRecipeCardList: async (recipes) => {
     var cardList = []
     console.log(recipes)
-    recipes = [...recipes, ...recipes, ...recipes ]
     recipes.forEach(async recipe => {
-      // for (var x = 0; x < 11; x++){
         cardList.push(await cDI.components.recipeCard.buildRecipeCard(recipe))
-      // }
     })
     return cardList
   },
@@ -20,24 +17,27 @@ cDI.components.recipeCard = {
     card.find(".recipeName").html(recipe.name)
     card.data("recipe", recipe)
     card.attr("recipeId", recipe["id"])
-    cDI.components.recipeCard.setEditMode(card, false)
+    cDI.components.recipeCard.ingredientPane.createIngPane(card, false)
+    cDI.components.recipeCard.stepPane.build(card, false)
+    cDI.components.recipeCard.buildEditBox(card, false)
     return card
   },
 //#endregion
 
 //#region editMode and save
   setEditMode: async (card, editMode = 0) => {
-    if (editMode == 1 && card.data("editedrecipe") == undefined){
+    if (editMode && card.data("editedrecipe") == undefined){
       card.data("editedrecipe", cDI.utils.clone(card.data("recipe")))
     }
-    cDI.components.recipeCard.loadPanes(card, editMode)
+    cDI.components.recipeCard.ingredientPane.createIngPane(card, editMode)
+    await cDI.components.recipeCard.stepPane.reload(card, editMode)
     await cDI.components.recipeCard.buildEditBox(card, editMode)
   },
-  buildEditBox: async (card, editMode = 0) => {
+  buildEditBox: (card, editMode = 0) => {
     var editBox = card.find(".recipeEdit")
     if (editMode == 0){
-      editBox.html(`<span class="shpPencil absCen"></span>`)
-      cDI.addAwaitableInput("click", editBox, async (e) => {
+      editBox.html(`<span class="pencilBox"><span class="shpPencil absCen"></span></span>`)
+      cDI.addAwaitableInput("click", editBox.find(".pencilBox"), async (e) => {
         await cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 1)
       })
     }
@@ -52,22 +52,17 @@ cDI.components.recipeCard = {
         </span>
       `)
       cDI.addAwaitableInput("click", editBox.find(".shpCheck"), async (e) => {
-        await cDI.components.recipeCard.saveChanges($(e.target).closest(".recipeCard"), 0)
+        await cDI.components.recipeCard.saveChanges($(e.target).closest(".recipeCard"))
     })
       cDI.addAwaitableInput("click", editBox.find(".btnCancel"), async (e) => {
-        cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 0)
-        e.stopPropagation()
+        await cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 0)
       })
     }
-  },
-  loadPanes: (card, editMode) => {
-    cDI.components.recipeCard.ingredientPane.createIngPane(card, editMode)
-    cDI.components.recipeCard.stepPane.createStepPane(card, editMode)
   },
 //#endregion
 
   saveChanges: async (card) => {
-    await cDI.services.recipe.save(card.data("editedrecipe"))
+    var res = await cDI.services.recipe.save(card.data("editedrecipe"))
     card.data("recipe", card.data("editedrecipe"))
     await cDI.components.recipeCard.setEditMode(card, 0)
   }

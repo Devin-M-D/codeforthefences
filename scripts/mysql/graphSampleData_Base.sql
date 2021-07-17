@@ -55,11 +55,11 @@ INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity
 INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity) VALUES (@cerealTreatsId, @marshIngredient, 1, 0.25);
 INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity) VALUES (@cerealTreatsId, @cerealIngredient, 2, 6);
 
-INSERT INTO step (text) VALUES ('Melt {i0} in {t0} over low heat');
+INSERT INTO step (text) VALUES ('Melt {i} in {t} over low heat');
 SET @step0Id = LAST_INSERT_ID();
-INSERT INTO step (text) VALUES ('Add {i0} to {t0} and melt');
+INSERT INTO step (text) VALUES ('Add {i} to {t} and melt');
 SET @step1Id = LAST_INSERT_ID();
-INSERT INTO step (text) VALUES ('Pour over {i0}, stir until well coated');
+INSERT INTO step (text) VALUES ('Pour over {i}, stir until well coated');
 SET @step2Id = LAST_INSERT_ID();
 
 INSERT INTO recipe_step (recipeId, stepId, stepIndex) VALUES (@cerealTreatsId, @step0Id, 0);
