@@ -6,8 +6,11 @@ cDI.components.recipeCard.ingredientPane = {
     var recipe = card.data("editedrecipe") != undefined ? card.data("editedrecipe") : card.data("recipe")
 
     card.find(".cardIngs").empty()
-    recipe.ingredients.sort((a, b) => a.idx < b.idx).forEach((ingredient, x) => {
+    var sorted = recipe.ingredients.sort((a, b) => a.idx < b.idx)
+    sorted = [...sorted, ...sorted, ...sorted, ...sorted, ]
+    sorted.forEach(ingredient => {
       var ingLine = cDI.components.recipeCard.ingredientPane.createIngLine(ingredient, editMode)
+      ingLine += sorted[sorted.length - 1].idx != ingredient.idx ? `<span class="spacer horiz slim"></span>` : ``
       card.find(".cardIngs").append(ingLine)
       if (editMode){
         var line = card.find(`.cardIngs > .cardIngredient.Ing${ingredient.idx}`)
@@ -49,8 +52,8 @@ cDI.components.recipeCard.ingredientPane = {
     var UoMName = !editMode && ingredient.UoMAbbr ? UoMName = ingredient.UoMAbbr : ingredient.UoMName
 
     var ing = `
-      <span class="cardIngredient leftCopy Ing${ingNum} rows algnSS fauxrderWide">
-        <span class="algnSS" style="flex-basis:50px;">-&nbsp;</span>
+      <span class="cardIngredient leftCopy Ing${ingNum} rows autoH algnSS fauxrder">
+        <span class="ingIdx algnSS" style="flex-basis:50px;">-&nbsp;</span>
     `
       // <span style="flex-basis:50px;">${ingNum}.&nbsp;</span>
     if (editMode){
@@ -66,7 +69,6 @@ cDI.components.recipeCard.ingredientPane = {
         `
     }
     ing += `</span>`
-    ing += `<span class="spacer horiz slim"></span>`
     return ing
   },
   acceptIngChange: (input) => {
