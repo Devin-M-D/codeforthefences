@@ -10,7 +10,7 @@ module.exports = (router) => {
   }))
   router.post('/crud/recipe/u/', DI.rh.asyncRoute(async (req, res, next) => {
     var recipes = await recipe.saveEditedRecipe(req.body.editedRecipe)
-    DI.rh.succeed(res, "foo")
+    DI.rh.succeed(res, `Changes saved for recipe ${req.body.editedRecipe.id}`)
   }))
 
   router.post('/crud/UoM/c/', DI.rh.asyncRoute(async (req, res, next) => {

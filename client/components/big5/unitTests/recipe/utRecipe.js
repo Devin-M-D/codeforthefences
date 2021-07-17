@@ -1,9 +1,12 @@
 cDI.components.unitTests.recipe = {
   runAllEditRecipe: async () => {
-    await cDI.components.unitTests.recipe.editCard($(".recipeCard[recipeid = 1]"))
+    var card = $(".recipeCard[recipeid = 1]")
+    await cDI.components.unitTests.recipe.editCard(card)
+    var res = await cDI.components.unitTests.recipe.alterSteps(card)
+    await cDI.components.unitTests.recipe.saveEdits(card)
   },
   editCard: async (card) => {
-    var editButton = card.find(".recipeEdit")
+    var editButton = card.find(".pencilBox")
     await cDI.awaitableInput("click", editButton)
   },
   setIngProp: async (card, index, prop, val) => {
@@ -14,10 +17,16 @@ cDI.components.unitTests.recipe = {
     var saveButton = card.find(".shpCheck")
     await cDI.awaitableInput("click", saveButton)
   },
-  runAllCerealTreats: async () => {
+  runAllCerealTreats: async (card) => {
     var card = $(".recipeCard[recipeid = 1]")
     await cDI.components.unitTests.recipe.editCard(card)
 
+    await cDI.components.unitTests.recipe.alterIngredients(card)
+    await cDI.components.unitTests.recipe.alterSteps(card)
+
+    await cDI.components.unitTests.recipe.saveEdits(card)
+  },
+  alterIngredients: async (card) => {
     if (card.find(`.txtIngSubstance.Ing0`).val() == "butter"){
       await cDI.components.unitTests.recipe.setIngProp(card, 0, "Substance", "parsley")
       await cDI.components.unitTests.recipe.setIngProp(card, 0, "UoM", "cup")
@@ -38,7 +47,11 @@ cDI.components.unitTests.recipe = {
       await cDI.components.unitTests.recipe.setIngProp(card, 2, "Substance", "cereal")
       await cDI.components.unitTests.recipe.setIngProp(card, 2, "UoM", "cup")
     }
-
-    await cDI.components.unitTests.recipe.saveEdits(card)
   },
+  alterSteps: async (card) => {
+    if (card.find(`.txtStep.step0`).html() == "Melt {i} in {t} over low heat"){
+      card.find(`.txtStep.step0`).html("Fling {i} at the wall using {t}")
+    }
+    return await cDI.awaitableInput("keyup", card.find(`.txtStep.step0`))
+  }
 }

@@ -31,6 +31,8 @@ ${recipeQueriesIndex.descendentTree}
 recipeQueriesIndex.setIngredient = `UPDATE recipe_ingredient SET ingredientId = @ingId, quantity = ? WHERE id = ?;
 SET @ingId = NULL;
 `
+recipeQueriesIndex.setStep = `UPDATE recipe_step SET stepId = @stepId WHERE id = ?;
+SET @stepId = NULL;
+`
 
-
-module.exports =recipeQueriesIndex
+module.exports = recipeQueriesIndex
