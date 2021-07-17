@@ -30,7 +30,7 @@ body, span, input, textarea, select {
   flex-direction: inherit;
   flex-wrap: nowrap;
   position: relative;
-  margin: inherit;
+  margin: 0;
   box-sizing: border-box;
   border-collapse: collapse;
   text-align: center;
@@ -56,14 +56,17 @@ span[contenteditable="true"] {
 .rows { flex-direction: row; }
 .cols { flex-direction: column; }
 .wrap { flex-wrap: wrap; }
-.allowOverflow > * { flex-shrink: 0; }
 .rowBreak { height: 0px; flex-basis: 100%; }
 .autoW { flex-basis: auto; width: auto; }
 .autoH { flex-basis: auto; height: auto; }
+.noShrink { flex-shrink: 0; }
+.allowOverflow > * { flex-shrink: 0; }
 
 .rounded { border-radius: 10px; }
+.roundedWide { border-radius: 25px; }
 .fauxrder { border: solid 5px white; }
 .fauxrderWide { border: solid 15px white; }
+.fauxrderHoriz { border: solid 15px 0px white; }
 
 /*#region justify and align shorthands*/
 .absCen {
@@ -75,9 +78,9 @@ span[contenteditable="true"] {
 .algnSX { justify-content: start; }
 .algnEX { justify-content: end; }
 
-.algnXC { align-content: center; }
-.algnXS { align-content: start; }
-.algnXE { align-content: end; }
+.algnXC { align-items: center; }
+.algnXS { align-items: start; }
+.algnXE { align-items: end; }
 
 .algnCC { justify-content: center; align-items: center; }
 .algnSS { justify-content: start; align-items: start; }
@@ -236,6 +239,7 @@ span[contenteditable="true"] {
 [data-headerheight="25%"] { --headerheight: 25%; }
 [data-headerheight="40%"] { --headerheight: 40%; }
 [data-headerheight="100px"] { --headerheight: 100px; }
+[data-headerheight="150px"] { --headerheight: 150px; }
 [data-headerheight="200px"] { --headerheight: 200px; }
 [data-headerheight="250px"] { --headerheight: 250px; }
 [data-headerheight="400px"] { --headerheight: 400px; }

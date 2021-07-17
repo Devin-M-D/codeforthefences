@@ -7,6 +7,7 @@ cDI.components.recipeCard = {
   buildRecipeCardList: async (recipes) => {
     var cardList = []
     console.log(recipes)
+    recipes = [...recipes, ...recipes, ...recipes ]
     recipes.forEach(async recipe => {
       // for (var x = 0; x < 11; x++){
         cardList.push(await cDI.components.recipeCard.buildRecipeCard(recipe))

@@ -13,18 +13,21 @@ cDI.components.recipeCard.stepPane = {
   buildPane: (card, editMode) => {
     var recipe = editMode ? card.data("editedrecipe") : card.data("recipe")
     var paneHtml = ``
-    recipe.steps.sort((a, b) => a.idx < b.idx).forEach(step => {
+    var sorted = recipe.steps.sort((a, b) => a.idx < b.idx)
+    // sorted = [...sorted, ...sorted, ...sorted, ...sorted, ]
+
+    sorted.forEach(step => {
       var stepHTML = `
-        <span class="cardStep rows algnSX">
-          <span class="rowNumber" style="flex-basis: 50px;">${step.idx}.&nbsp;</span>
+        <span class="cardStep rows autoH algnXS">
+          <span class="stepIdx autoH" style="flex-basis: 50px;">${step.idx}.&nbsp;</span>
       `
       var currMaps = recipe.stepMaps.filter(x => x.recipeStepId == step.id)
       if (editMode) {
-        stepHTML += `<textarea class="txtStep step${step.idx}" rows="5">${step.text}</textarea>`
+        stepHTML += `<span contenteditable="true" class="txtStep step${step.idx} autoH rounded">${step.text}</span>`
       }
       else {
         var filledStepText = cDI.components.recipeCard.stepPane.addIngredientsToStepText(step.text, currMaps, recipe.ingredients, recipe.tools)
-        stepHTML += `<span class="leftCopy" style="flex-basis:auto;">${filledStepText}</span>`
+        stepHTML += `<span class="fauxrder autoW autoH"><span class="alignSS rounded" style="flex-basis:auto;">${filledStepText}</span></span>`
       }
       stepHTML += `</span>`
       paneHtml += stepHTML
