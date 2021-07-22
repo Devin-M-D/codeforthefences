@@ -1,12 +1,20 @@
 var ss = require('../../utils/sqlSnippets')
-var recipeModels = require('../../models/recipe')
+var recipeModels = require('../../models/recipe/recipeObjModel')
 
 var recipeQueries = {}
-recipeQueries.selectBase =
-`
-SELECT
+
+recipeQueries.selectBase = `SELECT
 ${ss.projections(recipeModels.recipe, 0)}
 FROM recipe`
+
+recipeQueries.getAll = (setName) => {
+  return `
+${ss.addSet(setName || "tmp_recipe").body(`
+${recipeQueries.selectBase} LIMIT 10
+`)}
+`
+}
+
 
 recipeQueries.getByName = (setName) => {
   return `

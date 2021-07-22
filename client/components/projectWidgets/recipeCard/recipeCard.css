@@ -18,17 +18,12 @@
   padding: 0px 5px;
   margin: 0px 5px;
 }
-.stepIngredient {
-  background-color: var(--clrPrimary);
-}
+.stepIngredient { background-color: var(--clrPrimary); }
 
-.stepTool {
-  background-color: var(--clrSecondary);
-}
+.stepTool { background-color: var(--clrSecondary); }
 
-.txtIngQuantity, .txtIngUoM, .txtIngSubstance {
-  flex-basis: auto;
-}
+.txtIngQuantity, .txtIngUoM, .txtIngSubstance { flex-basis: auto; }
+.txtIngUoM, .txtIngSubstance { min-width: 100px; }
 
 .txtStep {
 

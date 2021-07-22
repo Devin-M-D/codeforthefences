@@ -1,12 +1,10 @@
 var ss = require('../../../utils/sqlSnippets')
-var stepModels = require('../../../models/recipe/step')
+var stepModels = require('../../../models/recipe/step/stepObjModel')
 
 module.exports = {
   getMapsForStepSet: (stepSetName, setName) => {
-    setName = setName || "tmp_stepMap"
-    var query =
-`
-${ss.addSet(setName).body(`
+    return `
+${ss.addSet(setName || "tmp_stepMap").body(`
   SELECT
     ${ss.projections(stepModels.stepMapType)},
     ${ss.projections(stepModels.stepMap)}
@@ -15,6 +13,5 @@ ${ss.addSet(setName).body(`
   WHERE ${stepModels.stepMap.tableName}.recipeStepId IN (SELECT recipe_stepId FROM ${stepSetName})
 `)}
 `
-    return query
   }
 }

@@ -3,7 +3,7 @@ var recipeQueries = require('./recipeQueries')
 var toolQueries = require('./tool/toolQueries')
 var ingredientQueries = require('./ingredient/ingredientQueries')
 var stepQueries = require('./step/stepQueries')
-var stepMapsQueries = require('./step')
+var stepObjQueries = require('./step/stepObjQueries')
 
 var recipeQueriesIndex = {}
 recipeQueriesIndex.descendentTree =
@@ -11,7 +11,12 @@ recipeQueriesIndex.descendentTree =
 ${toolQueries.getForRecipeSet("tmp_recipe")}
 ${ingredientQueries.getForRecipeSet("tmp_recipe")}
 ${stepQueries.getForRecipeSet("tmp_recipe")}
-${stepMapsQueries.getMapsForStepSet("tmp_step")}
+${stepObjQueries.getMapsForStepSet("tmp_step")}
+`
+
+recipeQueriesIndex.getAll = `
+${recipeQueries.getAll()}
+${recipeQueriesIndex.descendentTree}
 `
 
 recipeQueriesIndex.getByName = () => {
@@ -26,6 +31,29 @@ recipeQueriesIndex.getById = () => {
 ${recipeQueries.getById()}
 ${recipeQueriesIndex.descendentTree}
 `
+}
+
+recipeQueriesIndex.addIngredient = (qb, recipeId, ingredientId, ingredientIndex, quantity) => {
+  qb.insertQuery(`
+INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity)
+  VALUES (?, ${ingredientId ? "?" : "@ingId"}, ?, ?);
+SET @ingId = NULL;
+`)
+  qb.insertParam(recipeId)
+  qb.insertNonNullParams(ingredientId)
+  qb.insertParam(ingredientIndex)
+  qb.insertParam(quantity)
+}
+
+recipeQueriesIndex.addStep = (qb, recipeId, stepId, stepIndex) => {
+  qb.insertQuery(`
+INSERT INTO recipe_step (recipeId, stepId, stepIndex)
+  VALUES (?, ${stepId ? "?" : "@stepId"}, ?);
+SET @stepId = NULL;
+`)
+  qb.insertParam(recipeId)
+  qb.insertNonNullParams(stepId)
+  qb.insertParam(stepIndex)
 }
 
 recipeQueriesIndex.setIngredient = `UPDATE recipe_ingredient SET ingredientId = @ingId, quantity = ? WHERE id = ?;

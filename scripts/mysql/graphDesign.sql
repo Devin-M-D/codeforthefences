@@ -46,18 +46,11 @@ CREATE TABLE recipe_tool (
 
 CREATE TABLE ingredient (
   `id` int AUTO_INCREMENT primary key NOT NULL,
-  -- `quantityId` int NOT NULL,
-  `UoMId` int NOT NULL,
+  `UoMId` int NULL,
   `foodVariantId` int NULL,
   `substanceId` int NOT NULL,
   `prepStyleId` int NULL
 );
-
--- CREATE TABLE quantity (
---   `id` int AUTO_INCREMENT primary key NOT NULL,
---   `deci` float NOT NULL,
---   `frac` nvarchar(64) NOT NULL
--- );
 
 CREATE TABLE UoM (
   `id` int AUTO_INCREMENT primary key NOT NULL,
