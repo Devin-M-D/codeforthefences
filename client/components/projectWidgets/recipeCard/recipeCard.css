@@ -10,7 +10,9 @@
   padding: 15px 5px;
 }
 
-.ingIdx, .stepIdx { margin-top: 12px; }
+.ingPaneTitle, .stepPaneTitle {
+  margin-left: 10px;
+}
 
 .cardIngredient, .cardStep { padding: 5px 25px; }
 
@@ -26,7 +28,7 @@
 .txtIngUoM, .txtIngSubstance { min-width: 100px; }
 
 .txtStep {
-
+  margin-right: 10px;
 }
 
 .recipeEdit {
