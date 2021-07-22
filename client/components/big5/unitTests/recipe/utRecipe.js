@@ -2,14 +2,9 @@ cDI.components.unitTests.recipe = {
   runAllEditRecipe: async () => {
     var card = $(".recipeCard[recipeid = 1]")
     await cDI.components.unitTests.recipe.editCard(card)
-    // await cDI.components.unitTests.recipe.addNewIng(card)
-    // await cDI.components.unitTests.recipe.alterIngredient(card, 3, "Substance", "parsley")
-    // await cDI.components.unitTests.recipe.alterIngredient(card, 3, "UoM", "large")
-    // await cDI.components.unitTests.recipe.alterIngredient(card, 3, "Quantity", 1)
 
-    // await cDI.components.unitTests.recipe.addNewStep(card)
-    // await cDI.components.unitTests.recipe.alterStep(card, 3, "Test 3rd step text")
-    //
+
+
     // await cDI.components.unitTests.recipe.saveEdits(card)
   },
   editCard: async (card) => {
@@ -54,6 +49,9 @@ cDI.components.unitTests.recipe = {
       await cDI.components.unitTests.recipe.alterIngredient(card, 2, "UoM", "cup")
     }
   },
+  removeFirstIngredient: async (card) => {
+    await cDI.awaitableInput("click", card.find(`.cardIngredient[data-ingredientindex = 0]`).find(".shpMinus").parent())
+  },
   //#endregion
 
   //#region steps
@@ -86,8 +84,20 @@ cDI.components.unitTests.recipe = {
 
     await cDI.components.unitTests.recipe.alterIngredients(card)
     await cDI.components.unitTests.recipe.alterSteps(card)
+    await cDI.components.unitTests.recipe.addLargeParsley(card)
+    await cDI.components.unitTests.recipe.addTestStep(card)
+    await cDI.components.unitTests.recipe.removeFirstIngredient(card)
 
     await cDI.components.unitTests.recipe.saveEdits(card)
+  },
+  addLargeParsley: async (card) => {
+    await cDI.components.unitTests.recipe.addNewIng(card)
+    await cDI.components.unitTests.recipe.alterIngredient(card, 3, "Substance", "parsley")
+    await cDI.components.unitTests.recipe.alterIngredient(card, 3, "UoM", "large")
+    await cDI.components.unitTests.recipe.alterIngredient(card, 3, "Quantity", 1)
+  },
+  addTestStep: async (card) => {
+    await cDI.components.unitTests.recipe.addNewStep(card)
+    await cDI.components.unitTests.recipe.alterStep(card, 3, "Test 3rd step text")
   }
-
 }

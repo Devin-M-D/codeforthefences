@@ -56,11 +56,14 @@ SET @stepId = NULL;
   qb.insertParam(stepIndex)
 }
 
-recipeQueriesIndex.setIngredient = `UPDATE recipe_ingredient SET ingredientId = @ingId, quantity = ? WHERE id = ?;
+recipeQueriesIndex.setIngredient = `UPDATE recipe_ingredient SET ingredientId = @ingId, ingredientIndex = ?, quantity = ? WHERE id = ?;
 SET @ingId = NULL;
 `
-recipeQueriesIndex.setStep = `UPDATE recipe_step SET stepId = @stepId WHERE id = ?;
+recipeQueriesIndex.setStep = `UPDATE recipe_step SET stepId = @stepId, stepIndex = ? WHERE id = ?;
 SET @stepId = NULL;
 `
+
+recipeQueriesIndex.detachIngredient = `DELETE FROM recipe_ingredient WHERE id = ?;`
+recipeQueriesIndex.detachStep = `DELETE FROM recipe_step WHERE id = ?;`
 
 module.exports = recipeQueriesIndex
