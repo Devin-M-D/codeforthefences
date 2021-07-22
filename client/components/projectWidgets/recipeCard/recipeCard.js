@@ -63,7 +63,12 @@ cDI.components.recipeCard = {
 
   saveChanges: async (card) => {
     var res = await cDI.services.recipe.save(card.data("editedrecipe"))
-    card.data("recipe", card.data("editedrecipe"))
+    if (res.status == "s") {
+      card.data("recipe", card.data("editedrecipe"))
+    }
+    else {
+      console.log(res)
+    }
     await cDI.components.recipeCard.setEditMode(card, 0)
   }
 }

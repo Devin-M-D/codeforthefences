@@ -15,21 +15,26 @@ cDI.components.recipeCard.stepPane = {
     var stepsPane = card.find(".cardSteps")
     var recipe = editMode ? card.data("editedrecipe") : card.data("recipe")
     var paneHtml = ``
-    var sorted = recipe.steps.sort((a, b) => a.idx < b.idx)
+    var sorted = recipe.steps.sort((a, b) => a.idx < b.stepIndex)
 
     stepsPane.html(`
       <span class="rows autoH algnSpread">
         <span class="autoH autoW bold">Steps</span>
-        <span class="shpPlus" style="flex-basis: 200px;"></span>
+        ${editMode ? `<span class="shpPlus" style="flex-basis: 200px;"></span>` : ""}
       </span>`)
+    cDI.addAwaitableInput("click", card.find(".shpPlus"), async (e) => {
+      var newStep = cDI.services.recipe.newStep(card.data("recipe").id, sorted[sorted.length - 1].stepIndex + 1)
+      card.data("editedrecipe").steps.push(newStep)
+      await cDI.components.recipeCard.stepPane.reload(card, 1)
+    })
     sorted.forEach(step => {
       var stepHTML = `
         <span class="cardStep rows autoH algnSS">
-          <span class="stepIdx autoH" style="flex-basis: 50px;">${step.idx}.&nbsp;</span>
+          <span class="stepIdx autoH" style="flex-basis: 50px;">${step.stepIndex}.&nbsp;</span>
       `
-      var currMaps = recipe.stepMaps.filter(x => x.recipeStepId == step.id)
+      var currMaps = recipe.stepMaps.filter(x => x.recipe_stepId == step.id)
       if (editMode) {
-        stepHTML += `<span contenteditable="true" class="txtStep step${step.idx} autoH rounded plainTextbox" stepId="${step.id}">${step.text}</span>`
+        stepHTML += `<span contenteditable="true" class="txtStep step${step.stepIndex} autoH rounded plainTextbox" stepIndex="${step.stepIndex}">${step.text}</span>`
       }
       else {
         var filledStepText = cDI.components.recipeCard.stepPane.addIngredientsToStepText(step.text, currMaps, recipe.ingredients, recipe.tools)
@@ -58,7 +63,7 @@ cDI.components.recipeCard.stepPane = {
   },
   addIngredientsToStep: (ingredients, stepText, maps) => {
     maps.forEach((map) => {
-      stepText = stepText.replace(`{i}`, `<p class="stepIngredient">${ingredients.find(x => x.idx == map.recipeIndex).substanceName}</p>`)
+      stepText = stepText.replace(`{i}`, `<p class="stepIngredient">${ingredients.find(x => x.stepIndex == map.stepIndex).substanceName}</p>`)
     })
     return stepText
   },
@@ -69,19 +74,23 @@ cDI.components.recipeCard.stepPane = {
     return stepText
   },
   acceptStepChange: (card, input) => {
-    var id = input.attr("stepId")
-    var step = card.data("editedrecipe").steps.find(x => x.id == id)
-    step.edited = step.edited || []
+    var stepIndex = input.attr("stepIndex")
+    var editedStep = card.data("editedrecipe").steps.find(x => x.stepIndex == stepIndex)
+    var origStep = card.data("recipe").steps.find(x => x.stepIndex == stepIndex)
 
-    if (step.text != input.html()) {
-      step.text = input.html()
-      if (step.edited.indexOf("text") == -1)  { step.edited.push("text") }
-    }
-    else {
-      step.edited = step.edited.filter(x => x != "text")
-    }
-    if (step.edited.length == 0) { delete step.edited }
+    editedStep.edited = editedStep.edited || []
+    var isNew = editedStep.edited.indexOf("new") == 0
 
-    console.log(card.data("editedrecipe").steps)
+    if (isNew || editedStep.text != input.html()) {
+      editedStep.text = input.html()
+      if (!isNew) {
+        if (editedStep.edited.indexOf("text") == -1)  { editedStep.edited.push("text") }
+      }
+    }
+    if (isNew || (origStep && editedStep.text == input.html())){
+      editedStep.edited = editedStep.edited.filter(x => x != "text")
+    }
+
+    if (editedStep.edited.length == 0) { delete editedStep.edited }
   }
 }

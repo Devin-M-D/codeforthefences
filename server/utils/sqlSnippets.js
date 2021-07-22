@@ -49,5 +49,5 @@ module.exports = {
   oJoin: (l, r, lf, rf) => { return buildJoin(3)(l, r)(lf, rf) },
 
   ifNull: (val, string) => { return val != null ? string : `` },
-  nullableParam: (val) => { return val != null ? `?` : `NULL` }
+  nullableValue: (val) => { return val != null ? `?` : `NULL` }
 }
