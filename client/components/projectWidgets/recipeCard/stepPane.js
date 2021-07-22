@@ -18,9 +18,12 @@ cDI.components.recipeCard.stepPane = {
     var sorted = recipe.steps.sort((a, b) => a.idx < b.stepIndex)
 
     stepsPane.html(`
-      <span class="rows autoH algnSpread">
-        <span class="autoH autoW bold">Steps</span>
-        ${editMode ? `<span class="shpPlus" style="flex-basis: 200px;"></span>` : ""}
+      <span class="rows autoH algnSC">
+        ${editMode ? `
+        <span class="btnIcon" data-btnsize=55>
+          <span class="shpPlus"></span>
+        </span>` : ""}
+        <span class="autoH autoW bold stepPaneTitle">Steps</span>
       </span>`)
     cDI.addAwaitableInput("click", card.find(".shpPlus"), async (e) => {
       var newStep = cDI.services.recipe.newStep(card.data("recipe").id, sorted[sorted.length - 1].stepIndex + 1)
@@ -29,7 +32,7 @@ cDI.components.recipeCard.stepPane = {
     })
     sorted.forEach(step => {
       var stepHTML = `
-        <span class="cardStep rows autoH algnSS">
+        <span class="cardStep rows autoH algnSC">
           <span class="stepIdx autoH" style="flex-basis: 50px;">${step.stepIndex}.&nbsp;</span>
       `
       var currMaps = recipe.stepMaps.filter(x => x.recipe_stepId == step.id)
@@ -39,6 +42,12 @@ cDI.components.recipeCard.stepPane = {
       else {
         var filledStepText = cDI.components.recipeCard.stepPane.addIngredientsToStepText(step.text, currMaps, recipe.ingredients, recipe.tools)
         stepHTML += `<span class="fauxrder autoW autoH"><span class=" autoH autoW alignSS rounded" style="flex-basis:auto;">${filledStepText}</span></span>`
+      }
+      if (editMode) {
+        stepHTML += `
+          <span class="btnIcon" data-btnsize=55>
+            <span class="shpMinus"></span>
+          </span>`
       }
       stepHTML += `</span>`
       paneHtml += stepHTML

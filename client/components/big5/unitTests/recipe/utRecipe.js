@@ -7,10 +7,10 @@ cDI.components.unitTests.recipe = {
     // await cDI.components.unitTests.recipe.alterIngredient(card, 3, "UoM", "large")
     // await cDI.components.unitTests.recipe.alterIngredient(card, 3, "Quantity", 1)
 
-    await cDI.components.unitTests.recipe.addNewStep(card)
-    await cDI.components.unitTests.recipe.alterStep(card, 3, "Test 3rd step text")
-
-    await cDI.components.unitTests.recipe.saveEdits(card)
+    // await cDI.components.unitTests.recipe.addNewStep(card)
+    // await cDI.components.unitTests.recipe.alterStep(card, 3, "Test 3rd step text")
+    //
+    // await cDI.components.unitTests.recipe.saveEdits(card)
   },
   editCard: async (card) => {
     var editButton = card.find(".pencilBox")

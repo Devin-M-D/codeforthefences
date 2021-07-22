@@ -1,3 +1,4 @@
+/*#region root*/
 :root {
   --clrHeader: mediumaquamarine;
 
@@ -25,6 +26,9 @@
 
   --icon_size: 1em;
 }
+/*#endregion*/
+
+/*#region master class*/
 body, span, input, textarea, select {
   display: inline-flex;
   flex-direction: inherit;
@@ -43,10 +47,10 @@ body, span, input, textarea, select {
   height: 100%;
   width: 100%;
 }
+/*#endregion*/
+
 body {
-  /* flex-basis: 100%; */
   flex-direction: column;
-  margin: 0px;
 }
 span[contenteditable="true"] {
     padding: 10px 20px;
@@ -93,6 +97,19 @@ span[contenteditable="true"] {
 /*#endregion*/
 
 /*#region buttons*/
+.btnIcon {
+  border-width: var(--btnborder);
+  border-color: darkgray;
+  border-style: outset;
+  border-radius: 10px;
+  flex-basis: var(--btnsize);
+  height: var(--btnsize);
+  width: var(--btnsize);
+  padding: 5px;
+}
+[data-btnsize="80"] { --btnsize: 80px; --btnborder: 5px; }
+[data-btnsize="55"] { --btnsize: 55px; --btnborder: 3px; }
+
 .btnStd {
   background-color: var(--clrPrimary);
   border: solid thick black;
@@ -165,55 +182,55 @@ span[contenteditable="true"] {
 .bold { font-weight: bold; }
  /*#endregion*/
 
-/*#region spacer bars*/
+/*#region rule bars*/
 
-.spacer {
+.rule {
   flex-grow: 0;
   flex-basis: 0;
   overflow: visible;
 }
-.spacer::after {
+.rule::after {
   background-color: gray;
   position: absolute;
   content: "";
 }
-.spacer.horiz {
+.rule.horiz {
   height: 0;
   margin: 2px 0px;
 }
-.spacer.horiz::after {
+.rule.horiz::after {
   background: linear-gradient(90deg, var(--spcGradient));
   width: 100%;
   height: 4px;
   bottom: -2px;
 }
-.spacer.vert {
+.rule.vert {
   width: 0;
   margin: 0px 2px;
 }
-.spacer.vert::after {
+.rule.vert::after {
   background: linear-gradient(0deg, var(--spcGradient));
   width: 4px;
   height: 100%;
   right: -2px;
 }
 
-.spacer.slim {}
-.spacer.slim::after {
+.rule.slim {}
+.rule.slim::after {
   background-color: gray;
 }
-.spacer.slim.horiz {
+.rule.slim.horiz {
   margin: 2px 0px;
 }
-.spacer.slim.horiz::after {
+.rule.slim.horiz::after {
   background: linear-gradient(90deg, var(--spcGradientSlim));
   height: 2px;
   bottom: -1px;
 }
-.spacer.slim.vert {
+.rule.slim.vert {
   margin: 0px 2px;
 }
-.spacer.slim.vert::after {
+.rule.slim.vert::after {
   background: linear-gradient(0deg, var(--spcGradientSlim));
   width: 2px;
   right: -1px;
