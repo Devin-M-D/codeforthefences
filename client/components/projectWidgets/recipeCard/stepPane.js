@@ -30,14 +30,14 @@ cDI.components.recipeCard.stepPane = {
       card.data("editedrecipe").steps.push(newStep)
       await cDI.components.recipeCard.stepPane.reload(card, 1)
     })
-    sorted.forEach(step => {
+    sorted.filter(x => !x.edited || !x.edited.includes("removed")).forEach(step => {
       var stepHTML = `
-        <span class="cardStep rows autoH algnSC">
+        <span class="cardStep rows autoH algnSC" stepIndex="${step.stepIndex}">
           <span class="stepIdx autoH" style="flex-basis: 50px;">${step.stepIndex}.&nbsp;</span>
       `
       var currMaps = recipe.stepMaps.filter(x => x.recipe_stepId == step.id)
       if (editMode) {
-        stepHTML += `<span contenteditable="true" class="txtStep step${step.stepIndex} autoH rounded plainTextbox" stepIndex="${step.stepIndex}">${step.text}</span>`
+        stepHTML += `<span contenteditable="true" class="txtStep autoH rounded plainTextbox" stepIndex="${step.stepIndex}">${step.text}</span>`
       }
       else {
         var filledStepText = cDI.components.recipeCard.stepPane.addIngredientsToStepText(step.text, currMaps, recipe.ingredients, recipe.tools)
@@ -50,9 +50,15 @@ cDI.components.recipeCard.stepPane = {
           </span>`
       }
       stepHTML += `</span>`
-      paneHtml += stepHTML
+      stepsPane.append(stepHTML)
+
+      if (editMode){
+        var line = card.find(`.cardSteps > .cardStep[stepIndex=${step.stepIndex}]`)
+        cDI.addAwaitableInput("click", line.find(".shpMinus").parent(), async (e) => {
+          await cDI.components.recipeCard.stepPane.acceptRemoval(card, $(e.target).closest(".cardStep").attr("stepIndex"))
+        })
+      }
     });
-    stepsPane.append(paneHtml)
     cDI.addAwaitableInput("keydown", stepsPane.find("span[contenteditable='true']"), e => {
       $(e.target).addClass("beingEdited")
     })
@@ -101,5 +107,22 @@ cDI.components.recipeCard.stepPane = {
     }
 
     if (editedStep.edited.length == 0) { delete editedStep.edited }
+  },
+  acceptRemoval: async (card, index) => {
+    var removedStep = card.data("editedrecipe").steps.find(x => x.stepIndex == index)
+    removedStep.stepIndex = null
+    removedStep.edited = removedStep.edited || []
+    if (!removedStep.edited.includes("removed")){ removedStep.edited.push("removed") }
+
+    card.data("editedrecipe").steps.forEach(x => {
+      if (x.stepIndex > index && (!x.edited || !x.edited.includes("removed"))) {
+        x.stepIndex = x.stepIndex - 1
+        x.edited = x.edited || []
+        if (!x.edited.includes("stepIndex")){ x.edited.push("stepIndex") }
+      }
+    });
+    console.log(cDI.utils.clone(card.data("editedrecipe").steps))
+    await cDI.components.recipeCard.stepPane.reload(card, 1)
   }
+
 }

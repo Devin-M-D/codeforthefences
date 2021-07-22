@@ -41,15 +41,18 @@ recipeService.saveEditedRecipe = async (editedRecipe) => {
   for (var x = 0; x < editedRecipe.ingredients.length; x++){
     var ingredient = editedRecipe.ingredients[x]
     if (ingredient.edited) {
-      if (ingredient.edited.indexOf("new") == 0) {
+      if (ingredient.edited.includes("new")) {
         await ingredientService.upsertIngredient(qb, ingredient.UoMId, ingredient.foodVariantId, ingredient.substanceId, ingredient.prepStyle)
         recipeObjQueries.addIngredient(qb, ingredient.recipeId, ingredient.ingredientId, ingredient.ingredientIndex, ingredient.ingredientQuantity)
+      }
+      else if (ingredient.edited.includes("removed")){
+        qb.insertQuery(recipeObjQueries.detachIngredient)
+        qb.insertParam(ingredient.recipe_ingredientId)
       }
       else {
         await ingredientService.upsertIngredient(qb, ingredient.UoMId, ingredient.foodVariantId, ingredient.substanceId, ingredient.prepStyle)
         qb.insertQuery(recipeObjQueries.setIngredient)
-        qb.insertParam(ingredient.ingredientQuantity)
-        qb.insertParam(ingredient.recipe_ingredientId)
+        qb.insertParams(ingredient.ingredientIndex, ingredient.ingredientQuantity, ingredient.recipe_ingredientId)
       }
     }
   }
@@ -57,21 +60,25 @@ recipeService.saveEditedRecipe = async (editedRecipe) => {
   for (var x = 0; x < editedRecipe.steps.length; x++){
     var step = editedRecipe.steps[x]
     if (step.edited) {
-      if (step.edited.indexOf("new") == 0) {
+      if (step.edited.includes("new")) {
         await stepService.upsert(qb, step.text)
         recipeObjQueries.addStep(qb, step.recipeId, step.id, step.stepIndex)
+      }
+      else if (step.edited.includes("removed")){
+        qb.insertQuery(recipeObjQueries.detachStep)
+        qb.insertParam(step.recipe_stepId)
       }
       else {
         await stepService.upsert(qb, step.text)
         qb.insertQuery(recipeObjQueries.setStep)
-        qb.insertParam(step.recipe_stepId)
+        qb.insertParams(step.stepIndex, step.recipe_stepId)
       }
     }
   }
   if (qb.query != "") {
     // console.log(qb.query())
     // console.log(qb.params())
-    console.log(qb.printRunnable())
+    // console.log(qb.printRunnable())
     var res = await qb.run()
   }
 }
