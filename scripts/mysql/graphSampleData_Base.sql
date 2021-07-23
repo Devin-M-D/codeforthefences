@@ -115,13 +115,13 @@ SET @stepMapType0 = LAST_INSERT_ID();
 INSERT INTO stepMapType (mapType) VALUES ('ingredient');
 SET @stepMapType1 = LAST_INSERT_ID();
 
-INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, stepIndex) VALUES (@recipeStep0Id, @stepMapType0, 0, 0);
-INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, stepIndex) VALUES (@recipeStep0Id, @stepMapType1, 0, 0);
-INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, stepIndex) VALUES (@recipeStep1Id, @stepMapType0, 0, 0);
-INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, stepIndex) VALUES (@recipeStep1Id, @stepMapType1, 0, 1);
-INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, stepIndex) VALUES (@recipeStep2Id, @stepMapType1, 0, 2);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@recipeStep0Id, @stepMapType0, 0, 0);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@recipeStep0Id, @stepMapType1, 0, 0);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@recipeStep1Id, @stepMapType0, 0, 0);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@recipeStep1Id, @stepMapType1, 0, 1);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@recipeStep2Id, @stepMapType1, 0, 2);
 
-INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, stepIndex) VALUES (@ICrecipeStep0Id, @stepMapType1, 0, 0);
-INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, stepIndex) VALUES (@ICrecipeStep1Id, @stepMapType1, 0, 0);
-INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, stepIndex) VALUES (@ICrecipeStep1Id, @stepMapType1, 1, 1);
-INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, stepIndex) VALUES (@ICrecipeStep1Id, @stepMapType1, 2, 2);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@ICrecipeStep0Id, @stepMapType1, 0, 0);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@ICrecipeStep1Id, @stepMapType1, 0, 0);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@ICrecipeStep1Id, @stepMapType1, 1, 1);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@ICrecipeStep1Id, @stepMapType1, 2, 2);

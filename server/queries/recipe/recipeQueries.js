@@ -29,7 +29,7 @@ recipeQueries.getById = (setName) => {
   return `
 ${ss.addSet(setName || "tmp_recipe").body(`
 ${recipeQueries.selectBase}
-WHERE recipe.id LIKE ?
+WHERE recipe.id = ?
 `)}
 `
 }

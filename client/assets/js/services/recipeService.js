@@ -48,6 +48,21 @@ cDI.services.recipe = {
       text: ""
     }
   },
+  newStepMap: (mapType, recipeStepId, barsIndex, recipeIndex) => {
+    return {
+      barsIndex: barsIndex,
+      edited: ["new"],
+      mapType: mapType,
+      recipeIndex: recipeIndex,
+      recipe_stepId: recipeStepId,
+      stepMapId: null,
+      stepMapTypeId: mapType == "tool" ? 1 : 2
+    }
+  },
+  saveStepMap: async (stepMap) => {
+    var retVal = await cDI.remote.remoteCall("/crud/stepMap/u/", { stepMap: stepMap })
+    return retVal
+  },
   save: async (editedRecipe) => {
     var retVal
 

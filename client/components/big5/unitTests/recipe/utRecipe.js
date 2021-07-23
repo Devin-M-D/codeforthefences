@@ -1,8 +1,9 @@
 cDI.components.unitTests.recipe = {
   runAllEditRecipe: async () => {
     var card = $(".recipeCard[recipeid = 1]")
-    await cDI.components.unitTests.recipe.editCard(card)
-
+    // await cDI.components.unitTests.recipe.editCard(card)
+    // await cDI.components.unitTests.recipe.addNewStep(card)
+    // await cDI.components.unitTests.recipe.addNewStep(card)
 
 
     // await cDI.components.unitTests.recipe.saveEdits(card)
@@ -14,7 +15,7 @@ cDI.components.unitTests.recipe = {
 
   //#region ingredients
   addNewIng: async (card) => {
-    await cDI.awaitableInput("click", card.find(".cardIngs > span > .shpPlus"))
+    await cDI.awaitableInput("click", card.find(".cardIngs > .ingTitle > .btnIcon > .shpPlus").parent())
   },
   alterIngredient: async (card, index, prop, val) => {
     if (prop == "Quantity"){
@@ -56,7 +57,7 @@ cDI.components.unitTests.recipe = {
 
   //#region steps
   addNewStep: async (card) => {
-    return await cDI.awaitableInput("click", card.find(".cardSteps > span > .shpPlus"))
+    return await cDI.awaitableInput("click", card.find(".cardSteps > .stepTitle > .btnIcon > .shpPlus").parent())
   },
   alterStep: async (card, stepIndex, textVal) => {
     card.find(`.txtStep.step${stepIndex}`).html(textVal)

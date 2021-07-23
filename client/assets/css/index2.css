@@ -244,6 +244,7 @@ span[contenteditable="true"] {
 }
 .wingedHeader > *:nth-child(1), .wingedHeader > *:nth-child(3)  {
   flex-basis: var(--headerwings);
+  min-width: var(--headerwingmin);
   max-width: var(--headerwingmax);
 }
 .wingedHeader > *:nth-child(2) {
@@ -263,7 +264,10 @@ span[contenteditable="true"] {
 [data-headerwings="20%"] { --headerwings: 20%; }
 [data-headerwings="25%"] { --headerwings: 25%; }
 [data-headerwings="40%"] { --headerwings: 40%; }
+[data-headerwings="200px"] { --headerwings: 200px; }
 
+[data-headerwingmin="200px"] { --headerwingmin: 200px; }
+[data-headerwingmax="250px"] { --headerwingmax: 250px; }
 [data-headerwingmax="300px"] { --headerwingmax: 300px; }
 
 /*#endregion*/
