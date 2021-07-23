@@ -1,6 +1,7 @@
 var db = require('../foundation/dbLogic')
 var recipeService = require('../services/recipeService')
 var ingredientService = require('../services/ingredientService')
+var stepService = require('../services/stepService')
 var DI = require('../foundation/DICore')
 
 module.exports = (router) => {
@@ -9,8 +10,8 @@ module.exports = (router) => {
     DI.rh.succeed(res, recipes)
   }))
   router.post('/crud/recipe/u/', DI.rh.asyncRoute(async (req, res, next) => {
-    var recipes = await recipeService.saveEditedRecipe(req.body.editedRecipe)
-    DI.rh.succeed(res, `Changes saved for recipe ${req.body.editedRecipe.id}`)
+    var updatedRecipe = await recipeService.saveEditedRecipe(req.body.editedRecipe)
+    DI.rh.succeed(res, updatedRecipe)
   }))
 
   router.post('/crud/UoM/c/', DI.rh.asyncRoute(async (req, res, next) => {
@@ -43,5 +44,16 @@ module.exports = (router) => {
       var data = await ingredientService.getAllSubstances()
     }
     DI.rh.succeed(res, data)
+  }))
+
+  router.post('/crud/stepMap/u/', DI.rh.asyncRoute(async (req, res, next) => {
+    if (req.body.stepMap){
+      console.log(req.body.stepMap)
+      var data = await stepService.upsertStepMap(req.body.stepMap)
+      DI.rh.succeed(res, data)
+    }
+    else {
+      DI.rh.fail(res, "No step map supplied")
+    }
   }))
 }

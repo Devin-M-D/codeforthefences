@@ -29,7 +29,7 @@ recipeService.getByName = async (name) => {
   return recipeService.parseObj(data)
 }
 recipeService.getById = async (id) => {
-  var data = await db.runQuery(recipeObjQueries.getById(), [`%${id}%`])
+  var data = await db.runQuery(recipeObjQueries.getById(), [id])
   return recipeService.parseObj(data)[0]
 }
 recipeService.saveEditedRecipe = async (editedRecipe) => {
@@ -81,6 +81,7 @@ recipeService.saveEditedRecipe = async (editedRecipe) => {
     // console.log(qb.printRunnable())
     var res = await qb.run()
   }
+  return await recipeService.getById(editedRecipe.id)
 }
 
 module.exports = recipeService

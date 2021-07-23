@@ -9,14 +9,14 @@ cDI.components.recipeCard.ingredientPane = {
     var sorted = recipe.ingredients.sort((a, b) => a.ingredientIndex < b.ingredientIndex)
 
     card.find(".cardIngs").append(`
-      <span class="rows autoH algnSC">
+      <span class="ingTitle rows autoH algnSC">
         ${editMode ? `
         <span class="btnIcon" data-btnsize="55">
           <span class="shpPlus"></span>
         </span>` : ``}
         <span class="autoH autoW bold ingPaneTitle">Ingredients</span>
       </span>`)
-    cDI.addAwaitableInput("click", card.find(".shpPlus"), (e) => {
+    cDI.addAwaitableInput("click", card.find(".shpPlus").parent(), (e) => {
       var newIng = cDI.services.recipe.newIngredient(card.data("recipe").id, sorted[sorted.length - 1].ingredientIndex + 1)
       card.data("editedrecipe").ingredients.push(newIng)
       cDI.components.recipeCard.ingredientPane.createIngPane(card, 1)
@@ -26,7 +26,7 @@ cDI.components.recipeCard.ingredientPane = {
       ingLine += sorted[sorted.length - 1].ingredientIndex != ingredient.ingredientIndex ? `<span class="rule horiz slim"></span>` : ``
       card.find(".cardIngs").append(ingLine)
       if (editMode){
-        var line = card.find(`.cardIngs > .cardIngredient[data-ingredientindex=${ingredient.ingredientIndex}]`)
+        var line = card.find(`.cardIngs > .cardIngredient[ingredientIndex=${ingredient.ingredientIndex}]`)
 
         var txtIngQuantity = line.find(`.txtIngQuantity.Ing${ingredient.ingredientIndex}`)
         cDI.addAwaitableInput("keyup", txtIngQuantity, async (e) => {
@@ -40,7 +40,7 @@ cDI.components.recipeCard.ingredientPane = {
         cDI.components.recipeCard.ingredientPane.addClick(txtIngSubstance, "substance", "name")
 
         cDI.addAwaitableInput("click", line.find(".shpMinus").parent(), async (e) => {
-          await cDI.components.recipeCard.ingredientPane.acceptRemoval(card, $(e.target).closest(".cardIngredient").data("ingredientindex"))
+          await cDI.components.recipeCard.ingredientPane.acceptRemoval(card, $(e.target).closest(".cardIngredient").attr("ingredientIndex"))
         })
       }
     })
@@ -63,14 +63,14 @@ cDI.components.recipeCard.ingredientPane = {
     var UoMName = !editMode && ingredient.UoMAbbr ? UoMName = ingredient.UoMAbbr : ingredient.UoMName
 
     var ing = `
-      <span class="cardIngredient leftCopy rows autoH algnSC fauxrder" data-ingredientindex="${ingIdx}">
+      <span class="cardIngredient leftCopy rows autoH algnSC rounded" ingredientIndex="${ingIdx}">
         <span class="ingIdx absCen" style="flex-basis:50px;">-&nbsp;</span>
     `
     if (editMode){
       ing += `<span class="wrap autoH algnSC">`
-        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngQuantity Ing${ingIdx} autoW autoH rounded" data-ingredientprop="quantity">${(new Fraction(ingredient.ingredientQuantity)).toFraction()}</span></span>`
-        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngUoM Ing${ingIdx} autoW autoH rounded" data-ingredientprop="UoM">${UoMName ? UoMName : ""}</span></span>`
-        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngSubstance Ing${ingIdx} autoW autoH rounded" data-ingredientprop="substance">${ingName ? ingName : ""}</span></span>`
+        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngQuantity Ing${ingIdx} autoW autoH rounded" ingredientProp="quantity">${(new Fraction(ingredient.ingredientQuantity)).toFraction()}</span></span>`
+        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngUoM Ing${ingIdx} autoW autoH rounded" ingredientProp="UoM">${UoMName ? UoMName : ""}</span></span>`
+        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngSubstance Ing${ingIdx} autoW autoH rounded" ingredientProp="substance">${ingName ? ingName : ""}</span></span>`
       ing += `</span>`
       ing += `<span class="btnIcon" data-btnsize="55">
                 <span class="shpMinus"></span>
@@ -88,8 +88,8 @@ cDI.components.recipeCard.ingredientPane = {
     var card = input.closest(".recipeCard")
     var origRecipe = card.data("recipe")
     var editedRecipe = card.data("editedrecipe")
-    var ingredientIndex = input.closest(".cardIngredient").data("ingredientindex")
-    var ingredientProp = input.data("ingredientprop")
+    var ingredientIndex = input.closest(".cardIngredient").attr("ingredientIndex")
+    var ingredientProp = input.attr("ingredientProp")
 
     var origIng = origRecipe.ingredients.find(x => x.ingredientIndex == ingredientIndex)
     var editedIng = editedRecipe.ingredients.find(x => x.ingredientIndex == ingredientIndex)

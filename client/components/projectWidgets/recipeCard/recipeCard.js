@@ -64,7 +64,8 @@ cDI.components.recipeCard = {
   saveChanges: async (card) => {
     var res = await cDI.services.recipe.save(card.data("editedrecipe"))
     if (res.status == "s") {
-      card.data("recipe", card.data("editedrecipe"))
+      console.log(res)
+      card.data("recipe", res.payload)
     }
     else {
       console.log(res)

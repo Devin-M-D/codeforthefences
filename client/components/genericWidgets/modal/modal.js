@@ -2,11 +2,16 @@ cDI.components.modal = {
   init: () => {
 
   },
+  justDrawCurtain: (target) => {
+    target.prepend(`<span class="modalCurtain"></span>`)
+  },
   drawCurtain: async (params = {}) => {
     var target = params.target || $("html")
     var content = params.content || ""
     var maximizeDialog = params.maximizeDialog || false
-    target.prepend(`<span class="modalCurtain">${content}</span>`)
+
+    cDI.components.modal.justDrawCurtain(target)
+    target.find(" > .modalCurtain").html(content)
     var curtain = target.find(".modalCurtain")
 
     if (maximizeDialog){
@@ -32,7 +37,7 @@ cDI.components.modal = {
     content.addClass("max")
   },
   clickToModal: async (elem, compPath, compName, fn, maximizeDialog = false) => {
-    await cDI.addAwaitableInput("click", elem, async (e) => {
+    cDI.addAwaitableInput("click", elem, async (e) => {
       var tmpContainer = $("<span id='modalTemp'></span>")
       var contentDI = await cDI.remote.loadComponent(tmpContainer, compPath, compName)
       var content = tmpContainer.html()
