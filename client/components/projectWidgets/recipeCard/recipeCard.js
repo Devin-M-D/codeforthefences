@@ -36,25 +36,26 @@ cDI.components.recipeCard = {
   buildEditBox: (card, editMode = 0) => {
     var editBox = card.find(".recipeEdit")
     if (editMode == 0){
-      editBox.html(`<span class="pencilBox"><span class="shpPencil absCen"></span></span>`)
-      cDI.addAwaitableInput("click", editBox.find(".pencilBox"), async (e) => {
+      editBox.html(`<span class="btnIcon" data-btnsize="80"><span class="shpPencil absCen"></span></span>`)
+      cDI.addAwaitableInput("click", editBox.find(".shpPencil").parent(), async (e) => {
         await cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 1)
       })
     }
     else {
       editBox.off("click")
       editBox.html(`
-        <span class="absCen fillH">
+        <span class="btnIcon" data-btnsize="55">
           <span class="shpCheck"></span>
         </span>
-        <span class="absCen fillH">
-          <span class="btnCancel">X</span>
+        <span class="spacer5px"></span>
+        <span class="btnIcon" data-btnsize="55">
+          <span class="shpCancel"></span>
         </span>
       `)
-      cDI.addAwaitableInput("click", editBox.find(".shpCheck"), async (e) => {
-        await cDI.components.recipeCard.saveChanges($(e.target).closest(".recipeCard"))
-    })
-      cDI.addAwaitableInput("click", editBox.find(".btnCancel"), async (e) => {
+      cDI.addAwaitableInput("click", editBox.find(".shpCheck").parent(), async (e) => {
+        return await cDI.components.recipeCard.saveChanges($(e.target).closest(".recipeCard"))
+      })
+      cDI.addAwaitableInput("click", editBox.find(".shpCancel").parent(), async (e) => {
         await cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 0)
       })
     }
@@ -64,12 +65,10 @@ cDI.components.recipeCard = {
   saveChanges: async (card) => {
     var res = await cDI.services.recipe.save(card.data("editedrecipe"))
     if (res.status == "s") {
-      console.log(res)
       card.data("recipe", res.payload)
-    }
-    else {
-      console.log(res)
+      res = res.payload
     }
     await cDI.components.recipeCard.setEditMode(card, 0)
+    return res
   }
 }

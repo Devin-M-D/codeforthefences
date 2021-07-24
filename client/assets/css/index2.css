@@ -71,6 +71,7 @@ span[contenteditable="true"] {
 .fauxrder { border: solid 5px white; }
 .fauxrderWide { border: solid 15px white; }
 .fauxrderHoriz { border: solid 15px 0px white; }
+.spacer5px { flex-basis: 5px;}
 
 /*#region justify and align shorthands*/
 .absCen {
@@ -255,6 +256,7 @@ span[contenteditable="true"] {
 [data-headerheight="25%"] { --headerheight: 25%; }
 [data-headerheight="40%"] { --headerheight: 40%; }
 [data-headerheight="100px"] { --headerheight: 100px; }
+[data-headerheight="120px"] { --headerheight: 120px; }
 [data-headerheight="150px"] { --headerheight: 150px; }
 [data-headerheight="200px"] { --headerheight: 200px; }
 [data-headerheight="250px"] { --headerheight: 250px; }
@@ -272,17 +274,22 @@ span[contenteditable="true"] {
 
 /*#endregion*/
 
-/*#region Toaster fades*/
-.beingEdited { background-color: lightyellow !important; }
-.acceptingEdit {
-  background-color: lightgreen !important;
+/*#region Toast pulse*/
+.debounceToastSlow {
+  -webkit-transition: all 2s ease;
+  -moz-transition: all 2s ease;
+  -o-transition: all 2s ease;
+  -ms-transition: all 2s ease;
+  transition: all 2s ease;
 }
-.plainTextBox {
-  background-color: white;
+.debounceToastFast {
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   -ms-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
+.toastInProcess  { background-color: lightyellow !important; }
+.toastSucceed { background-color: lightgreen !important; }
+.toastFail { background-color: pink !important; }
 /*#endregion*/

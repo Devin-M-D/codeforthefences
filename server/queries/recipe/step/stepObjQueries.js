@@ -2,16 +2,6 @@ var ss = require('../../../utils/sqlSnippets')
 var stepModels = require('../../../models/recipe/step/stepObjModel')
 
 var stepObjQueries = {}
-stepObjQueries.upsert = (qb, text) => {
-  var query = `
-SELECT @stepId:=id FROM step WHERE text = ?;
-INSERT INTO step (text)
-  SELECT ? WHERE @stepId IS NULL;
-SET @stepId = (SELECT IFNULL(@stepId, LAST_INSERT_ID()));
-`
-  qb.insertQuery(query)
-  qb.insertNonNullParams(text, text)
-}
 stepObjQueries.getMapsForStepSet = (stepSetName, setName) => {
   return `
 ${ss.addSet(setName || "tmp_stepMap").body(`

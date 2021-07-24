@@ -263,6 +263,62 @@ cDI.awaitableInput = async (inputType, elem) => {
 
 //#endregion
 
+//#region effects
+cDI.effects = {}
+cDI.effects.toastPulse = (state, target, speed) => {
+  var debounceClass = speed ? "debounceToastFast" : "debounceToastSlow"
+  var delay = speed ? 500 : 2000
+  var classes = target.attr("class").split(" ")
+  if (state == 0 || state == "pend") {
+    if (
+        !(classes.includes("debounceToastFast") || classes.includes("debounceToastSlow"))
+        || (!classes.includes("toastSucceed") && !classes.includes("toastFail"))
+    ){
+      target.addClass(debounceClass)
+      target.addClass("toastInProcess")
+      target.removeClass("toastSucceed")
+      target.removeClass("toastFail")
+      clearTimeout(target.data("debounceToasting"))
+      target.data("debounceToasting", setTimeout(() => {
+        target.removeClass("toastInProcess")
+        target.data("debounceToasting", setTimeout(() => {
+          target.removeClass(debounceClass)
+        }, delay))
+      }, delay))
+    }
+    else {
+      setTimeout(() => { cDI.effects.toastPulse(0, target, speed) }, 250)
+    }
+  }
+  if (state == 1 || state == "succeed") {
+    if (
+      !(classes.includes("debounceToastFast") || classes.includes("debounceToastSlow"))
+      || (!classes.includes("toastInProcess") && !classes.includes("toastFail"))
+    ){
+      target.addClass("toastSucceed")
+      target.addClass(debounceClass)
+    //   target.addClass("toastSucceed")
+    //   target.removeClass("toastFail")
+      clearTimeout(target.data("debounceToasting"))
+      target.data("debounceToasting", setTimeout(() => {
+        target.removeClass("toastSucceed")
+        target.data("debounceToasting", setTimeout(() => {
+          target.removeClass(debounceClass)
+        }, delay))
+      }, delay))
+    }
+    else {
+      setTimeout(() => { cDI.effects.toastPulse(1, target, speed) }, 250)
+    }
+  }
+  // if (state == 2 || state == "fail") {
+  //   target.addClass("toastFail")
+  //   target.removeClass("toastSucceed")
+  //   setTimeout(() => { target.removeClass("toastFail") }, 500)
+  // }
+}
+//#endregion
+
 //#region localstorage
 cDI.persist = async (name, val) => {
   window.localStorage.setItem(name, val)

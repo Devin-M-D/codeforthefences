@@ -4,8 +4,7 @@ var stepObjModels = require('../../../models/recipe/step/stepObjModel')
 var stepQueries = {}
 stepQueries.upsert = (qb, text) => {
   var query = `
-SELECT @stepId:=id FROM step
-  WHERE text = ?;
+SELECT @stepId:=id FROM step WHERE text = ?;
 INSERT INTO step (text)
   SELECT ? WHERE @stepId IS NULL;
 SET @stepId = (SELECT IFNULL(@stepId, LAST_INSERT_ID()));
