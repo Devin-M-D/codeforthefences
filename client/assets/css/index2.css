@@ -271,7 +271,6 @@ span[contenteditable="true"] {
 [data-headerwingmin="200px"] { --headerwingmin: 200px; }
 [data-headerwingmax="250px"] { --headerwingmax: 250px; }
 [data-headerwingmax="300px"] { --headerwingmax: 300px; }
-
 /*#endregion*/
 
 /*#region Toast pulse*/
@@ -292,4 +291,22 @@ span[contenteditable="true"] {
 .toastInProcess  { background-color: lightyellow !important; }
 .toastSucceed { background-color: lightgreen !important; }
 .toastFail { background-color: pink !important; }
+/*#endregion*/
+
+/*#region clickable overlay*/
+.whiteBG {
+  background-color: white;
+}
+.liftAboveCurtain {
+  z-index: 10000
+}
+.selector {
+  /* background-color: rgba(220, 250, 220, .4); */
+  position: absolute;
+  z-index: 99999;
+  cursor: pointer;
+}
+.selector.selected {
+  /* background-color: rgba(220, 220, 0, .4) !important; */
+}
 /*#endregion*/

@@ -67,12 +67,11 @@ cDI.components.unitTests = {
   },
   UTStartSection: async (sectionName, fn) => {
     ftbIndent()
-    ftbLogUT(`${sectionName}`)
-    ftbLogUT(`${"=".repeat(sectionName.length)}`)
+    ftbLogUT(`${"=".repeat(sectionName.length)} ${sectionName}`)
     ftbIndent()
     var res = await fn()
     ftbOutdent()
-    ftbLogUT(`${sectionName.toUpperCase()} passed`)
+    ftbLogUT(`${"=".repeat(`${sectionName}`.length)} ${sectionName} passed`)
     ftbOutdent()
   },
   UTIndent: async (sectionName, testTitle, fn, validator, log) => {
