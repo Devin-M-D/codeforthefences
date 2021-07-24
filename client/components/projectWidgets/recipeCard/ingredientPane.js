@@ -16,7 +16,7 @@ cDI.components.recipeCard.ingredientPane = {
         </span>` : ``}
         <span class="autoH autoW bold ingPaneTitle">Ingredients</span>
       </span>`)
-    cDI.addAwaitableInput("click", card.find(".shpPlus").parent(), (e) => {
+    cDI.addAwaitableInput("click", card.find(".ingTitle > .btnIcon > .shpPlus").parent(), (e) => {
       var newIng = cDI.services.recipe.newIngredient(card.data("recipe").id, sorted[sorted.length - 1].ingredientIndex + 1)
       card.data("editedrecipe").ingredients.push(newIng)
       cDI.components.recipeCard.ingredientPane.createIngPane(card, 1)
@@ -143,7 +143,7 @@ cDI.components.recipeCard.ingredientPane = {
     var removedIng = card.data("editedrecipe").ingredients.find(x => x.ingredientIndex == index)
     removedIng.ingredientIndex = null
     removedIng.edited = removedIng.edited || []
-    if (!removedIng.edited.includes("removed")){ removedIng.edited.push("removed") }
+    removedIng.edited = ["removed"]
 
     card.data("editedrecipe").ingredients.forEach(x => {
       if (x.ingredientIndex > index && (!x.edited || !x.edited.includes("removed"))) {

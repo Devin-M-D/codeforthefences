@@ -57,7 +57,6 @@ recipeService.saveEditedRecipe = async (editedRecipe) => {
     }
   }
 
-console.log(editedRecipe.steps)
   for (var x = 0; x < editedRecipe.steps.length; x++){
     var step = editedRecipe.steps[x]
     if (step.edited) {
@@ -79,7 +78,7 @@ console.log(editedRecipe.steps)
   if (qb.query != "") {
     // console.log(qb.query())
     // console.log(qb.params())
-    console.log(qb.printRunnable())
+    //console.log(qb.printRunnable())
     var res = await qb.run()
   }
   return await recipeService.getById(editedRecipe.id)

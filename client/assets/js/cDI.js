@@ -293,7 +293,7 @@ cDI.effects.toastPulse = (state, target, speed) => {
   if (state == 1 || state == "succeed") {
     if (
       !(classes.includes("debounceToastFast") || classes.includes("debounceToastSlow"))
-      || (!classes.includes("toastInProcess") && !classes.includes("toastFail"))
+      // || (!classes.includes("toastInProcess") && !classes.includes("toastFail"))
     ){
       target.addClass("toastSucceed")
       target.addClass(debounceClass)
@@ -316,6 +316,21 @@ cDI.effects.toastPulse = (state, target, speed) => {
   //   target.removeClass("toastSucceed")
   //   setTimeout(() => { target.removeClass("toastFail") }, 500)
   // }
+}
+cDI.effects.toastPulseRepeat = (state, target, speed) => {
+  var delay = speed ? 1050 : 4050
+  cDI.effects.toastPulse(state, target, speed)
+  target.data("repeatToasting", setTimeout(() => {
+    cDI.effects.toastPulseRepeat(state, target, speed)
+  }, delay))
+},
+cDI.effects.endToastPulseRepeat = (target) => {
+  clearTimeout(target.data("repeatToasting"))
+  target.removeClass("debounceToastFast")
+  target.removeClass("debounceToastSlow")
+  target.removeClass("toastInProcess")
+  target.removeClass("toastSucceed")
+  target.removeClass("toastFail")
 }
 //#endregion
 

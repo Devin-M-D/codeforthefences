@@ -66,6 +66,7 @@ cDI.components.recipeCard = {
     var res = await cDI.services.recipe.save(card.data("editedrecipe"))
     if (res.status == "s") {
       card.data("recipe", res.payload)
+      card.data("editedrecipe", res.payload)
       res = res.payload
     }
     await cDI.components.recipeCard.setEditMode(card, 0)
