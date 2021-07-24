@@ -29,3 +29,14 @@ cDI.components.componentName = {
 .parent { height: 250px; }
 .parent > span:nth-child(1) { flex: 1; }
 .parent > span:nth-child(n+2) { flex: 3; }
+
+////////////////////////////
+//UT wrapper
+////////////////////////////
+return await cDI.components.unitTests.UTIndent(cDI.components.unitTests..section, "testTitle",
+  async () => {
+
+  },
+  //(res) => { return true }, log
+  //null, log
+)

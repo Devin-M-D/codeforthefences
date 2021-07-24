@@ -15,7 +15,9 @@
 /*#endregion*/
 
 /*#region star*/
+.shpStar {
 
+}
 /*#endregion*/
 
 /*#region gear*/
@@ -75,10 +77,56 @@
 }
 /*#endregion*/
 
+/*#region check*/
+.shpCheck {
+
+}
+.shpCheck:before, .shpCheck:after {
+  content: '';
+  position: absolute;
+  background-color: green;
+  border-radius: 10px;
+}
+.shpCheck:before {
+  transform: rotate(45deg);
+  width: 45%;
+  height: 20%;
+  left: -0%;
+  bottom: 25%;
+}
+.shpCheck:after {
+  transform: rotate(-45deg);
+  width: 100%;
+  height: 20%;
+  left: 10%;
+  bottom: 45%;
+}
+/*#endregion*/
+
+/*#region cancel*/
+.shpCancel {
+
+}
+.shpCancel:before, .shpCancel:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 20%;
+  background-color: red;
+  border-radius: 10px;
+}
+.shpCancel:before {
+  transform: rotate(-45deg);
+}
+.shpCancel:after {
+  transform: rotate(45deg);
+}
+/*#endregion*/
+
 /*#region pencil*/
 .shpPencil {
-  width: 25px;
-  height: 10px;
+  width: 75%;
+  height: 20%;
   background-color: goldenrod;
   transform: rotate(-45deg);
   flex-grow: 0;
@@ -92,54 +140,26 @@
   box-sizing: border-box;
 }
 .shpPencil:before {
-  border-left: solid 1px darkgray;
-  border-bottom: solid 1px darkgray;
-  width: 7px;
-  height: 7px;
-  left: -3px;
-  top: 1.5px;
-  background-color: gray;
-  transform: rotate(45deg);
-}
-.shpPencil:after {
   background-color: pink;
   border: solid 1px pink;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
-  height: 10px;
-  width: 5px;
-  right: -5px;
+  height: 100%;
+  width: 40%;
+  right: calc(-6% - 8px);
+  border-left: solid 8px silver;
 }
-/*#endregion*/
-
-/*#region check*/
-.shpCheck {
-    position: relative;
-    width: 30px;
-    height: 30px;
-    flex-grow: 0;
-}
-.shpCheck::before {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    height: 50%;
-    width: 3px;
-    background-color: green;
-    content: "";
-    transform: translateX(10px) rotate(-45deg);
-    transform-origin: left bottom;
-}
-.shpCheck::after {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 3px;
-    width: 100%;
-    background-color: green;
-    content: "";
-    transform: translateX(10px) rotate(-45deg);
-    transform-origin: left bottom;
+.shpPencil:after {
+  border-top: solid 1px darkgray;
+  border-left: solid 1px darkgray;
+  border-right: solid 2px beige;
+  border-bottom: solid 2px beige;
+  width: calc(10% + 2px);
+  height: calc(40% + 2px);
+  left: -10%;
+  top: 20%;
+  background-color: gray;
+  transform: rotate(-45deg);
 }
 /*#endregion*/
 

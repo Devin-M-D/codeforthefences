@@ -1,17 +1,51 @@
 cDI.components.unitTests.recipe = {
-  runAllEditRecipe: async () => {
-    var card = $(".recipeCard[recipeid = 1]")
-    // await cDI.components.unitTests.recipe.editCard(card)
-    // await cDI.components.unitTests.recipe.addNewStep(card)
-    // await cDI.components.unitTests.recipe.addNewStep(card)
-
-
-    // await cDI.components.unitTests.recipe.saveEdits(card)
+  section: `recipe`,
+  runAllRecipe: async () => {
+    await cDI.components.unitTests.UTStartSection(cDI.components.unitTests.recipe.section, async () => {
+      var card = $(".recipeCard[recipeid = 1]")
+      // await cDI.components.unitTests.recipe.editAndCancel(card, 1)
+      // await cDI.components.unitTests.recipe.editAndSave(card, 1)
+      //await cDI.components.unitTests.recipe.addValidIngredientAndSave(card, 1)
+      // await cDI.components.unitTests.recipe.removeIngredient(card, card.data("editedrecipe").ingredients.length - 1, 1)
+      // await cDI.components.unitTests.recipe.addValidStepAndSave(card, 1)
+      // await cDI.components.unitTests.recipe.addTwoStepsInOneEdit(card, 1)
+      // await cDI.components.unitTests.recipe.removeStep(card, card.data("editedrecipe").steps.length - 1, 1)
+      // await cDI.components.unitTests.recipe.removeStep(card, card.data("editedrecipe").steps.length - 1, 1)
+      // await cDI.components.unitTests.recipe.removeStep(card, card.data("editedrecipe").steps.length - 1, 1)
+    })
   },
+
+  //#region edit/save/cancel
   editCard: async (card) => {
-    var editButton = card.find(".pencilBox")
+    var editButton = card.find(".shpPencil").parent()
     await cDI.awaitableInput("click", editButton)
   },
+  saveEdits: async (card) => {
+    var saveButton = card.find(".shpCheck").parent()
+    return await cDI.awaitableInput("click", saveButton)
+  },
+  cancelEdits: async (card) => {
+    var saveButton = card.find(".shpCancel").parent()
+    await cDI.awaitableInput("click", saveButton)
+  },
+  editAndSave: async (card, log) => {
+    return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.recipe.section, "editAndSave",
+      async () => {
+        await cDI.components.unitTests.recipe.editCard(card)
+        return await cDI.components.unitTests.recipe.saveEdits(card)
+      },
+      async (res) => { return res == "No changes to save" }, log
+    )
+  },
+  editAndCancel: async (card, log) => {
+    return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.recipe.section, "editAndCancel",
+      async () => {
+        await cDI.components.unitTests.recipe.editCard(card)
+        await cDI.components.unitTests.recipe.cancelEdits(card)
+      },
+      () => { return card.find(".shpPencil").length > 0 }, log)
+  },
+  //#endregion
 
   //#region ingredients
   addNewIng: async (card) => {
@@ -28,30 +62,32 @@ cDI.components.unitTests.recipe = {
       await cDI.awaitableInput("click", input.find(`:contains('${val}'):last`))
     }
   },
-  alterIngredients: async (card) => {
-    if (card.find(`.txtIngSubstance.Ing0`).val() == "butter"){
-      await cDI.components.unitTests.recipe.alterIngredient(card, 0, "Substance", "parsley")
-      await cDI.components.unitTests.recipe.alterIngredient(card, 0, "UoM", "cup")
-
-      await cDI.components.unitTests.recipe.alterIngredient(card, 1, "UoM", "tablespoon")
-      await cDI.components.unitTests.recipe.alterIngredient(card, 1, "Quantity", "4")
-
-      await cDI.components.unitTests.recipe.alterIngredient(card, 2, "Substance", "sausage")
-      await cDI.components.unitTests.recipe.alterIngredient(card, 2, "UoM", "large")
-    }
-    else {
-      await cDI.components.unitTests.recipe.alterIngredient(card, 0, "Substance", "butter")
-      await cDI.components.unitTests.recipe.alterIngredient(card, 0, "UoM", "tablespoon")
-
-      await cDI.components.unitTests.recipe.alterIngredient(card, 1, "UoM", "cup")
-      await cDI.components.unitTests.recipe.alterIngredient(card, 1, "Quantity", "1/4")
-
-      await cDI.components.unitTests.recipe.alterIngredient(card, 2, "Substance", "cereal")
-      await cDI.components.unitTests.recipe.alterIngredient(card, 2, "UoM", "cup")
-    }
+  addIngredientAndSetAllValues: async (card, log) => {
+    return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.recipe.section, "addIngredientAndSetAllValues",
+      async () => {
+        await cDI.components.unitTests.recipe.addNewIng(card)
+        var newIndex = card.data("editedrecipe").ingredients.sort((a, b) => a < b)[card.data("editedrecipe").ingredients.length - 1].ingredientIndex
+        await cDI.components.unitTests.recipe.alterIngredient(card, newIndex, "Substance", "parsley")
+        await cDI.components.unitTests.recipe.alterIngredient(card, newIndex, "UoM", "large")
+        await cDI.components.unitTests.recipe.alterIngredient(card, newIndex, "Quantity", 1)
+      },
+      (res) => { return true }
+    )
   },
-  removeFirstIngredient: async (card) => {
-    await cDI.awaitableInput("click", card.find(`.cardIngredient[data-ingredientindex = 0]`).find(".shpMinus").parent())
+  addValidIngredientAndSave: async (card, log) => {
+    return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.recipe.section, "addValidIngredientAndSave",
+      async () => {
+        await cDI.components.unitTests.recipe.editCard(card)
+        await cDI.components.unitTests.recipe.addIngredientAndSetAllValues(card)
+        var updatedRecipe = await cDI.components.unitTests.recipe.saveEdits(card)
+        var newIngredient = updatedRecipe.ingredients.sort((a, b) => a.ingredientIndex < b.ingredientIndex)[updatedRecipe.ingredients.length - 1]
+        return newIngredient
+      },
+      async (res) => { return res.substanceName == "parsley" }, log
+    )
+  },
+  removeIngredient: async (card, index, log) => {
+    await cDI.awaitableInput("click", card.find(`.cardIngredient[ingredientIndex=${index}]`).find(".shpMinus").parent())
   },
   //#endregion
 
@@ -60,45 +96,37 @@ cDI.components.unitTests.recipe = {
     return await cDI.awaitableInput("click", card.find(".cardSteps > .stepTitle > .btnIcon > .shpPlus").parent())
   },
   alterStep: async (card, stepIndex, textVal) => {
-    card.find(`.txtStep.step${stepIndex}`).html(textVal)
-    return await cDI.awaitableInput("keyup", card.find(`.txtStep.step${stepIndex}`))
+    card.find(`.txtStep[stepIndex=${stepIndex}]`).html(textVal)
+    return await cDI.awaitableInput("keyup", card.find(`.txtStep[stepIndex=${stepIndex}]`))
   },
-  alterSteps: async (card, index, text) => {
-    if (card.find(`.txtStep.step0`).html() == "Melt {i} in {t} over low heat"){
-      return await cDI.components.unitTests.recipe.alterStep(card, 0, "Fling {i} at the wall using {t}")
-    }
-    else {
-      return await cDI.components.unitTests.recipe.alterStep(card, 0, "Melt {i} in {t} over low heat")
-    }
+  addValidStepAndSave: async (card, log) => {
+    return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.recipe.section, "editAndCancel",
+      async () => {
+        await cDI.components.unitTests.recipe.editCard(card)
+        await cDI.components.unitTests.recipe.addNewStep(card)
+        var newIndex = card.data("editedrecipe").steps.sort((a, b) => a < b)[card.data("editedrecipe").steps.length - 1].stepIndex
+        await cDI.components.unitTests.recipe.alterStep(card, newIndex, "Test adding new step {i}, {t}")
+        return await cDI.components.unitTests.recipe.saveEdits(card)
+      },
+      (res) => { return res.steps.length == 4 && res.steps.find(x => x.stepIndex == 3).text == "Test adding new step {i}, {t}" }, log)
   },
-
-  //#endregion
-
-  saveEdits: async (card) => {
-    var saveButton = card.find(".shpCheck")
-    await cDI.awaitableInput("click", saveButton)
+  addTwoStepsInOneEdit: async (card, log) => {
+    return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.recipe.section, "addTwoStepsInOneEdit",
+      async () => {
+        await cDI.components.unitTests.recipe.editCard(card)
+        await cDI.components.unitTests.recipe.addNewStep(card)
+        await cDI.components.unitTests.recipe.addNewStep(card)
+        var newIndex1 = card.data("editedrecipe").steps.sort((a, b) => a.stepIndex < b.stepIndex)[card.data("editedrecipe").steps.length - 2].stepIndex
+        await cDI.components.unitTests.recipe.alterStep(card, newIndex1, "Test step 1")
+        var newIndex2 = card.data("editedrecipe").steps.sort((a, b) => a.stepIndex < b.stepIndex)[card.data("editedrecipe").steps.length - 1].stepIndex
+        await cDI.components.unitTests.recipe.alterStep(card, newIndex2, "Test step 2")
+        return await cDI.components.unitTests.recipe.saveEdits(card)
+      },
+      // (res) => { return res.steps.length == 4 && res.steps.find(x => x.stepIndex == 3).text == "Test adding new step {i}, {t}" }, log)
+      null, log)
   },
-
-  runAllCerealTreats: async (card) => {
-    var card = $(".recipeCard[recipeid = 1]")
-    await cDI.components.unitTests.recipe.editCard(card)
-
-    await cDI.components.unitTests.recipe.alterIngredients(card)
-    await cDI.components.unitTests.recipe.alterSteps(card)
-    await cDI.components.unitTests.recipe.addLargeParsley(card)
-    await cDI.components.unitTests.recipe.addTestStep(card)
-    await cDI.components.unitTests.recipe.removeFirstIngredient(card)
-
-    await cDI.components.unitTests.recipe.saveEdits(card)
-  },
-  addLargeParsley: async (card) => {
-    await cDI.components.unitTests.recipe.addNewIng(card)
-    await cDI.components.unitTests.recipe.alterIngredient(card, 3, "Substance", "parsley")
-    await cDI.components.unitTests.recipe.alterIngredient(card, 3, "UoM", "large")
-    await cDI.components.unitTests.recipe.alterIngredient(card, 3, "Quantity", 1)
-  },
-  addTestStep: async (card) => {
-    await cDI.components.unitTests.recipe.addNewStep(card)
-    await cDI.components.unitTests.recipe.alterStep(card, 3, "Test 3rd step text")
+  removeStep: async (card, index, log) => {
+      await cDI.awaitableInput("click", card.find(`.cardStep[stepIndex=${index}]`).find(".shpMinus").parent())
   }
+  //#endregion
 }

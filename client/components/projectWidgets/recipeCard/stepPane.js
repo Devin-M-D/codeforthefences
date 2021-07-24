@@ -2,11 +2,11 @@ cDI.components.recipeCard.stepPane = {
   reload: async (card, editMode) => {
     return cDI.utils.wrapInPromise((f) => {
       var stepsPane = card.find(".cardSteps")
-      stepsPane.fadeOut(400, () => {
+      stepsPane.fadeOut(200, () => {
         if (stepsPane.html() != "") card.find(".cardSteps").css("visibility", "hidden")
         cDI.components.recipeCard.stepPane.build(card, editMode)
         card.find(".cardSteps").css("visibility", "visible")
-        stepsPane.fadeIn(400);
+        stepsPane.fadeIn(200);
         f()
       })
     })
@@ -43,7 +43,7 @@ cDI.components.recipeCard.stepPane = {
     `
     var currMaps = recipe.stepMaps.filter(x => x.recipe_stepId == step.id)
     if (editMode) {
-      stepHTML += `<span contenteditable="true" class="txtStep autoH rounded plainTextbox" stepIndex="${step.stepIndex}">${step.text}</span>`
+      stepHTML += `<span contenteditable="true" class="txtStep autoH rounded" stepIndex="${step.stepIndex}">${step.text}</span>`
     }
     else {
       var filledStepText = cDI.components.recipeCard.stepPane.addIngredientsToStepText(step.text, currMaps, recipe.ingredients, recipe.tools)
@@ -65,17 +65,13 @@ cDI.components.recipeCard.stepPane = {
         await cDI.components.recipeCard.stepPane.acceptRemoval(card, $(e.target).closest(".cardStep").attr("stepIndex"))
       })
       cDI.addAwaitableInput("keydown", stepsPane.find("span[contenteditable='true']"), async e => {
-        $(e.target).addClass("beingEdited")
+        cDI.effects.toastPulse(0, $(e.target), 1)
       })
       cDI.addAwaitableInput("keyup", stepsPane.find("span[contenteditable='true']"), async e => {
         var recipeId = $(e.target).closest(".recipeCard").data("recipe").id
         var stepIndex = $(e.target).closest(".cardStep").attr("stepIndex")
-        return await cDI.sequencer.debounce(`editingRecipe${recipeId}Step${stepIndex}`, () => {
-          $(e.target).addClass("acceptingEdit")
-          $(e.target).removeClass("beingEdited")
-          setTimeout(() => { $(e.target).removeClass("acceptingEdit") }, 500)
+          cDI.effects.toastPulse(1, $(e.target), 1)
           cDI.components.recipeCard.stepPane.acceptStepChange(card, $(e.target))
-        }, 500)
       })
     }
     else {
@@ -154,19 +150,22 @@ cDI.components.recipeCard.stepPane = {
     var origStep = card.data("recipe").steps.find(x => x.stepIndex == stepIndex)
 
     editedStep.edited = editedStep.edited || []
-    var isNew = editedStep.edited.indexOf("new") == 0
+    var isNew = editedStep.edited.includes("new")
+    console.log(isNew)
 
     if (isNew || editedStep.text != input.html()) {
       editedStep.text = input.html()
       if (!isNew) {
-        if (editedStep.edited.indexOf("text") == -1)  { editedStep.edited.push("text") }
+        if (!editedStep.edited.includes("text"))  { editedStep.edited.push("text") }
       }
     }
-    if (isNew || (origStep && editedStep.text == input.html())){
+    if (isNew || (origStep && origStep.text == input.html())){
       editedStep.edited = editedStep.edited.filter(x => x != "text")
     }
 
     if (editedStep.edited.length == 0) { delete editedStep.edited }
+    console.log(cDI.utils.clone(editedStep))
+    console.log(cDI.utils.clone(card.data("editedrecipe")))
   },
   acceptRemoval: async (card, index) => {
     var removedStep = card.data("editedrecipe").steps.find(x => x.stepIndex == index)

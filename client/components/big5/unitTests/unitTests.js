@@ -34,7 +34,7 @@ cDI.components.unitTests = {
     // await cDI.components.unitTests.loginIfNeccessary()
     ftbLogUT("UT: customDevScenario")
     ftbIndent()
-    await cDI.components.unitTests.recipe.runAllEditRecipe()
+    await cDI.components.unitTests.recipe.runAllRecipe()
     ftbOutdent()
     ftbLogUT("UT: customDevScenario completed")
   },
@@ -63,6 +63,30 @@ cDI.components.unitTests = {
   runAllUnitTests: async () => {
     ftbLogUT("UT: runAllUnitTests")
     await cDI.components.unitTests.auth.runAllAuth()
-    await cDI.components.unitTests.recipe.runAllEditRecipe()
+    await cDI.components.unitTests.recipe.runAllRecipe()
+  },
+  UTStartSection: async (sectionName, fn) => {
+    ftbIndent()
+    ftbLogUT(`${sectionName}`)
+    ftbLogUT(`${"=".repeat(sectionName.length)}`)
+    ftbIndent()
+    var res = await fn()
+    ftbOutdent()
+    ftbLogUT(`${sectionName.toUpperCase()} passed`)
+    ftbOutdent()
+  },
+  UTIndent: async (sectionName, testTitle, fn, validator, log) => {
+    if (log) {
+      ftbLogUT(`##${sectionName} - ${testTitle}`)
+      ftbIndent()
+    }
+    var res = await fn()
+    if (log) {
+      if (!validator || validator(res)) { ftbLogUT('+++passed') }
+      else { ftbLogUT(`---failed`) }
+      ftbOutdent()
+    }
+    if (!validator || validator(res)) { return true }
+    else { return false }
   }
 }

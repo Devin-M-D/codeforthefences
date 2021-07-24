@@ -48,7 +48,6 @@ module.exports = (router) => {
 
   router.post('/crud/stepMap/u/', DI.rh.asyncRoute(async (req, res, next) => {
     if (req.body.stepMap){
-      console.log(req.body.stepMap)
       var data = await stepService.upsertStepMap(req.body.stepMap)
       DI.rh.succeed(res, data)
     }
