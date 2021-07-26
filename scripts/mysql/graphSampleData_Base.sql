@@ -18,6 +18,7 @@ INSERT INTO UoM (name, abbreviation) VALUES ('cup', 'c');
 SET @UoMCupId = LAST_INSERT_ID();
 INSERT INTO UoM (name, abbreviation) VALUES ('large', 'lg');
 SET @UoMLgId = LAST_INSERT_ID();
+INSERT INTO UoM (name, abbreviation) VALUES ('pound', 'lb');
 
 INSERT INTO toolType (name, description) VALUES ('Pan', 'Metal pan used on the stovetop');
 SET @panToolId = LAST_INSERT_ID();

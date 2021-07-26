@@ -10,6 +10,10 @@ stepService.upsert = async (qb, text) => {
 stepService.upsertStepMap = async (stepMap) => {
   var qb = queryBuilder.new()
   stepObjQueries.upsertStepMap(qb, stepMap.recipe_stepId, stepMap.stepMapTypeId, stepMap.barsIndex, stepMap.recipeIndex)
+  console.log(qb.printRunnable())
   return await qb.run()
+}
+stepService.deleteStepMap = (qb, recipe_stepId) => {
+  stepObjQueries.deleteStepMap(qb, recipe_stepId)
 }
 module.exports = stepService

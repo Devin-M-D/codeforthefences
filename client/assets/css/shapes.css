@@ -166,14 +166,16 @@
 /*#region spinner*/
 .spinner {
   display: inline-block;
-  width: 50px;
-  height: 50px;
-  border: 3px solid rgba(255,255,255,.3);
+  width: 100px;
+  height: 100px;
+  flex-basis: 100px;
+  border: 8px solid rgba(141,198,63,.8);
   border-radius: 50%;
-  border-top-color: teal;
-  border-right-color: mediumaquamarine;
-  border-bottom-color: teal;
-  border-left-color: mediumaquamarine;
+  border-top-color: var(--clrPrimary);
+  border-right-color: var(--clrSecondary);
+  border-bottom-color: var(--clrPrimary);
+  border-left-color: var(--clrSecondary);
+  position: absolute;
   animation: spin 1s ease-in-out infinite;
   -webkit-animation: spin 1s ease-in-out infinite;
 }

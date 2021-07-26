@@ -80,7 +80,7 @@ cDI.components.recipeCard.stepPane = {
         var cardStep = $(e.target)
         var recipe_stepId = cardStep.parent().parent().attr("recipe_stepId")
         var barsIndex = cardStep.attr("barsIndex")
-        cDI.components.modal.justDrawCurtain(card)
+        cDI.components.modal.drawCurtain(card)
         card.find(`.cardIngs`).addClass("liftAboveCurtain")
         card.find(`.cardIngredient`).addClass("whiteBG")
         card.find(`.cardSteps`).addClass("liftAboveCurtain")
@@ -126,13 +126,11 @@ cDI.components.recipeCard.stepPane = {
     var barsIndex = 0
     while (stepText.indexOf("{i}") != -1) {
       var map = maps.find(x => x.barsIndex == barsIndex)
-      if (map) {
-        var ingredient = ingredients.find(x => x.ingredientIndex == map.recipeIndex)
-        stepText = stepText.replace(`{i}`, `<p class="stepIngredientMap" barsIndex="${barsIndex}">${ingredient.substanceName}</p>`)
-      }
-      else {
-        stepText = stepText.replace(`{i}`, `<p class="stepIngredientMap" barsIndex="${barsIndex}">{i${barsIndex}}</p>`)
-      }
+      var ingredient
+      if (map) { ingredient = ingredients.find(x => x.ingredientIndex == map.recipeIndex) }
+
+      if (ingredient) { stepText = stepText.replace(`{i}`, `<p class="stepIngredientMap" barsIndex="${barsIndex}">${ingredient.substanceName}</p>`) }
+      else { stepText = stepText.replace(`{i}`, `<p class="stepIngredientMap" barsIndex="${barsIndex}">{i${barsIndex}}</p>`) }
       barsIndex++
     }
     return stepText

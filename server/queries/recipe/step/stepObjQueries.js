@@ -21,12 +21,14 @@ INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex)
   SELECT ?, ?, ?, ? WHERE @stepMapId IS NULL;
 SET @stepMapId = (SELECT IFNULL(@stepMapId, LAST_INSERT_ID()));
 UPDATE stepMap SET recipeIndex = ? WHERE id = @stepMapId
-
 `
-qb.insertQuery(query)
-qb.insertParams(recipe_stepId, stepMapTypeId, barsIndex)
-qb.insertParams(recipe_stepId, stepMapTypeId, barsIndex, recipeIndex)
-qb.insertParam(recipeIndex)
+  qb.insertQuery(query)
+  qb.insertParams(recipe_stepId, stepMapTypeId, barsIndex)
+  qb.insertParams(recipe_stepId, stepMapTypeId, barsIndex, recipeIndex)
+  qb.insertParam(recipeIndex)
 }
-
+stepObjQueries.deleteStepMap = (qb, recipe_stepId, stepMapTypeId, recipeIndex) => {
+  qb.insertQuery(`DELETE FROM stepMap WHERE recipe_stepId = ?;`)
+  qb.insertParams(recipe_stepId)
+}
 module.exports = stepObjQueries
