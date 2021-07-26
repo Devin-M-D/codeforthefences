@@ -67,6 +67,7 @@ recipeService.saveEditedRecipe = async (editedRecipe) => {
       else if (step.edited.includes("removed")){
         qb.insertQuery(recipeObjQueries.detachStep)
         qb.insertParam(step.recipe_stepId)
+        stepService.deleteStepMap(qb, step.recipe_stepId, step.recipeIndex)
       }
       else {
         await stepService.upsert(qb, step.text)

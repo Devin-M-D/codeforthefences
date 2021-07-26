@@ -15,7 +15,7 @@ module.exports = {
   },
 
   createSubstance: async (name) => {
-    return await db.runQuery(substanceQueries.createSubstance, [ name ], 1)
+    return await db.runQuery(substanceQueries.createSubstance, [ name, name ], 1)
   },
   getAllSubstances: async (name) => {
     return await db.runQuery(substanceQueries.getAll)

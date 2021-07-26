@@ -49,7 +49,7 @@ body, span, input, textarea, select {
 }
 /*#endregion*/
 
-body {
+html {
   flex-direction: column;
 }
 span[contenteditable="true"] {
@@ -64,13 +64,13 @@ span[contenteditable="true"] {
 .autoW { flex-basis: auto; width: auto; }
 .autoH { flex-basis: auto; height: auto; }
 .noShrink { flex-shrink: 0; }
-.allowOverflow > * { flex-shrink: 0; }
 
 .rounded { border-radius: 10px; }
 .roundedWide { border-radius: 25px; }
 .fauxrder { border: solid 5px white; }
 .fauxrderWide { border: solid 15px white; }
-.fauxrderHoriz { border: solid 15px 0px white; }
+.pad10 { padding: 10px; }
+.mgn10 { margin: 10px; }
 .spacer5px { flex-basis: 5px;}
 
 /*#region justify and align shorthands*/
@@ -144,6 +144,7 @@ span[contenteditable="true"] {
 /*#endregion*/
 
 /*#region shyScroll*/
+.allowOverflow > * { flex-shrink: 0; }
 .shyScroll {
   overflow-y: scroll;
   scrollbar-width: none; /* Firefox */
@@ -177,10 +178,11 @@ span[contenteditable="true"] {
 }
 .byline {
   font-family: var(--subheaderFont);
-  font-style: var(--italicDecoration);
+  font-style: italic;
 }
 .noUnderline { text-decoration: none !important; }
 .bold { font-weight: bold; }
+.italic { font-style: italic; }
  /*#endregion*/
 
 /*#region rule bars*/

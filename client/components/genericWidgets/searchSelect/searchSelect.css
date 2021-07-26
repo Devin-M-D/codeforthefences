@@ -1,14 +1,7 @@
-.searchSelectInputContainer {
+.searchSelectPane {
   width: 100% !important;
-  height: 100px;
-  flex-grow: 0;
+  height: 60%;
 }
-
-.searchSelectResults {
-
-}
-
-.searchSelectOption {
-  height: 100px;
-  flex-grow: 0;
+.searchSelectTempInput {
+  padding: 10px;
 }

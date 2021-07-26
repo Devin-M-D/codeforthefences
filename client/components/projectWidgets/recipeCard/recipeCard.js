@@ -37,7 +37,7 @@ cDI.components.recipeCard = {
     var editBox = card.find(".recipeEdit")
     if (editMode == 0){
       editBox.html(`<span class="btnIcon" data-btnsize="80"><span class="shpPencil absCen"></span></span>`)
-      cDI.addAwaitableInput("click", editBox.find(".shpPencil").parent(), async (e) => {
+      cDI.addAwaitableInput("click", editBox.find(".shpPencil").parent(), async e => {
         await cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 1)
       })
     }
@@ -52,11 +52,11 @@ cDI.components.recipeCard = {
           <span class="shpCancel"></span>
         </span>
       `)
-      cDI.addAwaitableInput("click", editBox.find(".shpCheck").parent(), async (e) => {
+      cDI.addAwaitableInput("click", editBox.find(".shpCheck").parent(), async e => {
         return await cDI.components.recipeCard.saveChanges($(e.target).closest(".recipeCard"))
       })
-      cDI.addAwaitableInput("click", editBox.find(".shpCancel").parent(), async (e) => {
-        await cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 0)
+      cDI.addAwaitableInput("click", editBox.find(".shpCancel").parent(), async e => {
+        return await cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 0)
       })
     }
   },

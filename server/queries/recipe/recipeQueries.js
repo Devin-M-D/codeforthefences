@@ -10,7 +10,9 @@ FROM recipe`
 recipeQueries.getAll = (setName) => {
   return `
 ${ss.addSet(setName || "tmp_recipe").body(`
-${recipeQueries.selectBase} LIMIT 10
+${recipeQueries.selectBase}
+ORDER BY name
+LIMIT 10
 `)}
 `
 }

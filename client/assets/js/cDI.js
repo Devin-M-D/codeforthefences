@@ -173,6 +173,11 @@ cDI.remote = {
     $(`<link rel="stylesheet" type="text/css" href="${path}" />`).appendTo('head')
   }
 }
+cDI.remote.loadSimpleComponent = async (folderPath, componentName) => {
+  var path = `/${folderPath}/${componentName}/${componentName}`
+  await cDI.remote.asyncGetScript(`${path}.js`)
+  await cDI.remote.asyncGetCSS(`${path}.css`)
+}
 cDI.remote.loadComponent = async (elem, folderPath, componentName, placement = 1) => {
   var path = `/${folderPath}/${componentName}/${componentName}`
   await cDI.remote.asyncGetCSS(`${path}.css`)

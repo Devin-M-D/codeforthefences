@@ -1,22 +1,24 @@
 cDI.components.modal = {
-  init: () => {
-
-  },
-  justDrawCurtain: (target) => {
-    target.prepend(`<span class="modalCurtain"></span>`)
-  },
-  drawCurtain: async (params = {}) => {
+  init: (params = {}) => {
     var target = params.target || $("html")
     var content = params.content || ""
     var maximizeDialog = params.maximizeDialog || false
 
-    cDI.components.modal.justDrawCurtain(target)
+    cDI.components.modal.drawCurtain(target)
     target.find(" > .modalCurtain").html(content)
     var curtain = target.find(".modalCurtain")
 
     if (maximizeDialog){
       cDI.components.modal.maximizeDialog(target)
     }
+    cDI.components.modal.addRaiseCurtainEvent(curtain)
+    var pane = curtain.find(" > *")
+    return pane
+  },
+  drawCurtain: async (target) => {
+    target.prepend(`<span class="modalCurtain"></span>`)
+  },
+  addRaiseCurtainEvent: (curtain) => {
     curtain.on("click", (e) => {
         e.stopPropagation()
         cDI.components.modal.raiseCurtain()
@@ -24,12 +26,11 @@ cDI.components.modal = {
     curtain.find(" > *").on("click", (e) => {
         e.stopPropagation()
     })
-    return curtain.find(" > *")
   },
-  raiseCurtain: async (target) => {
+  raiseCurtain: (target) => {
     if (target) { target = target.find(".modalCurtain") }
     else { target = $(".modalCurtain").last() }
-    await target.remove()
+    target.remove()
   },
   maximizeDialog: (target) => {
     target = target || $("html")
@@ -41,7 +42,7 @@ cDI.components.modal = {
       var tmpContainer = $("<span id='modalTemp'></span>")
       var contentDI = await cDI.remote.loadComponent(tmpContainer, compPath, compName)
       var content = tmpContainer.html()
-      var modalElements = await cDI.components.modal.drawCurtain({ content: content, maximizeDialog: maximizeDialog })
+      var modalElements = await cDI.components.modal.init({ content: content, maximizeDialog: maximizeDialog })
       tmpContainer.remove()
       if (contentDI.init) {
         contentDI.init()

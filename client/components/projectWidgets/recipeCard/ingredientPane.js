@@ -16,42 +16,45 @@ cDI.components.recipeCard.ingredientPane = {
         </span>` : ``}
         <span class="autoH autoW bold ingPaneTitle">Ingredients</span>
       </span>`)
-    cDI.addAwaitableInput("click", card.find(".ingTitle > .btnIcon > .shpPlus").parent(), (e) => {
-      var newIng = cDI.services.recipe.newIngredient(card.data("recipe").id, sorted[sorted.length - 1].ingredientIndex + 1)
-      card.data("editedrecipe").ingredients.push(newIng)
-      cDI.components.recipeCard.ingredientPane.createIngPane(card, 1)
+    cDI.addAwaitableInput("click", card.find(".ingTitle > .btnIcon > .shpPlus").parent(), async e => {
+      var parentCard = $(e.target).closest(".recipeCard")
+      var recipe = parentCard.data("editedrecipe")
+      var newIng = cDI.services.recipe.newIngredient(recipe.id, recipe.ingredients.length)
+      recipe.ingredients.push(newIng)
+      cDI.components.recipeCard.ingredientPane.createIngPane(parentCard, 1)
     })
     sorted.filter(x => !x.edited || !x.edited.includes("removed")).forEach(ingredient => {
       var ingLine = cDI.components.recipeCard.ingredientPane.createIngLine(ingredient, editMode)
       ingLine += sorted[sorted.length - 1].ingredientIndex != ingredient.ingredientIndex ? `<span class="rule horiz slim"></span>` : ``
       card.find(".cardIngs").append(ingLine)
       if (editMode){
-        var line = card.find(`.cardIngs > .cardIngredient[ingredientIndex=${ingredient.ingredientIndex}]`)
+        var line = card.find(`.cardIngredient[ingredientIndex=${ingredient.ingredientIndex}]`)
 
-        var txtIngQuantity = line.find(`.txtIngQuantity.Ing${ingredient.ingredientIndex}`)
-        cDI.addAwaitableInput("keyup", txtIngQuantity, async (e) => {
+        var txtIngQuantity = line.find(`.txtIngQuantity[ingredientIndex=${ingredient.ingredientIndex}]`)
+        cDI.addAwaitableInput("keyup", txtIngQuantity, async e => {
           await cDI.components.recipeCard.ingredientPane.acceptIngChange($(e.target))
         })
 
-        var txtIngUoM = line.find(`.txtIngUoM.Ing${ingredient.ingredientIndex}`)
+        var txtIngUoM = line.find(`.txtIngUoM[ingredientIndex="${ingredient.ingredientIndex}"]`)
         cDI.components.recipeCard.ingredientPane.addClick(txtIngUoM, "UoM", "name")
 
-        var txtIngSubstance = line.find(`.txtIngSubstance.Ing${ingredient.ingredientIndex}`)
+        var txtIngSubstance = line.find(`.txtIngSubstance[ingredientIndex="${ingredient.ingredientIndex}"]`)
         cDI.components.recipeCard.ingredientPane.addClick(txtIngSubstance, "substance", "name")
 
-        cDI.addAwaitableInput("click", line.find(".shpMinus").parent(), async (e) => {
+        cDI.addAwaitableInput("click", line.find(".shpMinus").parent(), async e => {
           await cDI.components.recipeCard.ingredientPane.acceptRemoval(card, $(e.target).closest(".cardIngredient").attr("ingredientIndex"))
         })
       }
     })
   },
   addClick: (textbox, obj, field) => {
-    cDI.addAwaitableInput("click", textbox, async (e) => {
-      return await cDI.components.searchSelect.buildSearchPane(
-        $(e.target), `/crud/${obj}/r`, field,
+    cDI.addAwaitableInput("click", textbox, async e => {
+      var searchSelectPane = await cDI.components.searchSelect.buildSearchPane(
+        $(e.target), `Please select a ${obj} for the ingredient`, `/crud/${obj}/r`, field,
         await cDI.components.recipeCard.ingredientPane.acceptIngChange,
         true, `crud/${obj}/c`
       )
+      return searchSelectPane
     })
   },
   createIngLine: (ingredient, editMode) => {
@@ -68,9 +71,9 @@ cDI.components.recipeCard.ingredientPane = {
     `
     if (editMode){
       ing += `<span class="wrap autoH algnSC">`
-        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngQuantity Ing${ingIdx} autoW autoH rounded" ingredientProp="quantity">${(new Fraction(ingredient.ingredientQuantity)).toFraction()}</span></span>`
-        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngUoM Ing${ingIdx} autoW autoH rounded" ingredientProp="UoM">${UoMName ? UoMName : ""}</span></span>`
-        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngSubstance Ing${ingIdx} autoW autoH rounded" ingredientProp="substance">${ingName ? ingName : ""}</span></span>`
+        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngQuantity autoW autoH rounded" ingredientIndex="${ingIdx}" ingredientProp="quantity">${(new Fraction(ingredient.ingredientQuantity)).toFraction()}</span></span>`
+        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngUoM autoW autoH rounded" ingredientIndex="${ingIdx}" ingredientProp="UoM">${UoMName ? UoMName : ""}</span></span>`
+        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngSubstance autoW autoH rounded" ingredientIndex="${ingIdx}" ingredientProp="substance">${ingName ? ingName : ""}</span></span>`
       ing += `</span>`
       ing += `<span class="btnIcon" data-btnsize="55">
                 <span class="shpMinus"></span>
