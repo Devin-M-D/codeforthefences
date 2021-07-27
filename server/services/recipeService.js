@@ -79,7 +79,6 @@ recipeService.saveEditedRecipe = async (editedRecipe) => {
   if (qb.query != "") {
     // console.log(qb.query())
     // console.log(qb.params())
-    //console.log(qb.printRunnable())
     var res = await qb.run()
   }
   return await recipeService.getById(editedRecipe.id)

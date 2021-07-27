@@ -4,11 +4,12 @@
 
   --clrPrimary: lightblue;
   --clrSecondary: teal;
+  --clrTransparent: rgba(0,0,0,0);
 
   --spcInner: var(--clrSecondary);
   --spcOuter: var(--clrPrimary);
-  --spcGradient: rgba(0,0,0,0) 0%, var(--spcOuter) 25%, var(--spcInner) 50%, var(--spcOuter) 75%, rgba(0,0,0,0) 100%;
-  --spcGradientSlim: rgba(0,0,0,0) 0%, #777 50%, rgba(0,0,0,0) 100%;
+  --spcGradient: var(--clrTransparent) 0%, var(--spcOuter) 25%, var(--spcInner) 50%, var(--spcOuter) 75%, var(--clrTransparent) 100%;
+  --spcGradientSlim: var(--clrTransparent) 0%, #888 50%, var(--clrTransparent) 100%;
 
   --headerFont: rockwell;
   --headerSize: 64px;
@@ -22,7 +23,7 @@
 
   --spcInner: var(--clrSecondary);
   --spcOuter: var(--clrPrimary);
-  --spcGradient: rgba(0,0,0,0) 0%, var(--spcOuter) 25%, var(--spcInner) 50%, var(--spcOuter) 75%, rgba(0,0,0,0) 100%;
+  --spcGradient: var(--clrTransparent) 0%, var(--spcOuter) 25%, var(--spcInner) 50%, var(--spcOuter) 75%, var(--clrTransparent) 100%;
 
   --icon_size: 1em;
 }
@@ -67,8 +68,8 @@ span[contenteditable="true"] {
 
 .rounded { border-radius: 10px; }
 .roundedWide { border-radius: 25px; }
-.fauxrder { border: solid 5px white; }
-.fauxrderWide { border: solid 15px white; }
+.fauxrder { border: solid 5px var(--clrTransparent); }
+.fauxrderWide { border: solid 15px var(--clrTransparent); }
 .pad10 { padding: 10px; }
 .mgn10 { margin: 10px; }
 .spacer5px { flex-basis: 5px;}
@@ -116,11 +117,8 @@ span[contenteditable="true"] {
   border: solid thick black;
   border-style: outset;
   border-color: var(--clrSecondary);
-  max-height: 75px;
-  margin: 5%;
-  padding: 10px 0px;
-  justify-content: center;
-  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
 }
 .btnClearInput {
   color: darkgray;
@@ -147,6 +145,7 @@ span[contenteditable="true"] {
 .allowOverflow > * { flex-shrink: 0; }
 .shyScroll {
   overflow-y: scroll;
+  box-shadow: 0px 0px 5px 2px black;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
  }
@@ -303,7 +302,6 @@ span[contenteditable="true"] {
   z-index: 10000
 }
 .selector {
-  /* background-color: rgba(220, 250, 220, .4); */
   position: absolute;
   z-index: 99999;
   cursor: pointer;

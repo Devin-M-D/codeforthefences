@@ -1,7 +1,7 @@
 cDI.components.searchSelect = {
   buildSearchPane: async (source, text, searchRoute, propName, fn, allowAdd = false, addRoute) => {
     var pane = `
-      <span class="searchSelectPane">
+      <span class="searchSelectPane algnSX pad10">
       <span class="autoH algnXS pad10 bold italic">${text}</span>
         <span class="searchSelectHeader autoH wingedHeader" data-headerwings="20%">
           <span></span>
@@ -14,7 +14,6 @@ cDI.components.searchSelect = {
         </span>
       </span>`
     pane = await cDI.components.modal.init({ content: pane })
-    pane.addClass("algnSX")
 
     pane.find(".searchSelectTempInput").append(source.clone())
     var tempInput = pane.find('[contenteditable="true"]')
@@ -36,7 +35,7 @@ cDI.components.searchSelect = {
     cDI.addAwaitableInput("keyup", tempInput, async (e) => {
       $(".searchSelectResults").remove()
       pane.append(`
-        <span class="searchSelectResults algnSX">
+        <span class="searchSelectResults algnSX allowOverflow shyScroll">
           <span id="spinnerContainer"><span class="spinner"></span></span>
         </span>
       `)
@@ -49,10 +48,11 @@ cDI.components.searchSelect = {
 
         if (searchRes.payload.length == 0 && allowAdd){
           $(".searchSelectResults").append(`
+            <span class="autoH fauxrder">
               <span class="btnIcon" data-btnsize="80">
                 <span id="searchSelectAddNew" class="shpPlus"></span>
               </span>
-          `)
+            </span>`)
           cDI.addAwaitableInput("click", $("#searchSelectAddNew"), async () => {
             var newOption = await cDI.components.searchSelect.addNew(addRoute, searchString)
             cDI.components.searchSelect.makeSelection($(e.target).parent().parent(), source, propName, newOption, fn)
@@ -63,7 +63,10 @@ cDI.components.searchSelect = {
         }
         else {
           for (var x = 0; x < searchRes.payload.length; x++){
-            $(".searchSelectResults").append(`<span class="searchSelectOption autoH">${searchRes.payload[x][propName]}</span>`)
+            $(".searchSelectResults").append(`
+              <span class="autoH fauxrder">
+                <span class="searchSelectOption autoH btnStd">${searchRes.payload[x][propName]}</span>
+              </span>`)
             var searchOption = $(".searchSelectResults").find(".searchSelectOption").last()
             searchOption.data("dbrecord", searchRes.payload[x])
             await cDI.addAwaitableInput("click", searchOption, e => {

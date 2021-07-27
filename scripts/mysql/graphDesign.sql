@@ -55,6 +55,7 @@ CREATE TABLE ingredient (
 CREATE TABLE UoM (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `name` nvarchar(64) NOT NULL,
+  `plural` nvarchar(64) NULL,
   `abbreviation` nvarchar(32) NULL
 );
 

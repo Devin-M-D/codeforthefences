@@ -298,7 +298,7 @@ cDI.effects.toastPulse = (state, target, speed) => {
   if (state == 1 || state == "succeed") {
     if (
       !(classes.includes("debounceToastFast") || classes.includes("debounceToastSlow"))
-      // || (!classes.includes("toastInProcess") && !classes.includes("toastFail"))
+      || (!classes.includes("toastInProcess") && !classes.includes("toastFail"))
     ){
       target.addClass("toastSucceed")
       target.addClass(debounceClass)

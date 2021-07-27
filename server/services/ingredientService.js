@@ -1,7 +1,8 @@
+var db = require('../foundation/dbLogic')
+var queryBuilder = require('../utils/queryBuilder')
 var ingredientQueries = require("../queries/recipe/ingredient/ingredientQueries")
 var UoMQueries = require("../queries/recipe/shared/UoMQueries")
 var substanceQueries = require("../queries/recipe/ingredient/substanceQueries")
-var db = require('../foundation/dbLogic')
 
 module.exports = {
   createUoM: async (name) => {
@@ -11,7 +12,10 @@ module.exports = {
     return await db.runQuery(UoMQueries.getAll)
   },
   findUoMsByName: async (name) => {
-    return await db.runQuery(UoMQueries.getByName, [ `%${name}%` ])
+    var qb = queryBuilder.new()
+    qb.insertQuery(UoMQueries.getByName)
+    qb.insertParams(`%${name}%`, `%${name}%`, `%${name}%`)
+    return qb.run()
   },
 
   createSubstance: async (name) => {
@@ -21,7 +25,10 @@ module.exports = {
     return await db.runQuery(substanceQueries.getAll)
   },
   findSubstancesByName: async (name) => {
-    return await db.runQuery(substanceQueries.getByName, [ `%${name}%` ])
+    var qb = queryBuilder.new()
+    qb.insertQuery(substanceQueries.getByName)
+    qb.insertParams(`%${name}%`, `%${name}%`)
+    return qb.run()
   },
 
   upsertIngredient: async (qb, UoMId, foodVariantId, substanceId, prepStyleId) => {

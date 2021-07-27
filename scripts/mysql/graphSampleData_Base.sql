@@ -12,13 +12,13 @@ SET @bananaIceCreamId = LAST_INSERT_ID();
 -- INSERT INTO quantity (deci, frac) VALUES (0.25, '1/4');
 -- SET @quantity4Id = LAST_INSERT_ID();
 
-INSERT INTO UoM (name, abbreviation) VALUES ('tablespoon', 'tbsp');
+INSERT INTO UoM (name, plural, abbreviation) VALUES ('tablespoon', 'tablespoons', 'tbsp');
 SET @UoMTbspId = LAST_INSERT_ID();
-INSERT INTO UoM (name, abbreviation) VALUES ('cup', 'c');
+INSERT INTO UoM (name, plural, abbreviation) VALUES ('cup', 'cups', 'c');
 SET @UoMCupId = LAST_INSERT_ID();
 INSERT INTO UoM (name, abbreviation) VALUES ('large', 'lg');
 SET @UoMLgId = LAST_INSERT_ID();
-INSERT INTO UoM (name, abbreviation) VALUES ('pound', 'lb');
+INSERT INTO UoM (name, plural, abbreviation) VALUES ('pound', 'pounds', 'lb');
 
 INSERT INTO toolType (name, description) VALUES ('Pan', 'Metal pan used on the stovetop');
 SET @panToolId = LAST_INSERT_ID();
