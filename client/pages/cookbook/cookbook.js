@@ -4,8 +4,13 @@ cDI.pages.cookbook = {
     await cDI.remote.loadComponent($("#cargoHold"), "components/projectWidgets", "recipeCard")
     await cDI.remote.asyncGetScript(`js/services/recipeService.js`)
     var recipes = await cDI.services.recipe.getAllRecipes()
-    var cards = await cDI.components.recipeCard.buildRecipeCardList(recipes)
-    $("#counterTop").empty()
-    $("#counterTop").html(cards)
+    await cDI.components.recipeCard.appendList($("#counterTop"), recipes)
+    cDI.addAwaitableInput("click", $("#addNewRecipe > .btnIcon"), e => {
+      cDI.pages.cookbook.createNewRecipe()
+    })
+  },
+  createNewRecipe: async () => {
+    var newRecipe = cDI.services.recipe.newRecipe()
+    await cDI.components.recipeCard.appendRecipeCard($("#counterTop"), newRecipe)
   }
 }

@@ -3,7 +3,7 @@ cDI.components.unitTests.recipe = {
   runAllRecipe: async () => {
     await cDI.components.unitTests.UTStartSection(cDI.components.unitTests.recipe.section, async () => {
       var card = $(".recipeCard[recipeid = 1]")
-      //await cDI.components.unitTests.recipe.editAndCancel(card, 1)
+      // await cDI.components.unitTests.recipe.editAndCancel(card, 1)
       // await cDI.components.unitTests.recipe.editAndSave(card, 1)
       // await cDI.components.unitTests.recipe.addValidIngredientAndSave(card, 1)
       // await cDI.components.unitTests.recipe.editAndRemoveIngredient(card, card.data("recipe").ingredients.length - 1, 1)
@@ -18,6 +18,9 @@ cDI.components.unitTests.recipe = {
       // await cDI.components.unitTests.recipe.addTwoStepsInOneEdit(card, 1)
       // await cDI.components.unitTests.recipe.editAndRemoveStep(card, card.data("recipe").steps.length - 1, 1)
       // await cDI.components.unitTests.recipe.editAndRemoveStep(card, card.data("recipe").steps.length - 1, 1)
+
+      // await cDI.components.unitTests.recipe.setStepMap(card, card.data("recipe").steps.length - 1, 0, 1, 1)
+      // await cDI.components.unitTests.recipe.setStepMap(card, card.data("recipe").steps.length - 1, 0, 0, 1)
     })
   },
 
@@ -169,6 +172,19 @@ cDI.components.unitTests.recipe = {
       },
       (res) => { return true }, log
     )
+  },
+  //#endregion
+
+  //#region stepMaps
+  setStepMap: async (card, stepIndex, barsIndex, ingredientIndex, log) => {
+    return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.recipe.section, "setStepMap",
+      async () => {
+        var stepMap = card.find(`.cardStep[stepIndex=${stepIndex}]`).find(`.stepIngredientMap[barsIndex=${barsIndex}]`)
+        await cDI.awaitableInput("click", stepMap)
+        var ingSelector = card.find(`.cardIngredient[ingredientIndex=${ingredientIndex}]`).find(".selector")
+        await cDI.awaitableInput("click", ingSelector)
+      },
+      (res) => { return true }, log)
   },
   //#endregion
 }

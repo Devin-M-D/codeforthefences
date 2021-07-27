@@ -1,14 +1,11 @@
 cDI.components.drawerPane = {
   createDrawerPane: async (target) => {
-    $(".drawerPane:not(.drawerPaneTemplate)").remove()
+    $(".drawerPane").remove()
 
-    var curtain = "<span class='drawerCurtain'></span>"
+    var curtain = $("<span class='drawerCurtain'></span>")
     $(target).prepend(curtain)
-    curtain = $(target).find(".drawerCurtain")
 
-    var pane = $(".drawerPane.drawerPaneTemplate").clone()
-    $(target).append(pane)
-    pane.removeClass("drawerPaneTemplate")
+    $(target).append(`<span class="drawerPane cols algnSX"></span>`)
     var createdPane = $(target).children(".drawerPane")
 
     $(curtain).on("click", () => { cDI.components.drawerPane.closeDrawerPane(createdPane) })

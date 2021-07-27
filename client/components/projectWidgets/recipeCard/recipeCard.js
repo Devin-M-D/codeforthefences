@@ -4,13 +4,14 @@ cDI.components.recipeCard = {
     await cDI.remote.asyncGetScript(`components/projectWidgets/recipeCard/stepPane.js`)
   },
 //#region main loop
-  buildRecipeCardList: async (recipes) => {
-    var cardList = []
-    console.log(recipes)
-    recipes.forEach(async recipe => {
-        cardList.push(await cDI.components.recipeCard.buildRecipeCard(recipe))
-    })
-    return cardList
+  appendList: async (counterTop, recipes) => {
+    for (var x = 0; x < recipes.length; x++){
+      await cDI.components.recipeCard.appendRecipeCard(counterTop, recipes[x])
+    }
+  },
+  appendRecipeCard: async (counterTop, recipe) => {
+    console.log(recipe)
+    counterTop.prepend(await cDI.components.recipeCard.buildRecipeCard(recipe))
   },
   buildRecipeCard: async (recipe) => {
     var card = $("#cargoHold").find(".recipeCard").clone()

@@ -32,16 +32,30 @@ cDI.components.header = {
   buildMainMenu: async () => {
     var pane = await cDI.components.drawerPane.createDrawerPane($("html"))
     await cDI.components.drawerPane.populateDrawerPane(pane, `
-      <span class='wingedHeader' data-headerheight="10">
-        <span class="header noUnderline">{}</span>
-        <span class="header">Main Menu</span>
-        <span class="header noUnderline" onclick="cDI.components.drawerPane.closeDrawerPane($(this).parent().parent())">X</span>
-      </span>
-      <span class="cols algnSX">
-        <span class="btnStd subheader" style="flex-basis: 100px;" onclick="cDI.components.router.getRoute('/blog')">Blog</span>
-        <span class="btnStd subheader" style="flex-basis: 100px;"  onclick="cDI.components.router.getRoute('/cookbook')">Cookbook</span>
-        <span class="btnStd subheader" style="flex-basis: 100px;"  onclick="cDI.components.router.getRoute('/darkRoom')">Dark Room</span>
-        <span class="btnStd subheader" style="flex-basis: 100px;"  onclick="cDI.components.router.getRoute('/brewGames')">Brew Games</span>
+      <span class="algnSX">
+        <span class='rows autoH algnSpread'>
+          <span class="mainMenuDevIcon autoW noUnderline">{}</span>
+          <span class="mainMenuClose autoW noUnderline">
+            <span class="btnIcon" data-btnsize="80" onclick="cDI.components.drawerPane.closeDrawerPane($(this).parent().parent())">
+              <span class="shpCancel"></span>
+            </span>
+          </span>
+        </span>
+        <span class="mainMenuTitle autoH header">Main Menu</span>
+          <span class="autoH algnSX">
+          <span class="fauxrder">
+            <span class="btnStd subheader" style="flex-basis: 100px;" onclick="cDI.components.router.getRoute('/blog')">Blog</span>
+          </span>
+          <span class="fauxrder">
+          <span class="fauxrder btnStd subheader" style="flex-basis: 100px;"  onclick="cDI.components.router.getRoute('/cookbook')">Cookbook</span>
+          </span>
+          <span class="fauxrder">
+          <span class="fauxrder btnStd subheader" style="flex-basis: 100px;"  onclick="cDI.components.router.getRoute('/darkRoom')">Dark Room</span>
+          </span>
+          <span class="fauxrder">
+          <span class="fauxrder btnStd subheader" style="flex-basis: 100px;"  onclick="cDI.components.router.getRoute('/brewGames')">Brew Games</span>
+          </span>
+        </span>
       </span>
     `)
     return pane

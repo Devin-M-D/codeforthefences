@@ -13,6 +13,17 @@ cDI.services.recipe = {
     var res = await cDI.remote.remoteCall("/crud/UoM/r/")
     console.log(res)
   },
+  newRecipe: () => {
+    return {
+      id: null,
+      ingredients: [],
+      name: null,
+      servings: null,
+      stepMaps: [],
+      steps: [],
+      tools: []
+    }
+  },
   newIngredient: (recipeId, ingredientIndex) => {
     return {
         UoMAbbr: null,
