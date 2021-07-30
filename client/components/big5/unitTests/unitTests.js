@@ -1,4 +1,5 @@
 cDI.components.unitTests = {
+  section: `Unit Test main`,
   init: async () => {
     var unitTestLevel = cDI.config.unitTest
 
@@ -31,39 +32,43 @@ cDI.components.unitTests = {
     cDI.config.debugMode = currDebugMode
   },
   customDevScenario: async () => {
-    // await cDI.components.unitTests.loginIfNeccessary()
-    ftbLogUT("UT: customDevScenario")
-    ftbIndent()
-    await cDI.components.unitTests.recipe.runAllRecipe()
-    ftbOutdent()
-    ftbLogUT("UT: customDevScenario completed")
+    return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.section, "customDevScenario",
+      async () => {
+        await cDI.components.unitTests.loginIfNeccessary()
+        await cDI.components.unitTests.recipe.runAllRecipe()
+      }, null, log
+    )
   },
   loginIfNeccessary: async () => {
-    ftbLogUT("UT: loginIfNeccessary")
-    ftbIndent()
-    //if not logged in, use debugConf set in bootstrap to set an impersonate
-    if (!cDI.utils.isDef(cDI.session.token)) {
-      ftbLogUT(`Not logged in, logging with ${cDI.config.user.username} and ${cDI.config.user.password}`)
-      await cDI.components.unitTests.auth.login()
-      ftbLogUT(`login succeeded token: ${cDI.session.token.substr(0, 5)}...`)
-    }
-    //if we think we're logged in, verify by making a call. Triggers an implicit logout in the remoteCall func if call result has status "e".
-    else {
-      ftbLogUT(`active session detected, testing`)
-      var sessionTest = await cDI.remote.remoteCall("/user/testToken")
-      if (sessionTest.status == 's'){
-        ftbLogUT(`active session still valid, proceeding: ${cDI.session.token.substr(0, 5)}...`)
-      }
-      else {
-      ftbLogUT(`error logging in`)
-      }
-    }
-    ftbOutdent()
+    return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.section, "loginIfNeccessary",
+      async () => {
+        //if not logged in, use debugConf set in bootstrap to set an impersonate
+        if (!cDI.utils.isDef(cDI.session.token)) {
+          ftbLogUT(`Not logged in, logging with ${cDI.config.user.username} and ${cDI.config.user.password}`)
+          await cDI.components.unitTests.auth.login()
+          ftbLogUT(`login succeeded token: ${cDI.session.token.substr(0, 5)}...`)
+        }
+        //if we think we're logged in, verify by making a call. Triggers an implicit logout in the remoteCall func if call result has status "e".
+        else {
+          ftbLogUT(`active session detected, testing`)
+          var sessionTest = await cDI.remote.remoteCall("/user/testToken")
+          if (sessionTest.status == 's'){
+            ftbLogUT(`active session still valid, proceeding: ${cDI.session.token.substr(0, 5)}...`)
+          }
+          else {
+          ftbLogUT(`error logging in`)
+          }
+        }
+      }, null, log
+    )
   },
   runAllUnitTests: async () => {
-    ftbLogUT("UT: runAllUnitTests")
-    await cDI.components.unitTests.auth.runAllAuth()
-    await cDI.components.unitTests.recipe.runAllRecipe()
+    return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.section, "runAllUnitTests",
+      async () => {
+        await cDI.components.unitTests.auth.runAllAuth()
+        await cDI.components.unitTests.recipe.runAllRecipe()
+      }, null, log
+    )
   },
   UTStartSection: async (sectionName, fn) => {
     ftbIndent()

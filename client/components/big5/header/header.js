@@ -36,7 +36,7 @@ cDI.components.header = {
         <span class='rows autoH algnSpread'>
           <span class="mainMenuDevIcon autoW noUnderline">{}</span>
           <span class="mainMenuClose autoW noUnderline">
-            <span class="btnIcon" data-btnsize="80" onclick="cDI.components.drawerPane.closeDrawerPane($(this).parent().parent())">
+            <span class="btnIcon" data-btnsize="55" onclick="cDI.components.drawerPane.closeDrawerPane($(this).parent().parent().parent().parent())">
               <span class="shpCancel"></span>
             </span>
           </span>

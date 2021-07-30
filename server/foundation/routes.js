@@ -1,6 +1,6 @@
 var path = require('path')
 var DI = require('./DICore')
-// var userRoutes = require('../routes/userRoutes')
+var userRoutes = require('../routes/userRoutes')
 // var authRoutes = require('../routes/authRoutes')
 // var blogRoutes = require('../routes/blogRoutes')
 var recipeRoutes = require('../routes/recipeRoutes')
@@ -41,7 +41,7 @@ module.exports = async (expressApp, expressApi) => {
   )
   //#endregion
 
-  // userRoutes(router)
+  userRoutes(router)
   // authRoutes(router)
   // blogRoutes(DI)
   recipeRoutes(router)

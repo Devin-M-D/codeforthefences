@@ -1,16 +1,17 @@
 USE codeforthefences;
 
+INSERT INTO user (createdDate, username, password) VALUES (NOW(), `system`, `system`)
+SET @user1 = LAST_INSERT_ID();
+INSERT INTO user (createdDate, username, password) VALUES (NOW(), `user1`, `test`)
+SET @user2 = LAST_INSERT_ID();
+
+INSERT INTO blogPost (authorId, title, createdDate, content) VALUES (@user1, `blog post 1`, NOW(), `test blog 1`)
+INSERT INTO blogPost (authorId, title, createdDate, content) VALUES (@user2, `blog post 2`, NOW(), `test blog 2`)
+
 INSERT INTO recipe (name, duration, servings) VALUES ('Cereal Treats', 10, '16 treats');
 SET @cerealTreatsId = LAST_INSERT_ID();
 INSERT INTO recipe (name, duration, servings) VALUES ('Faux Banana Ice Cream', 24, '1 pint');
 SET @bananaIceCreamId = LAST_INSERT_ID();
-
--- INSERT INTO quantity (deci, frac) VALUES (3, '3');
--- SET @quantity3Id = LAST_INSERT_ID();
--- INSERT INTO quantity (deci, frac) VALUES (6, '6');
--- SET @quantity6Id = LAST_INSERT_ID();
--- INSERT INTO quantity (deci, frac) VALUES (0.25, '1/4');
--- SET @quantity4Id = LAST_INSERT_ID();
 
 INSERT INTO UoM (name, plural, abbreviation) VALUES ('tablespoon', 'tablespoons', 'tbsp');
 SET @UoMTbspId = LAST_INSERT_ID();

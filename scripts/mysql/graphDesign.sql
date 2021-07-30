@@ -2,6 +2,7 @@ USE codeforthefences;
 
 CREATE TABLE user (
   `id` int AUTO_INCREMENT primary key NOT NULL,
+  `createdDate` datetime NOT NULL,
   `username` nvarchar(64) UNIQUE NOT NULL,
   `password` nvarchar(128) NOT NULL,
   `sessionId` nvarchar(128) NULL,
@@ -10,14 +11,10 @@ CREATE TABLE user (
 
 CREATE TABLE blogPost (
   `id` int AUTO_INCREMENT primary key NOT NULL,
+  `authorId` int NOT NULL,
   `title` nvarchar(64) NOT NULL,
-  `date` datetime NOT NULL,
+  `createdDate` datetime NOT NULL,
   `content` mediumtext NOT NULL
-);
-
-CREATE TABLE user_blogPost (
-  `userId` int NOT NULL,
-  `blogPostId` nvarchar(64) NOT NULL
 );
 
 CREATE TABLE recipe (
