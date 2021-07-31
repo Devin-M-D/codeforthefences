@@ -22,7 +22,7 @@ INSERT INTO user (createdDate, username, password, sessionId) VALUES (NOW(), ?, 
 SELECT * FROM user WHERE id = LAST_INSERT_ID();
 `
 
-userQueries.login = `UPDATE user SET sessionId = NULL, lastLogin = NULL WHERE sessionId = ?`
+userQueries.setSession = `UPDATE user SET sessionId = NULL, lastLogin = NULL WHERE sessionId = ?`
 
 userQueries.logout = `UPDATE user SET sessionId = NULL, lastLogin = NULL WHERE sessionId = ?`
 

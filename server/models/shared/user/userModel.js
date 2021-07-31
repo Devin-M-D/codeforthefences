@@ -1,5 +1,5 @@
 module.exports = {
   tableName: "user",
-  fields: ["createdDate", "username", "sessionId"],
-  aliases: ["userCreatedDate", "username", "sessionId"]
+  fields: ["createdDate", "username", "password", "sessionId"],
+  aliases: ["userCreatedDate", "username", "password", "sessionId"]
 }

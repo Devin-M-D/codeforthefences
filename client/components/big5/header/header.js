@@ -19,22 +19,20 @@ cDI.components.header = {
   },
   strapAuthButton: async () => {
     if ($("#accountDash") || $("#signupLoginBox")) { cDI.components.modal.raiseCurtain() }
-    $("#iconAuth").empty()
     $("#authBox").off("click")
     if (cDI.utils.isDef(cDI.session.token)){
-      cDI.components.modal.clickToModal($("#authBox"), "components/genericWidgets", "accountDash", async (createdElem) => {
+      await cDI.components.modal.clickToModal($("#authBox"), "components/genericWidgets", "accountDash", async (createdElem) => {
         await cDI.components.accountDash.strapAccountDash()
         return createdElem
       }, true)
     }
     else {
-      cDI.components.modal.clickToModal($("#authBox"), "components/genericWidgets", "auth", async () => {})
+      await cDI.components.modal.clickToModal($("#authBox"), "components/genericWidgets", "auth", async () => {})
     }
   },
   strapHeaderHamburger: () => {
     $("#hamburgerBox").on("click", async () => {
       var pane = await cDI.components.header.buildMainMenu()
-      // cDI.components.drawerPane.openDrawerPane(pane)
       setTimeout(() => {
         cDI.components.drawerPane.openDrawerPane(pane)
       }, 1)

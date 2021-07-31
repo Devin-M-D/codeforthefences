@@ -1,8 +1,8 @@
 USE codeforthefences;
 
-INSERT INTO user (createdDate, username, password) VALUES (NOW(), 'system', 'system');
+INSERT INTO user (createdDate, username, password) VALUES (NOW(), 'system', '$2a$10$TYYE/NqPargaOveJMyMw8e6k/jbWKZI306BquHGMa/j5RJavluLIO');
 SET @user1 = LAST_INSERT_ID();
-INSERT INTO user (createdDate, username, password) VALUES (NOW(), 'user1', 'test');
+INSERT INTO user (createdDate, username, password) VALUES (NOW(), 'user1', '$2a$10$TYYE/NqPargaOveJMyMw8e6k/jbWKZI306BquHGMa/j5RJavluLIO');
 SET @user2 = LAST_INSERT_ID();
 
 INSERT INTO blogPost (authorId, title, createdDate, content) VALUES (@user1, 'blog post 1', NOW(), 'test blog 1');

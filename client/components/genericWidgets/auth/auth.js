@@ -1,6 +1,6 @@
 cDI.components.auth = {
   init: async () => {
-    cDI.addAwaitableInput("click", $("#btnSignup"), async (res) => {
+    cDI.addAwaitableInput("click", $("#btnSignup"), async (e) => {
       var email = $('#txtSgnEmail').val()
       var un = $('#txtSgnUN').html()
       var dn = $('#txtSgnDisplayName').val()
@@ -16,30 +16,28 @@ cDI.components.auth = {
         "password": pw,
         "confPW": confPw
       })
-      if (data.status == "s"){
+    if (data.status == "s"){
         user = data.payload
         await cDI.session.setSession(user.username, user.sessionId)
-        await cDI.components.modal.raiseCurtain()
         await cDI.components.header.strapAuthButton()
       }
       else if (data.payload == "Unable to create new user, username is taken.") {
         $("#txtSgnUN").css("background-color", "coral")
       }
       else {
-        $("#btnSignup").css("background-color", "red")
+        $("#btnSignup").css("background-color", "pink")
         $("#btnSignup").css("border-color", "coral")
       }
-      return data.payload
+      return data
     })
 
-    cDI.addAwaitableInput("click", $("#btnLogin"), async (res) => {
-      var un = $('#txtLoginUN').val()
+    cDI.addAwaitableInput("click", $("#btnLogin"), async (e) => {
+      var un = $('#txtLoginUN').html()
       var pw = $('#txtLoginPW').val()
       var callRes = await cDI.remote.remoteCall("/login", {"username": un, "password": pw })
-      await cDI.remote.h(callRes,
+      return await cDI.remote.h(callRes,
         async (token) => {
           await cDI.session.setSession(un, token)
-          await cDI.components.modal.raiseCurtain()
           await cDI.components.header.strapAuthButton()
           return callRes
         },
