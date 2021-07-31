@@ -67,6 +67,7 @@ span[contenteditable="true"] {
 .fauxrder { border: solid 5px var(--clrTransparent); }
 .fauxrderWide { border: solid 15px var(--clrTransparent); }
 .pad10 { padding: 10px; }
+.pad25 { padding: 25px; }
 .mgn10 { margin: 10px; }
 .spacer5px { flex-basis: 5px;}
 
@@ -244,7 +245,7 @@ span[contenteditable="true"] {
   max-width: var(--headerwingmax);
 }
 .wingedHeader > *:nth-child(2) {
-  flex-basis: 60%;
+  flex-basis: calc(100% - (2 * var(--headerwings)));
 }
 [data-headerheight="10%"] { --headerheight: 10%; }
 [data-headerheight="20%"] { --headerheight: 20%; }

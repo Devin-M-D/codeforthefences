@@ -77,7 +77,7 @@ cDI.components.unitTests = {
       else { ftbLogUT(`---failed`) }
       ftbOutdent()
     }
-    if (!validator || validator(res)) { return true }
+    if (!validator || validator(res)) { return res }
     else { return false }
   }
 }

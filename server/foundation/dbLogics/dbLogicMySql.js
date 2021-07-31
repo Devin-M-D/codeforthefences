@@ -40,8 +40,8 @@ module.exports = {
     }
     result = result.filter(x => { return x.constructor.name != "OkPacket" })
     result = JSON.parse(JSON.stringify(result))
-    if (result.length == 1 && expectOne){ return result[0] }
-    else if (result.length > 1 && expectOne){ return { status: "e", payload: "Expected one result but got multiple" } }
+    while (expectOne && result.length == 1) { result = result[0] }
+    if (result.length > 1 && expectOne){ return { status: "e", payload: "Expected one result but got multiple" } }
     return result
   }
 }

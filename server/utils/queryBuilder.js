@@ -37,5 +37,12 @@ queryBuilder.new = () => {
 queryBuilder.quickRun = async (quickQuery, quickParams = null, expectOne = 0) => {
   return await db.runQuery(quickQuery, quickParams, expectOne)
 }
+queryBuilder.quickPrintRunnable = (quickQuery, quickParams = null) => {
+  var tempQuery = quickQuery
+  for (var x = 0; x < quickParams.length; x++){
+    tempQuery = tempQuery.replace('?', `'${quickParams[x]}'`)
+  }
+  return tempQuery
+}
 
 module.exports = queryBuilder

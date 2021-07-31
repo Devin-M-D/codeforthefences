@@ -7,13 +7,10 @@ module.exports = {
     return await queryBuilder.quickRun(userQueries.getAll)
   },
   findByName: async (username) => {
-    return await queryBuilder.quickRun(userQueries.findByName, [`%${username}%`])
+    return await queryBuilder.quickRun(userQueries.findByName, [`${username}`], 1)
   },
   findById: async (id) => {
     return await queryBuilder.quickRun(userQueries.findById, [ id ])
-  },
-  findByLogin: async (username, password) => {
-    return await queryBuilder.quickRun(userQueries.findByLogin, [ username, password ])
   },
   setSession: async (sessionId, id) => {
     return await queryBuilder.quickRun(userQueries.setSession, [ sessionId, DI.datetimes.utcNow(), id ])

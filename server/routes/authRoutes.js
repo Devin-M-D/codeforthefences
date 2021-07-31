@@ -7,21 +7,19 @@ module.exports = (router) => {
   {
     var newUser = req.body
     var existingUser = await userService.findByName(newUser.username)
-    console.log(existingUser)
-    if (existingUser.length == 0){
+    if (existingUser.id) {
+      DI.rh.fail(res, "Unable to create new user, username is taken.")
+    }
+    else {
       var createdUser = await authService.signup(newUser.username, newUser.password, req.cookies['connect.sid'])
       DI.rh.succeed(res, createdUser)
-    }
-    else if (existingUser.length > 0) { DI.rh.fail(res, "Unable to create new user, username is taken.") }
-    else {
-      DI.rh.fail(res, "Unable to create user, reason unknown.")
     }
   }))
   router.post('/login', DI.rh.asyncRoute(async (req, res, next) =>
   {
-    let login = req.body
-    var user = await userService.findByLogin(login.username, login.password)
-    if (user.id) {
+    var login = req.body
+    var user = await authService.findLogin(login.username, login.password)
+    if (user) {
       await userService.setSession(req.cookies['connect.sid'], user.id)
       DI.rh.succeed(res, req.cookies['connect.sid'])
     }
