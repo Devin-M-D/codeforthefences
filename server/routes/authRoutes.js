@@ -1,21 +1,21 @@
-var db = require('../foundation/dbLogic')
 var DI = require('../foundation/DICore')
 var userService = require("../services/userService")
+var authService = require("../services/authService")
 
 module.exports = (router) => {
   router.post('/signup', DI.rh.asyncRoute(async (req, res, next) =>
   {
     var newUser = req.body
     var existingUser = await userService.findByName(newUser.username)
+    console.log(existingUser)
     if (existingUser.length == 0){
-      var createdUser = await userService.createNew(newUser.username, newUser.password, req.cookies['connect.sid'])
-      if (createdUser.insertId){
-        createdUser = await userService.findById(createdUser.insertId)
-        DI.rh.succeed(res, createdUser)
-      }
+      var createdUser = await authService.signup(newUser.username, newUser.password, req.cookies['connect.sid'])
+      DI.rh.succeed(res, createdUser)
     }
-    else { DI.rh.fail(res, "Unable to create new user, username is taken.") }
-    DI.rh.fail(res, "Unable to create user, reason unknown.")
+    else if (existingUser.length > 0) { DI.rh.fail(res, "Unable to create new user, username is taken.") }
+    else {
+      DI.rh.fail(res, "Unable to create user, reason unknown.")
+    }
   }))
   router.post('/login', DI.rh.asyncRoute(async (req, res, next) =>
   {
@@ -31,7 +31,7 @@ module.exports = (router) => {
   }))
   router.post('/logout', DI.rh.asyncRoute(async (req, res, next) =>
   {
-    var user = await userService.logout(req.cookies['connect.sid'])
+    var user = await authService.logout(req.cookies['connect.sid'])
     if (user.length == 0){
       DI.rh.fail(res, "Couldn't locate user session to log out")
     }

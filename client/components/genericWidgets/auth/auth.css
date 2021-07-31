@@ -1,19 +1,8 @@
-#signupLoginBox > span > span {
-  height: auto;
-  padding: 25px;
-  align-content: center;
+#signupLoginBox {
+  height: 600px;
 }
-#signupLoginBox > span > span > * {
-  width:50%;
-  min-width: 150px;
+#txtSgnUN, #txtSgnPW, #txtSgnConfPW,
+#txtLoginUN, #txtLoginPW {
+  margin-bottom: 20px;
+  margin-top: 15px;
 }
-#signupLoginBox > span > span > span {
-  padding: 2%;
-  justify-content: flex-start;
-}
-#signupLoginBox > span > span > input {
-  margin: auto;
-}
-/* #signup, #login {
-  width: 50%;
-} */

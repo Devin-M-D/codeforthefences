@@ -1,5 +1,16 @@
 cDI.components.header = {
   init: async () => {
+    $("body").prepend(`
+      <span id="siteHeader" class="wingedHeader algnSpread" data-headerheight="200px" data-headerwings="20%" data-headerwingmin="200px" data-headerwingmax="250px">
+        <span id="hamburgerBox">
+          <span class="shpHamburger"></span>
+        </span>
+        <span id="siteHeaderText" class="header"></span>
+        <span id="authBox">
+          <span id="iconAuth"></span>
+        </span>
+      </span>
+    `)
     await cDI.components.header.strapAuthButton()
     await cDI.components.header.strapHeaderHamburger()
   },
@@ -36,7 +47,7 @@ cDI.components.header = {
         <span class='rows autoH algnSpread'>
           <span class="mainMenuDevIcon autoW noUnderline">{}</span>
           <span class="mainMenuClose autoW noUnderline">
-            <span class="btnIcon" data-btnsize="80" onclick="cDI.components.drawerPane.closeDrawerPane($(this).parent().parent())">
+            <span class="btnIcon" data-btnsize="55" onclick="cDI.components.drawerPane.closeDrawerPane($(this).parent().parent().parent().parent())">
               <span class="shpCancel"></span>
             </span>
           </span>

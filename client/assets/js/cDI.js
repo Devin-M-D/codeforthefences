@@ -27,7 +27,7 @@ cDI.utils = {
   clone: (obj) => {
     return $.extend(true, {}, obj)
   },
-  getDIByCIName: (name) => {
+  getDIByComponentName: (name) => {
     var compKeys = Object.keys(cDI.components).reduce((keys, k) => {
       keys[k.toLowerCase()] = k;
       return keys
@@ -43,7 +43,7 @@ cDI.utils = {
       return cDI.pages[pageKeys[name.toLowerCase()]]
     }
   },
-  randomString: async (len) => {
+  randomString: (len) => {
     var retVal
     var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     var now = Date.now().toString()
@@ -122,11 +122,11 @@ cDI.sequencer.debounce = async (key, fn, delay) => {
 
 //#region remote
 cDI.remote = {
-  remoteCall: async (remoteURL, postData = {}) => {
-    ftbLogAjax(`Building call to ${remoteURL} with initial data:`,  postData, true)
-
+  remoteCall: async (remoteURL, postData) => {
     postDataObj = postData || {}
+    ftbLogAjax(`Building call to ${remoteURL} with initial data:`,  postData, true)
     postData = JSON.stringify(postDataObj)
+
 
     var callType = "POST"
     if (remoteURL.indexOf(".json") != -1) { callType = "GET" }
@@ -177,6 +177,9 @@ cDI.remote.loadSimpleComponent = async (folderPath, componentName) => {
   var path = `/${folderPath}/${componentName}/${componentName}`
   await cDI.remote.asyncGetScript(`${path}.js`)
   await cDI.remote.asyncGetCSS(`${path}.css`)
+  var DI = cDI.utils.getDIByComponentName(componentName)
+  if (DI.init) { await DI.init() }
+  return DI
 }
 cDI.remote.loadComponent = async (elem, folderPath, componentName, placement = 1) => {
   var path = `/${folderPath}/${componentName}/${componentName}`
@@ -188,13 +191,8 @@ cDI.remote.loadComponent = async (elem, folderPath, componentName, placement = 1
   else if (placement == 1) { elem.append(html) }
 
   ftbLogDev(`loading ${path}`)
-  var DI = cDI.utils.getDIByCIName(componentName)
-  if (DI.init) {
-    await DI.init()
-  }
-  else {
-    // console.log(DI)
-  }
+  var DI = cDI.utils.getDIByComponentName(componentName)
+  if (DI.init) { await DI.init() }
   return DI
 }
 //#endregion

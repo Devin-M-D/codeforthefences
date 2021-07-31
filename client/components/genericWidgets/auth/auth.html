@@ -1,31 +1,24 @@
-<span id="signupLoginBox" class="fit rows unwrap">
-  <span id="signup" class="cols">
-    <span>
-      <span class="absCen">Username:</span>
-      <input id="txtSgnUN" type="text" placeholder="username" value="">
+<span id="signupLoginBox" class="rows autoH pad10">
+  <span id="signup" class="cols pad10 algnSC">
+    <span class="algnSS pad10">
+      <span class="autoH algnSS">Username:</span>
+      <span contenteditable="true" id="txtSgnUN" class="autoH algnSC" value=""></span>
+      <span class="autoH algnSS">Password:</span>
+      <input id="txtSgnPW" class="autoH algnSC" type="password" placeholder="password" value="" />
+      <span class="autoH algnSS">Confirm password:</span>
+      <input id="txtSgnConfPW" class="autoH algnSC" type="password" placeholder="confirm password" value="" />
     </span>
-    <span>
-      <span class="absCen">Password:</span>
-      <input id="txtSgnPW" type="password" placeholder="password" value="">
-    </span>
-    <span>
-      <span class="absCen">Confirm password:</span>
-      <input id="txtSgnConfPW" type="password" placeholder="confirm password" value="">
-    </span>
-    <span class="spacer horiz"></span>
-    <span id="btnSignup" class="btnStd">Signup</span>
+    <span id="btnSignup" class="autoH mgn10 btnStd">Signup</span>
   </span>
-  <span class="spacer vert"></span>
-  <span id="login" class="cols">
-    <span>
-      <span class="absCen">Username/Email:</span>
-      <input id="txtLoginUN" type="text" placeholder="username/email" value="">
+  <span class="rule vert"></span>
+
+  <span id="login" class="cols pad10 algnEC">
+    <span class="algnSS pad10">
+      <span class="autoH algnSS">Username/Email:</span>
+      <span contenteditable="true" id="txtLoginUN" class="autoH algnSC" type="text" placeholder="username/email" value=""></span>
+      <span class="autoH algnSS">Password:</span>
+      <input id="txtLoginPW" class="autoH algnSC" type="password" placeholder="password" value="" />
     </span>
-    <span>
-      <span class="absCen">Password:</span>
-      <input id="txtLoginPW" type="password" placeholder="password" value="">
-    </span>
-    <span class="spacer horiz"></span>
-    <span id="btnLogin" class="btnStd">Login</span>
+    <span id="btnLogin" class="autoH mgn10 btnStd">Login</span>
   </span>
 </span>

@@ -1,4 +1,5 @@
 cDI.components.unitTests = {
+  section: `Unit Test main`,
   init: async () => {
     var unitTestLevel = cDI.config.unitTest
 
@@ -10,73 +11,64 @@ cDI.components.unitTests = {
     }
 
     if (unitTestLevel == 1){
-      ftbLogUT("Unit tests set to level 1: run all")
-      ftbIndent()
-      await cDI.components.unitTests.runAllUnitTests()
-      ftbOutdent()
+      await cDI.components.unitTests.runAllUnitTests(1)
     }
     else if (unitTestLevel == 2){
-      ftbLogUT("Unit tests set to level 2: custom dev scenario")
-      ftbIndent()
-      await cDI.components.unitTests.customDevScenario()
-      ftbOutdent()
+      await cDI.components.unitTests.customDevScenario(1)
     }
     else if (unitTestLevel == 3){
-      ftbLogUT("Unit tests set to level 3: just login if the session has expired")
-      ftbIndent()
-      await cDI.components.unitTests.loginIfNeccessary()
-      ftbOutdent()
+      await cDI.components.unitTests.loginIfNeccessary(1)
     }
 
     cDI.config.debugMode = currDebugMode
   },
-  customDevScenario: async () => {
-    // await cDI.components.unitTests.loginIfNeccessary()
-    ftbLogUT("UT: customDevScenario")
-    ftbIndent()
-    await cDI.components.unitTests.recipe.runAllRecipe()
-    ftbOutdent()
-    ftbLogUT("UT: customDevScenario completed")
+  runAllUnitTests: async (log) => {
+    return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 1: runAllUnitTests",
+      async () => {
+        await cDI.components.unitTests.auth.runAllAuth()
+        await cDI.components.unitTests.recipe.runAllRecipe()
+      })
+  },
+  customDevScenario: async (log) => {
+    return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 2: customDevScenario",
+      async () => {
+        //await cDI.components.unitTests.loginIfNeccessary()
+        await cDI.components.unitTests.auth.runAllAuth()
+      })
   },
   loginIfNeccessary: async () => {
-    ftbLogUT("UT: loginIfNeccessary")
-    ftbIndent()
-    //if not logged in, use debugConf set in bootstrap to set an impersonate
-    if (!cDI.utils.isDef(cDI.session.token)) {
-      ftbLogUT(`Not logged in, logging with ${cDI.config.user.username} and ${cDI.config.user.password}`)
-      await cDI.components.unitTests.auth.login()
-      ftbLogUT(`login succeeded token: ${cDI.session.token.substr(0, 5)}...`)
-    }
-    //if we think we're logged in, verify by making a call. Triggers an implicit logout in the remoteCall func if call result has status "e".
-    else {
-      ftbLogUT(`active session detected, testing`)
-      var sessionTest = await cDI.remote.remoteCall("/user/testToken")
-      if (sessionTest.status == 's'){
-        ftbLogUT(`active session still valid, proceeding: ${cDI.session.token.substr(0, 5)}...`)
-      }
-      else {
-      ftbLogUT(`error logging in`)
-      }
-    }
-    ftbOutdent()
-  },
-  runAllUnitTests: async () => {
-    ftbLogUT("UT: runAllUnitTests")
-    await cDI.components.unitTests.auth.runAllAuth()
-    await cDI.components.unitTests.recipe.runAllRecipe()
+    return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 3: loginIfNeccessary (just login if the session has expired)",
+      async () => {
+        //if not logged in, use debugConf set in bootstrap to set an impersonate
+        if (!cDI.utils.isDef(cDI.session.token)) {
+          ftbLogUT(`Not logged in, logging with ${cDI.config.user.username} and ${cDI.config.user.password}`)
+          await cDI.components.unitTests.auth.login()
+          ftbLogUT(`login succeeded token: ${cDI.session.token.substr(0, 5)}...`)
+        }
+        //if we think we're logged in, verify by making a call. Triggers an implicit logout in the remoteCall func if call result has status "e".
+        else {
+          ftbLogUT(`active session detected, testing`)
+          var sessionTest = await cDI.remote.remoteCall("/user/testToken")
+          if (sessionTest.status == 's'){
+            ftbLogUT(`active session still valid, proceeding: ${cDI.session.token.substr(0, 5)}...`)
+          }
+          else {
+          ftbLogUT(`error logging in`)
+          }
+        }
+      })
   },
   UTStartSection: async (sectionName, fn) => {
-    ftbIndent()
-    ftbLogUT(`${"=".repeat(sectionName.length)} ${sectionName}`)
+    ftbLogUT(`** ${sectionName}`)
     ftbIndent()
     var res = await fn()
     ftbOutdent()
-    ftbLogUT(`${"=".repeat(`${sectionName}`.length)} ${sectionName} passed`)
-    ftbOutdent()
+    ftbLogUT(`** ${sectionName} passed`)
+    return res
   },
   UTIndent: async (sectionName, testTitle, fn, validator, log) => {
     if (log) {
-      ftbLogUT(`##${sectionName} - ${testTitle}`)
+      ftbLogUT(`#${sectionName} - ${testTitle}`)
       ftbIndent()
     }
     var res = await fn()

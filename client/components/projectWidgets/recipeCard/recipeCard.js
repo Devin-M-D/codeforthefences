@@ -10,7 +10,6 @@ cDI.components.recipeCard = {
     }
   },
   appendRecipeCard: async (counterTop, recipe) => {
-    console.log(recipe)
     counterTop.prepend(await cDI.components.recipeCard.buildRecipeCard(recipe))
   },
   buildRecipeCard: async (recipe) => {
