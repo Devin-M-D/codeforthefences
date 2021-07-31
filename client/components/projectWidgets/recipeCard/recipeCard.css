@@ -1,9 +1,10 @@
 .recipeCard {
   padding: 10px 25px;
-  border: solid thin black;
+  border: solid thick black;
   margin: 5px 0px;
 }
-
+.cardIngs { margin-bottom: 10px; }
+.cardSteps { margin-top: 10px; }
 .cardIngs, .cardSteps {
   max-height: 600px;
 }

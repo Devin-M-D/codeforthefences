@@ -24,7 +24,7 @@ queryBuilder.new = () => {
         if (p[x] != null) params.push(p[x])
       }
     },
-    run: async () => { return await db.runQuery(query, params) },
+    run: async (expectOne = 0) => { return await db.runQuery(query, params, expectOne) },
     printRunnable: () => {
       var tempQuery = query
       for (var x = 0; x < params.length; x++){
@@ -33,6 +33,9 @@ queryBuilder.new = () => {
       return tempQuery
     }
   }
+}
+queryBuilder.quickRun = async (quickQuery, quickParams = null, expectOne = 0) => {
+  return await db.runQuery(quickQuery, quickParams, expectOne)
 }
 
 module.exports = queryBuilder

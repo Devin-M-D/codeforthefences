@@ -6,10 +6,10 @@
   --clrSecondary: teal;
   --clrTransparent: rgba(0,0,0,0);
 
-  --spcInner: var(--clrSecondary);
-  --spcOuter: var(--clrPrimary);
-  --spcGradient: var(--clrTransparent) 0%, var(--spcOuter) 25%, var(--spcInner) 50%, var(--spcOuter) 75%, var(--clrTransparent) 100%;
-  --spcGradientSlim: var(--clrTransparent) 0%, #888 50%, var(--clrTransparent) 100%;
+  --ruleInner: var(--clrSecondary);
+  --ruleOuter: var(--clrPrimary);
+  --ruleGradient: var(--clrTransparent) 0%, var(--ruleOuter) 25%, var(--ruleInner) 50%, var(--ruleOuter) 75%, var(--clrTransparent) 100%;
+  --ruleGradientSlim: var(--clrTransparent) 0%, #888 50%, var(--clrTransparent) 100%;
 
   --headerFont: rockwell;
   --headerSize: 64px;
@@ -20,10 +20,6 @@
   --subheaderSize: 48px;
   --subheaderDecoration: underline;
   --subheaderWeight: bold;
-
-  --spcInner: var(--clrSecondary);
-  --spcOuter: var(--clrPrimary);
-  --spcGradient: var(--clrTransparent) 0%, var(--spcOuter) 25%, var(--spcInner) 50%, var(--spcOuter) 75%, var(--clrTransparent) 100%;
 
   --icon_size: 1em;
 }
@@ -153,6 +149,7 @@ span[contenteditable="true"] {
    width: 0;
    height: 0;
 }
+.noShadow { box-shadow: 0px 0px; }
 /*#endregion*/
 
 /*#region fonts*/
@@ -187,8 +184,7 @@ span[contenteditable="true"] {
 /*#region rule bars*/
 
 .rule {
-  flex-grow: 0;
-  flex-basis: 0;
+  flex-basis: 0px;
   overflow: visible;
 }
 .rule::after {
@@ -197,21 +193,19 @@ span[contenteditable="true"] {
   content: "";
 }
 .rule.horiz {
-  height: 0;
-  margin: 2px 0px;
+  height: 0px;
 }
 .rule.horiz::after {
-  background: linear-gradient(90deg, var(--spcGradient));
+  background: linear-gradient(90deg, var(--ruleGradient));
   width: 100%;
   height: 4px;
   bottom: -2px;
 }
 .rule.vert {
-  width: 0;
-  margin: 0px 2px;
+  width: 0px;
 }
 .rule.vert::after {
-  background: linear-gradient(0deg, var(--spcGradient));
+  background: linear-gradient(0deg, var(--ruleGradient));
   width: 4px;
   height: 100%;
   right: -2px;
@@ -225,7 +219,7 @@ span[contenteditable="true"] {
   margin: 2px 0px;
 }
 .rule.slim.horiz::after {
-  background: linear-gradient(90deg, var(--spcGradientSlim));
+  background: linear-gradient(90deg, var(--ruleGradient));
   height: 2px;
   bottom: -1px;
 }
@@ -233,7 +227,7 @@ span[contenteditable="true"] {
   margin: 0px 2px;
 }
 .rule.slim.vert::after {
-  background: linear-gradient(0deg, var(--spcGradientSlim));
+  background: linear-gradient(0deg, var(--ruleGradientSlim));
   width: 2px;
   right: -1px;
 }

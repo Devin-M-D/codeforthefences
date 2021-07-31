@@ -11,36 +11,33 @@ cDI.components.unitTests = {
     }
 
     if (unitTestLevel == 1){
-      ftbLogUT("Unit tests set to level 1: run all")
-      ftbIndent()
-      await cDI.components.unitTests.runAllUnitTests()
-      ftbOutdent()
+      await cDI.components.unitTests.runAllUnitTests(1)
     }
     else if (unitTestLevel == 2){
-      ftbLogUT("Unit tests set to level 2: custom dev scenario")
-      ftbIndent()
-      await cDI.components.unitTests.customDevScenario()
-      ftbOutdent()
+      await cDI.components.unitTests.customDevScenario(1)
     }
     else if (unitTestLevel == 3){
-      ftbLogUT("Unit tests set to level 3: just login if the session has expired")
-      ftbIndent()
-      await cDI.components.unitTests.loginIfNeccessary()
-      ftbOutdent()
+      await cDI.components.unitTests.loginIfNeccessary(1)
     }
 
     cDI.config.debugMode = currDebugMode
   },
-  customDevScenario: async () => {
-    return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.section, "customDevScenario",
+  runAllUnitTests: async (log) => {
+    return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 1: runAllUnitTests",
       async () => {
-        await cDI.components.unitTests.loginIfNeccessary()
+        await cDI.components.unitTests.auth.runAllAuth()
         await cDI.components.unitTests.recipe.runAllRecipe()
-      }, null, log
-    )
+      })
+  },
+  customDevScenario: async (log) => {
+    return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 2: customDevScenario",
+      async () => {
+        //await cDI.components.unitTests.loginIfNeccessary()
+        await cDI.components.unitTests.auth.runAllAuth()
+      })
   },
   loginIfNeccessary: async () => {
-    return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.section, "loginIfNeccessary",
+    return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 3: loginIfNeccessary (just login if the session has expired)",
       async () => {
         //if not logged in, use debugConf set in bootstrap to set an impersonate
         if (!cDI.utils.isDef(cDI.session.token)) {
@@ -59,29 +56,19 @@ cDI.components.unitTests = {
           ftbLogUT(`error logging in`)
           }
         }
-      }, null, log
-    )
-  },
-  runAllUnitTests: async () => {
-    return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.section, "runAllUnitTests",
-      async () => {
-        await cDI.components.unitTests.auth.runAllAuth()
-        await cDI.components.unitTests.recipe.runAllRecipe()
-      }, null, log
-    )
+      })
   },
   UTStartSection: async (sectionName, fn) => {
-    ftbIndent()
-    ftbLogUT(`${"=".repeat(sectionName.length)} ${sectionName}`)
+    ftbLogUT(`** ${sectionName}`)
     ftbIndent()
     var res = await fn()
     ftbOutdent()
-    ftbLogUT(`${"=".repeat(`${sectionName}`.length)} ${sectionName} passed`)
-    ftbOutdent()
+    ftbLogUT(`** ${sectionName} passed`)
+    return res
   },
   UTIndent: async (sectionName, testTitle, fn, validator, log) => {
     if (log) {
-      ftbLogUT(`##${sectionName} - ${testTitle}`)
+      ftbLogUT(`#${sectionName} - ${testTitle}`)
       ftbIndent()
     }
     var res = await fn()

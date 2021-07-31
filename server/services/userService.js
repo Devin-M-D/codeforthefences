@@ -1,27 +1,21 @@
-var db = require('../foundation/dbLogic')
-var userQueries = require("../queries/user/userModel")
+var queryBuilder = require('../utils/queryBuilder')
+var userQueries = require("../queries/user/userQueries")
 var DI = require('../foundation/DICore')
 
 module.exports = {
   getAll: async () => {
-    return "foo"
-  },
-  createNew: async (username, password, sessionId) => {
-    return await db.runQuery(userModel.create, [ username, password, sessionId ])
+    return await queryBuilder.quickRun(userQueries.getAll)
   },
   findByName: async (username) => {
-    return await db.runQuery(userModel.findByName, [ username ])
+    return await queryBuilder.quickRun(userQueries.findByName, [`%${username}%`])
   },
   findById: async (id) => {
-    return await db.runQuery(userModel.findById, [ id ])
+    return await queryBuilder.quickRun(userQueries.findById, [ id ])
   },
   findByLogin: async (username, password) => {
-    return await db.runQuery(userModel.findByLogin, [ username, password ])
+    return await queryBuilder.quickRun(userQueries.findByLogin, [ username, password ])
   },
   setSession: async (sessionId, id) => {
-    return await db.runQuery(userModel.setSession, [ sessionId, DI.datetimes.utcNow(), id ])
+    return await queryBuilder.quickRun(userQueries.setSession, [ sessionId, DI.datetimes.utcNow(), id ])
   },
-  logout: async (sessionId) => {
-    return await db.runQuery(userModel.logout, [ sessionId ])
-  }
 }

@@ -1,6 +1,6 @@
 cDI.components.contentMain = {
   init: async () => {
-
+    $("body").append(`<span id="contentMain"></span>`)
   },
   loadPage: async (name) => {
     $("#contentMain").empty()
