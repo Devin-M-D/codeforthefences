@@ -19,35 +19,46 @@ cDI.components.flexCarousel = {
       `)
     });
     target.append(carouselHTML)
+    cDI.components.flexCarousel.setShowPony($(".crslSlot"))
   },
   crslCycle: (event, element, direction) => {
     cDI.sequencer.debounce("cycleFlexCarousel", () => {
       var target = $(element).parent().parent()
       seats = target.find(".crslSlot")
 
-      if (direction == "prev"){
-        seats.each((i, el) => {
-          var idx = parseInt($(el).css("--idx"))
-          if (idx != seats.length - 1) { $(el).css("--idx", idx + 1) }
-          else { $(el).css("--idx", 0) }
-
-          if (idx == 0) { $(el).removeClass("crslLeadHorse") }
-          else if (idx == seats.length - 1) { $(el).removeClass("crslAnchorHorse").addClass("crslLeadHorse") }
-          else if (idx == seats.length - 2) { $(el).addClass("crslAnchorHorse") }
-        })
-      }
-      else if (direction == "next") {
-        seats.each((i, el) => {
-          var idx = $(el).css("--idx")
-          if (idx == 0) { $(el).css("--idx", seats.length - 1) }
-          else { $(el).css("--idx", idx - 1) }
-
-          if (idx == 0) { $(el).removeClass("crslLeadHorse").addClass("crslAnchorHorse") }
-          else if (idx == seats.length - 1) { $(el).removeClass("crslAnchorHorse") }
-          else if (idx == 1) { $(el).addClass("crslLeadHorse") }
-        })
-      }
+      if (direction == "prev") { cDI.components.flexCarousel.cyclePrev(seats) }
+      else if (direction == "next") { cDI.components.flexCarousel.cycleNext(seats) }
+      cDI.components.flexCarousel.setShowPony(seats)
     },
     250)
+  },
+  cyclePrev: (seats) => {
+    seats.each((i, el) => {
+      var idx = parseInt($(el).css("--idx"))
+      if (idx != seats.length - 1) { $(el).css("--idx", idx + 1) }
+      else { $(el).css("--idx", 0) }
+
+      if (idx == 0) { $(el).removeClass("crslLeadHorse") }
+      else if (idx == seats.length - 1) { $(el).removeClass("crslAnchorHorse").addClass("crslLeadHorse") }
+      else if (idx == seats.length - 2) { $(el).addClass("crslAnchorHorse") }
+    })
+  },
+  cycleNext: (seats) => {
+    seats.each((i, el) => {
+      var idx = parseInt($(el).css("--idx"))
+      if (idx == 0) { $(el).css("--idx", seats.length - 1) }
+      else { $(el).css("--idx", idx - 1) }
+
+      if (idx == 0) { $(el).removeClass("crslLeadHorse").addClass("crslAnchorHorse") }
+      else if (idx == seats.length - 1) { $(el).removeClass("crslAnchorHorse") }
+      else if (idx == 1) { $(el).addClass("crslLeadHorse") }
+    })
+  },
+  setShowPony: (seats) => {
+    seats.each((i, el) => {
+      console.log(parseInt($(el).css("--idx")))
+      if (parseInt($(el).css("--idx")) == 1) { $(el).addClass("crslShowPony") }
+      else { $(el).removeClass("crslShowPony") }
+    })
   }
 }

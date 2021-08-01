@@ -1,6 +1,4 @@
 .flexCarousel {
-  height: 100%;
-  width: 100%;
   overflow: hidden;
 }
 /*#region NAV*/
@@ -50,21 +48,14 @@
 }
 
 /*#endregion*/
-
-.crslSlotPane {
-
-}
 .crslSlot {
   position: absolute;
-  height: 100%;
-  width: 100%;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   left: calc(100% * var(--idx) - 100%);
   transition-duration: .75s;
 }
-
 .crslAnchorHorse {
   display: none;
 }
