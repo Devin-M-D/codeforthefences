@@ -1,6 +1,6 @@
 var queryBuilder = require('../utils/queryBuilder')
 var userQueries = require("../queries/user/userQueries")
-
+var DI = require("../foundation/DICore")
 module.exports = {
   getAll: async () => {
     return await queryBuilder.quickRun(userQueries.getAll)
