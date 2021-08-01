@@ -6,7 +6,7 @@ INSERT INTO user (createdDate, username, password) VALUES (NOW(), 'user1', '$2a$
 SET @user2 = LAST_INSERT_ID();
 
 INSERT INTO blogPost (authorId, title, createdDate, content) VALUES (@user1, 'blog post 1', NOW(), 'test blog 1');
-INSERT INTO blogPost (authorId, title, createdDate, content) VALUES (@user2, 'blog post 2', NOW(), 'test blog 2');
+INSERT INTO blogPost (authorId, title, createdDate, content) VALUES (@user2, 'blog post 2', ADDTIME(NOW(), "1"), 'test blog 2');
 
 INSERT INTO recipe (name, duration, servings) VALUES ('Cereal Treats', 10, '16 treats');
 SET @cerealTreatsId = LAST_INSERT_ID();

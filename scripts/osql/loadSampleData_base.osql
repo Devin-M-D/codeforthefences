@@ -1,5 +1,5 @@
 SET echo TRUE;
 SET promptDateFormat "yyy-MM-dd hh:mm:ss.sss";
-CONNECT remote:localhost/cookbook root testpass123;
+CONNECT remote:localhost/codeforthefences root testpass123;
 
-LOAD SCRIPT C:/node/cookbook/scripts/osql/sampleData_base.osql;
+LOAD SCRIPT C:/node/codeforthefences/scripts/osql/sampleData_base.osql;

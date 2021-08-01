@@ -1,2 +1,2 @@
-cd c:/node/cookbook/client/assets/js/
+cd c:/node/codeforthefences/client/assets/js/
 git update-index --skip-worktree config.js

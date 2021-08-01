@@ -1,11 +1,11 @@
-module.exports = (DI) => {
-  DI.router.post('/crud/blog/r/', DI.rh.asyncRoute(async (req, res, next) => {
-    if (req.body.title){
-      var data = await DI.data.rootQuery(`SELECT * FROM blogPost WHERE title = :title`, { title: req.body.title})
-    }
-    else {
-      var data = await DI.data.rootQuery(`SELECT title, date FROM blogPost`)
-    }
+var DI = require('../foundation/DICore')
+var blogService = require("../services/blogService")
+
+module.exports = (router) => {
+  router.post('/crud/blog/r/', DI.rh.asyncRoute(async (req, res, next) => {
+    var data
+    if (req.body.blogId) { data = await blogService.getBlogById(req.body.blogId) }
+    else { data = await blogService.getBlogList() }
     DI.rh.succeed(res, data)
   }))
 }
