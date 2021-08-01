@@ -139,17 +139,19 @@ span[contenteditable="true"] {
 /*#endregion*/
 
 /*#region shyScroll*/
-.allowOverflow > * { flex-shrink: 0; }
 .shyScroll {
-  overflow-y: scroll;
   box-shadow: 0px 0px 5px 2px black;
+  overflow-y: scroll;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
- }
+}
 .shyScroll::-webkit-scrollbar { /* WebKit */
    width: 0;
    height: 0;
 }
+.shyScroll { flex-shrink: 0; }
+.shyScroll > * { flex-shrink: 0; }
+
 .noShadow { box-shadow: 0px 0px; }
 /*#endregion*/
 

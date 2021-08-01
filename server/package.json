@@ -1,5 +1,5 @@
 {
-  "name": "cookbook-server",
+  "name": "codeforthefences-server",
   "version": "1.0.0",
   "description": "server component for https://github.com/Devin-M-D/codeforthefences",
   "main": "server.js",

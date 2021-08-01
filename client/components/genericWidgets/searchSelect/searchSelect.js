@@ -35,7 +35,7 @@ cDI.components.searchSelect = {
     cDI.addAwaitableInput("keyup", tempInput, async (e) => {
       $(".searchSelectResults").remove()
       pane.append(`
-        <span class="searchSelectResults algnSX allowOverflow shyScroll">
+        <span class="searchSelectResults algnSX shyScroll">
           <span id="spinnerContainer"><span class="spinner"></span></span>
         </span>
       `)

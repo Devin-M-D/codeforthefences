@@ -3,9 +3,8 @@ cDI.services.blog = {
     var res = await cDI.remote.remoteCall("/crud/blog/r/")
     return res.payload
   },
-  getPost: async (title) => {
-    var post = await cDI.remote.remoteCall("/crud/blog/r", {title: title})
-    post = post.payload[0]
-    return post
+  getPost: async (id) => {
+    var post = await cDI.remote.remoteCall("/crud/blog/r", {blogId: id})
+    return post.payload
   }
 }

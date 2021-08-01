@@ -32,8 +32,8 @@ cDI.components.unitTests = {
   customDevScenario: async (log) => {
     return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 2: customDevScenario",
       async () => {
-        //await cDI.components.unitTests.loginIfNeccessary()
-        await cDI.components.unitTests.auth.runAllAuth()
+        await cDI.components.unitTests.loginIfNeccessary()
+        
       })
   },
   loginIfNeccessary: async () => {
