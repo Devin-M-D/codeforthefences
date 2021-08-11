@@ -1,4 +1,4 @@
 @echo off
 ECHO Starting CodefortheFences server
-cd c:/node/codeforthefences/server/
+cd %CFTF_HOME%/server/
 npm start

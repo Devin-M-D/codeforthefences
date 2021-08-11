@@ -1,1 +1,2 @@
-. export CFTF_HOME="/www/codeforthefences/"
+export CFTF_HOME="/www/codeforthefences/"
+export PORT=80

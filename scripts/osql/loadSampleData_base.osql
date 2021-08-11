@@ -1,5 +1,0 @@
-SET echo TRUE;
-SET promptDateFormat "yyy-MM-dd hh:mm:ss.sss";
-CONNECT remote:localhost/codeforthefences root testpass123;
-
-LOAD SCRIPT C:/node/codeforthefences/scripts/osql/sampleData_base.osql;
