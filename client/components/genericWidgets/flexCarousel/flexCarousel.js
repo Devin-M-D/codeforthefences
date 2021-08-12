@@ -6,9 +6,18 @@ cDI.components.flexCarousel = {
 
     }
     target.empty()
-
-    console.log(imagePaths)
-    var carouselHTML = $("#cargoHold > .flexCarousel").clone()
+    target.append(`
+      <span class="flexCarousel">
+        <span class="crslPrevWrapper">
+          <span class="crslPrev" onclick="cDI.components.flexCarousel.crslCycle(event, this, 'prev')"></span>
+        </span>
+        <span class="crslNextWrapper">
+          <span class="crslNext" onclick="cDI.components.flexCarousel.crslCycle(event, this, 'next')"></span>
+        </span>
+        <span class="crslSeatPanel"></span>
+      </span>
+    `)
+    var carouselHTML = target.find(".flexCarousel")
     imagePaths.forEach((x, i) => {
       var seatSpecial = ""
       if (i == 0) { seatSpecial = " crslLeadHorse" }
@@ -18,7 +27,6 @@ cDI.components.flexCarousel = {
         <span class="crslSlot${seatSpecial}" style="--idx: ${i}; background-image: url('${x}')"></span>
       `)
     });
-    target.append(carouselHTML)
     cDI.components.flexCarousel.setShowPony($(".crslSlot"))
   },
   crslCycle: (event, element, direction) => {
@@ -56,7 +64,6 @@ cDI.components.flexCarousel = {
   },
   setShowPony: (seats) => {
     seats.each((i, el) => {
-      console.log(parseInt($(el).css("--idx")))
       if (parseInt($(el).css("--idx")) == 1) { $(el).addClass("crslShowPony") }
       else { $(el).removeClass("crslShowPony") }
     })
