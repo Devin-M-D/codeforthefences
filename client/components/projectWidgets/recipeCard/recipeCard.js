@@ -10,10 +10,25 @@ cDI.components.recipeCard = {
     }
   },
   appendRecipeCard: async (counterTop, recipe) => {
-    counterTop.prepend(await cDI.components.recipeCard.buildRecipeCard(recipe))
+    var recipeCard = `
+    <span class="recipeCard autoH roundedWide algnSX">
+      <span class="wingedHeader algnSpread" data-headerheight="120px" data-headerwings="20%">
+        <span class="recipeStats">
+          <span class="recipeTime"></span>
+          <span class="recipeServings"></span>
+          <span class="recipeCalories"></span>
+        </span>
+        <span class="recipeName subheader"></span>
+        <span class="recipeEdit row"></span>
+      </span>
+      <span class="cardIngs autoH rounded fauxrder algnSX shyScroll"></span>
+      <span class="rule horiz"></span>
+      <span class="cardSteps autoH rounded fauxrder algnSX shyScroll"></span>
+    </span>`
+    counterTop.append(recipeCard)
+    await cDI.components.recipeCard.buildRecipeCard($("#counterTop > .recipeCard").last(), recipe)
   },
-  buildRecipeCard: async (recipe) => {
-    var card = $("#cargoHold").find(".recipeCard").clone()
+  buildRecipeCard: async (card, recipe) => {
     card.find(".recipeName").html(recipe.name)
     card.data("recipe", recipe)
     card.attr("recipeId", recipe["id"])

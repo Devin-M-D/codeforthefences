@@ -1,5 +1,5 @@
 var ss = require('../../../utils/sqlSnippets')
-var UoMModel = require('../../../models/recipe/shared/UoMmodel')
+var UoMModel = require('../../../models/recipe/shared/UoMModel')
 
 var UoMQueries = {}
 UoMQueries.createUoM = `INSERT INTO UoM (name) VALUES (?); SELECT * FROM UoM WHERE id = LAST_INSERT_ID();`

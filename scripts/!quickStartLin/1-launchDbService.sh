@@ -1,4 +1,3 @@
-ECHO Starting MySql server
+echo Starting MySql server
 sudo systemctl start mysql
-ECHO MySql server started
-read
+echo MySql server started

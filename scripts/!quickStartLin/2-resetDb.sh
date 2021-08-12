@@ -1,9 +1,7 @@
-@echo off
-ECHO Running scripts
-mysql -u root -ppassword < C:/node/codeforthefences/scripts/mysql/resetDb.sql
-ECHO Database dropped/created
-mysql -u root -ppassword < C:/node/codeforthefences/scripts/mysql/design.sql
-ECHO Database design added
-mysql -u root -ppassword < C:/node/codeforthefences/scripts/mysql/sampleData.sql
-ECHO Database sample data added
-read
+echo Running scripts
+mysql -u root -ppassword < /www/codeforthefences/scripts/mysql/resetDb.sql
+echo Database dropped/created
+mysql -u root -ppassword < /www/codeforthefences/scripts/mysql/design.sql
+echo Database design added
+mysql -u root -ppassword < /www/codeforthefences/scripts/mysql/sampleData.sql
+echo Database sample data added
