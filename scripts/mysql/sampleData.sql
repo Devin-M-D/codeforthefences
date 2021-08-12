@@ -52,9 +52,9 @@ SET @creamId = LAST_INSERT_ID();
 
 INSERT INTO substance (name) VALUES ('parsley');
 INSERT INTO substance (name) VALUES ('sausage');
-INSERT INTO foodVariant (name) VALUES ('chicken');
+INSERT INTO substance (name) VALUES ('chicken');
 SET @chickenId = LAST_INSERT_ID();
-INSERT INTO foodVariant (name) VALUES ('peas');
+INSERT INTO substance (name) VALUES ('peas');
 SET @peasId = LAST_INSERT_ID();
 INSERT INTO foodVariant (name) VALUES ('blackened');
 SET @blackenedId = LAST_INSERT_ID();

@@ -1,7 +1,7 @@
 cDI.pages.cookbook = {
   siteHeaderText: "Cookbook",
   init: async () => {
-    await cDI.remote.loadComponent($("#cargoHold"), "components/projectWidgets", "recipeCard")
+    await cDI.remote.loadSimpleComponent("components/projectWidgets", "recipeCard")
     await cDI.remote.asyncGetScript(`js/services/recipeService.js`)
     var recipes = await cDI.services.recipe.getAllRecipes()
     await cDI.components.recipeCard.appendList($("#counterTop"), recipes)
