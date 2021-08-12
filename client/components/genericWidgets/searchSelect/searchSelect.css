@@ -1,7 +1,6 @@
-.searchSelectPane {
-  width: 100% !important;
-  height: 60%;
-}
 .searchSelectTempInput {
   padding: 10px;
+}
+.searchSelectTopText, .searchSelectHeader {
+  flex-basis: 100px;
 }

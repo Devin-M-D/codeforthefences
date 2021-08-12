@@ -21,7 +21,6 @@ cDI.pages.blog = {
   },
   buildPost: async (id) => {
     var post = await cDI.services.blog.getPost(id)
-    console.log(post)
     var post = `
       <span id="blogPostHeader" class="cols autoH pad10 algnSS">
         <span class="blogTitle autoH algnSS subheader">${post.title}</span>

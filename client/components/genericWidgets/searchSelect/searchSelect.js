@@ -1,8 +1,8 @@
 cDI.components.searchSelect = {
   buildSearchPane: async (source, text, searchRoute, propName, fn, allowAdd = false, addRoute) => {
     var pane = `
-      <span class="searchSelectPane algnSX pad10">
-      <span class="autoH algnXS pad10 bold italic">${text}</span>
+      <span class="searchSelectPane autoH algnSX pad10">
+      <span class="searchSelectTopText autoH algnXS pad10 bold italic">${text}</span>
         <span class="searchSelectHeader autoH wingedHeader" data-headerwings="20%">
           <span></span>
           <span class="searchSelectTempInput fauxrder"></span>
@@ -36,7 +36,7 @@ cDI.components.searchSelect = {
       $(".searchSelectResults").remove()
       pane.append(`
         <span class="searchSelectResults algnSX shyScroll">
-          <span id="spinnerContainer"><span class="spinner"></span></span>
+          <span class="spinnerContainer"><span class="spinner"></span></span>
         </span>
       `)
 
@@ -44,7 +44,7 @@ cDI.components.searchSelect = {
         var searchString = $(e.target).html()
         ftbLogDev(`running search at ${searchRoute} for ${searchString}`)
         var searchRes = await cDI.remote.remoteCall(searchRoute, { expectMany: true, searchString: searchString })
-        $("#spinnerContainer").remove()
+        $(".spinnerContainer").remove()
 
         if (searchRes.payload.length == 0 && allowAdd){
           $(".searchSelectResults").append(`

@@ -31,14 +31,11 @@ cDI.components.header = {
     }
   },
   strapHeaderHamburger: () => {
-    $("#hamburgerBox").on("click", async () => {
-      var pane = await cDI.components.header.buildMainMenu()
-      setTimeout(() => {
-        cDI.components.drawerPane.openDrawerPane(pane)
-      }, 1)
+    cDI.addAwaitableInput("click", $("#hamburgerBox"), async () => {
+      await cDI.components.header.buildMainNav()
     })
   },
-  buildMainMenu: async () => {
+  buildMainNav: async () => {
     var pane = await cDI.components.drawerPane.createDrawerPane($("html"))
     await cDI.components.drawerPane.populateDrawerPane(pane, `
       <span class="algnSX">
@@ -53,20 +50,30 @@ cDI.components.header = {
         <span class="mainMenuTitle autoH header">Main Menu</span>
           <span class="autoH algnSX">
           <span class="fauxrder">
-            <span class="btnStd subheader" style="flex-basis: 100px;" onclick="cDI.components.router.getRoute('/blog')">Blog</span>
+            <span id="mainNavBlog" class="btnStd subheader" style="flex-basis: 100px;">Blog</span>
           </span>
           <span class="fauxrder">
-          <span class="fauxrder btnStd subheader" style="flex-basis: 100px;"  onclick="cDI.components.router.getRoute('/cookbook')">Cookbook</span>
+            <span id="mainNavCookbook" class="btnStd subheader" style="flex-basis: 100px;">Cookbook</span>
           </span>
           <span class="fauxrder">
-          <span class="fauxrder btnStd subheader" style="flex-basis: 100px;"  onclick="cDI.components.router.getRoute('/darkRoom')">Dark Room</span>
+            <span id="mainNavDarkRoom" class="btnStd subheader" style="flex-basis: 100px;">Dark Room</span>
           </span>
           <span class="fauxrder">
-          <span class="fauxrder btnStd subheader" style="flex-basis: 100px;"  onclick="cDI.components.router.getRoute('/brewGames')">Brew Games</span>
+            <span id="mainNavBudget" class="btnStd subheader" style="flex-basis: 100px;">Budget</span>
           </span>
         </span>
       </span>
     `)
-    return pane
+    cDI.components.header.addMainNavClick(pane, $("#mainNavBlog"), '/blog')
+    cDI.components.header.addMainNavClick(pane, $("#mainNavCookbook"), '/cookbook')
+    cDI.components.header.addMainNavClick(pane, $("#mainNavDarkRoom"), '/darkRoom')
+    cDI.components.header.addMainNavClick(pane, $("#mainNavBudget"), '/budget')
+    await cDI.components.drawerPane.openDrawerPane(pane)
+  },
+  addMainNavClick: (pane, elem, routePath) => {
+    cDI.addAwaitableInput("click", elem, async e => {
+      await cDI.components.router.getRoute(routePath)
+      await cDI.components.drawerPane.closeDrawerPane(pane)
+    })
   }
 }
