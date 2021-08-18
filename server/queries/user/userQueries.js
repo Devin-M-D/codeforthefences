@@ -1,10 +1,10 @@
-var ss = require('../../utils/sqlSnippets')
+var queryBuilder = require('query-builder')(require('../../foundation/dbLogic'))
 var userModel = require('../../models/shared/user/userModel')
 
 var userQueries = {}
 
 userQueries.selectBase = `SELECT
-${ss.projections(userModel, 0)}
+${queryBuilder.projections(userModel, 0)}
 FROM user`
 
 userQueries.getAll = `

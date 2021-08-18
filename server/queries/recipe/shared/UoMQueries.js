@@ -1,4 +1,3 @@
-var ss = require('../../../utils/sqlSnippets')
 var UoMModel = require('../../../models/recipe/shared/UoMModel')
 
 var UoMQueries = {}

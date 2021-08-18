@@ -1,15 +1,15 @@
-var ss = require('../../../utils/sqlSnippets')
+var queryBuilder = require('query-builder')(require('../../../foundation/dbLogic'))
 var stepModels = require('../../../models/recipe/step/stepObjModel')
 
 var stepObjQueries = {}
 stepObjQueries.getMapsForStepSet = (stepSetName, setName) => {
   return `
-${ss.addSet(setName || "tmp_stepMap").body(`
+${queryBuilder.addSet(setName || "tmp_stepMap").body(`
 SELECT
-  ${ss.projections(stepModels.stepMapType)},
-  ${ss.projections(stepModels.stepMap)}
+  ${queryBuilder.projections(stepModels.stepMapType)},
+  ${queryBuilder.projections(stepModels.stepMap)}
 FROM ${stepModels.stepMap.tableName}
-${ss.join(stepModels.stepMap.tableName, stepModels.stepMapType.tableName)}
+${queryBuilder.join(stepModels.stepMap.tableName, stepModels.stepMapType.tableName)}
 WHERE ${stepModels.stepMap.tableName}.recipeStepId IN (SELECT recipe_stepId FROM ${stepSetName})
 `)}
 `

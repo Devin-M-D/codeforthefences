@@ -29,5 +29,8 @@
     "nodemailer": "^6.4.6",
     "systemjs": "^6.2.6",
     "uuid": "^8.0.0"
+  },
+  "devDependencies": {
+    "query-builder": "file:../../query-builder"
   }
 }
