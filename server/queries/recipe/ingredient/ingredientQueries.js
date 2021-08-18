@@ -1,26 +1,26 @@
-var ss = require('../../../utils/sqlSnippets')
+var queryBuilder = require('query-builder')(require('../../../foundation/dbLogic'))
 var ingredientObjModels = require('../../../models/recipe/ingredient/ingredientObjModel')
 
 var ingredientQueries = {}
 ingredientQueries.selectIngObj =
 ` SELECT
-  ${ss.projections(ingredientObjModels.ingredient)},
-  ${ss.projections(ingredientObjModels.recipe_ingredient)},
-  ${ss.projections(ingredientObjModels.UoM)},
-  ${ss.projections(ingredientObjModels.foodVariant)},
-  ${ss.projections(ingredientObjModels.substance)},
-  ${ss.projections(ingredientObjModels.prepStyle)}
+  ${queryBuilder.projections(ingredientObjModels.ingredient)},
+  ${queryBuilder.projections(ingredientObjModels.recipe_ingredient)},
+  ${queryBuilder.projections(ingredientObjModels.UoM)},
+  ${queryBuilder.projections(ingredientObjModels.foodVariant)},
+  ${queryBuilder.projections(ingredientObjModels.substance)},
+  ${queryBuilder.projections(ingredientObjModels.prepStyle)}
   FROM ingredient
-  ${ss.lJoin("ingredient", "UoM")}
-  ${ss.lJoin("ingredient", "foodVariant")}
-  ${ss.join("ingredient", "substance")}
-  ${ss.lJoin("ingredient", "prepStyle")}`
+  ${queryBuilder.lJoin("ingredient", "UoM")}
+  ${queryBuilder.lJoin("ingredient", "foodVariant")}
+  ${queryBuilder.join("ingredient", "substance")}
+  ${queryBuilder.lJoin("ingredient", "prepStyle")}`
 
 ingredientQueries.getForRecipeSet = (recipeSetName, setName) => {
-  return `${ss.addSet(setName || "tmp_ingredient").body(`
+  return `${queryBuilder.addSet(setName || "tmp_ingredient").body(`
   ${ingredientQueries.selectIngObj}
-  ${ss.join("ingredient", "recipe_ingredient", "id", "ingredientId")}
-  ${ss.join("recipe_ingredient", recipeSetName, "recipeId", "id")}
+  ${queryBuilder.join("ingredient", "recipe_ingredient", "id", "ingredientId")}
+  ${queryBuilder.join("recipe_ingredient", recipeSetName, "recipeId", "id")}
 `)}
 `
 }

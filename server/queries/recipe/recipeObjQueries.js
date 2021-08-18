@@ -1,4 +1,3 @@
-var ss = require('../../utils/sqlSnippets')
 var recipeQueries = require('./recipeQueries')
 var toolQueries = require('./tool/toolQueries')
 var ingredientQueries = require('./ingredient/ingredientQueries')

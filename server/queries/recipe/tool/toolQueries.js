@@ -1,23 +1,23 @@
-var ss = require('../../../utils/sqlSnippets')
+var queryBuilder = require('query-builder')(require('../../../foundation/dbLogic'))
 var toolModels = require('../../../models/recipe/tool')
 
 var toolQueries = {}
 toolQueries.selectToolObj =
 `SELECT
-  ${ss.projections(toolModels.recipe_tool)},
-  ${ss.projections(toolModels.toolType)},
-  ${ss.projections(toolModels.UoM)}
+  ${queryBuilder.projections(toolModels.recipe_tool)},
+  ${queryBuilder.projections(toolModels.toolType)},
+  ${queryBuilder.projections(toolModels.UoM)}
   FROM tool
-  ${ss.join("tool", "toolType")}
-  ${ss.lJoin("tool", "UoM")}`
+  ${queryBuilder.join("tool", "toolType")}
+  ${queryBuilder.lJoin("tool", "UoM")}`
 
 toolQueries.getForRecipeSet = (recipeSetName, setName) => {
   setName = setName || "tmp_tool"
   var query =
-`${ss.addSet(setName).body(`
+`${queryBuilder.addSet(setName).body(`
   ${toolQueries.selectToolObj}
-  ${ss.join("tool", "recipe_tool", "id", "toolId")}
-  ${ss.join("recipe_tool", recipeSetName, "recipeId", "id")}
+  ${queryBuilder.join("tool", "recipe_tool", "id", "toolId")}
+  ${queryBuilder.join("recipe_tool", recipeSetName, "recipeId", "id")}
 `)}
 `
   return query

@@ -1,4 +1,4 @@
-var ss = require('../../../utils/sqlSnippets')
+var queryBuilder = require('query-builder')(require('../../../foundation/dbLogic'))
 var stepObjModels = require('../../../models/recipe/step/stepObjModel')
 
 var stepQueries = {}
@@ -16,13 +16,13 @@ SET @stepId = (SELECT IFNULL(@stepId, LAST_INSERT_ID()));
 stepQueries.getForRecipeSet = (recipeSetName, setName) => {
   setName = setName || "tmp_step"
   var query =
-`${ss.addSet(setName).body(`
+`${queryBuilder.addSet(setName).body(`
 SELECT
-${ss.projections(stepObjModels.step, 0)},
-${ss.projections(stepObjModels.recipe_step)}
+${queryBuilder.projections(stepObjModels.step, 0)},
+${queryBuilder.projections(stepObjModels.recipe_step)}
 FROM ${stepObjModels.step.tableName}
-${ss.join(stepObjModels.step.tableName, "recipe_step", "id", "stepId")}
-${ss.join("recipe_step", recipeSetName, "recipeId", "id")}
+${queryBuilder.join(stepObjModels.step.tableName, "recipe_step", "id", "stepId")}
+${queryBuilder.join("recipe_step", recipeSetName, "recipeId", "id")}
 `)}
 `
   return query

@@ -1,10 +1,10 @@
-var ss = require('../../utils/sqlSnippets')
+var queryBuilder = require('query-builder')(require('../../foundation/dbLogic'))
 var blogModel = require('../../models/blog/blogModel')
 
 var blogQueries = {}
 
 blogQueries.selectBase = `SELECT
-${ss.projections(blogModel, 0)}
+${queryBuilder.projections(blogModel, 0)}
 FROM blogPost`
 
 blogQueries.readById = `
