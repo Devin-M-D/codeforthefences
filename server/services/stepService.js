@@ -1,5 +1,5 @@
 var db = require('../foundation/dbLogic')
-var queryBuilder = require('../utils/queryBuilder')
+var queryBuilder = require('query-builder')(db)
 var stepObjQueries = require("../queries/recipe/step/stepObjQueries")
 var stepQueries = require("../queries/recipe/step/stepQueries")
 

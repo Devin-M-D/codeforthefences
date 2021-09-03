@@ -4,6 +4,6 @@ mysql -u root -ppassword < C:/node/codeforthefences/scripts/mysql/resetDb.sql
 ECHO Database dropped/created
 mysql -u root -ppassword < C:/node/codeforthefences/scripts/mysql/design.sql
 ECHO Database design added
-mysql -u root -ppassword < C:/node/codeforthefences/scripts/mysql/sampleData.sql
+mysql --default-character-set=utf8 -u root -ppassword < C:/node/codeforthefences/scripts/mysql/sampleData.sql
 ECHO Database sample data added
 pause

@@ -1,4 +1,4 @@
-var queryBuilder = require('../utils/queryBuilder')
+var queryBuilder = require('query-builder')(require('../foundation/dbLogic'))
 var blogQueries = require("../queries/blog/blogQueries")
 
 module.exports = {
