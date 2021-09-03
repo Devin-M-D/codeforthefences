@@ -2,8 +2,8 @@ cDI.components.searchSelect = {
   buildSearchPane: async (source, text, searchRoute, propName, fn, allowAdd = false, addRoute) => {
     var pane = `
       <span class="searchSelectPane autoH algnSX pad10">
-      <span class="searchSelectTopText autoH algnXS pad10 bold italic">${text}</span>
-        <span class="searchSelectHeader autoH wingedHeader" data-headerwings="20%">
+      <span class="searchSelectTopText noShrink autoH algnXS pad10 bold italic">${text}</span>
+        <span class="searchSelectHeader noShrink autoH wingedHeader" data-headerwings="20%">
           <span></span>
           <span class="searchSelectTempInput fauxrder"></span>
           <span class="closeModal">
@@ -35,9 +35,9 @@ cDI.components.searchSelect = {
     cDI.addAwaitableInput("keyup", tempInput, async (e) => {
       $(".searchSelectResults").remove()
       pane.append(`
-        <span class="searchSelectResults algnSX shyScroll">
-          <span class="spinnerContainer"><span class="spinner"></span></span>
-        </span>
+          <span class="searchSelectResults algnSX shyScroll">
+            <span class="spinnerContainer"><span class="spinner"></span></span>
+          </span>
       `)
 
       return cDI.sequencer.debounce("searchSelect", async () => {

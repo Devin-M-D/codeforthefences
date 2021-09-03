@@ -1,5 +1,5 @@
 var db = require('../foundation/dbLogic')
-var queryBuilder = require('../utils/queryBuilder')
+var queryBuilder = require('query-builder')(db)
 var ingredientQueries = require("../queries/recipe/ingredient/ingredientQueries")
 var UoMQueries = require("../queries/recipe/shared/UoMQueries")
 var substanceQueries = require("../queries/recipe/ingredient/substanceQueries")

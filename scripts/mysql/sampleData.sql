@@ -12,6 +12,8 @@ INSERT INTO recipe (name, duration, servings) VALUES ('Cereal Treats', 10, '16 t
 SET @cerealTreatsId = LAST_INSERT_ID();
 INSERT INTO recipe (name, duration, servings) VALUES ('Faux Banana Ice Cream', 24, '1 pint');
 SET @bananaIceCreamId = LAST_INSERT_ID();
+INSERT INTO recipe (name, duration, servings) VALUES ('Habanero Peppé', 15, '9 oz');
+SET @habaneroPeppeId = LAST_INSERT_ID();
 
 INSERT INTO UoM (name, plural, abbreviation) VALUES ('tablespoon', 'tablespoons', 'tbsp');
 SET @UoMTbspId = LAST_INSERT_ID();
@@ -19,6 +21,10 @@ INSERT INTO UoM (name, plural, abbreviation) VALUES ('cup', 'cups', 'c');
 SET @UoMCupId = LAST_INSERT_ID();
 INSERT INTO UoM (name, abbreviation) VALUES ('large', 'lg');
 SET @UoMLgId = LAST_INSERT_ID();
+INSERT INTO UoM (name, plural, abbreviation) VALUES ('gram', 'grams', 'g');
+SET @UoMGramId = LAST_INSERT_ID();
+INSERT INTO UoM (name, abbreviation) VALUES ('pinch', 'pinch');
+SET @UoMPinchId = LAST_INSERT_ID();
 INSERT INTO UoM (name, plural, abbreviation) VALUES ('pound', 'pounds', 'lb');
 
 INSERT INTO toolType (name, description) VALUES ('Pan', 'Metal pan used on the stovetop');
@@ -49,6 +55,14 @@ INSERT INTO substance (name) VALUES ('milk');
 SET @milkId = LAST_INSERT_ID();
 INSERT INTO substance (name) VALUES ('cream');
 SET @creamId = LAST_INSERT_ID();
+INSERT INTO substance (name) VALUES ('habanero');
+SET @habaneroId = LAST_INSERT_ID();
+INSERT INTO substance (name) VALUES ('oil');
+SET @oilId = LAST_INSERT_ID();
+INSERT INTO substance (name) VALUES ('garlic');
+SET @garlicId = LAST_INSERT_ID();
+INSERT INTO substance (name) VALUES ('salt');
+SET @saltId = LAST_INSERT_ID();
 
 INSERT INTO substance (name) VALUES ('parsley');
 INSERT INTO substance (name) VALUES ('sausage');
@@ -85,6 +99,15 @@ SET @milkIngredient = LAST_INSERT_ID();
 INSERT INTO ingredient (UoMId, foodVariantId, substanceId, prepStyleId) VALUES (@UoMCupID, @heavyWhippingId, @creamId, null);
 SET @creamIngredient = LAST_INSERT_ID();
 
+INSERT INTO ingredient (UoMId, substanceId) VALUES (@UoMGramId, @habaneroId);
+SET @habaneroIngredient = LAST_INSERT_ID();
+INSERT INTO ingredient (UoMId, substanceId) VALUES (@UoMCupID, @oilId);
+SET @oilIngredient = LAST_INSERT_ID();
+INSERT INTO ingredient (UoMId, substanceId) VALUES (@UoMTbspID, @garlicId);
+SET @garlicIngredient = LAST_INSERT_ID();
+INSERT INTO ingredient (UoMId, substanceId) VALUES (@UoMCupID, @saltId);
+SET @saltIngredient = LAST_INSERT_ID();
+
 
 INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity) VALUES (@cerealTreatsId, @butterIngredient, 0, 3);
 INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity) VALUES (@cerealTreatsId, @marshIngredient, 1, 0.25);
@@ -93,6 +116,11 @@ INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity
 INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity) VALUES (@bananaIceCreamId, @bananaIngredient, 0, 4);
 INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity) VALUES (@bananaIceCreamId, @milkIngredient, 1, 0.5);
 INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity) VALUES (@bananaIceCreamId, @creamIngredient, 2, 0.5);
+
+INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity) VALUES (@habaneroPeppeId, @habaneroIngredient, 0, 225);
+INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity) VALUES (@habaneroPeppeId, @oilIngredient, 1, 0.5);
+INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity) VALUES (@habaneroPeppeId, @garlicIngredient, 2, 1);
+INSERT INTO recipe_ingredient (recipeId, ingredientId, ingredientIndex, quantity) VALUES (@habaneroPeppeId, @saltIngredient, 3, 1);
 
 INSERT INTO step (text) VALUES ('Melt {i} in {t} over low heat');
 SET @step0Id = LAST_INSERT_ID();
@@ -108,6 +136,14 @@ SET @ICstep1Id = LAST_INSERT_ID();
 INSERT INTO step (text) VALUES ('Freeze 2 more hours');
 SET @ICstep2Id = LAST_INSERT_ID();
 
+INSERT INTO step (text) VALUES ('Wash {i} and remove stems');
+SET @HPstep0Id = LAST_INSERT_ID();
+INSERT INTO step (text) VALUES ('Blend {i} with {i}, {i}, and {i} until smooth');
+SET @HPstep1Id = LAST_INSERT_ID();
+INSERT INTO step (text) VALUES ('Microwave 4 minutes on half power, stir, microwave 4 more minutes on half power. It should heat to just bubbling, if it stars to darken it is overcooking.');
+SET @HPstep2Id = LAST_INSERT_ID();
+
+
 INSERT INTO recipe_step (recipeId, stepId, stepIndex) VALUES (@cerealTreatsId, @step0Id, 0);
 SET @recipeStep0Id = LAST_INSERT_ID();
 INSERT INTO recipe_step (recipeId, stepId, stepIndex) VALUES (@cerealTreatsId, @step1Id, 1);
@@ -121,6 +157,13 @@ INSERT INTO recipe_step (recipeId, stepId, stepIndex) VALUES (@bananaIceCreamId,
 SET @ICrecipeStep1Id = LAST_INSERT_ID();
 INSERT INTO recipe_step (recipeId, stepId, stepIndex) VALUES (@bananaIceCreamId, @ICstep2Id, 2);
 SET @ICrecipeStep2Id = LAST_INSERT_ID();
+
+INSERT INTO recipe_step (recipeId, stepId, stepIndex) VALUES (@habaneroPeppeId, @HPstep0Id, 0);
+SET @HPrecipeStep0Id = LAST_INSERT_ID();
+INSERT INTO recipe_step (recipeId, stepId, stepIndex) VALUES (@habaneroPeppeId, @HPstep1Id, 1);
+SET @HPrecipeStep1Id = LAST_INSERT_ID();
+INSERT INTO recipe_step (recipeId, stepId, stepIndex) VALUES (@habaneroPeppeId, @HPstep2Id, 2);
+SET @HPrecipeStep2Id = LAST_INSERT_ID();
 
 INSERT INTO stepMapType (mapType) VALUES ('tool');
 SET @stepMapType0 = LAST_INSERT_ID();
@@ -137,3 +180,9 @@ INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES
 INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@ICrecipeStep1Id, @stepMapType1, 0, 0);
 INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@ICrecipeStep1Id, @stepMapType1, 1, 1);
 INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@ICrecipeStep1Id, @stepMapType1, 2, 2);
+
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@HPrecipeStep0Id, @stepMapType1, 0, 0);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@HPrecipeStep1Id, @stepMapType1, 0, 0);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@HPrecipeStep1Id, @stepMapType1, 1, 1);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@HPrecipeStep1Id, @stepMapType1, 2, 2);
+INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@HPrecipeStep1Id, @stepMapType1, 3, 3);

@@ -3,4 +3,5 @@
 }
 .searchSelectTopText, .searchSelectHeader {
   flex-basis: 100px;
+  height: 100px;
 }

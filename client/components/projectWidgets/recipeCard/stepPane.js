@@ -38,8 +38,8 @@ cDI.components.recipeCard.stepPane = {
   },
   createStepLine: (recipe, step, editMode) => {
     var stepHTML = `
-      <span class="cardStep rows autoH algnSC rounded" stepIndex="${step.stepIndex}" recipe_stepId="${step.recipe_stepId}">
-        <span class="stepIdx autoH" style="flex-basis: 50px;">${step.stepIndex}.&nbsp;</span>
+      <span class="cardStep rows autoH algnSS rounded" stepIndex="${step.stepIndex}" recipe_stepId="${step.recipe_stepId}">
+        <span class="stepIdx autoH noShrink" style="flex-basis: 50px;">${step.stepIndex}.&nbsp;</span>
     `
     var currMaps = recipe.stepMaps.filter(x => x.recipe_stepId == step.recipe_stepId)
     if (editMode) {
@@ -47,7 +47,7 @@ cDI.components.recipeCard.stepPane = {
     }
     else {
       var filledStepText = cDI.components.recipeCard.stepPane.addMapsToStepText(step.text, currMaps, recipe.ingredients, recipe.tools)
-      stepHTML += `<span class="stepText autoH autoW alignSS rounded">${filledStepText}</span>`
+      stepHTML += `<span class="stepText autoH autoW algnSS rounded leftCopy">${filledStepText}</span>`
     }
     if (editMode) {
       stepHTML += `
