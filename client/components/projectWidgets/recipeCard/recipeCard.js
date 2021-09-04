@@ -29,6 +29,7 @@ cDI.components.recipeCard = {
     await cDI.components.recipeCard.buildRecipeCard($("#counterTop > .recipeCard").last(), recipe)
   },
   buildRecipeCard: async (card, recipe) => {
+    var editsExist = cDI.components.recipeCard.editsExist(card)
     card.find(".recipeName").html(recipe.name)
     card.data("recipe", recipe)
     card.attr("recipeId", recipe["id"])
@@ -75,8 +76,6 @@ cDI.components.recipeCard = {
       })
     }
   },
-//#endregion
-
   saveChanges: async (card) => {
     var res = await cDI.services.recipe.save(card.data("editedrecipe"))
     if (res.status == "s") {
@@ -86,5 +85,24 @@ cDI.components.recipeCard = {
     }
     await cDI.components.recipeCard.setEditMode(card, 0)
     return res
+  },
+//#endregion
+
+//#region utils
+  editsExist: (card) => {
+    var editedRecipe = card.data("editedrecipe")
+    if (editedRecipe) {
+      return editedRecipe.ingredients.filter(x => x.edited && x.edited.length > 0).length > 0
+    }
+    return false
+  },
+  getIngredients: (card) => {
+    var recipe = card.data("editedrecipe") ? card.data("editedrecipe") : card.data("recipe")
+    return recipe.ingredients
+  },
+  getSteps: (card) => {
+    var recipe = card.data("editedrecipe") ? card.data("editedrecipe") : card.data("recipe")
+    return recipe.steps
   }
+//#endregion
 }

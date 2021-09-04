@@ -141,6 +141,7 @@ cDI.components.recipeCard.ingredientPane = {
     if (editedIng.edited.length == 0) { delete editedIng.edited }
 
     await cDI.components.recipeCard.stepPane.reload(card, 1)
+    console.log(editedRecipe)
   },
   acceptRemoval: async (card, index) => {
     var removedIng = card.data("editedrecipe").ingredients.find(x => x.ingredientIndex == index)

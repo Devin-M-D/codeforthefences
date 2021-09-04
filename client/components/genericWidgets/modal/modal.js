@@ -1,6 +1,6 @@
 cDI.components.modal = {
   init: (params = {}) => {
-    var target = params.target || $("html")
+    var target = params.target || $("body")
     var content = params.content || ""
     var maximizeDialog = params.maximizeDialog || false
 
@@ -33,7 +33,7 @@ cDI.components.modal = {
     target.remove()
   },
   maximizeDialog: (target) => {
-    target = target || $("html")
+    target = target || $("body")
     var content = target.find(".modalCurtain").last()
     content.addClass("max")
   },

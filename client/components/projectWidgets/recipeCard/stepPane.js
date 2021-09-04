@@ -1,4 +1,5 @@
 cDI.components.recipeCard.stepPane = {
+//#region main build functions
   reload: async (card, editMode) => {
     return cDI.utils.wrapInPromise((f) => {
       var stepsPane = card.find(".cardSteps")
@@ -12,8 +13,10 @@ cDI.components.recipeCard.stepPane = {
     })
   },
   build: (card, editMode) => {
+    var editsExist = cDI.components.recipeCard.editsExist(card)
+    console.log(editsExist)
     var stepsPane = card.find(".cardSteps")
-    var recipe = editMode ? card.data("editedrecipe") : card.data("recipe")
+    var recipe = editsExist ? card.data("editedrecipe") : card.data("recipe")
     var paneHtml = ``
     var sorted = recipe.steps.sort((a, b) => a.stepIndex < b.stepIndex)
 
@@ -31,12 +34,12 @@ cDI.components.recipeCard.stepPane = {
       await cDI.components.recipeCard.stepPane.reload(card, 1)
     })
     sorted.filter(x => !x.edited || !x.edited.includes("removed")).forEach(step => {
-      var stepHTML = cDI.components.recipeCard.stepPane.createStepLine(recipe, step, editMode)
+      var stepHTML = cDI.components.recipeCard.stepPane.createStepLine(recipe, step, editMode, editsExist)
       stepsPane.append(stepHTML)
     });
     cDI.components.recipeCard.stepPane.addEditEvents(card, editMode)
   },
-  createStepLine: (recipe, step, editMode) => {
+  createStepLine: (recipe, step, editMode, editsExist) => {
     var stepHTML = `
       <span class="cardStep rows autoH algnSS rounded" stepIndex="${step.stepIndex}" recipe_stepId="${step.recipe_stepId}">
         <span class="stepIdx autoH noShrink" style="flex-basis: 50px;">${step.stepIndex}.&nbsp;</span>
@@ -108,6 +111,9 @@ cDI.components.recipeCard.stepPane = {
           }
           await cDI.components.recipeCard.stepPane.reload(card)
           card.find(`.cardIngredient > .selector`).remove()
+          card.find(`.cardIngs`).removeClass("liftAboveCurtain")
+          card.find(`.cardIngredient`).removeClass("whiteBG")
+          card.find(`.cardSteps`).removeClass("liftAboveCurtain")
           await cDI.components.modal.raiseCurtain(card)
         })
       })
@@ -117,6 +123,9 @@ cDI.components.recipeCard.stepPane = {
       // })
     }
   },
+//#endregion
+
+//#region fill out step text
   addMapsToStepText: (stepText, maps, ingredients, tools) => {
     if (stepText.indexOf("{i") != -1) { stepText = cDI.components.recipeCard.stepPane.addIngredientsToStep(ingredients, stepText, maps.filter(x => x.mapType == "ingredient")) }
     if (stepText.indexOf("{t") != -1) { stepText = cDI.components.recipeCard.stepPane.addToolsToStep(tools, stepText, maps.filter(x => x.mapType == "tool")) }
@@ -150,6 +159,9 @@ cDI.components.recipeCard.stepPane = {
     }
     return stepText
   },
+//#endregion
+
+//#region accept changes
   acceptStepChange: (card, input) => {
     var stepIndex = input.attr("stepIndex")
     var editedStep = card.data("editedrecipe").steps.find(x => x.stepIndex == stepIndex)
@@ -185,5 +197,5 @@ cDI.components.recipeCard.stepPane = {
     });
     await cDI.components.recipeCard.stepPane.reload(card, 1)
   }
-
+//#endregion
 }
