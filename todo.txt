@@ -1,4 +1,4 @@
-- recipe name should show asterisk when there are unsaved changes
+- debounce acceptStepChange (keyup)
 - add new ingredient field via searchSelect should select the value
 
 Big Picture:

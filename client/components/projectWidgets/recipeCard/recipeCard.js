@@ -29,14 +29,17 @@ cDI.components.recipeCard = {
     await cDI.components.recipeCard.buildRecipeCard($("#counterTop > .recipeCard").last(), recipe)
   },
   buildRecipeCard: async (card, recipe) => {
-    var editsExist = cDI.components.recipeCard.editsExist(card)
-    card.find(".recipeName").html(recipe.name)
+    cDI.components.recipeCard.setName(card, recipe.name)
     card.data("recipe", recipe)
     card.attr("recipeId", recipe["id"])
     cDI.components.recipeCard.ingredientPane.createIngPane(card, false)
     cDI.components.recipeCard.stepPane.build(card, false)
     cDI.components.recipeCard.buildEditBox(card, false)
     return card
+  },
+  setName: (card, name) => {
+    var editsExist = cDI.components.recipeCard.editsExist(card)
+    card.find(".recipeName").html(`${name}${editsExist ? `*` : ``}`)
   },
 //#endregion
 
@@ -48,6 +51,7 @@ cDI.components.recipeCard = {
     cDI.components.recipeCard.ingredientPane.createIngPane(card, editMode)
     await cDI.components.recipeCard.stepPane.reload(card, editMode)
     await cDI.components.recipeCard.buildEditBox(card, editMode)
+    cDI.components.recipeCard.setName(card, cDI.components.recipeCard.getName(card))
   },
   buildEditBox: (card, editMode = 0) => {
     var editBox = card.find(".recipeEdit")
@@ -72,6 +76,7 @@ cDI.components.recipeCard = {
         return await cDI.components.recipeCard.saveChanges($(e.target).closest(".recipeCard"))
       })
       cDI.addAwaitableInput("click", editBox.find(".shpCancel").parent(), async e => {
+        card.removeData("editedrecipe")
         return await cDI.components.recipeCard.setEditMode($(e.target).closest(".recipeCard"), 0)
       })
     }
@@ -80,11 +85,10 @@ cDI.components.recipeCard = {
     var res = await cDI.services.recipe.save(card.data("editedrecipe"))
     if (res.status == "s") {
       card.data("recipe", res.payload)
-      card.data("editedrecipe", res.payload)
-      res = res.payload
+      card.removeData("editedrecipe")
     }
     await cDI.components.recipeCard.setEditMode(card, 0)
-    return res
+    return res.payload
   },
 //#endregion
 
@@ -92,9 +96,15 @@ cDI.components.recipeCard = {
   editsExist: (card) => {
     var editedRecipe = card.data("editedrecipe")
     if (editedRecipe) {
-      return editedRecipe.ingredients.filter(x => x.edited && x.edited.length > 0).length > 0
+      var ingEdits = editedRecipe.ingredients.filter(x => x.edited && x.edited.length > 0)
+      var stepEdits = editedRecipe.steps.filter(x => x.edited && x.edited.length > 0)
+      return ingEdits.length > 0 || stepEdits.length > 0
     }
     return false
+  },
+  getName: (card) => {
+    var recipe = card.data("editedrecipe") ? card.data("editedrecipe") : card.data("recipe")
+    return recipe.name
   },
   getIngredients: (card) => {
     var recipe = card.data("editedrecipe") ? card.data("editedrecipe") : card.data("recipe")
