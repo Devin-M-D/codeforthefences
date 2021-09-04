@@ -1,3 +1,9 @@
+- setting stepMap then changing ingredient causes bugged modal
+- recipe name should show asterisk when there are unsaved changes
 - add new ingredient field via searchSelect should select the value
-- lead cap manager
-- budget
+
+Big Picture:
+- lead cap manager portfolio demo
+- budget page
+- about the site page
+- unit test GUI
