@@ -14,9 +14,8 @@ cDI.components.recipeCard.stepPane = {
   },
   build: (card, editMode) => {
     var editsExist = cDI.components.recipeCard.editsExist(card)
-    console.log(editsExist)
     var stepsPane = card.find(".cardSteps")
-    var recipe = editsExist ? card.data("editedrecipe") : card.data("recipe")
+    var recipe = editMode ? card.data("editedrecipe") : card.data("recipe")
     var paneHtml = ``
     var sorted = recipe.steps.sort((a, b) => a.stepIndex < b.stepIndex)
 
@@ -34,12 +33,12 @@ cDI.components.recipeCard.stepPane = {
       await cDI.components.recipeCard.stepPane.reload(card, 1)
     })
     sorted.filter(x => !x.edited || !x.edited.includes("removed")).forEach(step => {
-      var stepHTML = cDI.components.recipeCard.stepPane.createStepLine(recipe, step, editMode, editsExist)
+      var stepHTML = cDI.components.recipeCard.stepPane.createStepLine(recipe, step, editMode)
       stepsPane.append(stepHTML)
     });
     cDI.components.recipeCard.stepPane.addEditEvents(card, editMode)
   },
-  createStepLine: (recipe, step, editMode, editsExist) => {
+  createStepLine: (recipe, step, editMode) => {
     var stepHTML = `
       <span class="cardStep rows autoH algnSS rounded" stepIndex="${step.stepIndex}" recipe_stepId="${step.recipe_stepId}">
         <span class="stepIdx autoH noShrink" style="flex-basis: 50px;">${step.stepIndex}.&nbsp;</span>
@@ -125,7 +124,7 @@ cDI.components.recipeCard.stepPane = {
   },
 //#endregion
 
-//#region fill out step text
+//#region fill in step maps
   addMapsToStepText: (stepText, maps, ingredients, tools) => {
     if (stepText.indexOf("{i") != -1) { stepText = cDI.components.recipeCard.stepPane.addIngredientsToStep(ingredients, stepText, maps.filter(x => x.mapType == "ingredient")) }
     if (stepText.indexOf("{t") != -1) { stepText = cDI.components.recipeCard.stepPane.addToolsToStep(tools, stepText, maps.filter(x => x.mapType == "tool")) }
@@ -181,6 +180,7 @@ cDI.components.recipeCard.stepPane = {
     }
 
     if (editedStep.edited.length == 0) { delete editedStep.edited }
+    cDI.components.recipeCard.setName(card, cDI.components.recipeCard.getName(card))
   },
   acceptRemoval: async (card, index) => {
     var removedStep = card.data("editedrecipe").steps.find(x => x.stepIndex == index)
@@ -196,6 +196,7 @@ cDI.components.recipeCard.stepPane = {
       }
     });
     await cDI.components.recipeCard.stepPane.reload(card, 1)
+    cDI.components.recipeCard.setName(card, cDI.components.recipeCard.getName(card))
   }
 //#endregion
 }

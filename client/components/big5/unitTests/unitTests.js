@@ -22,6 +22,7 @@ cDI.components.unitTests = {
 
     cDI.config.debugMode = currDebugMode
   },
+//#region unit test main 1/2/3
   runAllUnitTests: async (log) => {
     return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 1: runAllUnitTests",
       async () => {
@@ -33,12 +34,13 @@ cDI.components.unitTests = {
     return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 2: customDevScenario",
       async () => {
         await cDI.components.unitTests.loginIfNeccessary()
-        
+        await cDI.components.unitTests.recipe.runAllRecipe()
       })
   },
   loginIfNeccessary: async () => {
     return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 3: loginIfNeccessary (just login if the session has expired)",
       async () => {
+        ftbIndent()
         //if not logged in, use debugConf set in bootstrap to set an impersonate
         if (!cDI.utils.isDef(cDI.session.token)) {
           ftbLogUT(`Not logged in, logging with ${cDI.config.user.username} and ${cDI.config.user.password}`)
@@ -50,14 +52,17 @@ cDI.components.unitTests = {
           ftbLogUT(`active session detected, testing`)
           var sessionTest = await cDI.remote.remoteCall("/user/testToken")
           if (sessionTest.status == 's'){
-            ftbLogUT(`active session still valid, proceeding: ${cDI.session.token.substr(0, 5)}...`)
+            ftbLogUT(`active session still valid, proceeding: (session id: ${cDI.session.token.substr(0, 5)}...)`)
           }
           else {
           ftbLogUT(`error logging in`)
           }
         }
+        ftbOutdent()
       })
   },
+//#endregion
+//#region indentation wrappers
   UTStartSection: async (sectionName, fn) => {
     ftbLogUT(`** ${sectionName}`)
     ftbIndent()
@@ -80,4 +85,5 @@ cDI.components.unitTests = {
     if (!validator || validator(res)) { return res }
     else { return false }
   }
+//#endregion
 }
