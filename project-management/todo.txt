@@ -1,4 +1,8 @@
-- add foodVariant and prepStyle
+- changing prepStyle drops prepStyle
+- wire up add buttons for foodVariant and prepStyle
+- "bitter marshmallows" creates erroneous div, removing space
+- bug adding new prepStyles
+- fix shyScroll of searchSelect
 - fix stepText boxes
 - debounce acceptStepChange (keyup)
 - add new ingredient field via searchSelect should select the value

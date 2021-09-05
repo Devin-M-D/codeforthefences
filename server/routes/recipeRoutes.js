@@ -30,6 +30,22 @@ module.exports = (router) => {
     DI.rh.succeed(res, data)
   }))
 
+  router.post('/crud/foodVariant/c/', DI.rh.asyncRoute(async (req, res, next) => {
+    if (req.body.newValue){
+      var data = await ingredientService.createFoodVariant(req.body.newValue)
+    }
+    DI.rh.succeed(res, data)
+  }))
+  router.post('/crud/foodVariant/r/', DI.rh.asyncRoute(async (req, res, next) => {
+    if (req.body.searchString){
+      var data = await ingredientService.findFoodVariantsByName(req.body.searchString)
+    }
+    else {
+      var data = await ingredientService.getAllFoodVariants()
+    }
+    DI.rh.succeed(res, data)
+  }))
+
   router.post('/crud/substance/c/', DI.rh.asyncRoute(async (req, res, next) => {
     if (req.body.newValue){
       var data = await ingredientService.createSubstance(req.body.newValue)
@@ -42,6 +58,22 @@ module.exports = (router) => {
     }
     else {
       var data = await ingredientService.getAllSubstances()
+    }
+    DI.rh.succeed(res, data)
+  }))
+
+  router.post('/crud/prepStyle/c/', DI.rh.asyncRoute(async (req, res, next) => {
+    if (req.body.newValue){
+      var data = await ingredientService.createPrepStyle(req.body.newValue)
+    }
+    DI.rh.succeed(res, data)
+  }))
+  router.post('/crud/prepStyle/r/', DI.rh.asyncRoute(async (req, res, next) => {
+    if (req.body.searchString){
+      var data = await ingredientService.findPrepStylesByName(req.body.searchString)
+    }
+    else {
+      var data = await ingredientService.getAllPrepStyles()
     }
     DI.rh.succeed(res, data)
   }))
