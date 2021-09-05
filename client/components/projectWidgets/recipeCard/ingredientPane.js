@@ -58,30 +58,28 @@ cDI.components.recipeCard.ingredientPane = {
     })
   },
   createIngLine: (ingredient, editMode) => {
-    var ingIdx = ingredient.ingredientIndex
-    var ingName = ingredient.substanceName
-    if (ingredient.ingredientQuantity != 1 && cDI.utils.isDef(ingredient.plural)) {
-      ingName = ingredient.plural
-    }
-    var UoMName = !editMode && ingredient.UoMAbbr ? UoMName = ingredient.UoMAbbr : ingredient.UoMName
-
+    var iParts = cDI.services.recipe.getIngredientPlaintext(ingredient)
     var ing = `
-      <span class="cardIngredient leftCopy rows autoH algnSC rounded" ingredientIndex="${ingIdx}">
+      <span class="cardIngredient leftCopy rows autoH algnSC rounded" ingredientIndex="${iParts.idx}">
         <span class="ingIdx absCen" style="flex-basis:50px;">-&nbsp;</span>
     `
     if (editMode){
       ing += `<span class="wrap autoH algnSC">`
-        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngQuantity autoW autoH rounded" ingredientIndex="${ingIdx}" ingredientProp="quantity">${(new Fraction(ingredient.ingredientQuantity)).toFraction()}</span></span>`
-        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngUoM autoW autoH rounded" ingredientIndex="${ingIdx}" ingredientProp="UoM">${UoMName ? UoMName : ""}</span></span>`
-        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngSubstance autoW autoH rounded" ingredientIndex="${ingIdx}" ingredientProp="substance">${ingName ? ingName : ""}</span></span>`
+        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngQuantity autoW autoH rounded" ingredientIndex="${iParts.idx}" ingredientProp="quantity">${iParts.quantity}</span></span>`
+        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngUoM autoW autoH rounded" ingredientIndex="${iParts.idx}" ingredientProp="UoM">${iParts.UoM}</span></span>`
+        ing += iParts.foodVariant != ""
+          ? `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngFoodVariant autoW autoH rounded" ingredientIndex="${iParts.idx}" ingredientProp="foodVariant">${iParts.foodVariant}</span></span>`
+          : cDI.stdIcons.btnAddRemove("add", 55, "btnAddfoodVariant")
+        ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngSubstance autoW autoH rounded" ingredientIndex="${iParts.idx}" ingredientProp="substance">${iParts.substance}</span></span>`
+        ing += iParts.prepStyle != ""
+          ? `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngPrepStyle autoW autoH rounded" ingredientIndex="${iParts.idx}" ingredientProp="prepStyle">${iParts.prepStyle}</span></span>`
+          : cDI.stdIcons.btnAddRemove("add", 55, "btnAddprepStyle")
       ing += `</span>`
-      ing += `<span class="btnIcon" data-btnsize="55">
-                <span class="shpMinus"></span>
-              </span>`
+      ing += cDI.stdIcons.btnAddRemove("remove")
     }
     else {
       ing += `
-        <span class="displayBlock leftCopy">${ingredient.ingredientQuantity} ${UoMName} ${ingName}</span>
+        <span class="displayBlock leftCopy">${iParts.quantity} ${iParts.UoM}${iParts.foodVariant ? ` ` : ``}${iParts.foodVariant} ${iParts.substance}${iParts.prepStyle ? ` ` : ``}${iParts.prepStyle}</span>
         `
     }
     ing += `</span>`

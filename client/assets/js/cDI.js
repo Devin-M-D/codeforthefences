@@ -337,6 +337,16 @@ cDI.effects.endToastPulseRepeat = (target) => {
 }
 //#endregion
 
+//#region stdIcons
+cDI.stdIcons = {}
+cDI.stdIcons.btnAddRemove = (addOrRemove, size, id) => {
+  return `
+  <span ${id ? `id="${id}"` : ``} class="btnIcon" data-btnsize="${size ? size : `55`}">
+    <span class="${addOrRemove == "add" ? `shpPlus` : `shpMinus`}"></span>
+  </span>`
+}
+//#endregion
+
 //#region localstorage
 cDI.persist = async (name, val) => {
   window.localStorage.setItem(name, val)
