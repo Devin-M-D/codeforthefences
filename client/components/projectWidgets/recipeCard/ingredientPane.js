@@ -38,8 +38,14 @@ cDI.components.recipeCard.ingredientPane = {
         var txtIngUoM = line.find(`.txtIngUoM[ingredientIndex="${ingredient.ingredientIndex}"]`)
         cDI.components.recipeCard.ingredientPane.addClick(txtIngUoM, "UoM", "name")
 
+        var txtIngFoodVariant = line.find(`.txtIngFoodVariant[ingredientIndex="${ingredient.ingredientIndex}"]`)
+        cDI.components.recipeCard.ingredientPane.addClick(txtIngFoodVariant, "foodVariant", "name")
+
         var txtIngSubstance = line.find(`.txtIngSubstance[ingredientIndex="${ingredient.ingredientIndex}"]`)
         cDI.components.recipeCard.ingredientPane.addClick(txtIngSubstance, "substance", "name")
+
+        var txtIngPrepStyle = line.find(`.txtIngPrepStyle[ingredientIndex="${ingredient.ingredientIndex}"]`)
+        cDI.components.recipeCard.ingredientPane.addClick(txtIngPrepStyle, "prepStyle", "name")
 
         cDI.addAwaitableInput("click", line.find(".shpMinus").parent(), async e => {
           await cDI.components.recipeCard.ingredientPane.acceptRemoval(card, $(e.target).closest(".cardIngredient").attr("ingredientIndex"))
@@ -67,19 +73,19 @@ cDI.components.recipeCard.ingredientPane = {
       ing += `<span class="wrap autoH algnSC">`
         ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngQuantity autoW autoH rounded" ingredientIndex="${iParts.idx}" ingredientProp="quantity">${iParts.quantity}</span></span>`
         ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngUoM autoW autoH rounded" ingredientIndex="${iParts.idx}" ingredientProp="UoM">${iParts.UoM}</span></span>`
-        ing += iParts.foodVariant != ""
+        ing += iParts.foodVariant
           ? `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngFoodVariant autoW autoH rounded" ingredientIndex="${iParts.idx}" ingredientProp="foodVariant">${iParts.foodVariant}</span></span>`
           : cDI.stdIcons.btnAddRemove("add", 55, "btnAddfoodVariant")
         ing += `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngSubstance autoW autoH rounded" ingredientIndex="${iParts.idx}" ingredientProp="substance">${iParts.substance}</span></span>`
-        ing += iParts.prepStyle != ""
-          ? `<span class="fauxrder autoW autoH"><span contenteditable="true" class="txtIngPrepStyle autoW autoH rounded" ingredientIndex="${iParts.idx}" ingredientProp="prepStyle">${iParts.prepStyle}</span></span>`
+        ing += iParts.prepStyle
+          ? `<span class="fauxrder autoW autoH">(<span contenteditable="true" class="txtIngPrepStyle autoW autoH rounded" ingredientIndex="${iParts.idx}" ingredientProp="prepStyle">${iParts.prepStyle}</span>)</span>`
           : cDI.stdIcons.btnAddRemove("add", 55, "btnAddprepStyle")
       ing += `</span>`
       ing += cDI.stdIcons.btnAddRemove("remove")
     }
     else {
       ing += `
-        <span class="displayBlock leftCopy">${iParts.quantity} ${iParts.UoM}${iParts.foodVariant ? ` ` : ``}${iParts.foodVariant} ${iParts.substance}${iParts.prepStyle ? ` ` : ``}${iParts.prepStyle}</span>
+        <span class="displayBlock leftCopy">${iParts.quantity} ${iParts.UoM}${iParts.foodVariant ? ` ` : ``}${iParts.foodVariant} ${iParts.substance}${iParts.prepStyle ? ` (` : ``}${iParts.prepStyle}${iParts.prepStyle ? `)` : ``}</span>
         `
     }
     ing += `</span>`
@@ -110,19 +116,6 @@ cDI.components.recipeCard.ingredientPane = {
       }
     }
 
-    if (ingredientProp == "substance") {
-      if (isNew || origIng.substanceId != newVal.id){
-        editedIng.substanceId = newVal.id
-        editedIng.substanceName = newVal.name
-        if (!isNew) {
-          if (editedIng.edited.indexOf("substance") == -1)  { editedIng.edited.push("substance") }
-        }
-      }
-      if (isNew || origIng.substanceId == newVal.id) {
-        editedIng.edited = editedIng.edited.filter(x => x != "substance")
-      }
-    }
-
     if (ingredientProp == "UoM") {
       if (isNew || origIng.UoMId != newVal.id) {
         editedIng.UoMId = newVal.id
@@ -136,6 +129,47 @@ cDI.components.recipeCard.ingredientPane = {
         editedIng.edited = editedIng.edited.filter(x => x != "UoM")
       }
     }
+
+    if (ingredientProp == "foodVariant") {
+      if (isNew || origIng.foodVariantId != newVal.id) {
+        editedIng.foodVariantId = newVal.id
+        editedIng.foodVariantName = newVal.name
+        editedIng.foodVariantAbbr = newVal.abbreviation
+        if (!isNew) {
+          if (editedIng.edited.indexOf("foodVariant") == -1)  { editedIng.edited.push("foodVariant") }
+        }
+      }
+      if (isNew || origIng.foodVariantId == newVal.id) {
+        editedIng.edited = editedIng.edited.filter(x => x != "foodVariant")
+      }
+    }
+
+    if (ingredientProp == "substance") {
+      if (isNew || origIng.substanceId != newVal.id){
+        editedIng.substanceId = newVal.id
+        editedIng.substanceName = newVal.name
+        if (!isNew) {
+          if (editedIng.edited.indexOf("substance") == -1)  { editedIng.edited.push("substance") }
+        }
+      }
+      if (isNew || origIng.substanceId == newVal.id) {
+        editedIng.edited = editedIng.edited.filter(x => x != "substance")
+      }
+    }
+
+    if (ingredientProp == "prepStyle") {
+      if (isNew || origIng.prepStyleId != newVal.id) {
+        editedIng.prepStyleId = newVal.id
+        editedIng.prepStyleName = newVal.name
+        if (!isNew) {
+          if (editedIng.edited.indexOf("prepStyle") == -1)  { editedIng.edited.push("prepStyle") }
+        }
+      }
+      if (isNew || origIng.prepStyleId == newVal.id) {
+        editedIng.edited = editedIng.edited.filter(x => x != "prepStyle")
+      }
+    }
+
     if (editedIng.edited.length == 0) { delete editedIng.edited }
 
     await cDI.components.recipeCard.stepPane.reload(card, 1)

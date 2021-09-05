@@ -83,7 +83,8 @@ INSERT INTO foodVariant (name) VALUES ('heavy whipping');
 SET @heavyWhippingId = LAST_INSERT_ID();
 
 INSERT INTO prepStyle (name, description) VALUES ('sliced', 'cut into slices');
-SET @slicedId = LAST_INSERT_ID("");
+SET @slicedId = LAST_INSERT_ID();
+INSERT INTO prepStyle (name, description) VALUES ('minced', 'chopped into very small pieces');
 
 INSERT INTO ingredient (UoMId, foodVariantId, substanceId, prepStyleId) VALUES (@UoMTbspID, null, @butterId, null);
 SET @butterIngredient = LAST_INSERT_ID();

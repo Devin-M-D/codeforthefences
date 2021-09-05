@@ -17,7 +17,6 @@ LIMIT 10
 `
 }
 
-
 recipeQueries.getByName = (setName) => {
   return `
 ${queryBuilder.addSet(setName || "tmp_recipe").body(`
