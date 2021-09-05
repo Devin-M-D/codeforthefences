@@ -13,6 +13,7 @@ cDI.services.recipe = {
     var res = await cDI.remote.remoteCall("/crud/UoM/r/")
     console.log(res)
   },
+//#region empty objects
   newRecipe: () => {
     return {
       id: null,
@@ -68,6 +69,30 @@ cDI.services.recipe = {
       recipe_stepId: recipeStepId,
       stepMapId: null,
       stepMapTypeId: mapType == "tool" ? 1 : 2
+    }
+  },
+//#endregion
+  getIngredientPlaintext: (ingredient) => {
+    //UoM
+    var UoMName = ""
+    UoMName = ingredient.UoMAbbr ? UoMName = ingredient.UoMAbbr : ingredient.UoMName
+    //foodVariant
+    var ingFoodVariant = ingredient.foodVariantName ? ingredient.foodVariantName : ""
+    if (ingredient.foodVariantAbbr) { ingFoodVariant = ingredient.foodVariantAbbr }
+    //substance
+    var ingName = ingredient.substanceName
+    if (ingredient.ingredientQuantity != 1 && cDI.utils.isDef(ingredient.plural)) {
+      ingName = ingredient.plural
+    }
+    //prepStyle
+    var ingPrepStyle = ingredient.prepStyleName ? ingredient.prepStyleName : ""
+    return {
+      idx: ingredient.ingredientIndex,
+      quantity: (new Fraction(ingredient.ingredientQuantity)).toFraction(),
+      UoM: UoMName,
+      foodVariant: ingFoodVariant,
+      substance: ingName,
+      prepStyle: ingPrepStyle
     }
   },
   saveStepMap: async (stepMap) => {

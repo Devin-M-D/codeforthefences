@@ -1,3 +1,5 @@
+- add foodVariant and prepStyle
+- fix stepText boxes
 - debounce acceptStepChange (keyup)
 - add new ingredient field via searchSelect should select the value
 
