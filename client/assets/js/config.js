@@ -13,7 +13,7 @@
 cDI.config.debugMode = 0
 cDI.config.user = {
   username: "user1",
-  password: "test"
+  password: "testpass"
 }
 //unitTest 1 = run all
 //unitTest 2 = run custom scenario
