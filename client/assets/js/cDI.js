@@ -29,13 +29,13 @@ cDI.utils = {
   },
   getDIByComponentName: (name) => {
     var compKeys = Object.keys(cDI.components).reduce((keys, k) => {
-      keys[k.toLowerCase()] = k;
+      keys[k.toLowerCase()] = k
       return keys
-    }, {});
+    }, {})
     var pageKeys = Object.keys(cDI.pages).reduce((keys, k) => {
-      keys[k.toLowerCase()] = k;
+      keys[k.toLowerCase()] = k
       return keys
-    }, {});
+    }, {})
     if (cDI.components[compKeys[name.toLowerCase()]]){
       return cDI.components[compKeys[name.toLowerCase()]]
     }
@@ -80,7 +80,7 @@ cDI.sequencer.add = async (chainName, fn) => {
     if (chain.length > 0) {
       chain = chain[0].chain
       if (chain){
-          chain = chain.then(async () => { await fn(); })
+          chain = chain.then(async () => { await fn() })
       }
    }
    else {
@@ -89,12 +89,12 @@ cDI.sequencer.add = async (chainName, fn) => {
 }
 cDI.sequencer.runInSequence = (funcs) => {
   return new Promise(function (fulfillSeq, rejectSeq) {
-    var sequence = Promise.resolve();
+    var sequence = Promise.resolve()
     funcs.forEach(function (func) {
-      sequence = sequence.then(function () { return func() });
-    });
-    sequence = sequence.then(function () { fulfillSeq(); });
-  });
+      sequence = sequence.then(() => { return func() })
+    })
+    sequence = sequence.then(() => { fulfillSeq() })
+  })
 }
 cDI.sequencer.debounceFuncs = []
 cDI.sequencer.debounce = async (key, fn, delay) => {
@@ -149,7 +149,7 @@ cDI.remote = {
         },
         error: function (callRes) {
           console.error("Call to: " + remoteURL + " - Failed:", callRes)
-          reject(callRes);
+          reject(callRes)
         },
       })
     })

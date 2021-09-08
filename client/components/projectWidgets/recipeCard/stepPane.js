@@ -7,7 +7,7 @@ cDI.components.recipeCard.stepPane = {
         if (stepsPane.html() != "") card.find(".cardSteps").css("visibility", "hidden")
         cDI.components.recipeCard.stepPane.build(card, editMode)
         card.find(".cardSteps").css("visibility", "visible")
-        stepsPane.fadeIn(200);
+        stepsPane.fadeIn(200)
         f()
       })
     })
@@ -35,7 +35,7 @@ cDI.components.recipeCard.stepPane = {
     sorted.filter(x => !x.edited || !x.edited.includes("removed")).forEach(step => {
       var stepHTML = cDI.components.recipeCard.stepPane.createStepLine(recipe, step, editMode)
       stepsPane.append(stepHTML)
-    });
+    })
     cDI.components.recipeCard.stepPane.addEditEvents(card, editMode)
   },
   createStepLine: (recipe, step, editMode) => {
@@ -194,7 +194,7 @@ cDI.components.recipeCard.stepPane = {
         x.edited = x.edited || []
         if (!x.edited.includes("stepIndex")){ x.edited.push("stepIndex") }
       }
-    });
+    })
     await cDI.components.recipeCard.stepPane.reload(card, 1)
     cDI.components.recipeCard.setName(card, cDI.components.recipeCard.getName(card))
   }

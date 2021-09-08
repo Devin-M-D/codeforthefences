@@ -1,11 +1,18 @@
 var config = require("./config/config")
 
 async function run() {
-  var app = await require('./foundation/serverLogic')(config.debug)
-  if (app == false) { process.exit() }
+  var express = await require('./foundation/serverLogic')(config)
+  if (express.app == false) { process.exit() }
   else {
-    app.listen(config.port)
+    //http server
+    express.app.listen(config.port)
     console.log('Magic happens on port ' + config.port)
+    //https server
+    if (config.port == 80) {
+      express.app.httpsServer.listen(443, () => {
+      	console.log('HTTPS Server running on port 443')
+      })
+    }
   }
 }
 

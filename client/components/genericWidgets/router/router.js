@@ -11,7 +11,7 @@ cDI.components.router = {
     if (path[0] == "/" || path[0] == "\\"){
       path = path.substr(1)
     }
-    window.history.pushState(null, null, path);
+    window.history.pushState(null, null, path)
     var DIobj = await cDI.components.contentMain.loadPage(path)
     cDI.components.header.setHeaderText(DIobj.siteHeaderText)
   }

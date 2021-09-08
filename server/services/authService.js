@@ -1,4 +1,4 @@
-var bcrypt = require('bcryptjs');
+var bcrypt = require('bcryptjs')
 var queryBuilder = require('query-builder')(require('../foundation/dbLogic'))
 var userQueries = require("../queries/user/userQueries")
 var userService = require("./userService")

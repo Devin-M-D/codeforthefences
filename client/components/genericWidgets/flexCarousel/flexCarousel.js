@@ -26,7 +26,7 @@ cDI.components.flexCarousel = {
       carouselHTML.find(".crslSeatPanel").append(`
         <span class="crslSlot${seatSpecial}" style="--idx: ${i}; background-image: url('${x}')"></span>
       `)
-    });
+    })
     cDI.components.flexCarousel.setShowPony($(".crslSlot"))
   },
   crslCycle: (event, element, direction) => {
