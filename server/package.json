@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Devin-M-D/codeforthefences#readme",
   "dependencies": {
+    "query-builder": "github:devin-m-d/query-builder",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
