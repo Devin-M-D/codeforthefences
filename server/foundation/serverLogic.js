@@ -7,6 +7,12 @@ var cors = require('cors')
 
 function configExpress(port) {
   var expressApp = express()
+  //redirect http to https
+  expressApp.enable('trust proxy')
+  expressApp.use((req, res, next) => {
+    req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)
+  })
+  //serve json and static files (allow dotfiles for certbot SSL)
   expressApp.use(express.json())
   expressApp.use(express.static(__dirname + '/../.well-known/', { dotfiles: 'allow' } ))
   addCors(expressApp)
