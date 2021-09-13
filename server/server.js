@@ -9,7 +9,7 @@ async function run() {
     console.log('Magic happens on port ' + config.port)
     //https server
     if (config.port == 80) {
-      express.app.httpsServer.listen(443, () => {
+      express.httpsServer.listen(443, () => {
       	console.log('HTTPS Server running on port 443')
       })
     }
