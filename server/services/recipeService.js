@@ -50,7 +50,7 @@ recipeService.saveEditedRecipe = async (editedRecipe) => {
         qb.insertParam(ingredient.recipe_ingredientId)
       }
       else {
-        await ingredientService.upsertIngredient(qb, ingredient.UoMId, ingredient.foodVariantId, ingredient.substanceId, ingredient.prepStyle)
+        await ingredientService.upsertIngredient(qb, ingredient.UoMId, ingredient.foodVariantId, ingredient.substanceId, ingredient.prepStyleId)
         qb.insertQuery(recipeObjQueries.setIngredient)
         qb.insertParams(ingredient.ingredientIndex, ingredient.ingredientQuantity, ingredient.recipe_ingredientId)
       }

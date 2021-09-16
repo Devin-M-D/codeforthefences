@@ -1,4 +1,3 @@
-- changing prepStyle drops prepStyle
 - wire up add buttons for foodVariant and prepStyle
 - "bitter marshmallows" creates erroneous div, removing space
 - bug adding new prepStyles
