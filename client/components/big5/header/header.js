@@ -5,7 +5,12 @@ cDI.components.header = {
         <span id="hamburgerBox">
           <span class="shpHamburger"></span>
         </span>
-        <span id="siteHeaderText" class="header"></span>
+        <span id="siteHeaderText" class="header">
+          <span class="cols">
+            <span class="header respFontLg">Code for the Fences</span>
+            <span id="pageName" class="iSubheader algnSX respFontSm"></span>
+          </span>
+        </span>
         <span id="authBox">
           <span id="iconAuth"></span>
         </span>
@@ -15,7 +20,7 @@ cDI.components.header = {
     await cDI.components.header.strapHeaderHamburger()
   },
   setHeaderText: (text) => {
-    $("#siteHeaderText").html(text)
+    $("#pageName").html(text)
   },
   strapAuthButton: async () => {
     if ($("#accountDash") || $("#signupLoginBox")) { cDI.components.modal.raiseCurtain() }
@@ -50,6 +55,9 @@ cDI.components.header = {
         <span class="mainMenuTitle autoH header">Main Menu</span>
           <span class="autoH algnSX">
           <span class="fauxrder">
+            <span id="mainNavAbout" class="btnStd subheader" style="flex-basis: 100px;">About</span>
+          </span>
+          <span class="fauxrder">
             <span id="mainNavBlog" class="btnStd subheader" style="flex-basis: 100px;">Blog</span>
           </span>
           <span class="fauxrder">
@@ -67,7 +75,7 @@ cDI.components.header = {
     cDI.components.header.addMainNavClick(pane, $("#mainNavBlog"), '/blog')
     cDI.components.header.addMainNavClick(pane, $("#mainNavCookbook"), '/cookbook')
     cDI.components.header.addMainNavClick(pane, $("#mainNavDarkRoom"), '/darkRoom')
-    cDI.components.header.addMainNavClick(pane, $("#mainNavBudget"), '/budget')
+    cDI.components.header.addMainNavClick(pane, $("#mainNavAbout"), '/about')
     await cDI.components.drawerPane.openDrawerPane(pane)
   },
   addMainNavClick: (pane, elem, routePath) => {

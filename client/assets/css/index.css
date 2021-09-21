@@ -144,12 +144,12 @@ span[contenteditable="true"] {
   overflow-y: scroll;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  justify-content: start;
 }
 .shyScroll::-webkit-scrollbar { /* WebKit */
    width: 0;
    height: 0;
 }
-.shyScroll { flex-shrink: 0; }
 .shyScroll > * { flex-shrink: 0; }
 
 .noShadow { box-shadow: 0px 0px; }
@@ -175,6 +175,12 @@ span[contenteditable="true"] {
   font-style: italic;
   font-weight: normal;
 }
+.respFontLg {
+  font-size: 5vw;
+}
+.respFontSm {
+  font-size: 4vw;
+}
 .byline {
   font-family: var(--subheaderFont);
   font-style: italic;
@@ -182,6 +188,12 @@ span[contenteditable="true"] {
 .noUnderline { text-decoration: none !important; }
 .bold { font-weight: bold; }
 .italic { font-style: italic; }
+p.linebreak {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
  /*#endregion*/
 
 /*#region rule bars*/
