@@ -1,5 +1,5 @@
 cDI.pages.blog = {
-  siteHeaderText: `<span class="cols"><span class="header">Code for the Fences</span><span class="iSubheader">Software is eating the world, and it is delicious</span>`,
+  siteHeaderText: `Blog`,
   init: async () => {
     await cDI.remote.asyncGetScript(`js/services/blogService.js`)
     await cDI.pages.blog.buildPostList()

@@ -25,7 +25,7 @@ cDI.components.recipeCard.stepPane = {
         <span class="btnIcon" data-btnsize=55>
           <span class="shpPlus"></span>
         </span>` : ""}
-        <span class="autoH autoW bold stepPaneTitle">Steps</span>
+        <span class="autoH autoW bold stepPaneTitle subheader respFontSm">Steps</span>
       </span>`)
     cDI.addAwaitableInput("click", card.find(".stepTitle > .btnIcon > .shpPlus").parent(), async (e) => {
       var newStep = cDI.services.recipe.newStep(card.data("recipe").id, sorted[sorted.length - 1].stepIndex + 1)

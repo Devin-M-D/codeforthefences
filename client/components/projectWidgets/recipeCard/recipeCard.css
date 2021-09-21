@@ -3,6 +3,9 @@
   border: solid thick black;
   margin: 5px 0px;
 }
+.recipeName {
+  padding: 5px;
+}
 .cardIngs { margin-bottom: 10px; }
 .cardSteps { margin-top: 10px; }
 .cardIngs, .cardSteps {

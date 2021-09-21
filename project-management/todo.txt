@@ -1,4 +1,6 @@
+Minor bugs and features:
 - wire up add buttons for foodVariant and prepStyle
+- adding new searchSelect value should automatically select as well
 - "bitter marshmallows" creates erroneous div, removing space
 - bug adding new prepStyles
 - fix shyScroll of searchSelect
@@ -9,5 +11,4 @@
 Big Picture:
 - lead cap manager portfolio demo
 - budget page
-- about the site page
 - unit test GUI

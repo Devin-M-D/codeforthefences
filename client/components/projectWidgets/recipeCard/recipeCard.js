@@ -12,13 +12,13 @@ cDI.components.recipeCard = {
   appendRecipeCard: async (counterTop, recipe) => {
     var recipeCard = `
     <span class="recipeCard autoH roundedWide algnSX">
-      <span class="wingedHeader algnSpread" data-headerheight="120px" data-headerwings="20%">
+      <span class="wingedHeader algnSpread autoH"  data-headerwings="20%">
         <span class="recipeStats">
           <span class="recipeTime"></span>
           <span class="recipeServings"></span>
           <span class="recipeCalories"></span>
         </span>
-        <span class="recipeName subheader"></span>
+        <span class="recipeName header respFontLg"></span>
         <span class="recipeEdit row"></span>
       </span>
       <span class="cardIngs autoH rounded fauxrder algnSX shyScroll"></span>
