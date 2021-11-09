@@ -18,7 +18,7 @@ cDI.components.recipeCard = {
           <span class="recipeServings"></span>
           <span class="recipeCalories"></span>
         </span>
-        <span class="recipeName header respFontLg"></span>
+        <span class="recipeName header"></span>
         <span class="recipeEdit row"></span>
       </span>
       <span class="cardIngs autoH rounded fauxrder algnSX shyScroll"></span>

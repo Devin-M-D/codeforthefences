@@ -7,8 +7,8 @@ cDI.components.header = {
         </span>
         <span id="siteHeaderText" class="header">
           <span class="cols">
-            <span class="header respFontLg">Code for the Fences</span>
-            <span id="pageName" class="iSubheader algnSX respFontSm"></span>
+            <span class="header">Code for the Fences</span>
+            <span id="pageName" class="iSubheader algnSX"></span>
           </span>
         </span>
         <span id="authBox">
@@ -53,21 +53,21 @@ cDI.components.header = {
           </span>
         </span>
         <span class="mainMenuTitle autoH header">Main Menu</span>
-          <span class="autoH algnSX">
+          <span style="padding: 0px 20px;" class="autoH algnSX">
           <span class="fauxrder">
-            <span id="mainNavAbout" class="btnStd subheader" style="flex-basis: 100px;">About</span>
+            <span id="mainNavAbout" class="btnStd subheader">About</span>
           </span>
           <span class="fauxrder">
-            <span id="mainNavBlog" class="btnStd subheader" style="flex-basis: 100px;">Blog</span>
+            <span id="mainNavBlog" class="btnStd subheader">Blog</span>
           </span>
           <span class="fauxrder">
-            <span id="mainNavCookbook" class="btnStd subheader" style="flex-basis: 100px;">Cookbook</span>
+            <span id="mainNavCookbook" class="btnStd subheader">Cookbook</span>
           </span>
           <span class="fauxrder">
-            <span id="mainNavDarkRoom" class="btnStd subheader" style="flex-basis: 100px;">Dark Room</span>
+            <span id="mainNavDarkRoom" class="btnStd subheader">Dark Room</span>
           </span>
           <span class="fauxrder">
-            <span id="mainNavBudget" class="btnStd subheader" style="flex-basis: 100px;">Budget</span>
+            <span id="mainNavBudget" class="btnStd subheader">Budget</span>
           </span>
         </span>
       </span>
