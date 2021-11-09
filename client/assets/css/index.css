@@ -12,14 +12,16 @@
   --ruleGradientSlim: var(--clrTransparent) 0%, #888 50%, var(--clrTransparent) 100%;
 
   --headerFont: rockwell;
-  --headerSize: 64px;
+  --headerSize: 5vw;
   --headerDecoration: underline;
   --headerWeight: bolder;
 
   --subheaderFont: rockwell;
-  --subheaderSize: 48px;
+  --subheaderSize: 4vw;
   --subheaderDecoration: underline;
   --subheaderWeight: bold;
+
+  --fontSm: 28px;
 
   --icon_size: 1em;
 }
@@ -39,10 +41,11 @@ body, span, input, textarea, select {
   flex-shrink: 1;
   justify-content: center;
   align-items: center;
-  font-size: 36px;
+  font-size: var(--fontSm);
   flex-basis: 100%;
   height: 100%;
   width: 100%;
+  word-wrap: normal;
 }
 /*#endregion*/
 
@@ -69,7 +72,8 @@ span[contenteditable="true"] {
 .pad10 { padding: 10px; }
 .pad25 { padding: 25px; }
 .mgn10 { margin: 10px; }
-.spacer5px { flex-basis: 5px;}
+.spacer10px { flex-basis: 10px;}
+.spacer25px { flex-basis: 25px;}
 
 /*#region justify and align shorthands*/
 .absCen {
@@ -175,11 +179,9 @@ span[contenteditable="true"] {
   font-style: italic;
   font-weight: normal;
 }
-.respFontLg {
-  font-size: 5vw;
-}
-.respFontSm {
-  font-size: 4vw;
+.sectionHeader {
+  font-family: var(--subheaderFont);
+  font-weight: bold;
 }
 .byline {
   font-family: var(--subheaderFont);
@@ -188,11 +190,13 @@ span[contenteditable="true"] {
 .noUnderline { text-decoration: none !important; }
 .bold { font-weight: bold; }
 .italic { font-style: italic; }
-p.linebreak {
-  margin-block-start: 0;
-  margin-block-end: 0;
+p {
+  display: inline-block;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
+  width: 100%;
 }
  /*#endregion*/
 

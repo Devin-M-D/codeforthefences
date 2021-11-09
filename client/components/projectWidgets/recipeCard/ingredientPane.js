@@ -14,7 +14,7 @@ cDI.components.recipeCard.ingredientPane = {
         <span class="btnIcon" data-btnsize="55">
           <span class="shpPlus"></span>
         </span>` : ``}
-        <span class="autoH autoW bold ingPaneTitle subheader respFontSm">Ingredients</span>
+        <span class="autoH autoW ingPaneTitle sectionHeader">Ingredients</span>
       </span>`)
     cDI.addAwaitableInput("click", card.find(".ingTitle > .btnIcon > .shpPlus").parent(), async e => {
       var parentCard = $(e.target).closest(".recipeCard")

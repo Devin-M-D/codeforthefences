@@ -25,7 +25,7 @@ cDI.components.recipeCard.stepPane = {
         <span class="btnIcon" data-btnsize=55>
           <span class="shpPlus"></span>
         </span>` : ""}
-        <span class="autoH autoW bold stepPaneTitle subheader respFontSm">Steps</span>
+        <span class="autoH autoW stepPaneTitle sectionHeader">Steps</span>
       </span>`)
     cDI.addAwaitableInput("click", card.find(".stepTitle > .btnIcon > .shpPlus").parent(), async (e) => {
       var newStep = cDI.services.recipe.newStep(card.data("recipe").id, sorted[sorted.length - 1].stepIndex + 1)
@@ -49,7 +49,7 @@ cDI.components.recipeCard.stepPane = {
     }
     else {
       var filledStepText = cDI.components.recipeCard.stepPane.addMapsToStepText(step.text, currMaps, recipe.ingredients, recipe.tools)
-      stepHTML += `<span class="stepText autoH autoW algnSS rounded leftCopy">${filledStepText}</span>`
+      stepHTML += `<p class="stepText autoH autoW algnSS rounded leftCopy">${filledStepText}</p>`
     }
     if (editMode) {
       stepHTML += `
@@ -137,8 +137,8 @@ cDI.components.recipeCard.stepPane = {
       var ingredient
       if (map) { ingredient = ingredients.find(x => x.ingredientIndex == map.recipeIndex) }
 
-      if (ingredient) { stepText = stepText.replace(`{i}`, `<p class="stepIngredientMap" barsIndex="${barsIndex}">${ingredient.substanceName}</p>`) }
-      else { stepText = stepText.replace(`{i}`, `<p class="stepIngredientMap" barsIndex="${barsIndex}">{i${barsIndex}}</p>`) }
+      if (ingredient) { stepText = stepText.replace(`{i}`, `<a class="stepIngredientMap" barsIndex="${barsIndex}">${ingredient.substanceName}</a>`) }
+      else { stepText = stepText.replace(`{i}`, `<a class="stepIngredientMap" barsIndex="${barsIndex}">{i${barsIndex}}</a>`) }
       barsIndex++
     }
     return stepText
@@ -149,10 +149,10 @@ cDI.components.recipeCard.stepPane = {
       var map = maps.find(x => x.barsIndex == barsIndex)
       if (map) {
         var tool = tools.find(x => x.toolIndex == map.recipeIndex)
-        stepText = stepText.replace(`{t}`, `<p class="stepToolMap" barsIndex="${barsIndex}">${tool.toolTypeName.toLowerCase()}</p>`)
+        stepText = stepText.replace(`{t}`, `<a class="stepToolMap" barsIndex="${barsIndex}">${tool.toolTypeName.toLowerCase()}</a>`)
       }
       else {
-        stepText = stepText.replace(`{t}`, `<p class="stepToolMap" barsIndex="${barsIndex}">{t${barsIndex}}</p>`)
+        stepText = stepText.replace(`{t}`, `<a class="stepToolMap" barsIndex="${barsIndex}">{t${barsIndex}}</a>`)
       }
       barsIndex++
     }
