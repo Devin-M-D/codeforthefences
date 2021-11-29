@@ -11,12 +11,12 @@ function configExpress(port) {
   expressApp.enable('trust proxy')
   if (port == 80) {
     expressApp.use((req, res, next) => {
-      req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)
+      req.secure || req.url.indexOf("/.well-known/acme-challenge/") == 0 ? next() : res.redirect('https://' + req.headers.host + req.url)
     })
   }
   //serve json and static files (allow dotfiles for certbot SSL)
   expressApp.use(express.json())
-  expressApp.use(express.static(__dirname + '/../.well-known/', { dotfiles: 'allow' } ))
+  expressApp.use(express.static(__dirname + '/../ssl-cert', { dotfiles: 'allow' } ))
   addCors(expressApp)
   addSessions(expressApp)
   return {
