@@ -7,9 +7,9 @@ cDI.components.unitTests.auth = {
       await cDI.components.unitTests.auth.login(1)
     })
   },
-  clickAuthIcon: async () => { return await cDI.awaitableInput("click", $("#authBox")) },
-  clickSignup: async () => { return await cDI.awaitableInput("click", $("#btnSignup")) },
-  clickLogin: async () => { return await cDI.awaitableInput("click", $("#btnLogin")) },
+  clickAuthIcon: async () => { return await cDI.mockInput("click", $("#authBox")) },
+  clickSignup: async () => { return await cDI.mockInput("click", $("#btnSignup")) },
+  clickLogin: async () => { return await cDI.mockInput("click", $("#btnLogin")) },
   setSignupVals: (un) => {
     $("#txtSgnUN").html(un)
     $("#txtSgnPW").val("testpass")

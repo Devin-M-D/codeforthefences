@@ -7,14 +7,14 @@ var stepService = require('../services/stepService')
 
 var recipeService = {}
 recipeService.parseObj = (data) => {
-  var recipes = data[0]
+  var recipes = data[1]
   recipes.forEach(x => {
-    x.tools = data[1].filter(y => y.recipeId == x.id)
-    x.ingredients = data[2].filter(y => y.recipeId == x.id)
-    x.steps = data[3].filter(y => y.recipeId == x.id)
+    x.tools = data[3].filter(y => y.recipeId == x.id)
+    x.ingredients = data[5].filter(y => y.recipeId == x.id)
+    x.steps = data[7].filter(y => y.recipeId == x.id)
 
     var recipeStepIds = x.steps.map(z => { return z.recipe_stepId })
-    x.stepMaps = data[4].filter(y => recipeStepIds.indexOf(y.recipe_stepId) != -1)
+    x.stepMaps = data[9].filter(y => recipeStepIds.indexOf(y.recipe_stepId) != -1)
   })
   return recipes
 }

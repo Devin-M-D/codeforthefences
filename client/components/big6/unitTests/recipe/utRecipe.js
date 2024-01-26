@@ -27,15 +27,15 @@ cDI.components.unitTests.recipe = {
   //#region edit/save/cancel
   editCard: async (card) => {
     var editButton = card.find(".shpPencil").parent()
-    await cDI.awaitableInput("click", editButton)
+    await cDI.mockInput("click", editButton)
   },
   saveEdits: async (card) => {
     var saveButton = card.find(".shpCheck").parent()
-    return await cDI.awaitableInput("click", saveButton)
+    return await cDI.mockInput("click", saveButton)
   },
   cancelEdits: async (card) => {
     var saveButton = card.find(".shpCancel").parent()
-    await cDI.awaitableInput("click", saveButton)
+    await cDI.mockInput("click", saveButton)
   },
   editAndSave: async (card, log) => {
     return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.recipe.section, "editAndSave",
@@ -58,17 +58,17 @@ cDI.components.unitTests.recipe = {
 
   //#region ingredients
   addNewIng: async (card) => {
-    await cDI.awaitableInput("click", card.find(".ingTitle > .btnIcon > .shpPlus").parent())
+    await cDI.mockInput("click", card.find(".ingTitle > .btnIcon > .shpPlus").parent())
   },
   alterIngredient: async (card, index, prop, val) => {
     if (prop == "Quantity"){
       var input = card.find(`.txtIngQuantity[ingredientIndex="${index}"]`)
       input.html(val)
-      await cDI.awaitableInput("keyup", input)
+      await cDI.mockInput("keyup", input)
     }
     else  {
-      var searchSelectPane = await cDI.awaitableInput("click", card.find(`.txtIng${prop}[ingredientIndex="${index}"]`))
-      await cDI.awaitableInput("click", searchSelectPane.find(`:contains('${val}'):last`))
+      var searchSelectPane = await cDI.mockInput("click", card.find(`.txtIng${prop}[ingredientIndex="${index}"]`))
+      await cDI.mockInput("click", searchSelectPane.find(`:contains('${val}'):last`))
     }
   },
   addIngredientAndSetAllValues: async (card, log) => {
@@ -115,7 +115,7 @@ cDI.components.unitTests.recipe = {
     )
   },
   removeIngredient: async (card, index, log) => {
-    await cDI.awaitableInput("click", card.find(`.cardIngredient[ingredientIndex=${index}]`).find(".shpMinus").parent())
+    await cDI.mockInput("click", card.find(`.cardIngredient[ingredientIndex=${index}]`).find(".shpMinus").parent())
   },
   editAndRemoveIngredient: async (card, index, log) => {
     return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.recipe.section, "editAndRemoveIngredient",
@@ -131,11 +131,11 @@ cDI.components.unitTests.recipe = {
 
   //#region steps
   addNewStep: async (card) => {
-    return await cDI.awaitableInput("click", card.find(".stepTitle > .btnIcon > .shpPlus").parent())
+    return await cDI.mockInput("click", card.find(".stepTitle > .btnIcon > .shpPlus").parent())
   },
   alterStep: async (card, stepIndex, textVal) => {
     card.find(`.txtStep[stepIndex=${stepIndex}]`).html(textVal)
-    return await cDI.awaitableInput("keyup", card.find(`.txtStep[stepIndex=${stepIndex}]`))
+    return await cDI.mockInput("keyup", card.find(`.txtStep[stepIndex=${stepIndex}]`))
   },
   addValidStepAndSave: async (card, log) => {
     return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.recipe.section, "editAndCancel",
@@ -161,7 +161,7 @@ cDI.components.unitTests.recipe = {
       null, log)
   },
   removeStep: async (card, index, log) => {
-    await cDI.awaitableInput("click", card.find(`.cardStep[stepIndex=${index}]`).find(".shpMinus").parent())
+    await cDI.mockInput("click", card.find(`.cardStep[stepIndex=${index}]`).find(".shpMinus").parent())
   },
   editAndRemoveStep: async (card, index, log) => {
     return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.recipe.section, "editAndRemoveStep",
@@ -180,9 +180,9 @@ cDI.components.unitTests.recipe = {
     return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.recipe.section, "setStepMap",
       async () => {
         var stepMap = card.find(`.cardStep[stepIndex=${stepIndex}]`).find(`.stepIngredientMap[barsIndex=${barsIndex}]`)
-        await cDI.awaitableInput("click", stepMap)
+        await cDI.mockInput("click", stepMap)
         var ingSelector = card.find(`.cardIngredient[ingredientIndex=${ingredientIndex}]`).find(".selector")
-        await cDI.awaitableInput("click", ingSelector)
+        await cDI.mockInput("click", ingSelector)
       },
       (res) => { return true }, log)
   },

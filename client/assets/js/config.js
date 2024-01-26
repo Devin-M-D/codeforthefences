@@ -1,16 +1,14 @@
 //#region debugMode explanation
-//debug console logging severity should be expressed in linux style e.g.
-//TODO: this can be extended into front-end logging
 //debugMode = 0: Prod (don't log)
 //debugMode = 1: Dev (Component load notifications, most development purposes)
 //debugMode = 2: Verbose (unit tests, etc.)
-//debugMode = 3: both Dev and Verbose
+//debugMode = 3: 1 + 2
 //debugMode = 4: all AJAX calls
-//debugMode = 5: both Dev and all AJAX calls
-//debugMode = 6: both Verbose and all AJAX calls
-//debugMode = 7: log everything
+//debugMode = 5: 1 + 4
+//debugMode = 6: 2 + 4
+//debugMode = 7: 1 + 2 + 4
 //#endregion
-cDI.config.debugMode = 0
+cDI.config.debugMode = 1
 cDI.config.user = {
   username: "user1",
   password: "testpass"

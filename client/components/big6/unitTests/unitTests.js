@@ -5,8 +5,8 @@ cDI.components.unitTests = {
 
     var currDebugMode = cDI.config.debugMode
     if (unitTestLevel != 0){
-      await cDI.remote.asyncGetScript("/components/big5/unitTests/auth/utAuth.js")
-      await cDI.remote.asyncGetScript("/components/big5/unitTests/recipe/utRecipe.js")
+      await cDI.remote.asyncGetScript("/components/big6/unitTests/auth/utAuth.js")
+      await cDI.remote.asyncGetScript("/components/big6/unitTests/recipe/utRecipe.js")
       if ([0, 1, 4, 5].indexOf(currDebugMode) != -1) { cDI.config.debugMode = 2 }
     }
 

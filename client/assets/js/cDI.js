@@ -175,8 +175,8 @@ cDI.remote = {
 }
 cDI.remote.loadSimpleComponent = async (folderPath, componentName) => {
   var path = `/${folderPath}/${componentName}/${componentName}`
-  await cDI.remote.asyncGetScript(`${path}.js`)
   await cDI.remote.asyncGetCSS(`${path}.css`)
+  await cDI.remote.asyncGetScript(`${path}.js`)
   var DI = cDI.utils.getDIByComponentName(componentName)
   if (DI.init) { await DI.init() }
   return DI
@@ -256,7 +256,7 @@ cDI.addAwaitableInput = (inputType, elem, fn, trace = false, debounce = true) =>
     return data
   })
 }
-cDI.awaitableInput = async (inputType, elem) => {
+cDI.mockInput = async (inputType, elem) => {
   return new Promise((fulfill, reject) => {
     $.when(elem.triggerHandler(inputType)).then(async (res) => {
       fulfill(res)

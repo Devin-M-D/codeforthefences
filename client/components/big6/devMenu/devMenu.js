@@ -1,4 +1,4 @@
-cDI.components.dev = {
+cDI.components.devMenu = {
   init: async () => {
 
   }

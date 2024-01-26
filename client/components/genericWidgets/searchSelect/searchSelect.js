@@ -90,7 +90,7 @@ cDI.components.searchSelect = {
   },
   clear: async (input) => {
     input.html("")
-    return await cDI.awaitableInput("keyup", input)
+    return await cDI.mockInput("keyup", input)
   },
   close: async(tempInput, target) => {
     cDI.components.modal.raiseCurtain($("html"))
