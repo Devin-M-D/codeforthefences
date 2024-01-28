@@ -13,7 +13,7 @@ cDI.components.searchSelect = {
           </span>
         </span>
       </span>`
-    pane = await cDI.components.modal.init({ content: pane })
+    pane = await cDI.components.modal.showModal({ content: pane })
 
     pane.find(".searchSelectTempInput").append(source.clone())
     var tempInput = pane.find('[contenteditable="true"]')

@@ -1,4 +1,8 @@
 cDI.components.auth = {
+  html: ``,
+  preInit: async (DI, path) => {
+    DI.html = await cDI.remote.asyncGet(`${path}.html`)
+  },
   init: async () => {
     cDI.addAwaitableInput("click", $("#btnSignup"), async (e) => {
       var email = $('#txtSgnEmail').val()

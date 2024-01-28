@@ -8,6 +8,8 @@ Minor bugs and features:
 - debounce acceptStepChange (keyup)
 - add new ingredient field via searchSelect should select the value
 - pages are just components and could probably be consolidated
+- css grid
+- native js selectors
 
 Big Picture:
 - lead cap manager portfolio demo

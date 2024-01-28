@@ -173,26 +173,34 @@ cDI.remote = {
     $(`<link rel="stylesheet" type="text/css" href="${path}" />`).appendTo('head')
   }
 }
-cDI.remote.loadSimpleComponent = async (folderPath, componentName) => {
-  var path = `/${folderPath}/${componentName}/${componentName}`
-  await cDI.remote.asyncGetCSS(`${path}.css`)
-  await cDI.remote.asyncGetScript(`${path}.js`)
-  var DI = cDI.utils.getDIByComponentName(componentName)
-  if (DI.init) { await DI.init() }
-  return DI
-}
-cDI.remote.loadComponent = async (elem, folderPath, componentName, placement = 1) => {
-  var path = `/${folderPath}/${componentName}/${componentName}`
-  await cDI.remote.asyncGetCSS(`${path}.css`)
-  await cDI.remote.asyncGetScript(`${path}.js`)
-  var html = await cDI.remote.asyncGet(`${path}.html`)
+cDI.remote.loadComponent = async (folderPath, componentName, container = null, placement = 1) => {
+  var existingDI = cDI.utils.getDIByComponentName(componentName)
+  if (existingDI) {
+    ftbLogDev(`Component ${componentName} already loaded, skipping`)
+    return existingDI
+  }
 
-  if (placement == 0) { elem.prepend(html) }
-  else if (placement == 1) { elem.append(html) }
-
+  var path = `/${folderPath}/${componentName}`
+  var filePath = `/${folderPath}/${componentName}/${componentName}`
   ftbLogDev(`loading ${path}`)
+  await cDI.remote.asyncGetCSS(`${filePath}.css`)
+  await cDI.remote.asyncGetScript(`${filePath}.js`)
   var DI = cDI.utils.getDIByComponentName(componentName)
-  if (DI.init) { await DI.init() }
+  if (DI){
+    if (DI.preInit) { await DI.preInit(DI, filePath) }
+    if (container){
+      if (DI.html){
+        var newElem = $(DI.html)
+        newElem.data("DI", DI)
+        if (placement == 0) { container.prepend(newElem) }
+        else if (placement == 1) { container.append(newElem) }
+      }
+      else { ftbLogDev(`container given for ${path} but no html found in DI`)}
+    }
+    if (DI.init) { await DI.init() }
+    else { ftbLogDev(`no DI.init() found for ${path}`) }
+  }
+  else { ftbLogDev(`no DI found for ${path}`) }
   return DI
 }
 //#endregion
@@ -405,4 +413,6 @@ var ftbLogAjax = (() => {
     await ftbLog(message, data, 4, trace, callbackFn)
   }
 })()
+var ftbLoadComponent = cDI.remote.loadComponent
+var ftbCmp = cDI.components
 //#endregion

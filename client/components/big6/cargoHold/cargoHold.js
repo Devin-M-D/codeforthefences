@@ -1,10 +1,10 @@
 cDI.components.cargoHold = {
+  html: `<span id="cargoHold"></span>`,
   init: async () => {
     //generic widgets
-    $("body").prepend(`<span id="cargoHold"></span>`)
-    await cDI.remote.loadComponent($("#cargoHold"), "components/genericWidgets", "modal")
-    await cDI.remote.loadSimpleComponent("components/genericWidgets", "flexCarousel")
-    await cDI.remote.loadSimpleComponent(`components/genericWidgets`, `searchSelect`)
-    await cDI.remote.loadSimpleComponent(`components/genericWidgets`, `drawerPane`)
+    await ftbLoadComponent("components/genericWidgets", "modal", $("#cargoHold"))
+    await ftbLoadComponent("components/genericWidgets", "flexCarousel")
+    await ftbLoadComponent(`components/genericWidgets`, `searchSelect`)
+    await ftbLoadComponent(`components/genericWidgets`, `drawerPane`)
   }
 }

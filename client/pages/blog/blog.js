@@ -1,4 +1,8 @@
 cDI.pages.blog = {
+  html: `<span id="blogMain" class="rows">
+    <span id="blogPostList" class="cols algnSC shyScroll"></span>
+    <span id="displayBlogPost" class="cols algnSS"></span>
+  </span>`,
   siteHeaderText: `Blog`,
   init: async () => {
     await cDI.remote.asyncGetScript(`js/services/blogService.js`)
