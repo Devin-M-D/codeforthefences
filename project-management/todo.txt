@@ -7,6 +7,7 @@ Minor bugs and features:
 - fix stepText boxes
 - debounce acceptStepChange (keyup)
 - add new ingredient field via searchSelect should select the value
+- pages are just components and could probably be consolidated
 
 Big Picture:
 - lead cap manager portfolio demo

@@ -69,13 +69,18 @@ cDI.components.header = {
           <span class="fauxrder">
             <span id="mainNavBudget" class="btnStd subheader">Budget</span>
           </span>
+          <span class="fauxrder">
+            <span id="mainNavGames" class="btnStd subheader">Games</span>
+          </span>
         </span>
       </span>
     `)
+    cDI.components.header.addMainNavClick(pane, $("#mainNavAbout"), '/about')
     cDI.components.header.addMainNavClick(pane, $("#mainNavBlog"), '/blog')
     cDI.components.header.addMainNavClick(pane, $("#mainNavCookbook"), '/cookbook')
     cDI.components.header.addMainNavClick(pane, $("#mainNavDarkRoom"), '/darkRoom')
-    cDI.components.header.addMainNavClick(pane, $("#mainNavAbout"), '/about')
+    cDI.components.header.addMainNavClick(pane, $("#mainNavBudget"), '/budget')
+    cDI.components.header.addMainNavClick(pane, $("#mainNavGames"), '/games')
     await cDI.components.drawerPane.openDrawerPane(pane)
   },
   addMainNavClick: (pane, elem, routePath) => {
