@@ -8,3 +8,13 @@ DI.router.post('/routePath', DI.rh.asyncRoute(async (req, res, next) =>
   var data = query(req, "osql", { param1: "param1Val" })
   succeed(res, data)
 }))
+
+/////////////////
+//new backend service
+/////////////////
+var db = require('../foundation/dbLogic')
+var queryBuilder = require('query-builder')(db)
+var fooObjQueries = require("../queries/recipe/fooObjQueries")
+
+var fooService = {}
+module.exports = fooService

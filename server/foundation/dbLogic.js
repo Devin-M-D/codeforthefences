@@ -38,10 +38,11 @@ module.exports = {
     if (result.constructor.name == "OkPacket"){
       return result.insertId
     }
-    result = result.filter(x => { return x.constructor.name != "OkPacket" })
     result = JSON.parse(JSON.stringify(result))
-    while (expectOne && result.length == 1) { result = result[0] }
+    console.log("running query", result)
+    console.log("query result", result)
+    //result = result.filter(x => { return x.constructor.name != "OkPacket" })
+    while (expectOne && result.length == 1) { return result }
     if (result.length > 1 && expectOne){ return { status: "e", payload: "Expected one result but got multiple" } }
-    return result
   }
 }

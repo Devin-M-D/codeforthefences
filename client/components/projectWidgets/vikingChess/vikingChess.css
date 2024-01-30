@@ -1,3 +1,6 @@
 #vikingChess > span {
-  
+
+}
+#vikingChess .scoreboard {
+  flex-basis: 100px;
 }

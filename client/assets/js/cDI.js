@@ -414,5 +414,6 @@ var ftbLogAjax = (() => {
   }
 })()
 var ftbLoadComponent = cDI.remote.loadComponent
-var ftbCmp = cDI.components
+var ftbCmp = cDI.utils.getDIByComponentName
+var ftbSvc = cDI.services
 //#endregion

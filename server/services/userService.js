@@ -14,4 +14,7 @@ module.exports = {
   setSession: async (sessionId, id) => {
     return await queryBuilder.quickRun(userQueries.setSession, [ sessionId, DI.datetimes.utcNow(), id ])
   },
+  getSession: async (sessionId) => {
+    return await queryBuilder.quickRun(userQueries.getSession, [ sessionId ])
+  },
 }

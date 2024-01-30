@@ -10,7 +10,7 @@
 //#endregion
 cDI.config.debugMode = 1
 cDI.config.user = {
-  username: "user1",
+  username: "Balwar",
   password: "testpass"
 }
 //unitTest 1 = run all

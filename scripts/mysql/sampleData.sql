@@ -2,8 +2,10 @@ USE codeforthefences;
 
 INSERT INTO user (createdDate, username, password) VALUES (NOW(), 'system', '$2a$10$TYYE/NqPargaOveJMyMw8e6k/jbWKZI306BquHGMa/j5RJavluLIO');
 SET @user1 = LAST_INSERT_ID();
-INSERT INTO user (createdDate, username, password) VALUES (NOW(), 'user1', '$2a$10$TYYE/NqPargaOveJMyMw8e6k/jbWKZI306BquHGMa/j5RJavluLIO');
+INSERT INTO user (createdDate, username, password) VALUES (NOW(), 'Balwar', '$2a$10$TYYE/NqPargaOveJMyMw8e6k/jbWKZI306BquHGMa/j5RJavluLIO');
 SET @user2 = LAST_INSERT_ID();
+INSERT INTO user (createdDate, username, password) VALUES (NOW(), 'Frinx', '$2a$10$TYYE/NqPargaOveJMyMw8e6k/jbWKZI306BquHGMa/j5RJavluLIO');
+SET @user3 = LAST_INSERT_ID();
 
 INSERT INTO blogPost (authorId, title, createdDate, content) VALUES (@user1, 'blog post 1', NOW(), 'test blog 1');
 INSERT INTO blogPost (authorId, title, createdDate, content) VALUES (@user2, 'blog post 2', ADDTIME(NOW(), "1"), 'test blog 2');
@@ -187,3 +189,5 @@ INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES
 INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@HPrecipeStep1Id, @stepMapType1, 1, 1);
 INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@HPrecipeStep1Id, @stepMapType1, 2, 2);
 INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES (@HPrecipeStep1Id, @stepMapType1, 3, 3);
+
+INSERT INTO vikingChess (player1, player2, gamestate) VALUES (@user2, @user3, '{ "w1": "5,5" }');

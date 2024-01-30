@@ -15,7 +15,7 @@ module.exports = {
   findLogin: async (username, password) => {
     var user = await userService.findByName(username)
     if (user) {
-      var foo = bcrypt.compare(password, user.password, (err, result) => {
+      var passwordMatch = bcrypt.compare(password, user.password, (err, result) => {
         if (!result) { user = null }
       })
     }
