@@ -44,7 +44,7 @@ cDI.components.unitTests = {
         //if not logged in, use debugConf set in bootstrap to set an impersonate
         if (!cDI.utils.isDef(cDI.session.token)) {
           ftbLogUT(`Not logged in, logging with ${cDI.config.user.username} and ${cDI.config.user.password}`)
-          await cDI.components.unitTests.auth.login()
+          await ftbCmp("unitTests").auth.login()
           ftbLogUT(`login succeeded token: ${cDI.session.token.substr(0, 5)}...`)
         }
         //if we think we're logged in, verify by making a call. Triggers an implicit logout in the remoteCall func if call result has status "e".
@@ -55,7 +55,9 @@ cDI.components.unitTests = {
             ftbLogUT(`active session still valid, proceeding: (session id: ${cDI.session.token.substr(0, 5)}...)`)
           }
           else {
-          ftbLogUT(`error logging in`)
+            ftbLogUT(`error with session, trying login`)
+            await cDI.session.clearLogin()
+            await ftbCmp("unitTests").auth.login()
           }
         }
         ftbOutdent()

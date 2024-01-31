@@ -53,14 +53,14 @@ function setHTTPS(express) {
 }
 
 var innerware = require('../middleware/innerware')
-var routes = require('./routes')
+var router = require('./router')
 var outerware = require('../middleware/outerware')
 
 module.exports = async (config) => {
   var express = configExpress(config.port)
   if (config.port == 80) { setHTTPS(express) }
-  innerware(express.app, config.debug)
-  routes(express.app, express.api)
-  outerware(express.app, config.debug)
+  await innerware(express.app, config.debug)
+  await router(express.app, express.api)
+  await outerware(express.app, config.debug)
   return express
 }

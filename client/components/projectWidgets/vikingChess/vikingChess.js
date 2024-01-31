@@ -14,6 +14,11 @@ cDI.components.vikingChess = {
     gridDI.drawGrid($("#vikingChess .gameboard"), 11, 11)
   },
   loadGameState: async () => {
-    await ftbSvc["vikingChess"].getGameState()
+    var gamedata = await ftbSvc["vikingChess"].getGameState()
+    var gamestate = JSON.parse(gamedata.gamestate)
+    var x = gamestate.w1.split(",")[0]
+    var y = gamestate.w1.split(",")[1]
+    var cell = $("#vikingChess .gameboard").find(`[data-gridX='${x}'][data-gridY='${y}']`)
+    cell.addClass("kingPiece")
   }
 }

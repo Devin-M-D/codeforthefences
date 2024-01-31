@@ -1,33 +1,46 @@
+var DI = require('../foundation/DICore')
 var userService = require("../services/userService")
+var authService = require("../services/authService")
 
 module.exports = (expressApp, debugging) => {
-  //attach user db session to req
   expressApp.use(async(req, res, next) => {
-    console.log("cookies", req.cookies)
-    if (req.cookies && req.cookies['connect.sid']){
-      var sessionUser = await userService.getSession(req.cookies['connect.sid'])
-      console.log("sessionUser", sessionUser)
-      if (sessionUser) {
-        console.log("found session user")
-        req.body.session = { userId: sessionUser.id }
-      }
+    if (req.originalUrl.indexOf("/js/") == -1
+      && req.originalUrl.indexOf("/css/") == -1
+      && req.originalUrl.indexOf("/components/") == -1
+      && req.originalUrl.indexOf("/pages/") == -1
+    ){
+      await userSessionInnerware(req, res)
+      await debuggingInnerware(req, res, debugging)
     }
     next()
   })
+}
 
-  //set logging state mostly for using the true false at the end of the conditional for debugging server code locally
-  expressApp.use(async(req, res, next) => {
-    if (debugging){
-      if (!Object.getOwnPropertyNames(req.body).length == 0) {
-        console.log("Debugging flag added to request by server")
-      }
-      req.body.debug = true
-
-      if (req.body.session.userId){
-        var log = `User ${visitorName} requested ${req.originalUrl}`
-        console.log(log)
-      }
+async function userSessionInnerware (req, res) {
+  var visitorName = "Anonymous"
+  var visitorId = "-1"
+  if (req.cookies && req.cookies['connect.sid']){
+    var sessionUser = await authService.getSession(req.cookies['connect.sid'])
+    if (DI.utils.isDef(sessionUser)) {
+      visitorName = sessionUser.username
+      visitorId = sessionUser.id
     }
-    next()
-  })
+  }
+  if (!DI.utils.isDef(req.body)) { req.body = {} }
+  req.body.session = {
+    username: visitorName,
+    userId: visitorId
+  }
+}
+
+async function debuggingInnerware (req, res, debugging) {
+  if (debugging){
+    if (!Object.getOwnPropertyNames(req.body).length == 0) {
+      console.log("Debugging flag added to request by server")
+    }
+    req.body.debug = true
+
+    var log = `User ${req.body.session.username} requested ${req.originalUrl}`
+    console.log(log)
+  }
 }
