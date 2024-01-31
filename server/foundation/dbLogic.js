@@ -38,10 +38,16 @@ module.exports = {
     if (result.constructor.name == "OkPacket"){
       return result.insertId
     }
-    result = result.filter(x => { return x.constructor.name != "OkPacket" })
     result = JSON.parse(JSON.stringify(result))
-    while (expectOne && result.length == 1) { result = result[0] }
-    if (result.length > 1 && expectOne){ return { status: "e", payload: "Expected one result but got multiple" } }
+    // console.log("{")
+    // console.log("  running query:", query)
+    // console.log("  with params:", params)
+    // console.log("  query result:", result)
+    // console.log("}")
+    if (expectOne){
+      if (result.length == 1) { return result[0] }
+      if (result.length > 1) { return { status: "e", payload: "Expected one result but got multiple" } }
+    }
     return result
   }
 }

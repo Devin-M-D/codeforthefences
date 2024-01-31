@@ -20,7 +20,7 @@ module.exports = (router) => {
     var login = req.body
     var user = await authService.findLogin(login.username, login.password)
     if (user) {
-      await userService.setSession(req.cookies['connect.sid'], user.id)
+      await authService.setSession(req.cookies['connect.sid'], user.id)
       DI.rh.succeed(res, req.cookies['connect.sid'])
     }
     else {
@@ -30,7 +30,7 @@ module.exports = (router) => {
   router.post('/logout', DI.rh.asyncRoute(async (req, res, next) =>
   {
     var user = await authService.logout(req.cookies['connect.sid'])
-    if (user.length == 0){
+    if (user.affectedRows == 0){
       DI.rh.fail(res, "Couldn't locate user session to log out")
     }
     else {
@@ -39,6 +39,10 @@ module.exports = (router) => {
   }))
   router.post('/user/testToken', DI.rh.asyncRoute(async (req, res, next) =>
   {
-    DI.rh.succeed(res, "landed on /user/testToken")
+    var user = await authService.getSession(req.cookies['connect.sid'])
+    if (DI.utils.isDef(user)){
+      DI.rh.succeed(res, "landed on /user/testToken")
+    }
+    DI.rh.fail(res, "session not found")
   }))
 }

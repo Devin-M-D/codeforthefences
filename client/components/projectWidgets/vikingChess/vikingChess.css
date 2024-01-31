@@ -1,3 +1,10 @@
 #vikingChess > span {
-  
+
+}
+#vikingChess .scoreboard {
+  flex-basis: 100px;
+}
+
+#vikingChess .kingPiece {
+  background-color: gold;
 }

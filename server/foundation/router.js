@@ -4,9 +4,9 @@ var userRoutes = require('../routes/userRoutes')
 var authRoutes = require('../routes/authRoutes')
 var blogRoutes = require('../routes/blogRoutes')
 var recipeRoutes = require('../routes/recipeRoutes')
+var vikingChessRoutes = require('../routes/vikingChessRoutes')
 
 module.exports = async (expressApp, expressApi) => {
-
   expressApp.use(expressApi.static(__dirname + '/../../client'))
   expressApp.use(expressApi.static(__dirname + '/../../client/assets'))
   var router = expressApi.Router()
@@ -36,6 +36,7 @@ module.exports = async (expressApp, expressApi) => {
   authRoutes(router)
   blogRoutes(router)
   recipeRoutes(router)
+  vikingChessRoutes(router)
 
   expressApp.use(router)
 }

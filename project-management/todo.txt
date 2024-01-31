@@ -10,6 +10,7 @@ Minor bugs and features:
 - pages are just components and could probably be consolidated
 - css grid
 - native js selectors
+- prevent static calls from costing cycles in middleware
 
 Big Picture:
 - lead cap manager portfolio demo

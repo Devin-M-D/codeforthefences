@@ -109,3 +109,10 @@ CREATE TABLE stepMap (
   `barsIndex` int NOT NULL,
   `recipeIndex` int NOT NULL
 );
+
+CREATE TABLE vikingChess (
+  `id` int AUTO_INCREMENT primary key NOT NULL,
+  `player1` int NOT NULL,
+  `player2` int NOT NULL,
+  `gamestate` nvarchar(1000) NOT NULL
+);

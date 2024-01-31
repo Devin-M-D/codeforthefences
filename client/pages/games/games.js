@@ -3,7 +3,7 @@ cDI.pages.games = {
   <span id="gamesMain" class="algnSX">
     <span id="selectGame" class="rows autoH">
       <span class="gameBtn mgn10 btnStd">
-        <span onclick="cDI.pages.games.launchGame('vikingChess')">Viking Chess</span>
+        <span id="runVikingChess" onclick="ftbCmp('games').launchGame('vikingChess')">Viking Chess</span>
       </span>
       <span class="gameBtn mgn10 btnStd">
         <span onclick="cDI.pages.games.launchGame('oshi')">Oshi</span>
@@ -12,8 +12,12 @@ cDI.pages.games = {
     <span id="gamePane"></span>
   </span>`,
   siteHeaderText: "Games",
+  init: async () => {
+    await ftbLoadComponent("components/projectWidgets", "vikingChess")
+    //await ftbLoadComponent("components/projectWidgets", "oshi")
+  },
   launchGame: async(game) => {
     $("#gamePane").empty()
-    await ftbLoadComponent("components/projectWidgets", "vikingChess", $("#gamePane"))
+    await ftbCmp(game).drawGame($("#gamePane"))
   }
 }

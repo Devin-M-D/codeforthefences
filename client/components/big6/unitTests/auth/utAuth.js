@@ -43,7 +43,9 @@ cDI.components.unitTests.auth = {
   login: async (log) => {
     return await cDI.components.unitTests.UTIndent(cDI.components.unitTests.auth.section, "login",
       async () => {
-        await cDI.session.logout()
+        if (cDI.utils.isDef(cDI.session.token)) {
+           await cDI.session.logout()
+        }
         await cDI.components.unitTests.auth.clickAuthIcon()
         $("#txtLoginUN").html(cDI.config.user.username)
         $("#txtLoginPW").val(cDI.config.user.password)
