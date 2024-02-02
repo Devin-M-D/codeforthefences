@@ -3,10 +3,10 @@ cDI.pages.games = {
   <span id="gamesMain" class="algnSX">
     <span id="selectGame" class="rows autoH">
       <span class="gameBtn mgn10 btnStd">
-        <span id="runVikingChess" onclick="ftbCmp('games').launchGame('vikingChess')">Viking Chess</span>
+        <span id="runVikingChess">Viking Chess</span>
       </span>
       <span class="gameBtn mgn10 btnStd">
-        <span onclick="cDI.pages.games.launchGame('oshi')">Oshi</span>
+        <span id="runOshi" onclick="cDI.pages.games.launchGame('oshi')">Oshi</span>
       </span>
     </span>
     <span id="gamePane"></span>
@@ -15,8 +15,15 @@ cDI.pages.games = {
   init: async () => {
     await ftbLoadComponent("components/projectWidgets", "vikingChess")
     //await ftbLoadComponent("components/projectWidgets", "oshi")
+    cDI.addAwaitableInput("click", $("#runVikingChess"), async () => {
+      await ftbCmp('games').launchGame('vikingChess')
+    })
+    cDI.addAwaitableInput("click", $("#runOshi"), async () => {
+      await ftbCmp('games').launchGame('oshi')
+    })
+    await cDI.mockInput("click", $("#runVikingChess"))
   },
-  launchGame: async(game) => {
+  launchGame: async (game) => {
     $("#gamePane").empty()
     await ftbCmp(game).drawGame($("#gamePane"))
   }

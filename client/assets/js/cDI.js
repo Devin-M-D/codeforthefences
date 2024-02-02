@@ -372,9 +372,11 @@ cDI.unpersistAll = async () => {
 
 //#region session
 cDI.session = {
-  setSession: async (un, token) => {
+  setSession: async (id, un, token) => {
+    await cDI.persist("codeforthefences.userId", id)
     await cDI.persist("codeforthefences.username", un)
     await cDI.persist("codeforthefences.token", token)
+    cDI.session.userId = cDI.stored("codeforthefences.userId")
     cDI.session.username = cDI.stored("codeforthefences.username")
     cDI.session.token = cDI.stored("codeforthefences.token")
   },
@@ -383,12 +385,15 @@ cDI.session = {
     await cDI.session.clearLogin()
   },
   clearLogin: async () => {
+    await cDI.unpersist("codeforthefences.userId")
     await cDI.unpersist("codeforthefences.username")
     await cDI.unpersist("codeforthefences.token")
+    cDI.session.userId = null
     cDI.session.username = null
     cDI.session.token = null
     await cDI.components.header.strapAuthButton()
   },
+  userId: cDI.stored("codeforthefences.userId"),
   username: cDI.stored("codeforthefences.username"),
   token: cDI.stored("codeforthefences.token")
 }

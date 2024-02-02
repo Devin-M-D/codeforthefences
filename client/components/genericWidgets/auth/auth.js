@@ -22,7 +22,7 @@ cDI.components.auth = {
       })
     if (data.status == "s"){
         user = data.payload
-        await cDI.session.setSession(user.username, user.sessionId)
+        await cDI.session.setSession(user.id, user.username, user.sessionId)
         await cDI.components.header.strapAuthButton()
       }
       else if (data.payload == "Unable to create new user, username is taken.") {
@@ -40,8 +40,8 @@ cDI.components.auth = {
       var pw = $('#txtLoginPW').val()
       var callRes = await cDI.remote.remoteCall("/login", {"username": un, "password": pw })
       return await cDI.remote.h(callRes,
-        async (token) => {
-          await cDI.session.setSession(un, token)
+        async (user) => {
+          await cDI.session.setSession(user.id, un, user.token)
           await cDI.components.header.strapAuthButton()
           return callRes
         },

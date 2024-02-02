@@ -8,3 +8,7 @@
 #vikingChess .kingPiece {
   background-color: gold;
 }
+
+#vikingChess .validMove {
+  background-color: cornflowerblue;
+}
