@@ -6,7 +6,7 @@ cDI.pages.games = {
         <span id="runVikingChess">Viking Chess</span>
       </span>
       <span class="gameBtn mgn10 btnStd">
-        <span id="runOshi" onclick="cDI.pages.games.launchGame('oshi')">Oshi</span>
+        <span id="runOshi">Oshi</span>
       </span>
     </span>
     <span id="gamePane"></span>
@@ -21,10 +21,14 @@ cDI.pages.games = {
     cDI.addAwaitableInput("click", $("#runOshi"), async () => {
       await ftbCmp('games').launchGame('oshi')
     })
-    await cDI.mockInput("click", $("#runVikingChess"))
   },
   launchGame: async (game) => {
-    $("#gamePane").empty()
-    await ftbCmp(game).drawGame($("#gamePane"))
+    if (!cDI.session.token){
+      $("#gamePane").html("Please log in to play!")
+    }
+    else {
+      $("#gamePane").empty()
+      await ftbCmp(game).drawGame($("#gamePane"))
+    }
   }
 }

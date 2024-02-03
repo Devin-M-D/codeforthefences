@@ -141,6 +141,7 @@ cDI.remote = {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         async: true,
+        xhrFields: { withCredentials: true },
         success: function (callRes) {
           ftbLogAjax("Call to:  " + remoteURL + " - Succeeded: ", callRes)
           if (callRes.status == "e" && callRes.payload == "Unable to locate user session") { cDI.clearLogin()  }

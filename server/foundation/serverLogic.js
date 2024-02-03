@@ -27,7 +27,11 @@ function configExpress(port) {
   }
 }
 function addCors(expressApp){
-  expressApp.use(cors())
+  expressApp.use(cors({
+   origin:[process.env.ORIGIN],
+   methods:['GET','POST','PUT','PATCH','DELETE'],
+   credentials: true
+  }))
   expressApp.options('*', cors())
 }
 function addSessions(expressApp){

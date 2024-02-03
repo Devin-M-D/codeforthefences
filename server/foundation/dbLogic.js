@@ -31,7 +31,7 @@ function queryConn(conn, query, params) {
 }
 
 module.exports = {
-  runQuery: async (query, params = null, expectOne = 0) => {
+  runQuery: async (query, params = null, expectOne = 0, debug = 0) => {
     var conn = await createConn()
     var result = await queryConn(conn, query, params)
     await closeConn(conn)
@@ -39,12 +39,15 @@ module.exports = {
       return result.insertId
     }
     result = JSON.parse(JSON.stringify(result))
-    // console.log("{")
-    // console.log("  running query:", query)
-    // console.log("  with params:", params)
-    // console.log("  query result:", result)
-    // console.log("}")
+    if (debug){
+      console.log("{")
+      console.log("  running query:", query)
+      console.log("  with params:", params)
+      console.log("  query result:", result)
+      console.log("}")
+    }
     if (expectOne){
+      if (result.length == 0) { return null }
       if (result.length == 1) { return result[0] }
       if (result.length > 1) { return { status: "e", payload: "Expected one result but got multiple" } }
     }
