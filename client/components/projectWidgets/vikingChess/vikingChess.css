@@ -1,24 +1,20 @@
-#vikingChess > span {
-
+#vikingChess > .gameboard > span > span {
+  padding: 5px;
 }
 #vikingChess .scoreboard {
   flex-basis: 100px;
 }
 #vikingChess .kingSpace {
   background-color: gold;
-  padding: 5px;
 }
 #vikingChess .cornerSpace {
   background-color: lightgreen;
-  padding: 5px;
 }
 #vikingChess .defenderSpace {
   background-color: lightgray;
-  padding: 5px;
 }
 #vikingChess .attackerSpace {
   background-color: lightpink;
-  padding: 5px;
 }
 #vikingChess .validMove {
   background-color: cornflowerblue;

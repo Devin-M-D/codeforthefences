@@ -11,7 +11,6 @@ cDI.components.vikingChess = {
   },
   drawGame: async (container) => {
     var gamedata = await ftbSvc["vikingChess"].getGameState()
-    console.log(gamedata)
     var gamestate = JSON.parse(gamedata.gamestate)
     ftbCmp("vikingChess").gamestate = gamestate
     container.append(ftbCmp("vikingChess").html)
@@ -68,24 +67,62 @@ cDI.components.vikingChess = {
       cDI.addAwaitableInput("click", cell, async () => { await ftbCmp("vikingChess").activatePiece(cell) })
     })
   },
+  deactivatePiece: async (piece) => {
+    $("#vikingChess .validMove").removeClass("validMove")
+  },
   activatePiece: async (currSpace) => {
+    var setValidity = (x, y) => {
+      var potMove = currSpace.siblings(`[data-gridx='${x}'][data-gridy='${y}']`)
+      if (potMove.children("span").length > 0){ return null }
+      else {
+        potMove.addClass("validMove")
+        cDI.addAwaitableInput("click", potMove, async (e) => {
+          var piece = currSpace.children("span").data("piece")
+          var newX = potMove.data("gridx")
+          var newY = potMove.data("gridy")
+          await ftbCmp("vikingChess").modifyGameState(piece, newX, newY)
+        })
+        return true
+      }
+    }
+    // cDI.addAwaitableInput("click", currSpace, async (e) => {
+    //   var piece = currSpace.children("span").data("piece")
+    //   var newX = potMove.data("gridx")
+    //   var newY = potMove.data("gridy")
+    //   await ftbCmp("vikingChess").modifyGameState(piece, newX, newY)
+    // })
+
+
+    $("#vikingChess .validMove").removeClass("validMove")
+
     var x = currSpace.data("gridx")
     var y = currSpace.data("gridy")
-    var sibs = currSpace.siblings(`[data-gridx='${x}'], [data-gridy='${y}']`)
-    //currSpace.siblings(`[data-gridy='${y}']`).addClass("validMove")
-    sibs.map(async (i, validMove) => {
-      validMove = $(validMove)
-      validMove.addClass("validMove")
-      cDI.addAwaitableInput("click", validMove, async (e) => {
-        var piece = currSpace.data("piece")
-        var newX = validMove.data("gridx")
-        var newY = validMove.data("gridy")
-        await ftbCmp("vikingChess").modifyGameState(piece, newX, newY)
-      })
-    })
+    while (x > 0) {
+      x--
+      if (setValidity(x, y) == null) break
+    }
+    x = currSpace.data("gridx")
+    while (x < 10) {
+      x++
+      if (setValidity(x, y) == null) break
+    }
+    x = currSpace.data("gridx")
+
+    while (y > 0) {
+      y--
+      if (setValidity(x, y) == null) break
+    }
+    y = currSpace.data("gridy")
+    while (y < 10) {
+      y++
+      if (setValidity(x, y) == null) break
+    }
   },
   modifyGameState: async (piece, newX, newY) => {
     await ftbSvc["vikingChess"].submitMove(piece, newX, newY)
     await ftbCmp("games").launchGame("vikingChess")
+  },
+  determineCapture: async () =>{
+
   }
 }
