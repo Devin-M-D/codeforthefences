@@ -141,6 +141,7 @@ cDI.remote = {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         async: true,
+        xhrFields: { withCredentials: true },
         success: function (callRes) {
           ftbLogAjax("Call to:  " + remoteURL + " - Succeeded: ", callRes)
           if (callRes.status == "e" && callRes.payload == "Unable to locate user session") { cDI.clearLogin()  }
@@ -372,9 +373,11 @@ cDI.unpersistAll = async () => {
 
 //#region session
 cDI.session = {
-  setSession: async (un, token) => {
+  setSession: async (id, un, token) => {
+    await cDI.persist("codeforthefences.userId", id)
     await cDI.persist("codeforthefences.username", un)
     await cDI.persist("codeforthefences.token", token)
+    cDI.session.userId = cDI.stored("codeforthefences.userId")
     cDI.session.username = cDI.stored("codeforthefences.username")
     cDI.session.token = cDI.stored("codeforthefences.token")
   },
@@ -383,12 +386,15 @@ cDI.session = {
     await cDI.session.clearLogin()
   },
   clearLogin: async () => {
+    await cDI.unpersist("codeforthefences.userId")
     await cDI.unpersist("codeforthefences.username")
     await cDI.unpersist("codeforthefences.token")
+    cDI.session.userId = null
     cDI.session.username = null
     cDI.session.token = null
     await cDI.components.header.strapAuthButton()
   },
+  userId: cDI.stored("codeforthefences.userId"),
   username: cDI.stored("codeforthefences.username"),
   token: cDI.stored("codeforthefences.token")
 }

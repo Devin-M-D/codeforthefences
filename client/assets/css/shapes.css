@@ -1,3 +1,11 @@
+/*#region circle*/
+  .shpCircle {
+    border-radius: 50%;
+    border: solid 3px black;
+    flex-basis: 50%;
+  }
+/*#endregion*/
+
 /*#region arrow*/
   .shpArrow {
     border-color: var(--clrPrimary);

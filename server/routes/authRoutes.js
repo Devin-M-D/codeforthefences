@@ -21,7 +21,8 @@ module.exports = (router) => {
     var user = await authService.findLogin(login.username, login.password)
     if (user) {
       await authService.setSession(req.cookies['connect.sid'], user.id)
-      DI.rh.succeed(res, req.cookies['connect.sid'])
+      user.token = req.cookies['connect.sid']
+      DI.rh.succeed(res, user)
     }
     else {
       DI.rh.fail(res, "Incorrect username or password")
@@ -43,6 +44,8 @@ module.exports = (router) => {
     if (DI.utils.isDef(user)){
       DI.rh.succeed(res, "landed on /user/testToken")
     }
-    DI.rh.fail(res, "session not found")
+    else {
+      DI.rh.fail(res, "session not found")
+    }
   }))
 }
