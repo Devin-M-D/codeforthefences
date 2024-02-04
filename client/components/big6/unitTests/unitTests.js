@@ -7,6 +7,7 @@ cDI.components.unitTests = {
     if (unitTestLevel != 0){
       await cDI.remote.asyncGetScript("/components/big6/unitTests/auth/utAuth.js")
       await cDI.remote.asyncGetScript("/components/big6/unitTests/recipe/utRecipe.js")
+      await cDI.remote.asyncGetScript("/components/big6/unitTests/games/utGames.js")
       if ([0, 1, 4, 5].indexOf(currDebugMode) != -1) { cDI.config.debugMode = 2 }
     }
 
@@ -34,7 +35,7 @@ cDI.components.unitTests = {
     return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 2: customDevScenario",
       async () => {
         await cDI.components.unitTests.loginIfNeccessary()
-        await cDI.components.unitTests.recipe.runAllRecipe()
+        await cDI.components.unitTests.games.runAllGames()
       })
   },
   loginIfNeccessary: async () => {

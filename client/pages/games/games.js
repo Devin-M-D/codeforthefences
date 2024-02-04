@@ -15,10 +15,10 @@ cDI.pages.games = {
   init: async () => {
     await ftbLoadComponent("components/projectWidgets", "vikingChess")
     //await ftbLoadComponent("components/projectWidgets", "oshi")
-    cDI.addAwaitableInput("click", $("#runVikingChess"), async () => {
+    await cDI.addAwaitableInput("click.launchVikingChess", $("#runVikingChess"), async () => {
       await ftbCmp('games').launchGame('vikingChess')
     })
-    cDI.addAwaitableInput("click", $("#runOshi"), async () => {
+    await cDI.addAwaitableInput("click.launchOshi", $("#runOshi"), async () => {
       await ftbCmp('games').launchGame('oshi')
     })
   },
