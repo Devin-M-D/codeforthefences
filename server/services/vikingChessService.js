@@ -10,16 +10,15 @@ vikingChessService.getGame = async (userId) => {
 }
 vikingChessService.submitMove = async (userId, piece, newX, newY) => {
   var gameData = await queryBuilder.quickRun(vikingChessQueries.getGame, [userId, userId], 1)
-  console.log(gameData)
-  var currState = JSON.parse(gameData.gamestate)
-  currSpace = currState[piece]
+  var currPositions = JSON.parse(gameData.gamestate)
+  var currSpace = currPositions[piece]
   var currX = currSpace.split(",")[0]
   var currY = currSpace.split(",")[1]
   if (newX == currX || newY == currY){
     console.log("move is valid")
-    currState[piece] = `${newX},${newY}`
+    currPositions[piece] = `${newX},${newY}`
   }
-    var newGameData = await queryBuilder.quickRun(vikingChessQueries.saveGame, [JSON.stringify(currState), userId, userId], 1)
+    var newGameData = await queryBuilder.quickRun(vikingChessQueries.saveGame, [JSON.stringify(currPositions), userId, userId], 1)
     return gameData
 }
 module.exports = vikingChessService

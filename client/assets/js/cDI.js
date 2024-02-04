@@ -265,6 +265,10 @@ cDI.addAwaitableInput = (inputType, elem, fn, trace = false, debounce = true) =>
     return data
   })
 }
+cDI.removeAwaitableInput = (inputType, elem, fn = null) => {
+  if (fn != null) { elem.off(inputType, fn) }
+  else { elem.off(inputType) }
+}
 cDI.mockInput = async (inputType, elem) => {
   return new Promise((fulfill, reject) => {
     $.when(elem.triggerHandler(inputType)).then(async (res) => {
