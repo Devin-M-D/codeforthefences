@@ -35,18 +35,10 @@ cDI.components.auth = {
       return data
     })
 
-    cDI.addAwaitableInput("click", $("#btnLogin"), async (e) => {
+    await cDI.addAwaitableInput("click.login", $("#btnLogin"), async (e) => {
       var un = $('#txtLoginUN').html()
       var pw = $('#txtLoginPW').val()
-      var callRes = await cDI.remote.remoteCall("/login", {"username": un, "password": pw })
-      return await cDI.remote.h(callRes,
-        async (user) => {
-          await cDI.session.setSession(user.id, un, user.token)
-          await cDI.components.header.strapAuthButton()
-          return callRes
-        },
-        async (callRes) => { console.log("login failed"); return false; }
-      )
+      await cDI.session.login(un, pw)
     })
   }
 }

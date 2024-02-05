@@ -1,27 +1,25 @@
 cDI.components.vikingChess = {
   html: `<span id="vikingChess" class="cols nowrap">
-    <span class="scoreboard"></span>
+    <span class="scoreboard rows"></span>
     <span class="gameboard"></span>
   </span>`,
-  gamestate: null,
+  gamedata: null,
   container: null,
   init: async () => {
     await ftbLoadComponent("components/genericWidgets", "grid")
     await cDI.remote.asyncGetScript(`js/services/vikingChessService.js`)
   },
   drawGame: async (container) => {
-    var gamedata = await ftbSvc["vikingChess"].getGameState()
-    console.log(gamedata)
-    var gamestate = JSON.parse(gamedata.gamestate)
-    ftbCmp("vikingChess").gamestate = gamestate
+    var dataFromServer = await ftbSvc["vikingChess"].getGameState()
+    var gamedata = dataFromServer
+    ftbCmp("vikingChess").gamedata = gamedata
     container.append(ftbCmp("vikingChess").html)
-    var gridDI = ftbCmp("grid")
-    await gridDI.drawGrid($("#vikingChess .gameboard"), 11, 11)
+    await ftbCmp("grid").drawGrid($("#vikingChess .gameboard"), 11, 11)
     await ftbCmp("vikingChess").loadGameState()
     ftbCmp("vikingChess").container = container
   },
   loadGameState: async () => {
-    var gamestate = ftbCmp("vikingChess").gamestate
+    var gamedata = ftbCmp("vikingChess").gamedata
     var kingSpace = $("#vikingChess .gameboard").find(`[data-gridx='5'][data-gridy='5']`).addClass("kingSpace")
 
     var cornerSpaces = ["0,0", "0,10", "10,0", "10,10"]
@@ -52,39 +50,95 @@ cDI.components.vikingChess = {
       var attackerSpace = $("#vikingChess .gameboard").find(`[data-gridx='${itemx}'][data-gridy='${itemy}']`)
       attackerSpace.addClass("attackerSpace")
     })
-    Object.entries(gamestate).map(piece => {
+    $("#vikingChess .scoreboard").html("")
+    await Object.entries(gamedata.gamestate).map(async piece => {
       const pieceName = piece[0];
       const piecePos = piece[1];
+      if (pieceName.indexOf("k") != -1) { type = "king" }
+      if (pieceName.indexOf("w") != -1) { type = "defender" }
+      if (pieceName.indexOf("b") != -1) { type = "attacker" }
+
+      if (piecePos == "cap"){
+        $("#vikingChess .scoreboard").append(`<span class='capBox'><span class='${type}Piece shpCircle'></span></span>`)
+      }
       var x = piecePos.split(",")[0]
       var y = piecePos.split(",")[1]
 
       var cell = $("#vikingChess .gameboard").find(`[data-gridx='${x}'][data-gridy='${y}']`)
-      if (pieceName == "k") { cell.html("<span class='kingPiece shpCircle'></span>") }
       var type = ""
       if (pieceName.indexOf("k") != -1) { type = "king" }
       if (pieceName.indexOf("w") != -1) { type = "defender" }
       if (pieceName.indexOf("b") != -1) { type = "attacker" }
       cell.html(`<span class='${type}Piece shpCircle' data-piece='${pieceName}'></span>`)
-      cDI.addAwaitableInput("click", cell, async () => { await ftbCmp("vikingChess").activatePiece(cell) })
+
+      if (cDI.session.userId == gamedata.player1 && (type == "king" || type == "defender")){
+        await cDI.addAwaitableInput("click.activatePiece", cell, ftbCmp("vikingChess").activatePiece)
+      }
+      else if (cDI.session.userId == gamedata.player2 && type == "attacker") {
+        await cDI.addAwaitableInput("click.activatePiece", cell, ftbCmp("vikingChess").activatePiece)
+      }
     })
   },
-  activatePiece: async (currSpace) => {
+  hasPiece: async (space) => {
+    if (space.children("span").length > 0){
+      return space.children("span").data("piece")
+    }
+    else {
+      return null
+    }
+  },
+  deactivatePiece: async (event) => {
+    var currSpace = $(event.currentTarget)
+    var existingValids = $("#vikingChess .validMove")
+    cDI.removeAwaitableInput("click.movePiece", existingValids)
+    existingValids.removeClass("validMove")
+    cDI.removeAwaitableInput("click.deactivatePiece", currSpace)
+    cDI.addAwaitableInput("click.activatePiece", currSpace, ftbCmp("vikingChess").activatePiece)
+  },
+  setValidity: async (currSpace, potX, potY) => {
+    var potMove = currSpace.siblings(`[data-gridx='${potX}'][data-gridy='${potY}']`)
+    if (ftbCmp("vikingChess").hasPiece(potMove) == null) { return null }
+    else {
+      var piece = currSpace.children("span").data("piece")
+      potMove.addClass("validMove")
+      potMove.data("incpiece", piece)
+      await cDI.addAwaitableInput("click.movePiece", potMove, async () => { await ftbCmp("vikingChess").movePiece(piece, potX, potY) } )
+      return true
+    }
+  },
+
+  activatePiece: async (event) => {
+    var currSpace = $(event.currentTarget)
+    cDI.removeAwaitableInput("click.activatePiece", currSpace)
+    cDI.addAwaitableInput("click.deactivatePiece", currSpace, ftbCmp("vikingChess").deactivatePiece)
+
+    $("#vikingChess .validMove").removeClass("validMove")
+
     var x = currSpace.data("gridx")
     var y = currSpace.data("gridy")
-    var sibs = currSpace.siblings(`[data-gridx='${x}'], [data-gridy='${y}']`)
-    //currSpace.siblings(`[data-gridy='${y}']`).addClass("validMove")
-    sibs.map(async (i, validMove) => {
-      validMove = $(validMove)
-      validMove.addClass("validMove")
-      cDI.addAwaitableInput("click", validMove, async (e) => {
-        var piece = currSpace.data("piece")
-        var newX = validMove.data("gridx")
-        var newY = validMove.data("gridy")
-        await ftbCmp("vikingChess").modifyGameState(piece, newX, newY)
-      })
-    })
+    while (x > 0) {
+      x--
+      if (await ftbCmp("vikingChess").setValidity(currSpace, x, y) == null) break
+    }
+    x = currSpace.data("gridx")
+    while (x < 10) {
+      x++
+      if (await ftbCmp("vikingChess").setValidity(currSpace, x, y) == null) break
+    }
+    x = currSpace.data("gridx")
+
+    while (y > 0) {
+      y--
+      if (await ftbCmp("vikingChess").setValidity(currSpace, x, y) == null) break
+    }
+    y = currSpace.data("gridy")
+    while (y < 10) {
+      y++
+      if (await ftbCmp("vikingChess").setValidity(currSpace, x, y) == null) break
+    }
   },
-  modifyGameState: async (piece, newX, newY) => {
+  movePiece: async (piece, newX, newY) => {
+    //await ftbCmp("vikingChess").determineCapture(newX, newY)
     await ftbSvc["vikingChess"].submitMove(piece, newX, newY)
     await ftbCmp("games").launchGame("vikingChess")
   }

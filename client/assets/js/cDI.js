@@ -265,6 +265,10 @@ cDI.addAwaitableInput = (inputType, elem, fn, trace = false, debounce = true) =>
     return data
   })
 }
+cDI.removeAwaitableInput = (inputType, elem, fn = null) => {
+  if (fn != null) { elem.off(inputType, fn) }
+  else { elem.off(inputType) }
+}
 cDI.mockInput = async (inputType, elem) => {
   return new Promise((fulfill, reject) => {
     $.when(elem.triggerHandler(inputType)).then(async (res) => {
@@ -373,6 +377,17 @@ cDI.unpersistAll = async () => {
 
 //#region session
 cDI.session = {
+  login: async (un, pw) => {
+    var callRes = await cDI.remote.remoteCall("/login", {"username": un, "password": pw })
+    return await cDI.remote.h(callRes,
+      async (user) => {
+        await cDI.session.setSession(user.id, un, user.token)
+        await cDI.components.header.strapAuthButton()
+        return callRes
+      },
+      async (callRes) => { console.log("login failed"); return false; }
+    )
+  },
   setSession: async (id, un, token) => {
     await cDI.persist("codeforthefences.userId", id)
     await cDI.persist("codeforthefences.username", un)
@@ -422,4 +437,10 @@ var ftbLogAjax = (() => {
 var ftbLoadComponent = cDI.remote.loadComponent
 var ftbCmp = cDI.utils.getDIByComponentName
 var ftbSvc = cDI.services
+var loginB = async () => {
+  cDI.session.login("balwar", "testpass")
+}
+var loginF = async () => {
+  cDI.session.login("frinx", "testpass")
+}
 //#endregion
