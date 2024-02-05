@@ -1,6 +1,6 @@
 cDI.components.vikingChess = {
   html: `<span id="vikingChess" class="cols nowrap">
-    <span class="scoreboard"></span>
+    <span class="scoreboard rows"></span>
     <span class="gameboard"></span>
   </span>`,
   gamedata: null,
@@ -50,9 +50,17 @@ cDI.components.vikingChess = {
       var attackerSpace = $("#vikingChess .gameboard").find(`[data-gridx='${itemx}'][data-gridy='${itemy}']`)
       attackerSpace.addClass("attackerSpace")
     })
+    $("#vikingChess .scoreboard").html("")
     await Object.entries(gamedata.gamestate).map(async piece => {
       const pieceName = piece[0];
       const piecePos = piece[1];
+      if (pieceName.indexOf("k") != -1) { type = "king" }
+      if (pieceName.indexOf("w") != -1) { type = "defender" }
+      if (pieceName.indexOf("b") != -1) { type = "attacker" }
+
+      if (piecePos == "cap"){
+        $("#vikingChess .scoreboard").append(`<span class='capBox'><span class='${type}Piece shpCircle'></span></span>`)
+      }
       var x = piecePos.split(",")[0]
       var y = piecePos.split(",")[1]
 
@@ -130,30 +138,8 @@ cDI.components.vikingChess = {
     }
   },
   movePiece: async (piece, newX, newY) => {
-    await ftbCmp("vikingChess").determineCapture(newX, newY)
+    //await ftbCmp("vikingChess").determineCapture(newX, newY)
     await ftbSvc["vikingChess"].submitMove(piece, newX, newY)
-    //await ftbCmp("games").launchGame("vikingChess")
-  },
-  determineCapture: async (newX, newY) =>{
-    var moveCell = $($("#vikingChess .gameboard").find(`[data-gridx='${newX}'][data-gridy='${newY}']`))
-    var movePiece = moveCell.data("piece")
-    if (newX != 0){
-      var westCell = $($("#vikingChess .gameboard").find(`[data-gridx='${newX-1}'][data-gridy='${newY}']`))
-    }
-    if (newX != 10){
-      var northCell = $("#vikingChess .gameboard").find(`[data-gridx='${newX+1}'][data-gridy='${newY}']`)[0]
-    }
-    if (newY != 0){
-      var eastCell = $("#vikingChess .gameboard").find(`[data-gridx='${newX}'][data-gridy='${newY-1}']`)[0]
-    }
-    if (newY != 10){
-      var southCell = $("#vikingChess .gameboard").find(`[data-gridx='${newX}'][data-gridy='${newY+1}']`)[0]
-    }
-    console.log($(westCell))
-    // console.log($(westCell))
-    // console.log(westCell[0])
-    if (ftbCmp("vikingChess").hasPiece(westCell)){
-      westCell.css("border", "solid thick red")
-    }
+    await ftbCmp("games").launchGame("vikingChess")
   }
 }

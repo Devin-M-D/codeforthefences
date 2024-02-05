@@ -1,6 +1,7 @@
 var queryBuilder = require('query-builder')(require('../foundation/dbLogic'))
 var userQueries = require("../queries/user/userQueries")
 var DI = require("../foundation/DICore")
+
 module.exports = {
   getAll: async () => {
     return await queryBuilder.quickRun(userQueries.getAll)

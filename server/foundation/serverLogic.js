@@ -39,7 +39,8 @@ function addSessions(expressApp){
   expressApp.use(session({
     secret: "Shh, its a secret!",
   	resave: true,
-  	saveUninitialized: true
+  	saveUninitialized: true,
+    cookie: { sameSite: 'strict' }
   }))
 }
 

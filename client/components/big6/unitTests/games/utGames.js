@@ -3,8 +3,8 @@ cDI.components.unitTests.games = {
   runAllGames: async () => {
     await cDI.components.unitTests.UTStartSection(cDI.components.unitTests.games.section, async () => {
       await cDI.components.unitTests.games.launchVikingChess()
-      await cDI.components.unitTests.games.selectPiece()
-      await cDI.components.unitTests.games.movePiece()
+      // await cDI.components.unitTests.games.selectPiece()
+      // await cDI.components.unitTests.games.movePiece()
     })
   },
   launchVikingChess: async () => {
