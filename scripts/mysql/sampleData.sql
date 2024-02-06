@@ -193,4 +193,4 @@ INSERT INTO stepMap (recipeStepId, stepMapTypeId, barsIndex, recipeIndex) VALUES
 SET @gamestate1 = '{ "k": "5,5", "w1": "5,3", "w2": "4,4", "w3": "5,4", "w4": "6,4", "w5": "3,5", "w6": "4,5", "w7": "6,5", "w8": "7,5", "w9": "4,6", "w10": "5,6", "w11": "6,6", "w12": "5,7", ';
 SET @gamestate2 = '"b1": "3,0", "b2": "4,0", "b3": "5,0", "b4": "6,0", "b5": "7,0", "b6": "5,1", "b7": "0,3", "b8": "0,4", "b9": "0,5", "b10": "0,6", "b11": "0,7", "b12": "1,5", "b13": "10,3", "b14": "10,4", "b15": "10,5", "b16": "10,6", "b17": "10,7", "b18": "9,5", "b19": "5,9", "b20": "3,10", "b21": "4,10", "b22": "5,10", "b23": "6,10", "b24": "7,10"}';
 SET @gamestate = CONCAT_WS('', @gamestate1, @gamestate2);
-INSERT INTO vikingChess (player1, player2, gamestate) VALUES (@user2, @user3, @gamestate);
+INSERT INTO vikingChess (player1, player2, turn, gamestate) VALUES (@user2, @user3, 0, @gamestate);

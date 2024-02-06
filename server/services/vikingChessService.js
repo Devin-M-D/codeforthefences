@@ -5,6 +5,9 @@ var vikingChessQueries = require("../queries/vikingChess/vikingChessQueries")
 
 var vikingChessService = {}
 vikingChessService.getGame = async (userId) => {
+  var query = db.querify(vikingChessQueries.getGame2)
+  var gamedata0 = await db.runQuery(query, null, 0, 1)
+  console.log("gamedata0", gamedata0)
   var gamedata = await queryBuilder.quickRun(vikingChessQueries.getGame, [userId, userId], 1, 1)
   gamedata.gamestate = JSON.parse(gamedata.gamestate)
   return gamedata
@@ -73,7 +76,10 @@ vikingChessService.isCornerSpace = (xVal, yVal) => {
     || (xVal == 10 && yVal == 10)) { return true }
   return false
 }
-
+vikingChessService.isKingSpace = (xVal, yVal) => {
+  if (xVal == 5 && yVal == 5) { return true }
+  return false
+}
 vikingChessService.determineCapture = (gamedata, userId, activePiece, newX, newY) => {
   var checkDir = (newXYval, axis, dir) => {
     var minMax = dir == 0 ? 0 : 10
@@ -89,7 +95,10 @@ vikingChessService.determineCapture = (gamedata, userId, activePiece, newX, newY
         threatY = tmpY
         tmpX = axis == 0 ?  tmpX + incVal : newX
         tmpY = axis == 1 ?  tmpY + incVal : newY
-        if (vikingChessService.isCornerSpace(tmpX, tmpY)){
+        if (vikingChessService.isCornerSpace(tmpX, tmpY) && threatened[0] != "k"){
+          basicSandwich = true
+        }
+        else if (vikingChessService.isKingSpace(tmpX, tmpY) && threatened[0] == "k"){
           basicSandwich = true
         }
         else {
@@ -116,7 +125,9 @@ vikingChessService.determineCapture = (gamedata, userId, activePiece, newX, newY
           }
           flanker1 = vikingChessService.hasPiece(gamedata.gamestate, flanker1X, flanker1Y)
           flanker2 = vikingChessService.hasPiece(gamedata.gamestate, flanker2X, flanker2Y)
-          if (flanker1 && flanker2){
+          if ((flanker1 || vikingChessService.isKingSpace(flanker1X, flanker1Y))
+            && (flanker2 || vikingChessService.isKingSpace(flanker2X, flanker2Y))
+          ){
             gamedata.gamestate[threatened[0]] = "cap"
           }
         }
