@@ -1,6 +1,10 @@
 cDI.components.vikingChess = {
   html: `<span id="vikingChess" class="cols nowrap">
-    <span class="scoreboard rows"></span>
+    <span class="scoreboard rows">
+      <span id="vikingChessP1" class="absCen"></span>
+      <span id="vikingChessCaptures"></span>
+      <span id="vikingChessP2" class="absCen"></span>
+    </span>
     <span class="gameboard"></span>
   </span>`,
   gamedata: null,
@@ -20,6 +24,16 @@ cDI.components.vikingChess = {
   },
   loadGameState: async () => {
     var gamedata = ftbCmp("vikingChess").gamedata
+    $("#vikingChessP1").html(gamedata.player1.username)
+    $("#vikingChessP2").html(gamedata.player2.username)
+    if (gamedata.turn % 2 == 0) {
+      $("#vikingChessP1").addClass("sectionHeader")
+      $("#vikingChessP2").removeClass("sectionHeader")
+    }
+    else {
+      $("#vikingChessP1").removeClass("sectionHeader")
+      $("#vikingChessP2").addClass("sectionHeader")
+    }
     var kingSpace = $("#vikingChess .gameboard").find(`[data-gridx='5'][data-gridy='5']`).addClass("kingSpace")
 
     var cornerSpaces = ["0,0", "0,10", "10,0", "10,10"]
@@ -50,7 +64,7 @@ cDI.components.vikingChess = {
       var attackerSpace = $("#vikingChess .gameboard").find(`[data-gridx='${itemx}'][data-gridy='${itemy}']`)
       attackerSpace.addClass("attackerSpace")
     })
-    $("#vikingChess .scoreboard").html("")
+    $("#vikingChess .scoreboard .vikingChessCaptures").html("")
     await Object.entries(gamedata.gamestate).map(async piece => {
       const pieceName = piece[0];
       const piecePos = piece[1];
@@ -59,7 +73,7 @@ cDI.components.vikingChess = {
       if (pieceName.indexOf("b") != -1) { type = "attacker" }
 
       if (piecePos == "cap"){
-        $("#vikingChess .scoreboard").append(`<span class='capBox'><span class='${type}Piece shpCircle'></span></span>`)
+        $("#vikingChess .scoreboard .vikingChessCaptures").append(`<span class='capBox'><span class='${type}Piece shpCircle'></span></span>`)
       }
       var x = piecePos.split(",")[0]
       var y = piecePos.split(",")[1]
@@ -71,10 +85,10 @@ cDI.components.vikingChess = {
       if (pieceName.indexOf("b") != -1) { type = "attacker" }
       cell.html(`<span class='${type}Piece shpCircle' data-piece='${pieceName}'></span>`)
 
-      if (cDI.session.userId == gamedata.player1 && (type == "king" || type == "defender")){
+      if (cDI.session.userId == gamedata.player1.id && gamedata.turn % 2 == 0 && (type == "king" || type == "defender")){
         await cDI.addAwaitableInput("click.activatePiece", cell, ftbCmp("vikingChess").activatePiece)
       }
-      else if (cDI.session.userId == gamedata.player2 && type == "attacker") {
+      else if (cDI.session.userId == gamedata.player2.id && gamedata.turn % 2 == 1 && type == "attacker") {
         await cDI.addAwaitableInput("click.activatePiece", cell, ftbCmp("vikingChess").activatePiece)
       }
     })

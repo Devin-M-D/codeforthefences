@@ -2,13 +2,13 @@ var DI = require("../foundation/DICore")
 var db = require('../foundation/dbLogic')
 var queryBuilder = require('query-builder')(db)
 var vikingChessQueries = require("../queries/vikingChess/vikingChessQueries")
+var userQueries = require("../queries/user/userQueries")
 
 var vikingChessService = {}
 vikingChessService.getGame = async (userId) => {
-  var query = db.querify(vikingChessQueries.getGame2)
-  var gamedata0 = await db.runQuery(query, null, 0, 1)
-  console.log("gamedata0", gamedata0)
-  var gamedata = await queryBuilder.quickRun(vikingChessQueries.getGame, [userId, userId], 1, 1)
+  var gamedata = await db.runQuery(vikingChessQueries.getGame, [userId, userId], 1, 1)
+  gamedata.player1 = userQueries.mapIdAndName(gamedata.player1Id, gamedata.player1Name)
+  gamedata.player2 = userQueries.mapIdAndName(gamedata.player2Id, gamedata.player2Name)
   gamedata.gamestate = JSON.parse(gamedata.gamestate)
   return gamedata
 }
@@ -21,8 +21,8 @@ vikingChessService.submitMove = async (userId, piece, newX, newY) => {
   var currY = currSpace.split(",")[1]
 
   //basic checks
-  if ((gamedata.player1 == userId && piece.indexOf("b") != -1)
-    || (gamedata.player2 == userId && (piece.indexOf("k") != -1 || piece.indexOf("w") != -1))
+  if ((gamedata.player1.id == userId && piece.indexOf("b") != -1)
+    || (gamedata.player2.id == userId && (piece.indexOf("k") != -1 || piece.indexOf("w") != -1))
   ) { throw ("Cannot move opponent's piece!") }
   if (newX == currX && newY == currY) { throw ("Cannot move to the same space!") }
   if (newX != currX && newY != currY) { throw ("Must move in a straight line!") }
@@ -59,14 +59,15 @@ vikingChessService.submitMove = async (userId, piece, newX, newY) => {
   }
   if (jumpedPieces.length > 0){ throw ("Cannot jump a piece!") }
 
+  // gamedata.turn += 1
   vikingChessService.determineCapture(gamedata, userId, piece, newX, newY)
   gamestate[piece] = `${newX},${newY}`
   var newGameData = await queryBuilder.quickRun(vikingChessQueries.saveGame, [JSON.stringify(gamestate), userId, userId])
   return newGameData
 }
 vikingChessService.isOpponentPiece = (gamedata, userId, piece) => {
-  if (gamedata.player1 == userId && piece.indexOf("b") != -1) { return true }
-  else if (gamedata.player2 == userId && piece.indexOf("b") == -1) { return true }
+  if (gamedata.player1.id == userId && piece.indexOf("b") != -1) { return true }
+  else if (gamedata.player2.id == userId && piece.indexOf("b") == -1) { return true }
   return false
 }
 vikingChessService.isCornerSpace = (xVal, yVal) => {

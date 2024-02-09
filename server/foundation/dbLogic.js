@@ -30,47 +30,17 @@ function queryConn(conn, query, params) {
   })
 }
 
-var querify = (obj, layer = 0, index = 0, where = null) => {
-  var tempTblName = `tmp_${obj["tableName"]}_${layer}_${index}`
+var addTmpTable = (name, innerQuery) => {
   var query = `CREATE TEMPORARY TABLE ${tempTblName} (
-  SELECT
-  `
-  var fields = Object.entries(obj).filter(prop => { return prop[0] != "tableName" }).map(prop => { return prop[0] })
-  fields = fields.join(", ")
-  query += fields
-  query += `
-  FROM ${obj["tableName"]}`
-  if (where != null){
-    query += `
-WHERE id IN (${where})
-    `}
-  query += `
+${innerQuery}
 );
 SELECT * FROM tmp_${obj["tableName"]}_${layer}_${index};
 
 `
-  var nextLayer = Object.entries(obj).filter(prop => { return typeof prop[1] == "object" })
-  var subtables = []
-  var subQueries = nextLayer.map(prop => {
-    var subindex = 0
-    var dupeSubtables = subtables.filter(subTable => subTable[0] == prop[1].tableName)
-    if (dupeSubtables.length == 0){
-      subtables.push([prop[1].tableName, 0])
-    }
-    else {
-      dupeSubtables[0][1] = dupeSubtables[0][1] + 1
-      subindex = dupeSubtables[0][1]
-    }
-    return querify(prop[1], layer+1, subindex, `SELECT ${prop[0]} FROM ${tempTblName}`)
-  })
-
-  subQueries = subQueries.join(`
-`)
-  query += subQueries
   return query
 }
 module.exports = {
-  querify: querify,
+  addTmpTable: addTmpTable,
   runQuery: async (query, params = null, expectOne = 0, debug = 0) => {
     var conn = await createConn()
     var result = await queryConn(conn, query, params)

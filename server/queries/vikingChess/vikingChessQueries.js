@@ -1,12 +1,15 @@
-var vikingChessModel = require('../../models/vikingChess/vikingChessModel')
+var userQueries = require('../user/userQueries')
 
 var vikingChessQueries = {}
 
-vikingChessQueries.getGame = `SELECT * FROM vikingChess WHERE player1 = ? OR player2 = ?`
+vikingChessQueries.getGame =
+`SELECT vc.*
+, ${userQueries.prjIdAndName("u", "player1Id", "player1Name")}
+, ${userQueries.prjIdAndName("u2", "player2Id", "player2Name")}
+FROM vikingChess vc
+INNER JOIN user u ON u.id = vc.player1
+INNER JOIN user u2 ON u2.id = vc.player2
+WHERE player1 = ? OR player2 = ?`
 vikingChessQueries.saveGame = `UPDATE vikingChess SET gamestate = ?, turn = turn + 1 WHERE player1 = ? OR player2 = ?`
-
-var getGame2 = vikingChessModel
-// vikingChessModel.where = vikingChessModel.
-vikingChessQueries.getGame2 = getGame2
 
 module.exports = vikingChessQueries

@@ -361,22 +361,28 @@ cDI.stdIcons.btnAddRemove = (addOrRemove, size, id) => {
 //#endregion
 
 //#region localstorage
-cDI.persist = async (name, val) => {
+cDI.persist = (name, val) => {
   window.localStorage.setItem(name, val)
 }
 cDI.stored = (name) => {
   return window.localStorage.getItem(name)
 }
-cDI.unpersist = async (name) => {
+cDI.unpersist = (name) => {
   window.localStorage.removeItem(name)
 }
-cDI.unpersistAll = async () => {
+cDI.unpersistAll = () => {
   window.localStorage.clear()
 }
 //#endregion
 
 //#region session
 cDI.session = {
+  setTestCredentials: (un, pw) => {
+    cDI.unpersist("codeforthefences.test.username")
+    cDI.unpersist("codeforthefences.test.password")
+    cDI.persist("codeforthefences.test.username", un)
+    cDI.persist("codeforthefences.test.password", pw)
+  },
   login: async (un, pw) => {
     var callRes = await cDI.remote.remoteCall("/login", {"username": un, "password": pw })
     return await cDI.remote.h(callRes,
@@ -389,9 +395,9 @@ cDI.session = {
     )
   },
   setSession: async (id, un, token) => {
-    await cDI.persist("codeforthefences.userId", id)
-    await cDI.persist("codeforthefences.username", un)
-    await cDI.persist("codeforthefences.token", token)
+    cDI.persist("codeforthefences.userId", id)
+    cDI.persist("codeforthefences.username", un)
+    cDI.persist("codeforthefences.token", token)
     cDI.session.userId = cDI.stored("codeforthefences.userId")
     cDI.session.username = cDI.stored("codeforthefences.username")
     cDI.session.token = cDI.stored("codeforthefences.token")
@@ -401,14 +407,16 @@ cDI.session = {
     await cDI.session.clearLogin()
   },
   clearLogin: async () => {
-    await cDI.unpersist("codeforthefences.userId")
-    await cDI.unpersist("codeforthefences.username")
-    await cDI.unpersist("codeforthefences.token")
+    cDI.unpersist("codeforthefences.userId")
+    cDI.unpersist("codeforthefences.username")
+    cDI.unpersist("codeforthefences.token")
     cDI.session.userId = null
     cDI.session.username = null
     cDI.session.token = null
     await cDI.components.header.strapAuthButton()
   },
+  testuser: cDI.stored("codeforthefences.test.username"),
+  testpass: cDI.stored("codeforthefences.test.password"),
   userId: cDI.stored("codeforthefences.userId"),
   username: cDI.stored("codeforthefences.username"),
   token: cDI.stored("codeforthefences.token")
@@ -437,10 +445,5 @@ var ftbLogAjax = (() => {
 var ftbLoadComponent = cDI.remote.loadComponent
 var ftbCmp = cDI.utils.getDIByComponentName
 var ftbSvc = cDI.services
-var loginB = async () => {
-  cDI.session.login("balwar", "testpass")
-}
-var loginF = async () => {
-  cDI.session.login("frinx", "testpass")
-}
+var ftbSetLogin = cDI.session.setTestCredentials
 //#endregion

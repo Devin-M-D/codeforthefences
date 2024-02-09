@@ -47,11 +47,13 @@ cDI.components.unitTests.auth = {
            await cDI.session.logout()
         }
         await cDI.components.unitTests.auth.clickAuthIcon()
-        $("#txtLoginUN").html(cDI.config.user.username)
-        $("#txtLoginPW").val(cDI.config.user.password)
+        var un = cDI.session.testuser
+        var pw = cDI.session.testpass
+        $("#txtLoginUN").html(un)
+        $("#txtLoginPW").val(pw)
         await cDI.components.unitTests.auth.clickLogin()
       },
-      (res) => { return cDI.session.username == cDI.config.user.username }, log
+      (res) => { return cDI.session.username == cDI.session.testuser }, log
     )
   }
 }
