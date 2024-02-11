@@ -59,7 +59,11 @@ vikingChessService.submitMove = async (userId, piece, newX, newY) => {
   }
   if (jumpedPieces.length > 0){ throw ("Cannot jump a piece!") }
 
-  // gamedata.turn += 1
+  if (piece == "k" && vikingChessService.isCornerSpace(newX, newY)) {
+    gamedata.ended = 1
+    gamedata.winner = 1
+  }
+
   vikingChessService.determineCapture(gamedata, userId, piece, newX, newY)
   gamestate[piece] = `${newX},${newY}`
   var newGameData = await queryBuilder.quickRun(vikingChessQueries.saveGame, [JSON.stringify(gamestate), userId, userId])

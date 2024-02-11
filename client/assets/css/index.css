@@ -190,6 +190,7 @@ span[contenteditable="true"] {
 .noUnderline { text-decoration: none !important; }
 .bold { font-weight: bold; }
 .italic { font-style: italic; }
+.underline { text-decoration: underline; }
 p {
   display: inline-block;
   margin-block-start: 0px;

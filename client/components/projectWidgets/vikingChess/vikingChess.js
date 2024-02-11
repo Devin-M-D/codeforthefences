@@ -26,13 +26,13 @@ cDI.components.vikingChess = {
     var gamedata = ftbCmp("vikingChess").gamedata
     $("#vikingChessP1").html(gamedata.player1.username)
     $("#vikingChessP2").html(gamedata.player2.username)
-    if (gamedata.turn % 2 == 0) {
-      $("#vikingChessP1").addClass("sectionHeader")
-      $("#vikingChessP2").removeClass("sectionHeader")
+    if (gamedata.turn % 2 == 1) {
+      $("#vikingChessP1").addClass("sectionHeader").addClass("underline")
+      $("#vikingChessP2").removeClass("sectionHeader").removeClass("underline")
     }
     else {
-      $("#vikingChessP1").removeClass("sectionHeader")
-      $("#vikingChessP2").addClass("sectionHeader")
+      $("#vikingChessP1").removeClass("sectionHeader").removeClass("underline")
+      $("#vikingChessP2").addClass("sectionHeader").addClass("underline")
     }
     var kingSpace = $("#vikingChess .gameboard").find(`[data-gridx='5'][data-gridy='5']`).addClass("kingSpace")
 
@@ -85,10 +85,10 @@ cDI.components.vikingChess = {
       if (pieceName.indexOf("b") != -1) { type = "attacker" }
       cell.html(`<span class='${type}Piece shpCircle' data-piece='${pieceName}'></span>`)
 
-      if (cDI.session.userId == gamedata.player1.id && gamedata.turn % 2 == 0 && (type == "king" || type == "defender")){
+      if (cDI.session.userId == gamedata.player1.id && gamedata.turn % 2 == 1 && (type == "king" || type == "defender")){
         await cDI.addAwaitableInput("click.activatePiece", cell, ftbCmp("vikingChess").activatePiece)
       }
-      else if (cDI.session.userId == gamedata.player2.id && gamedata.turn % 2 == 1 && type == "attacker") {
+      else if (cDI.session.userId == gamedata.player2.id && gamedata.turn % 2 == 0 && type == "attacker") {
         await cDI.addAwaitableInput("click.activatePiece", cell, ftbCmp("vikingChess").activatePiece)
       }
     })
