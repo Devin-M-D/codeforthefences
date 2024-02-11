@@ -3,6 +3,12 @@ var userModel = require('../../models/shared/user/userModel')
 
 var userQueries = {}
 
+userQueries.prjIdAndName = (tblAlias, idAlias, nameAlias) => {
+  return `${tblAlias}.id AS ${idAlias}, ${tblAlias}.username AS ${nameAlias}`
+}
+userQueries.mapIdAndName = (id, username) => {
+  return { id: id, username: username }
+}
 userQueries.selectBase = `SELECT
 ${queryBuilder.projections(userModel, 0)}
 FROM user`

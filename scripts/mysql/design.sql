@@ -114,5 +114,6 @@ CREATE TABLE vikingChess (
   `id` int AUTO_INCREMENT primary key NOT NULL,
   `player1` int NOT NULL,
   `player2` int NOT NULL,
+  `turn` int NOT NULL,
   `gamestate` nvarchar(1000) NOT NULL
 );

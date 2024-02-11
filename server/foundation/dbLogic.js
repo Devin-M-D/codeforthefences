@@ -30,7 +30,17 @@ function queryConn(conn, query, params) {
   })
 }
 
+var addTmpTable = (name, innerQuery) => {
+  var query = `CREATE TEMPORARY TABLE ${tempTblName} (
+${innerQuery}
+);
+SELECT * FROM tmp_${obj["tableName"]}_${layer}_${index};
+
+`
+  return query
+}
 module.exports = {
+  addTmpTable: addTmpTable,
   runQuery: async (query, params = null, expectOne = 0, debug = 0) => {
     var conn = await createConn()
     var result = await queryConn(conn, query, params)
@@ -50,6 +60,12 @@ module.exports = {
       if (result.length == 0) { return null }
       if (result.length == 1) { return result[0] }
       if (result.length > 1) { return { status: "e", payload: "Expected one result but got multiple" } }
+    }
+    else {
+      try {
+        result = result.filter((responseObj, i) => { return i % 2 == 1 })
+      }
+      catch{}
     }
     return result
   }

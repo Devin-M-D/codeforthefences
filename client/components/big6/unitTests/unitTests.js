@@ -39,30 +39,32 @@ cDI.components.unitTests = {
       })
   },
   loginIfNeccessary: async () => {
-    return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 3: loginIfNeccessary (just login if the session has expired)",
+    return await cDI.components.unitTests.UTStartSection(
+      "Unit Tests set to level 3: loginIfNeccessary (just login if the session has expired)",
       async () => {
         ftbIndent()
-        //if not logged in, use debugConf set in bootstrap to set an impersonate
-        if (!cDI.utils.isDef(cDI.session.token)) {
-          ftbLogUT(`Not logged in, logging with ${cDI.config.user.username} and ${cDI.config.user.password}`)
-          await ftbCmp("unitTests").auth.login()
-          ftbLogUT(`login succeeded token: ${cDI.session.token.substr(0, 5)}...`)
-        }
         //if we think we're logged in, verify by making a call. Triggers an implicit logout in the remoteCall func if call result has status "e".
-        else {
+        if (cDI.utils.isDef(cDI.session.token)){
           ftbLogUT(`active session detected, testing`)
           var sessionTest = await cDI.remote.remoteCall("/user/testToken")
           if (sessionTest.status == 's'){
             ftbLogUT(`active session still valid, proceeding: (session id: ${cDI.session.token.substr(0, 5)}...)`)
           }
           else {
-            ftbLogUT(`error with session, trying login`)
+            ftbLogUT(`error with session, clearing`)
             await cDI.session.clearLogin()
-            await ftbCmp("unitTests").auth.login()
           }
         }
+        //if not logged in, use debugConf set in bootstrap to set an impersonate
+        if (!cDI.utils.isDef(cDI.session.token)) {
+          ftbLogUT(`Not logged in, logging with ${cDI.session.testuser} and ${cDI.session.testpass}`)
+          if (!cDI.session.testuser) { cDI.session.setTestCredentials(cDI.config.user.username, cDI.config.user.password) }
+          await ftbCmp("unitTests").auth.login()
+          ftbLogUT(`login succeeded token: ${cDI.session.token.substr(0, 5)}...`)
+        }
         ftbOutdent()
-      })
+      }
+    )
   },
 //#endregion
 //#region indentation wrappers

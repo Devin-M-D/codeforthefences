@@ -2,10 +2,13 @@ var DI = require("../foundation/DICore")
 var db = require('../foundation/dbLogic')
 var queryBuilder = require('query-builder')(db)
 var vikingChessQueries = require("../queries/vikingChess/vikingChessQueries")
+var userQueries = require("../queries/user/userQueries")
 
 var vikingChessService = {}
 vikingChessService.getGame = async (userId) => {
-  var gamedata = await queryBuilder.quickRun(vikingChessQueries.getGame, [userId, userId], 1, 1)
+  var gamedata = await db.runQuery(vikingChessQueries.getGame, [userId, userId], 1, 1)
+  gamedata.player1 = userQueries.mapIdAndName(gamedata.player1Id, gamedata.player1Name)
+  gamedata.player2 = userQueries.mapIdAndName(gamedata.player2Id, gamedata.player2Name)
   gamedata.gamestate = JSON.parse(gamedata.gamestate)
   return gamedata
 }
@@ -18,8 +21,8 @@ vikingChessService.submitMove = async (userId, piece, newX, newY) => {
   var currY = currSpace.split(",")[1]
 
   //basic checks
-  if ((gamedata.player1 == userId && piece.indexOf("b") != -1)
-    || (gamedata.player2 == userId && (piece.indexOf("k") != -1 || piece.indexOf("w") != -1))
+  if ((gamedata.player1.id == userId && piece.indexOf("b") != -1)
+    || (gamedata.player2.id == userId && (piece.indexOf("k") != -1 || piece.indexOf("w") != -1))
   ) { throw ("Cannot move opponent's piece!") }
   if (newX == currX && newY == currY) { throw ("Cannot move to the same space!") }
   if (newX != currX && newY != currY) { throw ("Must move in a straight line!") }
@@ -56,14 +59,19 @@ vikingChessService.submitMove = async (userId, piece, newX, newY) => {
   }
   if (jumpedPieces.length > 0){ throw ("Cannot jump a piece!") }
 
+  if (piece == "k" && vikingChessService.isCornerSpace(newX, newY)) {
+    gamedata.ended = 1
+    gamedata.winner = 1
+  }
+
   vikingChessService.determineCapture(gamedata, userId, piece, newX, newY)
   gamestate[piece] = `${newX},${newY}`
   var newGameData = await queryBuilder.quickRun(vikingChessQueries.saveGame, [JSON.stringify(gamestate), userId, userId])
   return newGameData
 }
 vikingChessService.isOpponentPiece = (gamedata, userId, piece) => {
-  if (gamedata.player1 == userId && piece.indexOf("b") != -1) { return true }
-  else if (gamedata.player2 == userId && piece.indexOf("b") == -1) { return true }
+  if (gamedata.player1.id == userId && piece.indexOf("b") != -1) { return true }
+  else if (gamedata.player2.id == userId && piece.indexOf("b") == -1) { return true }
   return false
 }
 vikingChessService.isCornerSpace = (xVal, yVal) => {
@@ -73,7 +81,10 @@ vikingChessService.isCornerSpace = (xVal, yVal) => {
     || (xVal == 10 && yVal == 10)) { return true }
   return false
 }
-
+vikingChessService.isKingSpace = (xVal, yVal) => {
+  if (xVal == 5 && yVal == 5) { return true }
+  return false
+}
 vikingChessService.determineCapture = (gamedata, userId, activePiece, newX, newY) => {
   var checkDir = (newXYval, axis, dir) => {
     var minMax = dir == 0 ? 0 : 10
@@ -89,7 +100,10 @@ vikingChessService.determineCapture = (gamedata, userId, activePiece, newX, newY
         threatY = tmpY
         tmpX = axis == 0 ?  tmpX + incVal : newX
         tmpY = axis == 1 ?  tmpY + incVal : newY
-        if (vikingChessService.isCornerSpace(tmpX, tmpY)){
+        if (vikingChessService.isCornerSpace(tmpX, tmpY) && threatened[0] != "k"){
+          basicSandwich = true
+        }
+        else if (vikingChessService.isKingSpace(tmpX, tmpY) && threatened[0] == "k"){
           basicSandwich = true
         }
         else {
@@ -116,7 +130,9 @@ vikingChessService.determineCapture = (gamedata, userId, activePiece, newX, newY
           }
           flanker1 = vikingChessService.hasPiece(gamedata.gamestate, flanker1X, flanker1Y)
           flanker2 = vikingChessService.hasPiece(gamedata.gamestate, flanker2X, flanker2Y)
-          if (flanker1 && flanker2){
+          if ((flanker1 || vikingChessService.isKingSpace(flanker1X, flanker1Y))
+            && (flanker2 || vikingChessService.isKingSpace(flanker2X, flanker2Y))
+          ){
             gamedata.gamestate[threatened[0]] = "cap"
           }
         }
