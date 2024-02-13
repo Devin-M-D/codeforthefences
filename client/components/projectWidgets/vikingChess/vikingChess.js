@@ -9,18 +9,23 @@ cDI.components.vikingChess = {
   </span>`,
   gamedata: null,
   container: null,
+  poll: null,
   init: async () => {
     await ftbLoadComponent("components/genericWidgets", "grid")
     await cDI.remote.asyncGetScript(`js/services/vikingChessService.js`)
   },
-  drawGame: async (container) => {
-    var dataFromServer = await ftbSvc["vikingChess"].getGameState()
-    var gamedata = dataFromServer
+  drawGame: async (container, gamedata = null) => {
+    container.empty()
+    if (gamedata == null){
+      var dataFromServer = await ftbSvc["vikingChess"].getGameState()
+      gamedata = dataFromServer
+    }
     ftbCmp("vikingChess").gamedata = gamedata
     container.append(ftbCmp("vikingChess").html)
     await ftbCmp("grid").drawGrid($("#vikingChess .gameboard"), 11, 11)
     await ftbCmp("vikingChess").loadGameState()
     ftbCmp("vikingChess").container = container
+    ftbCmp("vikingChess").pollUpdates()
   },
   loadGameState: async () => {
     var gamedata = ftbCmp("vikingChess").gamedata
@@ -73,7 +78,7 @@ cDI.components.vikingChess = {
       if (pieceName.indexOf("b") != -1) { type = "attacker" }
 
       if (piecePos == "cap"){
-        $("#vikingChess .scoreboard .vikingChessCaptures").append(`<span class='capBox'><span class='${type}Piece shpCircle'></span></span>`)
+        $("#vikingChess .scoreboard #vikingChessCaptures").append(`<span class='capBox'><span class='${type}Piece shpCircle'></span></span>`)
       }
       var x = piecePos.split(",")[0]
       var y = piecePos.split(",")[1]
@@ -93,12 +98,23 @@ cDI.components.vikingChess = {
       }
     })
   },
-  hasPiece: async (space) => {
+  pollUpdates: async () => {
+    if (ftbCmp("vikingChess").poll == null) {
+      var fn = setInterval(async () => {
+        var dataFromServer = await ftbSvc["vikingChess"].getGameState()
+        if (ftbCmp("vikingChess").gamedata.turn != dataFromServer.turn){
+          await ftbCmp("vikingChess").drawGame(ftbCmp("vikingChess").container, dataFromServer)
+        }
+      }, 3000)
+      ftbCmp("vikingChess").poll = fn
+    }
+  },
+  hasPiece: (space) => {
     if (space.children("span").length > 0){
       return space.children("span").data("piece")
     }
     else {
-      return null
+      return false
     }
   },
   deactivatePiece: async (event) => {
@@ -109,13 +125,12 @@ cDI.components.vikingChess = {
     cDI.removeAwaitableInput("click.deactivatePiece", currSpace)
     cDI.addAwaitableInput("click.activatePiece", currSpace, ftbCmp("vikingChess").activatePiece)
   },
-  setValidity: async (currSpace, potX, potY) => {
+  isValidMove: async (currSpace, potX, potY) => {
     var potMove = currSpace.siblings(`[data-gridx='${potX}'][data-gridy='${potY}']`)
-    if (ftbCmp("vikingChess").hasPiece(potMove) == null) { return null }
+    if (ftbCmp("vikingChess").hasPiece(potMove) != false) { return false }
     else {
       var piece = currSpace.children("span").data("piece")
       potMove.addClass("validMove")
-      potMove.data("incpiece", piece)
       await cDI.addAwaitableInput("click.movePiece", potMove, async () => { await ftbCmp("vikingChess").movePiece(piece, potX, potY) } )
       return true
     }
@@ -132,23 +147,23 @@ cDI.components.vikingChess = {
     var y = currSpace.data("gridy")
     while (x > 0) {
       x--
-      if (await ftbCmp("vikingChess").setValidity(currSpace, x, y) == null) break
+      if (await ftbCmp("vikingChess").isValidMove(currSpace, x, y) == false) break
     }
     x = currSpace.data("gridx")
     while (x < 10) {
       x++
-      if (await ftbCmp("vikingChess").setValidity(currSpace, x, y) == null) break
+      if (await ftbCmp("vikingChess").isValidMove(currSpace, x, y) == false) break
     }
     x = currSpace.data("gridx")
 
     while (y > 0) {
       y--
-      if (await ftbCmp("vikingChess").setValidity(currSpace, x, y) == null) break
+      if (await ftbCmp("vikingChess").isValidMove(currSpace, x, y) == false) break
     }
     y = currSpace.data("gridy")
     while (y < 10) {
       y++
-      if (await ftbCmp("vikingChess").setValidity(currSpace, x, y) == null) break
+      if (await ftbCmp("vikingChess").isValidMove(currSpace, x, y) == false) break
     }
   },
   movePiece: async (piece, newX, newY) => {

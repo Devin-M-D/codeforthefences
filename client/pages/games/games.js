@@ -27,7 +27,6 @@ cDI.pages.games = {
       $("#gamePane").html("Please log in to play!")
     }
     else {
-      $("#gamePane").empty()
       await ftbCmp(game).drawGame($("#gamePane"))
     }
   }
