@@ -19,16 +19,19 @@
 #vikingChess .validMove {
   background-color: cornflowerblue;
 }
-#vikingChess .kingPiece {
+#vikingChess .kPiece {
   background-color: yellow;
 }
-#vikingChess .defenderPiece {
+#vikingChess .wPiece {
   background-color: white;
 }
-#vikingChess .attackerPiece {
+#vikingChess .bPiece {
   background-color: black;
 }
 #vikingChess .capBox {
   flex-basis: 50px;
   height: 50px;
+}
+#vikingChess .winner {
+  color: lightgreen;
 }

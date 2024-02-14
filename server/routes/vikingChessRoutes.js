@@ -13,8 +13,15 @@ module.exports = (router) => {
       DI.rh.fail(res, JSON.stringify(ex))
     }
   }))
-  // router.post('/vikingChess/pollTurn/', DI.rh.asyncRoute(async (req, res, next) => {
-  // }))
+  router.post('/vikingChess/pollTurn', DI.rh.asyncRoute(async (req, res, next) => {
+    try{
+      var turn = await vikingChessService.getCurrentTurn(req.body.gameId, req.body.session.userId)
+      DI.rh.succeed(res, turn)
+    }
+    catch(ex){
+      DI.rh.fail(res, JSON.stringify(ex))
+    }
+  }))
   router.post('/vikingChess/submitMove/', DI.rh.asyncRoute(async (req, res, next) => {
     try {
       var gameData = await vikingChessService.submitMove(req.body.session.userId, req.body.piece, req.body.newX, req.body.newY)

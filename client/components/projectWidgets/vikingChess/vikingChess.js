@@ -2,7 +2,8 @@ cDI.components.vikingChess = {
   html: `<span id="vikingChess" class="cols nowrap">
     <span class="scoreboard rows">
       <span id="vikingChessP1" class="absCen"></span>
-      <span id="vikingChessCaptures"></span>
+      <span id="vikingChessP1Captures" class="vikingChessCaptures"></span>
+      <span id="vikingChessP2Captures" class="vikingChessCaptures"></span>
       <span id="vikingChessP2" class="absCen"></span>
     </span>
     <span class="gameboard"></span>
@@ -14,12 +15,9 @@ cDI.components.vikingChess = {
     await ftbLoadComponent("components/genericWidgets", "grid")
     await cDI.remote.asyncGetScript(`js/services/vikingChessService.js`)
   },
-  drawGame: async (container, gamedata = null) => {
+  drawGame: async (container) => {
     container.empty()
-    if (gamedata == null){
-      var dataFromServer = await ftbSvc["vikingChess"].getGameState()
-      gamedata = dataFromServer
-    }
+    var gamedata = await ftbSvc["vikingChess"].getGameState()
     ftbCmp("vikingChess").gamedata = gamedata
     container.append(ftbCmp("vikingChess").html)
     await ftbCmp("grid").drawGrid($("#vikingChess .gameboard"), 11, 11)
@@ -31,13 +29,18 @@ cDI.components.vikingChess = {
     var gamedata = ftbCmp("vikingChess").gamedata
     $("#vikingChessP1").html(gamedata.player1.username)
     $("#vikingChessP2").html(gamedata.player2.username)
-    if (gamedata.turn % 2 == 1) {
-      $("#vikingChessP1").addClass("sectionHeader").addClass("underline")
-      $("#vikingChessP2").removeClass("sectionHeader").removeClass("underline")
+    if (gamedata.ended) {
+      $(`#vikingChessP${gamedata.winner}`).addClass("winner")
     }
     else {
-      $("#vikingChessP1").removeClass("sectionHeader").removeClass("underline")
-      $("#vikingChessP2").addClass("sectionHeader").addClass("underline")
+      if (gamedata.turn % 2 == 1) {
+        $("#vikingChessP1").addClass("sectionHeader").addClass("underline")
+        $("#vikingChessP2").removeClass("sectionHeader").removeClass("underline")
+      }
+      else {
+        $("#vikingChessP1").removeClass("sectionHeader").removeClass("underline")
+        $("#vikingChessP2").addClass("sectionHeader").addClass("underline")
+      }
     }
     var kingSpace = $("#vikingChess .gameboard").find(`[data-gridx='5'][data-gridy='5']`).addClass("kingSpace")
 
@@ -70,40 +73,58 @@ cDI.components.vikingChess = {
       attackerSpace.addClass("attackerSpace")
     })
     $("#vikingChess .scoreboard .vikingChessCaptures").html("")
+    var playerSide = ftbCmp("vikingChess").playerSide(gamedata)
+    var isPlayerTurn = ftbCmp("vikingChess").isPlayerTurn(playerSide, gamedata.turn)
     await Object.entries(gamedata.gamestate).map(async piece => {
-      const pieceName = piece[0];
-      const piecePos = piece[1];
-      if (pieceName.indexOf("k") != -1) { type = "king" }
-      if (pieceName.indexOf("w") != -1) { type = "defender" }
-      if (pieceName.indexOf("b") != -1) { type = "attacker" }
+      var pieceName = piece[0];
+      var piecePos = piece[1];
+      var isDefenderPiece = ftbCmp("vikingChess").isDefenderPiece(pieceName)
+      var isAttackerPiece = ftbCmp("vikingChess").isAttackerPiece(pieceName)
 
-      if (piecePos == "cap"){
-        $("#vikingChess .scoreboard #vikingChessCaptures").append(`<span class='capBox'><span class='${type}Piece shpCircle'></span></span>`)
+      if (piecePos == "cap" ){
+        var captureId = ""
+        if (isDefenderPiece) { captureId = "vikingChessP2Captures" }
+        else if (isAttackerPiece) { captureId = "vikingChessP1Captures" }
+        $(`#vikingChess .scoreboard #${captureId}`).append(`<span class='capBox'><span class='${pieceName[0]}Piece shpCircle'></span></span>`)
       }
       var x = piecePos.split(",")[0]
       var y = piecePos.split(",")[1]
 
       var cell = $("#vikingChess .gameboard").find(`[data-gridx='${x}'][data-gridy='${y}']`)
-      var type = ""
-      if (pieceName.indexOf("k") != -1) { type = "king" }
-      if (pieceName.indexOf("w") != -1) { type = "defender" }
-      if (pieceName.indexOf("b") != -1) { type = "attacker" }
-      cell.html(`<span class='${type}Piece shpCircle' data-piece='${pieceName}'></span>`)
+      cell.html(`<span class='${pieceName[0]}Piece shpCircle' data-piece='${pieceName}'></span>`)
 
-      if (cDI.session.userId == gamedata.player1.id && gamedata.turn % 2 == 1 && (type == "king" || type == "defender")){
-        await cDI.addAwaitableInput("click.activatePiece", cell, ftbCmp("vikingChess").activatePiece)
-      }
-      else if (cDI.session.userId == gamedata.player2.id && gamedata.turn % 2 == 0 && type == "attacker") {
-        await cDI.addAwaitableInput("click.activatePiece", cell, ftbCmp("vikingChess").activatePiece)
+      if (!gamedata.ended){
+        if (playerSide == 1 && isPlayerTurn && isDefenderPiece){
+          await cDI.addAwaitableInput("click.activatePiece", cell, ftbCmp("vikingChess").activatePiece)
+        }
+        else if (playerSide == 2 && isPlayerTurn && isAttackerPiece) {
+          await cDI.addAwaitableInput("click.activatePiece", cell, ftbCmp("vikingChess").activatePiece)
+        }
       }
     })
+  },
+  isPlayerTurn: (playerSide, turn) => {
+    if ((playerSide == 1 && turn % 2 == 1) || (playerSide == 2 && turn % 2 == 0)) { return true }
+    else { return false }
+  },
+  playerSide: (gamedata) => {
+    if (cDI.session.userId == gamedata.player1.id) { return 1 }
+    else if (cDI.session.userId == gamedata.player2.id) { return 2 }
+  },
+  isDefenderPiece: (pieceName) => {
+    if (pieceName.indexOf("k") != -1 || pieceName.indexOf("w") != -1) { return true }
+    else if (pieceName.indexOf("b") != -1) { return false }
+  },
+  isAttackerPiece: (pieceName) => {
+    if (pieceName.indexOf("k") != -1 || pieceName.indexOf("w") != -1) { return false }
+    else if (pieceName.indexOf("b") != -1) { return true }
   },
   pollUpdates: async () => {
     if (ftbCmp("vikingChess").poll == null) {
       var fn = setInterval(async () => {
-        var dataFromServer = await ftbSvc["vikingChess"].getGameState()
-        if (ftbCmp("vikingChess").gamedata.turn != dataFromServer.turn){
-          await ftbCmp("vikingChess").drawGame(ftbCmp("vikingChess").container, dataFromServer)
+        var dataFromServer = await ftbSvc["vikingChess"].getCurrentTurn(ftbCmp("vikingChess").gamedata.id)
+        if (ftbCmp("vikingChess").gamedata.turn != dataFromServer){
+          await ftbCmp("vikingChess").drawGame(ftbCmp("vikingChess").container)
         }
       }, 3000)
       ftbCmp("vikingChess").poll = fn
@@ -167,7 +188,6 @@ cDI.components.vikingChess = {
     }
   },
   movePiece: async (piece, newX, newY) => {
-    //await ftbCmp("vikingChess").determineCapture(newX, newY)
     await ftbSvc["vikingChess"].submitMove(piece, newX, newY)
     await ftbCmp("games").launchGame("vikingChess")
   }

@@ -12,6 +12,10 @@ vikingChessService.getGame = async (userId) => {
   gamedata.gamestate = JSON.parse(gamedata.gamestate)
   return gamedata
 }
+vikingChessService.getCurrentTurn = async (gameId, userId) => {
+  var currentTurn = (await db.runQuery(vikingChessQueries.getCurrentTurn, [gameId, userId, userId], 1)).turn
+  return currentTurn
+}
 vikingChessService.submitMove = async (userId, piece, newX, newY) => {
   // console.log(`Moving ${piece} to ${newX}, ${newY}`)
   var gamedata = await vikingChessService.getGame(userId)
@@ -63,10 +67,15 @@ vikingChessService.submitMove = async (userId, piece, newX, newY) => {
     gamedata.ended = 1
     gamedata.winner = 1
   }
-
-  vikingChessService.determineCapture(gamedata, userId, piece, newX, newY)
+  else {
+    vikingChessService.determineCapture(gamedata, userId, piece, newX, newY)
+  }
   gamestate[piece] = `${newX},${newY}`
-  var newGameData = await queryBuilder.quickRun(vikingChessQueries.saveGame, [JSON.stringify(gamestate), userId, userId])
+  var newGameData = await vikingChessService.saveGameData(gamedata, userId)
+  return newGameData
+}
+vikingChessService.saveGameData = async (gamedata, userId) => {
+  var newGameData = await queryBuilder.quickRun(vikingChessQueries.saveGame, [gamedata.ended, gamedata.winner, JSON.stringify(gamedata.gamestate), userId, userId])
   return newGameData
 }
 vikingChessService.hasPiece = (gamestate, xPos, yPos) => {
@@ -81,10 +90,7 @@ vikingChessService.isOpponentPiece = (gamedata, userId, piece) => {
   return false
 }
 vikingChessService.isCornerSpace = (xVal, yVal) => {
-  if ((xVal == 0 && yVal == 0)
-    || (xVal == 0 && yVal == 10)
-    || (xVal == 10 && yVal == 0)
-    || (xVal == 10 && yVal == 10)) { return true }
+  if ((xVal == 0 || xVal == 10) && (yVal == 0 || yVal == 10)) { return true }
   return false
 }
 vikingChessService.isKingSpace = (xVal, yVal) => {
@@ -140,6 +146,8 @@ vikingChessService.determineCapture = (gamedata, userId, activePiece, newX, newY
             && (flanker2 || vikingChessService.isKingSpace(flanker2X, flanker2Y))
           ){
             gamedata.gamestate[threatened[0]] = "cap"
+            gamedata.ended = 1
+            gamedata.winner = 2
           }
         }
       }
