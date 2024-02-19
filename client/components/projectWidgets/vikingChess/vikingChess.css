@@ -1,8 +1,12 @@
 #vikingChess > .gameboard > span > span {
   padding: 5px;
 }
+#vikingChess > .gameboard {
+  flex-basis: 80%;
+  padding: 0% 15%;
+}
 #vikingChess .scoreboard {
-  flex-basis: 100px;
+  flex-basis: 10%;
 }
 #vikingChess .kingSpace {
   background-color: gold;
@@ -19,16 +23,19 @@
 #vikingChess .validMove {
   background-color: cornflowerblue;
 }
-#vikingChess .kingPiece {
+#vikingChess .kPiece {
   background-color: yellow;
 }
-#vikingChess .defenderPiece {
+#vikingChess .wPiece {
   background-color: white;
 }
-#vikingChess .attackerPiece {
+#vikingChess .bPiece {
   background-color: black;
 }
 #vikingChess .capBox {
   flex-basis: 50px;
   height: 50px;
+}
+#vikingChess .winner {
+  color: lightgreen;
 }

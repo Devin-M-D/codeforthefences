@@ -36,7 +36,7 @@ async function userSessionInnerware (req, res) {
 async function debuggingInnerware (req, res, debugging) {
   if (debugging){
     if (!Object.getOwnPropertyNames(req.body).length == 0) {
-      console.log("Debugging flag added to request by server")
+      //console.log("Debugging flag added to request by server")
     }
     req.body.debug = true
 

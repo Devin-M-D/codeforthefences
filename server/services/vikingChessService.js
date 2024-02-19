@@ -6,11 +6,15 @@ var userQueries = require("../queries/user/userQueries")
 
 var vikingChessService = {}
 vikingChessService.getGame = async (userId) => {
-  var gamedata = await db.runQuery(vikingChessQueries.getGame, [userId, userId], 1, 1)
+  var gamedata = await db.runQuery(vikingChessQueries.getGame, [userId, userId], 1)
   gamedata.player1 = userQueries.mapIdAndName(gamedata.player1Id, gamedata.player1Name)
   gamedata.player2 = userQueries.mapIdAndName(gamedata.player2Id, gamedata.player2Name)
   gamedata.gamestate = JSON.parse(gamedata.gamestate)
   return gamedata
+}
+vikingChessService.getCurrentTurn = async (gameId, userId) => {
+  var currentTurn = (await db.runQuery(vikingChessQueries.getCurrentTurn, [gameId, userId, userId], 1)).turn
+  return currentTurn
 }
 vikingChessService.submitMove = async (userId, piece, newX, newY) => {
   // console.log(`Moving ${piece} to ${newX}, ${newY}`)
@@ -63,11 +67,22 @@ vikingChessService.submitMove = async (userId, piece, newX, newY) => {
     gamedata.ended = 1
     gamedata.winner = 1
   }
-
-  vikingChessService.determineCapture(gamedata, userId, piece, newX, newY)
+  else {
+    vikingChessService.determineCapture(gamedata, userId, piece, newX, newY)
+  }
   gamestate[piece] = `${newX},${newY}`
-  var newGameData = await queryBuilder.quickRun(vikingChessQueries.saveGame, [JSON.stringify(gamestate), userId, userId])
+  var newGameData = await vikingChessService.saveGameData(gamedata, userId)
   return newGameData
+}
+vikingChessService.saveGameData = async (gamedata, userId) => {
+  var newGameData = await queryBuilder.quickRun(vikingChessQueries.saveGame, [gamedata.ended, gamedata.winner, JSON.stringify(gamedata.gamestate), userId, userId])
+  return newGameData
+}
+vikingChessService.hasPiece = (gamestate, xPos, yPos) => {
+  var pieces = Object.entries(gamestate).filter(prop => {
+    return prop[1].split(",")[0] == xPos && prop[1].split(",")[1] == yPos
+  })
+  if (pieces.length > 0) { return pieces[0] }
 }
 vikingChessService.isOpponentPiece = (gamedata, userId, piece) => {
   if (gamedata.player1.id == userId && piece.indexOf("b") != -1) { return true }
@@ -75,10 +90,7 @@ vikingChessService.isOpponentPiece = (gamedata, userId, piece) => {
   return false
 }
 vikingChessService.isCornerSpace = (xVal, yVal) => {
-  if ((xVal == 0 && yVal == 0)
-    || (xVal == 0 && yVal == 10)
-    || (xVal == 10 && yVal == 0)
-    || (xVal == 10 && yVal == 10)) { return true }
+  if ((xVal == 0 || xVal == 10) && (yVal == 0 || yVal == 10)) { return true }
   return false
 }
 vikingChessService.isKingSpace = (xVal, yVal) => {
@@ -134,6 +146,8 @@ vikingChessService.determineCapture = (gamedata, userId, activePiece, newX, newY
             && (flanker2 || vikingChessService.isKingSpace(flanker2X, flanker2Y))
           ){
             gamedata.gamestate[threatened[0]] = "cap"
+            gamedata.ended = 1
+            gamedata.winner = 2
           }
         }
       }
@@ -143,11 +157,5 @@ vikingChessService.determineCapture = (gamedata, userId, activePiece, newX, newY
   checkDir(newX, 0, 1)
   checkDir(newY, 1, 0)
   checkDir(newY, 1, 1)
-}
-vikingChessService.hasPiece = (gamestate, xPos, yPos) => {
-  var pieces = Object.entries(gamestate).filter(prop => {
-    return prop[1].split(",")[0] == xPos && prop[1].split(",")[1] == yPos
-  })
-  if (pieces.length > 0) { return pieces[0] }
 }
 module.exports = vikingChessService

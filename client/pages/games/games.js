@@ -1,6 +1,6 @@
 cDI.pages.games = {
   html: `
-  <span id="gamesMain" class="algnSX">
+  <span id="gamesMain" class="algnSX noShadow">
     <span id="selectGame" class="rows autoH">
       <span class="gameBtn mgn10 btnStd">
         <span id="runVikingChess">Viking Chess</span>
@@ -27,7 +27,6 @@ cDI.pages.games = {
       $("#gamePane").html("Please log in to play!")
     }
     else {
-      $("#gamePane").empty()
       await ftbCmp(game).drawGame($("#gamePane"))
     }
   }
