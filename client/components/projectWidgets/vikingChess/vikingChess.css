@@ -1,8 +1,12 @@
 #vikingChess > .gameboard > span > span {
   padding: 5px;
 }
+#vikingChess > .gameboard {
+  flex-basis: 80%;
+  padding: 0% 15%;
+}
 #vikingChess .scoreboard {
-  flex-basis: 100px;
+  flex-basis: 10%;
 }
 #vikingChess .kingSpace {
   background-color: gold;

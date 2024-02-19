@@ -28,7 +28,7 @@
 /*#endregion*/
 
 /*#region master class*/
-body, span, input, textarea, select {
+body, span, input, textarea, select, ol, ul {
   display: inline-flex;
   flex-direction: inherit;
   flex-wrap: nowrap;
@@ -56,14 +56,16 @@ span[contenteditable="true"] {
     padding: 10px 20px;
     border: solid thin black;
 }
-
+ol > li { width:100%; }
 .rows { flex-direction: row; }
 .cols { flex-direction: column; }
 .wrap { flex-wrap: wrap; }
 .rowBreak { height: 0px; flex-basis: 100%; }
 .autoW { flex-basis: auto; width: auto; }
 .autoH { flex-basis: auto; height: auto; }
+.autoH > * { flex-basis: auto; height: auto; }
 .noShrink { flex-shrink: 0; }
+/* .noShrink > * { flex-shrink: 0; } */
 
 .rounded { border-radius: 10px; }
 .roundedWide { border-radius: 25px; }
@@ -74,7 +76,8 @@ span[contenteditable="true"] {
 .mgn10 { margin: 10px; }
 .spacer10px { flex-basis: 10px;}
 .spacer25px { flex-basis: 25px;}
-
+.spaceList { margin: 0px; }
+.spaceList > * { padding-bottom: 5px; }
 /*#region justify and align shorthands*/
 .absCen {
     justify-self: center;
@@ -89,7 +92,7 @@ span[contenteditable="true"] {
 .algnXS { align-items: start; }
 .algnXE { align-items: end; }
 
-.algnCC { justify-content: center; align-items: center; }
+.algnCC { justify-content: center; align-items: center; align-content: center; }
 .algnSS { justify-content: start; align-items: start; }
 .algnEE { justify-content: end; align-items: end; }
 
