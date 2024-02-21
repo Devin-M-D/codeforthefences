@@ -16,7 +16,7 @@ function configExpress(port) {
   }
   //serve json and static files (allow dotfiles for certbot SSL)
   expressApp.use(express.json())
-  expressApp.use(express.static(__dirname + '/../ssl-cert', { dotfiles: 'allow' } ))
+  expressApp.use(express.static(__dirname + '/../.well-known', { dotfiles: 'allow' } ))
   addCors(expressApp)
   addSessions(expressApp)
   return {
