@@ -11,7 +11,7 @@ function configExpress(port) {
   expressApp.enable('trust proxy')
   if (port == 80) {
     expressApp.use((req, res, next) => {
-      req.secure || req.url.indexOf("/.well-known/acme-challenge/") == 0 ? next() : res.redirect('https://' + req.headers.host + req.url)
+      req.secure || req.url.indexOf("/.well-known/acme-challenge/") != -1 ? next() : res.redirect('https://' + req.headers.host + req.url)
     })
   }
   //serve json and static files (allow dotfiles for certbot SSL)
