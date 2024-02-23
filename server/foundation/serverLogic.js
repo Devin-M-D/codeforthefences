@@ -11,12 +11,13 @@ function configExpress(port) {
   expressApp.enable('trust proxy')
   if (port == 80) {
     expressApp.use((req, res, next) => {
-      req.secure || req.url.indexOf("/.well-known/acme-challenge/") != -1 ? next() : res.redirect('https://' + req.headers.host + req.url)
+      // req.secure || req.url.indexOf("/.well-known/acme-challenge/") != -1 ? next() : res.redirect('https://' + req.headers.host + req.url)
+      req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)
     })
   }
   //serve json and static files (allow dotfiles for certbot SSL)
   expressApp.use(express.json())
-  expressApp.use(express.static(__dirname + '/../.well-known', { dotfiles: 'allow' } ))
+  // expressApp.use(express.static(__dirname + '/../.well-known', { dotfiles: 'allow' } ))
   addCors(expressApp)
   addSessions(expressApp)
   return {
@@ -46,13 +47,11 @@ function addSessions(expressApp){
 
 function setHTTPS(express) {
   var privateKey = fs.readFileSync('/etc/letsencrypt/live/codeforthefences.com/privkey.pem', 'utf8')
-  var certificate = fs.readFileSync('/etc/letsencrypt/live/codeforthefences.com/cert.pem', 'utf8')
-  var ca = fs.readFileSync('/etc/letsencrypt/live/codeforthefences.com/chain.pem', 'utf8')
+  var certificate = fs.readFileSync('/etc/letsencrypt/live/codeforthefences.com/fullchain.pem', 'utf8')
 
   var credentials = {
   	key: privateKey,
   	cert: certificate,
-  	ca: ca
   }
   express.httpsServer = https.createServer(credentials, express.app)
 }
