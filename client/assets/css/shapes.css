@@ -35,28 +35,54 @@
 /*#endregion*/
 
 /*#region hamburger*/
-.shpHamburger:before {
-  background: black;
-  top: -20px;
-  height: 7px
+.hamburgerBox {
+  aspect-ratio: 1;
+  align-items: center;
+  justify-items: center;
+
 }
-.shpHamburger {
+.shpHamburger, .shpHamburger:before, .shpHamburger:after {
   background: black;
-  height: 7px;
-  width: 25%;
+  border-radius: 20px;
   position: absolute;
-  top: 50%;
+}
+.shpHamburger:before { top: -200%; }
+.shpHamburger {
+  height: 10%;
+  width: 65%;
   overflow: visible;
 }
-.shpHamburger:after {
-  background: black;
-  top: 20px;
-  height:7px
-}
+.shpHamburger:after { top: 200%; }
 .shpHamburger:before, .shpHamburger:after {
   content: '';
-  position: absolute;
   width: 100%;
+  height: 100%;
+}
+/*#endregion*/
+
+/*#region userIcon*/
+.shpUser {
+  aspect-ratio: 1;
+  align-items: center;
+  justify-items: center;
+}
+.shpUser:before, .shpUser:after {
+  position: absolute;
+  background-color: var(--clrSecondary);
+  content: '';
+}
+.shpUser:before {
+  height: 40%;
+  width: 40%;
+  border-radius: 50%;
+  top: 10%;
+}
+.shpUser:after {
+  width: 65%;
+  height: 40%;
+  border-top-left-radius: 110px;
+  border-top-right-radius: 110px;
+  top: 45%;
 }
 /*#endregion*/
 
@@ -113,7 +139,8 @@
 
 /*#region cancel*/
 .shpCancel {
-
+  align-items: center;
+  justify-content: center;
 }
 .shpCancel:before, .shpCancel:after {
   content: '';

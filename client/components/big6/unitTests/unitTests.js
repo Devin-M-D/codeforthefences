@@ -1,6 +1,7 @@
 cDI.components.unitTests = {
   section: `Unit Test main`,
   init: async () => {
+    ftbUT = ftbCmp("unitTests")
     var unitTestLevel = cDI.config.unitTest
 
     var currDebugMode = cDI.config.debugMode
@@ -8,6 +9,7 @@ cDI.components.unitTests = {
       await cDI.remote.asyncGetScript("/components/big6/unitTests/auth/utAuth.js")
       await cDI.remote.asyncGetScript("/components/big6/unitTests/recipe/utRecipe.js")
       await cDI.remote.asyncGetScript("/components/big6/unitTests/games/utGames.js")
+      await cDI.remote.asyncGetScript("/components/big6/unitTests/mainNav/utmainNav.js")
       if ([0, 1, 4, 5].indexOf(currDebugMode) != -1) { cDI.config.debugMode = 2 }
     }
 
@@ -34,8 +36,8 @@ cDI.components.unitTests = {
   customDevScenario: async (log) => {
     return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 2: customDevScenario",
       async () => {
-        await cDI.components.unitTests.loginIfNeccessary()
-        await cDI.components.unitTests.games.runAllGames()
+        //await ftbUT.loginIfNeccessary()
+        await ftbUT.mainNav.runAllMainNav()
       })
   },
   loginIfNeccessary: async () => {

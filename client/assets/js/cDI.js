@@ -446,4 +446,6 @@ var ftbLoadComponent = cDI.remote.loadComponent
 var ftbCmp = cDI.utils.getDIByComponentName
 var ftbSvc = cDI.services
 var ftbSetLogin = cDI.session.setTestCredentials
+var ftbAddInput = cDI.addAwaitableInput
+var ftbUT = cDI.components.unitTests
 //#endregion

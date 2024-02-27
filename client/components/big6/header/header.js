@@ -1,59 +1,50 @@
 cDI.components.header = {
   html: `
-    <span id="siteHeader" class="wingedHeader algnSpread" data-headerheight="200px" data-headerwings="20%" data-headerwingmin="200px" data-headerwingmax="250px">
-      <span id="hamburgerBox">
+    <span id="siteHeader" class="flex rows">
+      <span class="hamburgerBox" style="height:100%">
         <span class="shpHamburger"></span>
       </span>
-      <span id="siteHeaderText" class="header">
-        <span class="cols">
-          <span class="header">Code for the Fences</span>
-          <span id="pageName" class="iSubheader algnSX"></span>
-        </span>
+      <span id="siteHeaderText" class="rows grow centerContents">
+        <span id="siteName" class="header">Code for the Fences</span>
+        <span id="pageName" class="iSubheader"></span>
       </span>
-      <span id="authBox">
-        <span id="iconAuth"></span>
-      </span>
+      <span class="shpUser" style="height:100%"></span>
     </span>
   `,
   init: async () => {
-    await cDI.components.header.strapAuthButton()
-    await cDI.components.header.strapHeaderHamburger()
+    // await cDI.components.header.strapAuthButton()
+    await ftbCmp("header").strapHeaderHamburger()
   },
   setHeaderText: (text) => {
     $("#pageName").html(text)
   },
-  strapAuthButton: async () => {
-    if ($("#accountDash") || $("#signupLoginBox")) { cDI.components.modal.raiseCurtain() }
-    $("#authBox").off("click")
-    if (cDI.utils.isDef(cDI.session.token)){
-      await cDI.components.modal.clickToModal($("#authBox"), "components/genericWidgets", "accountDash", async (createdElem) => {
-        await cDI.components.accountDash.strapAccountDash()
-        return createdElem
-      }, true)
-    }
-    else {
-      await cDI.components.modal.clickToModal($("#authBox"), "components/genericWidgets", "auth", async () => {})
-    }
-  },
-  strapHeaderHamburger: () => {
-    cDI.addAwaitableInput("click", $("#hamburgerBox"), async () => {
-      await cDI.components.header.buildMainNav()
+  // strapAuthButton: async () => {
+  //   if ($("#accountDash") || $("#signupLoginBox")) { cDI.components.modal.raiseCurtain() }
+  //   $("#authBox").off("click")
+  //   if (cDI.utils.isDef(cDI.session.token)){
+  //     await cDI.components.modal.clickToModal($("#authBox"), "components/genericWidgets", "accountDash", async (createdElem) => {
+  //       await cDI.components.accountDash.strapAccountDash()
+  //       return createdElem
+  //     }, true)
+  //   }
+  //   else {
+  //     await cDI.components.modal.clickToModal($("#authBox"), "components/genericWidgets", "auth", async () => {})
+  //   }
+  // },
+  strapHeaderHamburger: async () => {
+    await ftbAddInput("click.openHamburger", $("#siteHeader > .hamburgerBox"), async () => {
+      await ftbCmp("header").buildMainNav()
     })
   },
   buildMainNav: async () => {
-    var pane = await cDI.components.drawerPane.createDrawerPane($("html"))
-    await cDI.components.drawerPane.populateDrawerPane(pane, `
-      <span class="algnSX">
-        <span class='rows autoH algnSpread'>
-          <span class="mainMenuDevIcon autoW noUnderline">{}</span>
-          <span class="mainMenuClose autoW noUnderline">
-            <span class="btnIcon" data-btnsize="55" onclick="cDI.components.drawerPane.closeDrawerPane($(this).parent().parent().parent().parent())">
-              <span class="shpCancel"></span>
-            </span>
-          </span>
+    var dpDI = ftbCmp("drawerPane")
+    var pane = await dpDI.createDrawerPane($("html"))
+    await dpDI.populateDrawerPane(pane, `
+      <span id="dpMainNav">
+        <span id="dpMainNavHeader" class="flex rows">
+          ${dpDI.drawerPaneCloseButton}
         </span>
-        <span class="mainMenuTitle autoH header">Main Menu</span>
-          <span style="padding: 0px 20px;" class="autoH algnSX">
+        <span id="dpMainNavContent" class="shyScroll algnS">
           <span class="fauxrder">
             <span id="mainNavAbout" class="btnStd subheader">About</span>
           </span>
@@ -75,6 +66,9 @@ cDI.components.header = {
         </span>
       </span>
     `)
+    await ftbAddInput("click.closeDrawerPane", pane.find("mainMenuClose"), async () => {
+      await ftbCmp("drawerPane").closeDrawerPane($(this).parent().parent().parent().parent())
+    })
     cDI.components.header.addMainNavClick(pane, $("#mainNavAbout"), '/about')
     cDI.components.header.addMainNavClick(pane, $("#mainNavBlog"), '/blog')
     cDI.components.header.addMainNavClick(pane, $("#mainNavCookbook"), '/cookbook')
@@ -84,7 +78,7 @@ cDI.components.header = {
     await cDI.components.drawerPane.openDrawerPane(pane)
   },
   addMainNavClick: (pane, elem, routePath) => {
-    cDI.addAwaitableInput("click", elem, async e => {
+    ftbAddInput("click.mainNav", elem, async e => {
       await cDI.components.router.getRoute(routePath)
       await cDI.components.drawerPane.closeDrawerPane(pane)
     })
