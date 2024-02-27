@@ -1,7 +1,7 @@
 cDI.components.unitTests.recipe = {
   section: `recipe`,
   runAllRecipe: async () => {
-    await cDI.components.unitTests.UTStartSection(cDI.components.unitTests.recipe.section, async () => {
+    await cDI.components.unitTests.UTLogSection(cDI.components.unitTests.recipe.section, async () => {
       var card = $(".recipeCard[recipeid = 1]")
       // await cDI.components.unitTests.recipe.editAndCancel(card, 1)
       // await cDI.components.unitTests.recipe.editAndSave(card, 1)

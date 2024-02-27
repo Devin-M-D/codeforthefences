@@ -1,8 +1,4 @@
 cDI.components.modal = {
-  html: `<span id="modals"></span>`,
-  init: () => {
-
-  },
   showModal: (params = {}) => {
     var target = params.target || $("body")
     var content = params.content || ""

@@ -9,7 +9,7 @@ cDI.components.unitTests = {
       await cDI.remote.asyncGetScript("/components/big6/unitTests/auth/utAuth.js")
       await cDI.remote.asyncGetScript("/components/big6/unitTests/recipe/utRecipe.js")
       await cDI.remote.asyncGetScript("/components/big6/unitTests/games/utGames.js")
-      await cDI.remote.asyncGetScript("/components/big6/unitTests/mainNav/utmainNav.js")
+      await cDI.remote.asyncGetScript("/components/big6/unitTests/header/utHeader.js")
       if ([0, 1, 4, 5].indexOf(currDebugMode) != -1) { cDI.config.debugMode = 2 }
     }
 
@@ -27,21 +27,21 @@ cDI.components.unitTests = {
   },
 //#region unit test main 1/2/3
   runAllUnitTests: async (log) => {
-    return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 1: runAllUnitTests",
+    return await cDI.components.unitTests.UTLogSection("Unit Tests set to level 1: runAllUnitTests",
       async () => {
         await cDI.components.unitTests.auth.runAllAuth()
         await cDI.components.unitTests.recipe.runAllRecipe()
       })
   },
   customDevScenario: async (log) => {
-    return await cDI.components.unitTests.UTStartSection("Unit Tests set to level 2: customDevScenario",
+    return await cDI.components.unitTests.UTLogSection("Unit Tests set to level 2: customDevScenario",
       async () => {
         //await ftbUT.loginIfNeccessary()
-        await ftbUT.mainNav.runAllMainNav()
+        await ftbUT.header.runAllHeader()
       })
   },
   loginIfNeccessary: async () => {
-    return await cDI.components.unitTests.UTStartSection(
+    return await cDI.components.unitTests.UTLogSection(
       "Unit Tests set to level 3: loginIfNeccessary (just login if the session has expired)",
       async () => {
         ftbIndent()
@@ -70,7 +70,7 @@ cDI.components.unitTests = {
   },
 //#endregion
 //#region indentation wrappers
-  UTStartSection: async (sectionName, fn) => {
+  UTLogSection: async (sectionName, fn) => {
     ftbLogUT(`** ${sectionName}`)
     ftbIndent()
     var res = await fn()

@@ -8,29 +8,29 @@ cDI.components.header = {
         <span id="siteName" class="header">Code for the Fences</span>
         <span id="pageName" class="iSubheader"></span>
       </span>
-      <span class="shpUser" style="height:100%"></span>
+      <span id="acctMenuBtn" class="shpUser" style="height:100%"></span>
     </span>
   `,
   init: async () => {
-    // await cDI.components.header.strapAuthButton()
+    await cDI.components.header.strapAuthButton()
     await ftbCmp("header").strapHeaderHamburger()
   },
   setHeaderText: (text) => {
     $("#pageName").html(text)
   },
-  // strapAuthButton: async () => {
-  //   if ($("#accountDash") || $("#signupLoginBox")) { cDI.components.modal.raiseCurtain() }
-  //   $("#authBox").off("click")
-  //   if (cDI.utils.isDef(cDI.session.token)){
-  //     await cDI.components.modal.clickToModal($("#authBox"), "components/genericWidgets", "accountDash", async (createdElem) => {
-  //       await cDI.components.accountDash.strapAccountDash()
-  //       return createdElem
-  //     }, true)
-  //   }
-  //   else {
-  //     await cDI.components.modal.clickToModal($("#authBox"), "components/genericWidgets", "auth", async () => {})
-  //   }
-  // },
+  strapAuthButton: async () => {
+    if ($("#accountDash") || $("#signupLoginBox")) { cDI.components.modal.raiseCurtain() }
+    $("#acctMenuBtn").off("click")
+    if (cDI.utils.isDef(cDI.session.token)){
+      await ftbCmp("modal").clickToModal($("#acctMenuBtn"), "components/genericWidgets", "accountDash", async (createdElem) => {
+        await cDI.components.accountDash.strapAccountDash()
+        return createdElem
+      }, true)
+    }
+    else {
+      await ftbCmp("modal").clickToModal($("#acctMenuBtn"), "components/genericWidgets", "auth", async () => {})
+    }
+  },
   strapHeaderHamburger: async () => {
     await ftbAddInput("click.openHamburger", $("#siteHeader > .hamburgerBox"), async () => {
       await ftbCmp("header").buildMainNav()

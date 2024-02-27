@@ -1,7 +1,7 @@
 cDI.components.unitTests.auth = {
   section: `auth`,
   runAllAuth: async (log) => {
-    return await cDI.components.unitTests.UTStartSection(cDI.components.unitTests.auth.section, async () => {
+    return await cDI.components.unitTests.UTLogSection(cDI.components.unitTests.auth.section, async () => {
       await cDI.components.unitTests.auth.signup(null, 1)
       await cDI.components.unitTests.auth.failCreateExistingUser(1)
       await cDI.components.unitTests.auth.login(1)
