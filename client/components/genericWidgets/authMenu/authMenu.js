@@ -1,9 +1,31 @@
-cDI.components.auth = {
-  html: ``,
-  preInit: async (DI, path) => {
-    DI.html = await cDI.remote.asyncGet(`${path}.html`)
-  },
-  init: async () => {
+cDI.components.authMenu = {
+  drawAuthMenu: async () => {
+    var authMenu = $(`
+    <span id="authMenu">
+      <span id="signupUN">
+        <span>Username:</span>
+        <span id="txtSgnUN" class="centerContents" type="text" value=""></span>
+      </span>
+      <span id="loginUN">
+        <span class="">Username/Email:</span>
+        <span id="txtLoginUN" class="centerContents" type="text" placeholder="username/email" value=""></span>
+      </span>
+      <span id="signupPW">
+        <span class="">Password:</span>
+        <input id="txtSgnPW" class="centerContents" type="password" placeholder="password" value="" />
+      </span>
+      <span id="loginPW">
+        <span class="">Password:</span>
+        <input id="txtLoginPW" class="centerContents" type="password" placeholder="password" value="" />
+      </span>
+      <span id="signupConfPW">
+        <span class="">Confirm password:</span>
+        <input id="txtSgnConfPW" class="centerContents" type="password" placeholder="confirm password" value="" />
+      </span>
+      <span></span>
+      <span id="btnSignup" class="btnStd centerContents">Signup</span>
+      <span id="btnLogin" class="btnStd centerContents">Login</span>
+    </span>`)
     cDI.addAwaitableInput("click", $("#btnSignup"), async (e) => {
       var email = $('#txtSgnEmail').val()
       var un = $('#txtSgnUN').html()
@@ -40,5 +62,6 @@ cDI.components.auth = {
       var pw = $('#txtLoginPW').val()
       await cDI.session.login(un, pw)
     })
+    return authMenu
   }
 }

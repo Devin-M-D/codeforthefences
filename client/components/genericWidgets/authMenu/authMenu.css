@@ -1,0 +1,15 @@
+#authMenu {
+  height: 600px;
+  grid-template-areas:
+    "signupUN loginUN"
+    "signupPW loginPW"
+    "signupConfPW ."
+    "signUpBtn loginBtn";
+  justify-content: space-evenly;
+  align-content: center;
+}
+#txtSgnUN, #txtSgnPW, #txtSgnConfPW,
+#txtLoginUN, #txtLoginPW {
+  margin-bottom: 20px;
+  margin-top: 15px;
+}

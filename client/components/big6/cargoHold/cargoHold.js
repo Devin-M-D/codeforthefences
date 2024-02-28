@@ -4,6 +4,8 @@ cDI.components.cargoHold = {
     //generic widgets
     await ftbLoadComponent("components/genericWidgets", "modal")
     await ftbLoadComponent(`components/genericWidgets`, `drawerPane`)
+    await ftbLoadComponent(`components/genericWidgets`, `authMenu`)
+    await ftbLoadComponent(`components/genericWidgets`, `accountDash`)
     // await ftbLoadComponent("components/genericWidgets", "flexCarousel")
     // await ftbLoadComponent(`components/genericWidgets`, `searchSelect`)
   }

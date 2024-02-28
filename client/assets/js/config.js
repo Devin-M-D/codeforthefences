@@ -8,11 +8,9 @@
 //debugMode = 6: 2 + 4
 //debugMode = 7: 1 + 2 + 4
 //#endregion
-cDI.config.debugMode = 1
-cDI.config.user = {
-  username: "Balwar",
-  password: "testpass"
-}
+cDI.config.debugMode = 0
+cDI.config.testUsers = ["Balwar", "Frinx"]
+
 //unitTest 1 = run all
 //unitTest 2 = run custom scenario
 //unitTest 3 = just log in if necessary

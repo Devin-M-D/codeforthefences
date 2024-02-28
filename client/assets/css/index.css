@@ -17,6 +17,11 @@ html, body, span {
   overflow: hidden;
   position: relative;
 }
+span[type="text"], input[type="password"] {
+    border: solid thin black;
+    height: 2em;
+    text-align: center;
+}
 /*#endregion*/
 
 /*#region positioning*/
@@ -27,6 +32,8 @@ html, body, span {
 .centerContents {
   justify-content: center;
   align-content: center;
+  justify-items: center;
+  align-items: center;
 }
 /*#endregion*/
 

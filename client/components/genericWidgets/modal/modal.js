@@ -1,11 +1,11 @@
 cDI.components.modal = {
   showModal: (params = {}) => {
-    var target = params.target || $("body")
+    var target = params.target || $("html")
     var content = params.content || ""
     var maximizeDialog = params.maximizeDialog || false
 
     cDI.components.modal.drawCurtain(target)
-    target.find(" > .modalCurtain").html(content)
+    target.find(" > .modalCurtain").append(content)
     var curtain = target.find(".modalCurtain")
 
     if (maximizeDialog){
@@ -16,7 +16,7 @@ cDI.components.modal = {
     return pane
   },
   drawCurtain: async (target) => {
-    target.prepend(`<span class="modalCurtain"></span>`)
+    target.prepend(`<span class="modalCurtain centerContents"></span>`)
   },
   addRaiseCurtainEvent: (curtain) => {
     curtain.on("click", (e) => {
@@ -37,19 +37,13 @@ cDI.components.modal = {
     var content = target.find(".modalCurtain").last()
     content.addClass("max")
   },
-  clickToModal: async (elem, compPath, compName, fn, maximizeDialog = false) => {
-    cDI.addAwaitableInput("click", elem, async (e) => {
-      var tmpContainer = $("<span id='modalTemp'></span>")
-      var contentDI = await ftbLoadComponent(compPath, compName, tmpContainer)
-      var content = tmpContainer.html()
-      var modalElements = await cDI.components.modal.showModal({ content: content, maximizeDialog: maximizeDialog })
-      tmpContainer.remove()
-      if (contentDI.init) {
-        contentDI.init()
-      }
-
-      if (cDI.utils.isDef(fn)) { await fn(modalElements) }
+  clickToModal: async (elem, content, maximizeDialog = false) => {
+    ftbAddInput("click.spawnModal", elem, async (e) => {
+      var modalElements = await ftbCmp("modal").showModal({ content: content, maximizeDialog: maximizeDialog })
       return modalElements
     })
+  },
+  removeModalClick: async (elem) => {
+    ftbRemoveInput("click.spawnModal", elem)
   }
 }

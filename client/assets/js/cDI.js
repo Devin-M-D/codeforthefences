@@ -388,11 +388,11 @@ cDI.unpersistAll = () => {
 
 //#region session
 cDI.session = {
-  setTestCredentials: (un, pw) => {
+  setTestCredentials: (index) => {
+    var un = cDI.config.testUsers(index)
     cDI.unpersist("codeforthefences.test.username")
-    cDI.unpersist("codeforthefences.test.password")
     cDI.persist("codeforthefences.test.username", un)
-    cDI.persist("codeforthefences.test.password", pw)
+    cDI.persist("codeforthefences.test.password", "testpass")
   },
   login: async (un, pw) => {
     var callRes = await cDI.remote.remoteCall("/login", {"username": un, "password": pw })
@@ -458,5 +458,6 @@ var ftbCmp = cDI.utils.getDIByComponentName
 var ftbSvc = cDI.services
 var ftbSetLogin = cDI.session.setTestCredentials
 var ftbAddInput = cDI.addAwaitableInput
+var ftbRemoveInput = cDI.removeAwaitableInput
 var ftbUT
 //#endregion

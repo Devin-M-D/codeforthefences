@@ -12,23 +12,23 @@ cDI.components.header = {
     </span>
   `,
   init: async () => {
-    await cDI.components.header.strapAuthButton()
+    await ftbCmp("header").strapAuthButton()
     await ftbCmp("header").strapHeaderHamburger()
   },
   setHeaderText: (text) => {
     $("#pageName").html(text)
   },
   strapAuthButton: async () => {
-    if ($("#accountDash") || $("#signupLoginBox")) { cDI.components.modal.raiseCurtain() }
-    $("#acctMenuBtn").off("click")
+    if ($("#accountDash") || $("#signupLoginBox")) { ftbCmp("modal").raiseCurtain() }
+    ftbCmp("modal").removeModalClick($("#acctMenuBtn"))
     if (cDI.utils.isDef(cDI.session.token)){
-      await ftbCmp("modal").clickToModal($("#acctMenuBtn"), "components/genericWidgets", "accountDash", async (createdElem) => {
-        await cDI.components.accountDash.strapAccountDash()
-        return createdElem
-      }, true)
+      var accountDashContent = await ftbCmp("accountDash").drawAccountDash()
+      await ftbCmp("modal").clickToModal($("#acctMenuBtn"), accountDashContent, true)
     }
     else {
-      await ftbCmp("modal").clickToModal($("#acctMenuBtn"), "components/genericWidgets", "auth", async () => {})
+      var authMenuContent = await ftbCmp("authMenu").drawAuthMenu()
+      await ftbCmp("modal").clickToModal($("#acctMenuBtn"), authMenuContent, true)
+
     }
   },
   strapHeaderHamburger: async () => {

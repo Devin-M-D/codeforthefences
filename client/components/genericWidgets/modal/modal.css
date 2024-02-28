@@ -1,7 +1,9 @@
 .modalCurtain {
   background-color: rgba(128, 128, 128, .75);
   position: absolute;
-  z-index: 9999;
+  z-index: 9;
+  height: 100%;
+  width: 100%;
 }
 .modalCurtain > * {
   max-height: 80%;

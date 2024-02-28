@@ -14,34 +14,34 @@ cDI.components.unitTests = {
     }
 
     if (unitTestLevel == 1){
-      await cDI.components.unitTests.runAllUnitTests(1)
+      await ftbUT.runAllUnitTests(1)
     }
     else if (unitTestLevel == 2){
-      await cDI.components.unitTests.customDevScenario(1)
+      await ftbUT.customDevScenario(1)
     }
     else if (unitTestLevel == 3){
-      await cDI.components.unitTests.loginIfNeccessary(1)
+      await ftbUT.loginIfNeccessary(1)
     }
 
     cDI.config.debugMode = currDebugMode
   },
 //#region unit test main 1/2/3
   runAllUnitTests: async (log) => {
-    return await cDI.components.unitTests.UTLogSection("Unit Tests set to level 1: runAllUnitTests",
+    return await ftbUT.UTLogSection("Unit Tests set to level 1: runAllUnitTests",
       async () => {
-        await cDI.components.unitTests.auth.runAllAuth()
-        await cDI.components.unitTests.recipe.runAllRecipe()
+        await ftbUT.auth.runAllAuth()
+        await ftbUT.recipe.runAllRecipe()
       })
   },
   customDevScenario: async (log) => {
-    return await cDI.components.unitTests.UTLogSection("Unit Tests set to level 2: customDevScenario",
+    return await ftbUT.UTLogSection("Unit Tests set to level 2: customDevScenario",
       async () => {
         //await ftbUT.loginIfNeccessary()
         await ftbUT.header.runAllHeader()
       })
   },
   loginIfNeccessary: async () => {
-    return await cDI.components.unitTests.UTLogSection(
+    return await ftbUT.UTLogSection(
       "Unit Tests set to level 3: loginIfNeccessary (just login if the session has expired)",
       async () => {
         ftbIndent()
@@ -57,10 +57,10 @@ cDI.components.unitTests = {
             await cDI.session.clearLogin()
           }
         }
-        //if not logged in, use debugConf set in bootstrap to set an impersonate
+        //if not logged in, use saved testUser or save first testUser
         if (!cDI.utils.isDef(cDI.session.token)) {
           ftbLogUT(`Not logged in, logging with ${cDI.session.testuser} and ${cDI.session.testpass}`)
-          if (!cDI.session.testuser) { cDI.session.setTestCredentials(cDI.config.user.username, cDI.config.user.password) }
+          if (!cDI.session.testuser) { cDI.session.setTestCredentials(0) }
           await ftbCmp("unitTests").auth.login()
           ftbLogUT(`login succeeded token: ${cDI.session.token.substr(0, 5)}...`)
         }
