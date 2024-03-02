@@ -7,9 +7,9 @@ cDI.components.unitTests.auth = {
       await ftbUT.auth.login(1)
     })
   },
-  clickAuthIcon: async () => { return await cDI.mockInput("click.spawnModal", $("#acctMenuBtn")) },
-  clickSignup: async () => { return await cDI.mockInput("click", $("#btnSignup")) },
-  clickLogin: async () => { return await cDI.mockInput("click", $("#btnLogin")) },
+  clickAuthIcon: async () => { return await ftbMockInput("click.spawnModal", $("#acctMenuBtn")) },
+  clickSignup: async () => { return await ftbMockInput("click.signup", $("#btnSignup")) },
+  clickLogin: async () => { return await ftbMockInput("click.login", $("#btnLogin")) },
   setSignupVals: (un) => {
     $("#txtSgnUN").html(un)
     $("#txtSgnPW").val("testpass")
@@ -51,7 +51,7 @@ cDI.components.unitTests.auth = {
         var pw = cDI.session.testpass
         $("#txtLoginUN").html(un)
         $("#txtLoginPW").val(pw)
-        await ftbUT.auth.clickLogin()
+        var loginRes = await ftbUT.auth.clickLogin()
       },
       (res) => { return cDI.session.username == cDI.session.testuser }, log
     )

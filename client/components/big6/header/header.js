@@ -21,13 +21,14 @@ cDI.components.header = {
   strapAuthButton: async () => {
     if ($("#accountDash") || $("#signupLoginBox")) { ftbCmp("modal").raiseCurtain() }
     ftbCmp("modal").removeModalClick($("#acctMenuBtn"))
+    var onCloseFn = async () => { return await ftbCmp("header").strapAuthButton() }
     if (cDI.utils.isDef(cDI.session.token)){
       var accountDashContent = await ftbCmp("accountDash").drawAccountDash()
-      await ftbCmp("modal").clickToModal($("#acctMenuBtn"), accountDashContent, true)
+      await ftbCmp("modal").clickToModal($("#acctMenuBtn"), accountDashContent, true, onCloseFn)
     }
     else {
       var authMenuContent = await ftbCmp("authMenu").drawAuthMenu()
-      await ftbCmp("modal").clickToModal($("#acctMenuBtn"), authMenuContent, true)
+      await ftbCmp("modal").clickToModal($("#acctMenuBtn"), authMenuContent, true, onCloseFn)
 
     }
   },

@@ -61,7 +61,7 @@ cDI.components.unitTests = {
         if (!cDI.utils.isDef(cDI.session.token)) {
           ftbLogUT(`Not logged in, logging with ${cDI.session.testuser} and ${cDI.session.testpass}`)
           if (!cDI.session.testuser) { cDI.session.setTestCredentials(0) }
-          await ftbCmp("unitTests").auth.login()
+          await ftbUT.auth.login()
           ftbLogUT(`login succeeded token: ${cDI.session.token.substr(0, 5)}...`)
         }
         ftbOutdent()

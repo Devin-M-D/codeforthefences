@@ -4,11 +4,11 @@ cDI.components.authMenu = {
     <span id="authMenu">
       <span id="signupUN">
         <span>Username:</span>
-        <span id="txtSgnUN" class="centerContents" type="text" value=""></span>
+        <span id="txtSgnUN" class="centerContents" type="text" contenteditable="true" value=""></span>
       </span>
       <span id="loginUN">
         <span class="">Username/Email:</span>
-        <span id="txtLoginUN" class="centerContents" type="text" placeholder="username/email" value=""></span>
+        <span id="txtLoginUN" class="centerContents" type="text" contenteditable="true" placeholder="username/email" value=""></span>
       </span>
       <span id="signupPW">
         <span class="">Password:</span>
@@ -26,7 +26,7 @@ cDI.components.authMenu = {
       <span id="btnSignup" class="btnStd centerContents">Signup</span>
       <span id="btnLogin" class="btnStd centerContents">Login</span>
     </span>`)
-    cDI.addAwaitableInput("click", $("#btnSignup"), async (e) => {
+    ftbAddInput("click.signup", authMenu.find("#btnSignup"), async (e) => {
       var email = $('#txtSgnEmail').val()
       var un = $('#txtSgnUN').html()
       var dn = $('#txtSgnDisplayName').val()
@@ -57,10 +57,11 @@ cDI.components.authMenu = {
       return data
     })
 
-    await cDI.addAwaitableInput("click.login", $("#btnLogin"), async (e) => {
+    ftbAddInput("click.login", authMenu.find("#btnLogin"), async (e) => {
       var un = $('#txtLoginUN').html()
       var pw = $('#txtLoginPW').val()
-      await cDI.session.login(un, pw)
+      var loginRes = await cDI.session.login(un, pw)
+      return loginRes
     })
     return authMenu
   }

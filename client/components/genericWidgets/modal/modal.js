@@ -3,25 +3,29 @@ cDI.components.modal = {
     var target = params.target || $("html")
     var content = params.content || ""
     var maximizeDialog = params.maximizeDialog || false
+    var onCloseFn = params.onCloseFn || null
 
-    cDI.components.modal.drawCurtain(target)
+    ftbCmp("modal").drawCurtain(target)
     target.find(" > .modalCurtain").append(content)
     var curtain = target.find(".modalCurtain")
 
     if (maximizeDialog){
-      cDI.components.modal.maximizeDialog(target)
+      ftbCmp("modal").maximizeDialog(target)
     }
-    cDI.components.modal.addRaiseCurtainEvent(curtain)
+    ftbCmp("modal").addRaiseCurtainEvent(curtain, onCloseFn)
     var pane = curtain.find(" > *")
     return pane
   },
-  drawCurtain: async (target) => {
+  drawCurtain: (target) => {
     target.prepend(`<span class="modalCurtain centerContents"></span>`)
   },
-  addRaiseCurtainEvent: (curtain) => {
-    curtain.on("click", (e) => {
+  addRaiseCurtainEvent: (curtain, onCloseFn) => {
+    curtain.on("click.raiseModalCurtain", async (e) => {
         e.stopPropagation()
-        cDI.components.modal.raiseCurtain()
+        if (onCloseFn) {
+          await onCloseFn()
+        }
+        ftbCmp("modal").raiseCurtain()
     })
     curtain.find(" > *").on("click", (e) => {
         e.stopPropagation()
@@ -37,9 +41,9 @@ cDI.components.modal = {
     var content = target.find(".modalCurtain").last()
     content.addClass("max")
   },
-  clickToModal: async (elem, content, maximizeDialog = false) => {
+  clickToModal: async (elem, content, maximizeDialog = false, onCloseFn = null) => {
     ftbAddInput("click.spawnModal", elem, async (e) => {
-      var modalElements = await ftbCmp("modal").showModal({ content: content, maximizeDialog: maximizeDialog })
+      var modalElements = await ftbCmp("modal").showModal({ content: content, maximizeDialog: maximizeDialog, onCloseFn: onCloseFn })
       return modalElements
     })
   },

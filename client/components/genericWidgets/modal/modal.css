@@ -4,14 +4,11 @@
   z-index: 9;
   height: 100%;
   width: 100%;
+  grid-auto-columns: minmax(auto, 90%);
+  grid-auto-rows: minmax(auto, 90%);
 }
 .modalCurtain > * {
-  max-height: 80%;
-  max-width: 80%;
+  max-height: 90%;
+  max-width: 90%;
   background-color: white;
-  position:absolute;
-}
-.modalCurtain.max > * {
-  height: 80%;
-  width: 80%;
 }

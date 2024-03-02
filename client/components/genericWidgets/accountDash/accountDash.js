@@ -1,14 +1,14 @@
 cDI.components.accountDash = {
   drawAccountDash: async () => {
-    var dashElem = $(`<span id="accountDash">
-      <span id="accountDashHeader" class="">
-        <span id="accountDashTitle" class="">${cDI.session.username}'s<br /> Dash</span>
-        <span id="btnLogout" class="">Logout</span>
+    var dashElem = $(`<span id="accountDash" class="max">
+      <span id="accountDashHeader">
+        <span id="accountDashTitle" class="header">${cDI.session.username}</span>
+        <span id="btnLogout" class="btnStd centerContents">Logout</span>
       </span>
       <span id="accountDashBody"></span>
     </span>`)
-    ftbRemoveInput("click.logout", $("#btnLogout"))
-    cDI.addAwaitableInput("click.logout", $("#btnLogout"), async () => { return await cDI.session.logout() })
+    ftbRemoveInput("click.logout", dashElem.find("#btnLogout"))
+    ftbAddInput("click.logout", dashElem.find("#btnLogout"), async () => { return await cDI.session.logout() })
     return dashElem
   }
 }
