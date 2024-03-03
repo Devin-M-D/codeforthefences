@@ -1,12 +1,19 @@
-#blogPostList{
-  flex-basis: 25%;
-  height: calc(100% - 10px);
+#blogMain {
+  grid-auto-columns: 1fr 3fr;
+}
+#blogPostList {
   margin: 5px;
+  padding: 5px;
 }
 #displayBlogPost {
-  flex-basis: 75%;
+  grid-auto-rows: auto auto 1fr;
+  padding: 10px;
+  gap: 10px;
 }
-.blogContent {
+#blogPostHeader {
+  grid-auto-rows: auto auto auto;
+}
+#blogContent {
   font-size: 20px;
 }
 .blogListTitle {

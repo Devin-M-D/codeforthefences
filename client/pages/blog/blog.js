@@ -1,11 +1,13 @@
 cDI.pages.blog = {
-  html: `<span id="blogMain" class="rows">
-    <span id="blogPostList" class="cols algnSC shyScroll"></span>
-    <span id="displayBlogPost" class="cols algnSS"></span>
-  </span>`,
   siteHeaderText: `Blog`,
   init: async () => {
     await cDI.remote.asyncGetScript(`js/services/blogService.js`)
+  },
+  drawPage: async (container) => {
+    container.append(`<span id="blogMain" class="cols">
+      <span id="blogPostList" class="shyScroll outset"></span>
+      <span id="displayBlogPost" class=""></span>
+    </span>`)
     await cDI.pages.blog.buildPostList()
   },
   buildPostList: async () => {
@@ -16,7 +18,7 @@ cDI.pages.blog = {
     var postlist = ``
     posts.forEach(x => {
       postlist += `
-        <span class="blogListTitle autoH" onclick="cDI.pages.blog.buildPost('${x.id}')">${x.title}</span>
+        <span class="blogListTitle" onclick="cDI.pages.blog.buildPost('${x.id}')">${x.title}</span>
         ${x.id != oldestId ? `<span class="rule horiz slim"></span>` : ``}
       `
     })
@@ -26,13 +28,13 @@ cDI.pages.blog = {
   buildPost: async (id) => {
     var post = await cDI.services.blog.getPost(id)
     var post = `
-      <span id="blogPostHeader" class="cols autoH pad10 algnSS">
-        <span class="blogTitle autoH algnSS subheader">${post.title}</span>
-        <span class="blogDate autoH algnSS">${post.createdDate}</span>
-        <span class="blogByline autoH algnSS byline">Devin Downer</span>
+      <span id="blogPostHeader" class="rows">
+        <span class="blogTitle subheader">${post.title}</span>
+        <span class="blogDate">${post.createdDate}</span>
+        <span class="blogByline byline">Devin Downer</span>
       </span>
       <span class="rule horiz"></span>
-      <span class="blogContent autoH pad10 algnSS shyScroll noShadow">
+      <span id="blogContent" class="shyScroll">
         ${post.content}
       </span>
     `

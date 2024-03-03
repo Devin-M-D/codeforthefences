@@ -70,18 +70,18 @@ cDI.components.header = {
     await ftbAddInput("click.closeDrawerPane", pane.find("mainMenuClose"), async () => {
       await ftbCmp("drawerPane").closeDrawerPane($(this).parent().parent().parent().parent())
     })
-    cDI.components.header.addMainNavClick(pane, $("#mainNavAbout"), '/about')
-    cDI.components.header.addMainNavClick(pane, $("#mainNavBlog"), '/blog')
-    cDI.components.header.addMainNavClick(pane, $("#mainNavCookbook"), '/cookbook')
-    cDI.components.header.addMainNavClick(pane, $("#mainNavDarkRoom"), '/darkRoom')
-    cDI.components.header.addMainNavClick(pane, $("#mainNavBudget"), '/budget')
-    cDI.components.header.addMainNavClick(pane, $("#mainNavGames"), '/games')
-    await cDI.components.drawerPane.openDrawerPane(pane)
+    ftbCmp("header").addMainNavClick(pane, $("#mainNavAbout"), '/about')
+    ftbCmp("header").addMainNavClick(pane, $("#mainNavBlog"), '/blog')
+    ftbCmp("header").addMainNavClick(pane, $("#mainNavCookbook"), '/cookbook')
+    ftbCmp("header").addMainNavClick(pane, $("#mainNavDarkRoom"), '/darkRoom')
+    ftbCmp("header").addMainNavClick(pane, $("#mainNavBudget"), '/budget')
+    ftbCmp("header").addMainNavClick(pane, $("#mainNavGames"), '/games')
+    await ftbCmp("drawerPane").openDrawerPane(pane)
   },
   addMainNavClick: (pane, elem, routePath) => {
     ftbAddInput("click.mainNav", elem, async e => {
-      await cDI.components.router.getRoute(routePath)
-      await cDI.components.drawerPane.closeDrawerPane(pane)
+      await ftbCmp("router").getRoute(routePath)
+      await ftbCmp("drawerPane").closeDrawerPane(pane)
     })
   }
 }

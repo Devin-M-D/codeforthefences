@@ -1,10 +1,10 @@
 cDI.components.router = {
   init: async () => {
     if (window.location.pathname.length == 1) {
-      await cDI.components.router.getRoute("blog")
+      await ftbCmp("router").getRoute("blog")
     }
     else {
-      await cDI.components.router.getRoute(window.location.pathname)
+      await ftbCmp("router").getRoute(window.location.pathname)
     }
   },
   getRoute: async (path) => {
@@ -12,8 +12,8 @@ cDI.components.router = {
       path = path.substr(1)
     }
     window.history.pushState(null, null, path)
-    var DIobj = await cDI.components.contentMain.loadPage(path)
-    cDI.components.header.setHeaderText(DIobj.siteHeaderText)
+    var cmDI = await ftbCmp("contentMain").loadPage(path)
+    ftbCmp("header").setHeaderText(cmDI.siteHeaderText)
   }
 }
 

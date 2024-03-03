@@ -23,6 +23,7 @@ cDI.components.authMenu = {
         <input id="txtSgnConfPW" class="centerContents" type="password" placeholder="confirm password" value="" />
       </span>
       <span></span>
+      <span id="authMenuVRule" class="rule vert"></span>
       <span id="btnSignup" class="btnStd centerContents">Signup</span>
       <span id="btnLogin" class="btnStd centerContents">Login</span>
     </span>`)

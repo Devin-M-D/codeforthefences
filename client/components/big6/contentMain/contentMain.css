@@ -1,3 +1,4 @@
 #contentMain {
   padding: 2% 2%;
+  grid-auto-columns: 1fr;
 }
