@@ -45,7 +45,7 @@ cDI.components.header = {
         <span id="dpMainNavHeader" class="flex rows">
           ${dpDI.drawerPaneCloseButton}
         </span>
-        <span id="dpMainNavContent" class="shyScroll algnS">
+        <span id="dpMainNavContent" class="shyScroll">
           <span class="fauxrder">
             <span id="mainNavAbout" class="btnStd subheader">About</span>
           </span>

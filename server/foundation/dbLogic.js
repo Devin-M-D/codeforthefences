@@ -62,10 +62,11 @@ module.exports = {
       if (result.length > 1) { return { status: "e", payload: "Expected one result but got multiple" } }
     }
     else {
-      try {
-        result = result.filter((responseObj, i) => { return i % 2 == 1 })
-      }
-      catch{}
+      return result
+      // try {
+      //   result = result.filter((responseObj, i) => { return i % 2 == 1 })
+      // }
+      // catch{}
     }
     return result
   }

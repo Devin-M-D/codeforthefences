@@ -5,7 +5,7 @@ cDI.pages.blog = {
   },
   drawPage: async (container) => {
     container.append(`<span id="blogMain" class="cols">
-      <span id="blogPostList" class="shyScroll outset"></span>
+      <span id="blogPostList" class="shyScroll outset rows algnSS"></span>
       <span id="displayBlogPost" class=""></span>
     </span>`)
     await cDI.pages.blog.buildPostList()

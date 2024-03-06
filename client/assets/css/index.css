@@ -136,17 +136,17 @@ span[type="text"], input[type="password"] {
 /*#endregion*/
 
 /*#region justify and align shorthands*/
-.algnC { justify-content: center; }
-.algnS { justify-content: start; }
-.algnE { justify-content: end; }
+.algnC { justify-items: center; justify-content: center; }
+.algnS { justify-items: start; justify-content: start; }
+.algnE { justify-items: end; justify-content: end; }
 
-.algnXC { align-items: center; }
-.algnXS { align-items: start; }
-.algnXE { align-items: end; }
+.algnXC { align-items: center; align-content: center; }
+.algnXS { align-items: start; align-content: start; }
+.algnXE { align-items: end; align-content: end; }
 
-.algnCC { justify-content: center; align-items: center; align-content: center; }
-.algnSS { justify-content: start; align-items: start; }
-.algnEE { justify-content: end; align-items: end; }
+.algnCC { justify-items: center; justify-content: center; align-items: center; align-content: center; }
+.algnSS { justify-items: start; justify-content: start; align-items: start; align-content: start; }
+.algnEE { justify-items: end; justify-content: end; align-items: end; align-content: end; }
 
 .algnSC { justify-content: start; align-items: center; }
 .algnCS { justify-content: center; align-items: start; }

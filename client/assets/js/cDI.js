@@ -389,7 +389,7 @@ cDI.unpersistAll = () => {
 //#region session
 cDI.session = {
   setTestCredentials: (index) => {
-    var un = cDI.config.testUsers(index)
+    var un = cDI.config.testUsers[index]
     cDI.unpersist("codeforthefences.test.username")
     cDI.persist("codeforthefences.test.username", un)
     cDI.persist("codeforthefences.test.password", "testpass")
