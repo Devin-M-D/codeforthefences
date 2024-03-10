@@ -1,0 +1,7 @@
+.graphPaper {
+  aspect-ratio: 1;
+}
+
+.graphPaper > span {
+  border: solid thin black;
+}

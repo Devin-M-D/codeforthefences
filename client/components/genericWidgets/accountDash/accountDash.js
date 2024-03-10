@@ -3,7 +3,7 @@ cDI.components.accountDash = {
     var dashElem = $(`<span id="accountDash" class="max">
       <span id="accountDashHeader">
         <span id="accountDashTitle" class="header">${cDI.session.username}</span>
-        <span id="btnLogout" class="btnStd centerContents">Logout</span>
+        <span id="btnLogout" class="btnStd hardCenter">Logout</span>
       </span>
       <span id="accountDashBody"></span>
     </span>`)

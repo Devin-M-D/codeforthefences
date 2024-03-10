@@ -17,7 +17,7 @@ cDI.components.modal = {
     return pane
   },
   drawCurtain: (target) => {
-    target.prepend(`<span class="modalCurtain centerContents"></span>`)
+    target.prepend(`<span class="modalCurtain hardCenter"></span>`)
   },
   addRaiseCurtainEvent: (curtain, onCloseFn) => {
     curtain.on("click.raiseModalCurtain", async (e) => {

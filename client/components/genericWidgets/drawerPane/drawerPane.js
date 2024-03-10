@@ -21,7 +21,7 @@ cDI.components.drawerPane = {
     $(pane).addClass("open")
   },
   drawerPaneCloseButton: `
-    <span class="mainMenuClose centerContents">
+    <span class="mainMenuClose hardCenter">
       <span class="btnIcon" data-btnsize="55">
         <span class="shpCancel"></span>
       </span>

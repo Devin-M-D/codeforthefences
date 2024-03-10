@@ -4,7 +4,7 @@ cDI.components.header = {
       <span class="hamburgerBox" style="height:100%">
         <span class="shpHamburger"></span>
       </span>
-      <span id="siteHeaderText" class="rows grow centerContents">
+      <span id="siteHeaderText" class="rows grow hardCenter">
         <span id="siteName" class="header">Code for the Fences</span>
         <span id="pageName" class="iSubheader"></span>
       </span>

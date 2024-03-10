@@ -4,28 +4,28 @@ cDI.components.authMenu = {
     <span id="authMenu">
       <span id="signupUN">
         <span>Username:</span>
-        <span id="txtSgnUN" class="centerContents" type="text" contenteditable="true" value=""></span>
+        <span id="txtSgnUN" class="hardCenter" type="text" contenteditable="true" value=""></span>
       </span>
       <span id="loginUN">
         <span class="">Username/Email:</span>
-        <span id="txtLoginUN" class="centerContents" type="text" contenteditable="true" placeholder="username/email" value=""></span>
+        <span id="txtLoginUN" class="hardCenter" type="text" contenteditable="true" placeholder="username/email" value=""></span>
       </span>
       <span id="signupPW">
         <span class="">Password:</span>
-        <input id="txtSgnPW" class="centerContents" type="password" placeholder="password" value="" />
+        <input id="txtSgnPW" class="hardCenter" type="password" placeholder="password" value="" />
       </span>
       <span id="loginPW">
         <span class="">Password:</span>
-        <input id="txtLoginPW" class="centerContents" type="password" placeholder="password" value="" />
+        <input id="txtLoginPW" class="hardCenter" type="password" placeholder="password" value="" />
       </span>
       <span id="signupConfPW">
         <span class="">Confirm password:</span>
-        <input id="txtSgnConfPW" class="centerContents" type="password" placeholder="confirm password" value="" />
+        <input id="txtSgnConfPW" class="hardCenter" type="password" placeholder="confirm password" value="" />
       </span>
       <span></span>
       <span id="authMenuVRule" class="rule vert"></span>
-      <span id="btnSignup" class="btnStd centerContents">Signup</span>
-      <span id="btnLogin" class="btnStd centerContents">Login</span>
+      <span id="btnSignup" class="btnStd hardCenter">Signup</span>
+      <span id="btnLogin" class="btnStd hardCenter">Login</span>
     </span>`)
     ftbAddInput("click.signup", authMenu.find("#btnSignup"), async (e) => {
       var email = $('#txtSgnEmail').val()

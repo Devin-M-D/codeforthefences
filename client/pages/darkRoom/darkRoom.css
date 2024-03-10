@@ -1,3 +1,7 @@
-.shootBtn {
-  width: calc(50% - 10px);
+#darkRoomMain {
+  grid-auto-rows: auto 1fr;
+}
+#darkRoomMain #darkRoomSelectShoot {
+  grid-auto-columns: minmax(10px, max-content);
+  justify-content: space-evenly;
 }
