@@ -1,8 +1,0 @@
-#signupLoginBox {
-  height: 600px;
-}
-#txtSgnUN, #txtSgnPW, #txtSgnConfPW,
-#txtLoginUN, #txtLoginPW {
-  margin-bottom: 20px;
-  margin-top: 15px;
-}

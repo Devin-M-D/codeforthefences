@@ -1,19 +1,19 @@
 cDI.components.vikingChess = {
-  html: `<span id="vikingChess" class="cols nowrap shyScroll noShadow">
-    <span class="scoreboard rows">
-      <span id="vikingChessP1" class="absCen"></span>
+  html: `<span id="vikingChess" class="rows shyScroll">
+    <span class="scoreboard cols">
+      <span id="vikingChessP1" class="hardCenter"></span>
       <span id="vikingChessP1Captures" class="vikingChessCaptures"></span>
       <span id="vikingChessP2Captures" class="vikingChessCaptures"></span>
-      <span id="vikingChessP2" class="absCen"></span>
+      <span id="vikingChessP2" class="hardCenter"></span>
     </span>
-    <span class="gameboard noShadow"></span>
-    <span id="rules" class="algnSS noShadow noShrink autoH">
+    <span class="gameboard flex"></span>
+    <span id="rules" class="">
       <b style="text-align: center;width:100%;padding: 20px 0px 10px 0px;">&#9660;  Rules  &#9660;</b>
-      <span class="fontSm noShrink autoH pad10 italic">
+      <span class="fontSm pad10 italic">
         Tafl, or Viking Chess, is a family of board games played across ancient northern Europe. There are many variations
         on the rules, and this one is based on a version sold by a viking museum.
       </span>
-      <ol class="spaceList noShrink autoH leftCopy">
+      <ol class="spaceList leftCopy">
         <li>Defending side (P1) has a king and 12 defenders and starts in the center. Attacking side (P2) has 24 attackers and starts around the edges of the board.</li>
         <li>The center space is the throne and only the king can occupy it (other pieces may pass through).</li>
         <li>The corner spaces represent escape to safety, if the king makes it to a corner space, the defending side wins.</li>
@@ -32,7 +32,6 @@ cDI.components.vikingChess = {
   container: null,
   poll: null,
   init: async () => {
-    await ftbLoadComponent("components/genericWidgets", "grid")
     await cDI.remote.asyncGetScript(`js/services/vikingChessService.js`)
   },
   drawGame: async (container) => {
@@ -40,7 +39,7 @@ cDI.components.vikingChess = {
     var gamedata = await ftbSvc["vikingChess"].getGameState()
     ftbCmp("vikingChess").gamedata = gamedata
     container.append(ftbCmp("vikingChess").html)
-    await ftbCmp("grid").drawGrid($("#vikingChess .gameboard"), 11, 11)
+    await ftbCmp("graphPaper").drawGrid($("#vikingChess .gameboard"), 11, 11)
     await ftbCmp("vikingChess").loadGameState()
     ftbCmp("vikingChess").container = container
     ftbCmp("vikingChess").pollUpdates()

@@ -1,42 +1,41 @@
 cDI.components.flexCarousel = {
-  buildCarousel: async (params) => {
-    var target = params.target || $(".flexCarousel")[0]
-    var imagePaths = params.imagePaths || []
-    var options = params.options || {
-
-    }
-    target.empty()
-    target.append(`
+  buildCarousel: async (container, imagePaths) => {
+    container.empty()
+    var html = $(`
       <span class="flexCarousel">
-        <span class="crslPrevWrapper">
-          <span class="crslPrev" onclick="cDI.components.flexCarousel.crslCycle(event, this, 'prev')"></span>
-        </span>
-        <span class="crslNextWrapper">
-          <span class="crslNext" onclick="cDI.components.flexCarousel.crslCycle(event, this, 'next')"></span>
+        <span class="crslPrevWrapper hardCenter">
+          <span class="crslPrev"></span>
         </span>
         <span class="crslSeatPanel"></span>
-      </span>
-    `)
-    var carouselHTML = target.find(".flexCarousel")
+        <span class="crslNextWrapper hardCenter">
+          <span class="crslNext"></span>
+        </span>
+      </span>`)
+    await ftbAddInput("click.cycleCarouselLeft", html.find(".crslPrev"), async (e) => {
+      await ftbCmp("flexCarousel").crslCycle(event, e.target, 'prev')
+    })
+    await ftbAddInput("click.cycleCarouselLeft", html.find(".crslNext"), async (e) => {
+      await ftbCmp("flexCarousel").crslCycle(event, e.target, 'next')
+    })
+    var seatPanel = html.find(".crslSeatPanel")
     imagePaths.forEach((x, i) => {
       var seatSpecial = ""
       if (i == 0) { seatSpecial = " crslLeadHorse" }
       if (i == imagePaths.length - 1) { seatSpecial = " crslAnchorHorse" }
 
-      carouselHTML.find(".crslSeatPanel").append(`
-        <span class="crslSlot${seatSpecial}" style="--idx: ${i}; background-image: url('${x}')"></span>
-      `)
+      seatPanel.append(`<span class="crslSlot${seatSpecial}" style="--idx: ${i}; background-image: url('${x}')"></span>`)
     })
-    cDI.components.flexCarousel.setShowPony($(".crslSlot"))
+    ftbCmp("flexCarousel").setShowPony($(".crslSlot"))
+    container.append(html)
   },
   crslCycle: (event, element, direction) => {
     cDI.sequencer.debounce("cycleFlexCarousel", () => {
       var target = $(element).parent().parent()
       seats = target.find(".crslSlot")
 
-      if (direction == "prev") { cDI.components.flexCarousel.cyclePrev(seats) }
-      else if (direction == "next") { cDI.components.flexCarousel.cycleNext(seats) }
-      cDI.components.flexCarousel.setShowPony(seats)
+      if (direction == "prev") { ftbCmp("flexCarousel").cyclePrev(seats) }
+      else if (direction == "next") { ftbCmp("flexCarousel").cycleNext(seats) }
+      ftbCmp("flexCarousel").setShowPony(seats)
     },
     250)
   },

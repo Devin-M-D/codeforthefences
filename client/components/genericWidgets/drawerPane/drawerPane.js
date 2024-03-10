@@ -1,23 +1,31 @@
 cDI.components.drawerPane = {
   createDrawerPane: async (target) => {
-    $(".drawerPane").remove()
+    $(target).children(".drawerCurtain").remove()
 
     var curtain = $("<span class='drawerCurtain'></span>")
     $(target).prepend(curtain)
+    ftbAddInput("click.closeDrawerPane", curtain, async () => {
+      ftbRemoveInput("click.closeDrawerPane", curtain)
+      await ftbCmp("drawerPane").closeDrawerPane(createdPane)
+    })
 
-    $(target).append(`<span class="drawerPane cols algnSX"></span>`)
-    var createdPane = $(target).children(".drawerPane")
-
-    $(curtain).on("click", () => { cDI.components.drawerPane.closeDrawerPane(createdPane) })
-
+    $(curtain).append(`<span class="drawerPane"></span>`)
+    var createdPane = $(target).find(".drawerPane")
     return createdPane
   },
-  populateDrawerPane: async (pane, content) => {
+  populateDrawerPane: async (pane, content, useHeader = 0) => {
+    content = $(content)
     $(pane).append(content)
   },
   openDrawerPane: async (pane) => {
     $(pane).addClass("open")
   },
+  drawerPaneCloseButton: `
+    <span class="mainMenuClose hardCenter">
+      <span class="btnIcon" data-btnsize="55">
+        <span class="shpCancel"></span>
+      </span>
+    </span>`,
   closeDrawerPane: async (pane) => {
     $(pane).removeClass("open")
     setTimeout(() => {
@@ -26,11 +34,3 @@ cDI.components.drawerPane = {
     }, 500)
   }
 }
-
-//USAGE
-///////
-// var pane = await cDI.components.drawerPane.createDrawerPane($("html"))
-// cDI.components.drawerPane.populateDrawerPane(pane, `
-//   <span>Content</span>
-// `)
-// cDI.components.drawerPane.openDrawerPane(pane)

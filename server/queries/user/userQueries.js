@@ -1,4 +1,3 @@
-var queryBuilder = require('query-builder')(require('../../foundation/dbLogic'))
 var userModel = require('../../models/shared/user/userModel')
 
 var userQueries = {}
@@ -9,9 +8,7 @@ userQueries.prjIdAndName = (tblAlias, idAlias, nameAlias) => {
 userQueries.mapIdAndName = (id, username) => {
   return { id: id, username: username }
 }
-userQueries.selectBase = `SELECT
-${queryBuilder.projections(userModel, 0)}
-FROM user`
+userQueries.selectBase = `SELECT * FROM user`
 
 userQueries.getAll = `
 ${userQueries.selectBase}

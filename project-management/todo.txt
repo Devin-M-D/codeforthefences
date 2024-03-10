@@ -1,5 +1,6 @@
 Minor bugs and features:
 - can't move into corners
+- vrule in authMenu
 
 - wire up add buttons for foodVariant and prepStyle
 - adding new searchSelect value should automatically select as well
@@ -10,9 +11,7 @@ Minor bugs and features:
 - debounce acceptStepChange (keyup)
 - add new ingredient field via searchSelect should select the value
 - pages are just components and could probably be consolidated
-- css grid
 - native js selectors
-- prevent static calls from costing cycles in middleware
 
 Big Picture:
 - lead cap manager portfolio demo

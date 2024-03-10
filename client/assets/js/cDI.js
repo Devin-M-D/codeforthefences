@@ -170,8 +170,11 @@ cDI.remote = {
       })
     })
   },
-  asyncGetCSS: (path) => {
-    $(`<link rel="stylesheet" type="text/css" href="${path}" />`).appendTo('head')
+  asyncGetCSS: async (path) => {
+    var css = await cDI.remote.asyncGet(path)
+    if (!css.toLowerCase().indexOf("<html") == 0){
+      $(`<link rel="stylesheet" type="text/css" href="${path}" />`).appendTo('head')
+    }
   }
 }
 cDI.remote.loadComponent = async (folderPath, componentName, container = null, placement = 1) => {
@@ -187,8 +190,12 @@ cDI.remote.loadComponent = async (folderPath, componentName, container = null, p
   await cDI.remote.asyncGetCSS(`${filePath}.css`)
   await cDI.remote.asyncGetScript(`${filePath}.js`)
   var DI = cDI.utils.getDIByComponentName(componentName)
+  ftbIndent()
   if (DI){
-    if (DI.preInit) { await DI.preInit(DI, filePath) }
+    if (DI.preInit) {
+      ftbLogDev(`running preInit() for ${path}`)
+      await DI.preInit(DI, filePath)
+    }
     if (container){
       if (DI.html){
         var newElem = $(DI.html)
@@ -198,10 +205,14 @@ cDI.remote.loadComponent = async (folderPath, componentName, container = null, p
       }
       else { ftbLogDev(`container given for ${path} but no html found in DI`)}
     }
-    if (DI.init) { await DI.init() }
-    else { ftbLogDev(`no DI.init() found for ${path}`) }
+    if (DI.init) {
+      ftbLogDev(`running init() for ${path}`)
+      await DI.init()
+    }
+    else { ftbLogDev(`no init() found for ${path}`) }
   }
   else { ftbLogDev(`no DI found for ${path}`) }
+  ftbOutdent()
   return DI
 }
 //#endregion
@@ -377,11 +388,11 @@ cDI.unpersistAll = () => {
 
 //#region session
 cDI.session = {
-  setTestCredentials: (un, pw) => {
+  setTestCredentials: (index) => {
+    var un = cDI.config.testUsers[index]
     cDI.unpersist("codeforthefences.test.username")
-    cDI.unpersist("codeforthefences.test.password")
     cDI.persist("codeforthefences.test.username", un)
-    cDI.persist("codeforthefences.test.password", pw)
+    cDI.persist("codeforthefences.test.password", "testpass")
   },
   login: async (un, pw) => {
     var callRes = await cDI.remote.remoteCall("/login", {"username": un, "password": pw })
@@ -446,4 +457,8 @@ var ftbLoadComponent = cDI.remote.loadComponent
 var ftbCmp = cDI.utils.getDIByComponentName
 var ftbSvc = cDI.services
 var ftbSetLogin = cDI.session.setTestCredentials
+var ftbAddInput = cDI.addAwaitableInput
+var ftbMockInput = cDI.mockInput
+var ftbRemoveInput = cDI.removeAwaitableInput
+var ftbUT
 //#endregion

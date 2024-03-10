@@ -1,0 +1,21 @@
+#authMenu {
+  grid-template-areas:
+    "signupUN vrule loginUN"
+    "signupPW vrule loginPW"
+    "signupConfPW vrule ."
+    "signUpBtn vrule loginBtn";
+  justify-content: space-evenly;
+  align-content: center;
+  padding: 15px;
+  column-gap: 10px;
+}
+#txtSgnUN, #txtSgnPW, #txtSgnConfPW,
+#txtLoginUN, #txtLoginPW {
+  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+#authMenuVRule {
+  grid-area: vrule
+}

@@ -1,6 +1,7 @@
 .flexCarousel {
   overflow: hidden;
 }
+
 /*#region NAV*/
 .crslPrevWrapper, .crslNextWrapper {
   position:absolute;
@@ -11,10 +12,10 @@
   overflow: visible;
 }
 .crslPrevWrapper {
-  left: 50px;
+  left: 10px;
 }
 .crslNextWrapper {
-  right: 50px;
+  right: 10px;
 }
 @keyframes bounceLeft {
     0% { left: 25px; }
@@ -41,20 +42,25 @@
 }
 .crslPrev {
   border-left: solid 3px purple; transform: rotate(-45deg);
-  left:
+  box-shadow: -3px -3px 3px violet;
 }
 .crslNext {
   border-right: solid 3px purple; transform: rotate(45deg);
+  box-shadow: 3px -3px 3px violet;
 }
-
 /*#endregion*/
+
 .crslSlot {
   position: absolute;
+  background-origin: content-box;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   left: calc(100% * var(--idx) - 100%);
   transition-duration: .75s;
+  height: 100%;
+  width: 100%;
+  padding: 10px;
 }
 .crslAnchorHorse {
   display: none;

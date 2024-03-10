@@ -1,6 +1,5 @@
 var DI = require("../foundation/DICore")
 var db = require('../foundation/dbLogic')
-var queryBuilder = require('query-builder')(db)
 var vikingChessQueries = require("../queries/vikingChess/vikingChessQueries")
 var userQueries = require("../queries/user/userQueries")
 
@@ -75,7 +74,7 @@ vikingChessService.submitMove = async (userId, piece, newX, newY) => {
   return newGameData
 }
 vikingChessService.saveGameData = async (gamedata, userId) => {
-  var newGameData = await queryBuilder.quickRun(vikingChessQueries.saveGame, [gamedata.ended, gamedata.winner, JSON.stringify(gamedata.gamestate), userId, userId])
+  var newGameData = await db.runQuery(vikingChessQueries.saveGame, [gamedata.ended, gamedata.winner, JSON.stringify(gamedata.gamestate), userId, userId])
   return newGameData
 }
 vikingChessService.hasPiece = (gamestate, xPos, yPos) => {

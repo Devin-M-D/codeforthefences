@@ -26,7 +26,6 @@
     "express-session": "^1.17.1",
     "moment": "^2.29.1",
     "mysql2": "^3.8.0",
-    "query-builder": "git+https://github.com/Devin-M-D/query-builder",
     "uuid": "^8.0.0"
   }
 }

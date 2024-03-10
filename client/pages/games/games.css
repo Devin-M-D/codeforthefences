@@ -1,0 +1,14 @@
+#gamesMain {
+  grid-auto-rows: auto 1fr;
+}
+#gamePane {
+  grid-auto-rows: auto;
+}
+#selectGame {
+  grid-auto-columns: 150px;
+  justify-content: space-evenly;
+}
+#selectGame.back {
+  grid-auto-columns: unset;
+  justify-content: flex-start;
+}

@@ -1,17 +1,14 @@
 cDI.components.accountDash = {
-  html: `<span id="accountDash">
-    <span id="accountDashHeader" class="rows autoH pad25 algnSpread">
-      <span id="accountDashTitle" class="autoW algnSX"></span>
-      <span id="btnLogout" class="autoW btnStd">Logout</span>
-    </span>
-    <span id="accountDashBody"></span>
-  </span>`,
-  init: async () => {
-    return await cDI.components.accountDash.strapAccountDash()
-  },
-  strapAccountDash: async () => {
-    $("#accountDashTitle").html(`${cDI.session.username}'s<br />Account Dash`)
-    $("#btnLogout").off()
-    cDI.addAwaitableInput("click", $("#btnLogout"), async () => { return await cDI.session.logout() })
+  drawAccountDash: async () => {
+    var dashElem = $(`<span id="accountDash" class="max">
+      <span id="accountDashHeader">
+        <span id="accountDashTitle" class="header">${cDI.session.username}</span>
+        <span id="btnLogout" class="btnStd hardCenter">Logout</span>
+      </span>
+      <span id="accountDashBody"></span>
+    </span>`)
+    ftbRemoveInput("click.logout", dashElem.find("#btnLogout"))
+    ftbAddInput("click.logout", dashElem.find("#btnLogout"), async () => { return await cDI.session.logout() })
+    return dashElem
   }
 }

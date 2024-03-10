@@ -1,4 +1,13 @@
-#accountDash {}
+#accountDash {
+  grid-auto-rows: auto 1fr;
+}
 #accountDashHeader {
-  /* height: 150px; */
+  grid-auto-flow: column;
+  padding: 20px;
+  justify-content: space-between;
+  grid-template-columns: minmax(auto, 2fr) minmax(auto, 1fr);
+}
+#accountDashTitle {
+  align-content: start;
+  justify-content: start;
 }
