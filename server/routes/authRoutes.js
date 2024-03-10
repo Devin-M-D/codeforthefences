@@ -1,19 +1,16 @@
 var DI = require('../foundation/DICore')
-var userService = require("../services/userService")
 var authService = require("../services/authService")
 
 module.exports = (router) => {
   router.post('/signup', DI.rh.asyncRoute(async (req, res, next) =>
   {
     var newUser = req.body
-    var existingUser = await userService.findByName(newUser.username)
-    if (existingUser.id) {
-      DI.rh.fail(res, "Unable to create new user, username is taken.")
-    }
-    else {
-      var createdUser = await authService.signup(newUser.username, newUser.password, req.cookies['connect.sid'])
+    try {
+      var createdUser = await authService.signup(newUser, req.cookies['connect.sid'])
+      console.log("createdUser",createdUser)
       DI.rh.succeed(res, createdUser)
     }
+    catch (ex) { DI.rh.fail(res, ex) }
   }))
   router.post('/login', DI.rh.asyncRoute(async (req, res, next) =>
   {

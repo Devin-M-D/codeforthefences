@@ -394,17 +394,6 @@ cDI.session = {
     cDI.persist("codeforthefences.test.username", un)
     cDI.persist("codeforthefences.test.password", "testpass")
   },
-  login: async (un, pw) => {
-    var callRes = await cDI.remote.remoteCall("/login", {"username": un, "password": pw })
-    return await cDI.remote.h(callRes,
-      async (user) => {
-        await cDI.session.setSession(user.id, un, user.token)
-        await cDI.components.header.strapAuthButton()
-        return callRes
-      },
-      async (callRes) => { console.log("login failed"); return false; }
-    )
-  },
   setSession: async (id, un, token) => {
     cDI.persist("codeforthefences.userId", id)
     cDI.persist("codeforthefences.username", un)

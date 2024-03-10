@@ -5,10 +5,15 @@ var userQueries = require("../queries/user/userQueries")
 var userService = require("./userService")
 
 module.exports = {
-  signup: async (username, password, sessionId) => {
-    var hash = await bcrypt.hash(password, await bcrypt.genSalt(10), null)
-    var queryRes = await db.runQuery(userQueries.create, [ username, hash, sessionId ], 1)
-    return queryRes
+  signup: async (newUser, sessionToken) => {
+    var existingUser = await userService.findByName(newUser.username)
+    if (existingUser && existingUser.id) {
+      throw("Unable to create new user, username is taken.")
+    }
+    else {
+      var createdUser = await userService.createUser(newUser.username, newUser.password, sessionToken)
+      return createdUser
+    }
   },
   logout: async (sessionId) => {
     return await db.runQuery(userQueries.logout, [ sessionId ])
@@ -27,6 +32,5 @@ module.exports = {
   },
   getSession: async (sessionId) => {
     return await db.runQuery(userQueries.getSession, [ sessionId ], 1)
-  },
-
+  }
 }

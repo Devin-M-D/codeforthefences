@@ -27,7 +27,7 @@ cDI.pages.games = {
     }
     else {
       var backBtn = $(`<span>< Back to Games Home</span>`)
-      await ftbAddInput("click.backGamesHome", backBtn, async () => {
+      ftbAddInput("click.backGamesHome", backBtn, async () => {
         await ftbCmp('games').drawPage(parentContainer)
       })
       $("#selectGame").empty()

@@ -13,7 +13,7 @@ cDI.pages.darkRoom = {
   },
   addShoot: async (container, name, date, folder) => {
     var button = $(`<span class="shootBtn mgn10 btnStd hardCenter">${name}<br />${date}</span>`)
-    await ftbAddInput("click.setShoot", button, async () => {
+    ftbAddInput("click.setShoot", button, async () => {
       await cDI.pages.darkRoom.setGallery(folder)
     })
     container.append(button)
