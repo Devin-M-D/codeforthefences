@@ -1,4 +1,6 @@
 Minor bugs and features:
+- can't type into un fields after already entering something
+- if pollTurn errors draw games home and stop polling
 - can't move into corners
 - vrule in authMenu
 

@@ -37,7 +37,6 @@ cDI.components.unitTests = {
     return await ftbUT.UTLogSection("Unit Tests set to level 2: customDevScenario",
       async () => {
         //await ftbUT.loginIfNeccessary()
-        await ftbUT.header.runAllHeader()
       })
   },
   loginIfNeccessary: async () => {

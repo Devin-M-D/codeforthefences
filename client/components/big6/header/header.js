@@ -12,6 +12,7 @@ cDI.components.header = {
     </span>
   `,
   init: async () => {
+    await cDI.remote.asyncGetScript(`js/services/authService.js`)
     await ftbCmp("header").strapAuthButton()
     await ftbCmp("header").strapHeaderHamburger()
   },
@@ -33,7 +34,7 @@ cDI.components.header = {
     }
   },
   strapHeaderHamburger: async () => {
-    await ftbAddInput("click.openHamburger", $("#siteHeader > .hamburgerBox"), async () => {
+    ftbAddInput("click.openHamburger", $("#siteHeader > .hamburgerBox"), async () => {
       await ftbCmp("header").buildMainNav()
     })
   },
@@ -67,7 +68,7 @@ cDI.components.header = {
         </span>
       </span>
     `)
-    await ftbAddInput("click.closeDrawerPane", pane.find("mainMenuClose"), async () => {
+    ftbAddInput("click.closeDrawerPane", pane.find("mainMenuClose"), async () => {
       await ftbCmp("drawerPane").closeDrawerPane($(this).parent().parent().parent().parent())
     })
     ftbCmp("header").addMainNavClick(pane, $("#mainNavAbout"), '/about')

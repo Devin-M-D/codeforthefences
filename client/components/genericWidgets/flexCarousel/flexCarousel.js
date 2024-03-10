@@ -11,10 +11,10 @@ cDI.components.flexCarousel = {
           <span class="crslNext"></span>
         </span>
       </span>`)
-    await ftbAddInput("click.cycleCarouselLeft", html.find(".crslPrev"), async (e) => {
+    ftbAddInput("click.cycleCarouselLeft", html.find(".crslPrev"), async (e) => {
       await ftbCmp("flexCarousel").crslCycle(event, e.target, 'prev')
     })
-    await ftbAddInput("click.cycleCarouselLeft", html.find(".crslNext"), async (e) => {
+    ftbAddInput("click.cycleCarouselLeft", html.find(".crslNext"), async (e) => {
       await ftbCmp("flexCarousel").crslCycle(event, e.target, 'next')
     })
     var seatPanel = html.find(".crslSeatPanel")

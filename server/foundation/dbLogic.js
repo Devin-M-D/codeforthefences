@@ -59,7 +59,13 @@ module.exports = {
     if (expectOne){
       if (result.length == 0) { return null }
       if (result.length == 1) { return result[0] }
-      if (result.length > 1) { return { status: "e", payload: "Expected one result but got multiple" } }
+      if (result.length > 1) {
+        if (result[1].length){
+          if (result[1].length > 1){ return { status: "e", payload: "Expected one result but got multiple" } }
+          return result[1][0]
+        }
+        else { return result[1] }
+      }
     }
     else {
       return result
