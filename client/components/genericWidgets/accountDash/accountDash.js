@@ -9,7 +9,6 @@ cDI.components.accountDash = {
         <span class="underline algnS">Viking Chess Games</span>
       </span>
     </span>`)
-    ftbRemoveInput("click.logout", dashElem.find("#btnLogout"))
     ftbAddInput("click.logout", dashElem.find("#btnLogout"), async () => { return await cDI.session.logout() })
     await ftbCmp("accountDash").addGamesList(dashElem)
     return dashElem
