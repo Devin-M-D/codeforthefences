@@ -7,6 +7,8 @@ module.exports = (router) => {
     var newUser = req.body
     try {
       var createdUser = await authService.signup(newUser, req.cookies['connect.sid'])
+      res.cookie('username', user.username, { maxAge: 900000, httpOnly: true, sameSite: true });
+      res.cookie('userId', user.id, { maxAge: 900000, httpOnly: true, sameSite: true });
       DI.rh.succeed(res, createdUser)
     }
     catch (ex) { DI.rh.fail(res, ex) }
@@ -17,6 +19,7 @@ module.exports = (router) => {
     var user = await authService.findLogin(login.username, login.password)
     if (user) {
       await authService.setSession(req.cookies['connect.sid'], user.id)
+      res.cookie('username', user.username, { maxAge: 900000, httpOnly: true, sameSite: true });
       res.cookie('userId', user.id, { maxAge: 900000, httpOnly: true, sameSite: true });
       user.token = req.cookies['connect.sid']
       DI.rh.succeed(res, user)
@@ -32,6 +35,8 @@ module.exports = (router) => {
       DI.rh.fail(res, "Couldn't locate user session to log out")
     }
     else {
+      res.cookie("username", 'Anonymous');
+      res.cookie("userId", -1);
       DI.rh.succeed(res, "User logged out")
     }
   }))

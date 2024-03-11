@@ -52,7 +52,8 @@ cDI.components.vikingChess = {
           <span id="startVCGame" class="btnStd">Let battle be joined!</span>
         </span>`)
       ftbAddInput("click.startNewGame", newGameHtml.find("#startVCGame"), async () => {
-        cDI.services.vikingChess.startNewGame($("#opponentName").html())
+        var newGame = await cDI.services.vikingChess.startNewGame($("#opponentName").html())
+        await ftbCmp("router").getRoute("/games", `/vikingChess/${newGame.id}`)
       })
       container.append(newGameHtml)
     }
