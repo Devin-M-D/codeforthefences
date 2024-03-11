@@ -19,6 +19,10 @@ vikingChessQueries.getAllUserGames =
 WHERE player1 = ? OR player2 = ?
 ORDER BY createdAt DESC`
 
+vikingChessQueries.startNewGame =
+`INSERT INTO vikingChess (player1, player2) VALUES (?, (SELECT id FROM user WHERE username = ?))`
+
+
 vikingChessQueries.getCurrentTurn = `SELECT vc.turn FROM vikingChess vc WHERE id = ? and (player1 = ? OR player2 = ?)`
 vikingChessQueries.saveGame = `UPDATE vikingChess SET ended = ?, winner = ?, gamestate = ?, turn = turn + 1 WHERE player1 = ? OR player2 = ?`
 

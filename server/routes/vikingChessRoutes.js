@@ -2,8 +2,15 @@ var vikingChessService = require('../services/vikingChessService')
 var DI = require('../foundation/DICore')
 
 module.exports = (router) => {
-  // router.post('/crud/vikingChess/c/', DI.rh.asyncRoute(async (req, res, next) => {
-  // }))
+  router.post('/crud/vikingChess/c/startNewGame', DI.rh.asyncRoute(async (req, res, next) => {
+    try {
+      var gameData = await vikingChessService.startNewGame(req.cookies["userId"], req.body.opponentName)
+      DI.rh.succeed(res, gameData)
+    }
+    catch(ex){
+      DI.rh.fail(res, JSON.stringify(ex))
+    }
+  }))
   router.post('/crud/vikingChess/r/getSingleUserGame', DI.rh.asyncRoute(async (req, res, next) => {
     try {
       var gameData = await vikingChessService.getSingleUserGame(req.body.gameId, req.cookies["userId"])

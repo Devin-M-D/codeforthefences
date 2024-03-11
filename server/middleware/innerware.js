@@ -30,6 +30,8 @@ async function userSessionInnerware (req, res) {
     }
   }
   if (req.cookies && (!req.cookies["username"] || !req.cookies["userId"])){
+    req.cookies['username'] = visitorName;
+    req.cookies['userId'] = visitorId;
     res.cookie('username', visitorName, { maxAge: 900000, httpOnly: true, sameSite: true });
     res.cookie('userId', visitorId, { maxAge: 900000, httpOnly: true, sameSite: true });
   }

@@ -46,7 +46,15 @@ cDI.components.vikingChess = {
       ftbCmp("vikingChess").pollUpdates()
     }
     else {
-
+      var newGameHtml = $(`
+        <span>
+          Challenge Player: <span id="opponentName" type="text" contenteditable="true"></span>
+          <span id="startVCGame" class="btnStd">Let battle be joined!</span>
+        </span>`)
+      ftbAddInput("click.startNewGame", newGameHtml.find("#startVCGame"), async () => {
+        cDI.services.vikingChess.startNewGame($("#opponentName").html())
+      })
+      container.append(newGameHtml)
     }
   },
   loadGameState: async () => {

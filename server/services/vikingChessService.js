@@ -4,6 +4,10 @@ var vikingChessQueries = require("../queries/vikingChess/vikingChessQueries")
 var userQueries = require("../queries/user/userQueries")
 
 var vikingChessService = {}
+vikingChessService.startNewGame = async (userId, opponentName) => {
+  var gamesdata = await db.runQuery(vikingChessQueries.startNewGame, [userId, opponentName])
+  return gamesdata
+}
 vikingChessService.getSingleUserGame = async (gameId, userId) => {
   var gamedata = await db.runQuery(vikingChessQueries.getSingleUserGame, [gameId, userId, userId], 1)
   gamedata.player1 = userQueries.mapIdAndName(gamedata.player1Id, gamedata.player1Name)

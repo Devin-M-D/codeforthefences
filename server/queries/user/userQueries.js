@@ -19,7 +19,7 @@ WHERE username = ?
 `
 
 userQueries.create = `
-INSERT INTO user (createdDate, username, password, sessionId) VALUES (NOW(), ?, ?, ?);
+INSERT INTO user (username, password, sessionId) VALUES (?, ?, ?);
 SELECT * FROM user WHERE id = LAST_INSERT_ID();
 `
 
