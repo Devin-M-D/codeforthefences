@@ -4,13 +4,46 @@ var vikingChessQueries = require("../queries/vikingChess/vikingChessQueries")
 var userQueries = require("../queries/user/userQueries")
 
 var vikingChessService = {}
-vikingChessService.getGame = async (userId) => {
-  var gamedata = await db.runQuery(vikingChessQueries.getGame, [userId, userId], 1)
+vikingChessService.getSingleUserGame = async (gameId, userId) => {
+  var gamedata = await db.runQuery(vikingChessQueries.getSingleUserGame, [gameId, userId, userId], 1)
   gamedata.player1 = userQueries.mapIdAndName(gamedata.player1Id, gamedata.player1Name)
   gamedata.player2 = userQueries.mapIdAndName(gamedata.player2Id, gamedata.player2Name)
   gamedata.gamestate = JSON.parse(gamedata.gamestate)
   return gamedata
 }
+vikingChessService.getAllUserGames = async (userId) => {
+  var gamesdata = await db.runQuery(vikingChessQueries.getAllUserGames, [userId, userId])
+  return gamesdata
+}
+vikingChessService.parseGamesMetadata = (gamesdata, userId) => {
+  var parsed = gamesdata.map(x => {
+    return {
+      id: x.id,
+      player1: x.player1,
+      player2: x.player2,
+      turn: x.turn,
+      ended: x.ended,
+      winner: x.winner,
+      opponentName: x.player1 == userId ? x.player2Name : x.player1Name,
+      p1Caps: Object.entries(JSON.parse(x.gamestate)).filter(piece => {
+        return vikingChessService.isAttackerPiece(piece[0]) && piece[1] == "cap"
+      }).length,
+      p2Caps: Object.entries(JSON.parse(x.gamestate)).filter(piece => {
+        return vikingChessService.isDefenderPiece(piece[0]) && piece[1] == "cap"
+      }).length
+    }
+  })
+  return parsed
+}
+vikingChessService.isDefenderPiece = (pieceName) => {
+  if (pieceName.indexOf("k") != -1 || pieceName.indexOf("w") != -1) { return true }
+  else if (pieceName.indexOf("b") != -1) { return false }
+}
+vikingChessService.isAttackerPiece = (pieceName) => {
+  if (pieceName.indexOf("k") != -1 || pieceName.indexOf("w") != -1) { return false }
+  else if (pieceName.indexOf("b") != -1) { return true }
+}
+
 vikingChessService.getCurrentTurn = async (gameId, userId) => {
   var currentTurn = (await db.runQuery(vikingChessQueries.getCurrentTurn, [gameId, userId, userId], 1)).turn
   return currentTurn

@@ -7,7 +7,6 @@ module.exports = (router) => {
     var newUser = req.body
     try {
       var createdUser = await authService.signup(newUser, req.cookies['connect.sid'])
-      console.log("createdUser",createdUser)
       DI.rh.succeed(res, createdUser)
     }
     catch (ex) { DI.rh.fail(res, ex) }
@@ -18,6 +17,7 @@ module.exports = (router) => {
     var user = await authService.findLogin(login.username, login.password)
     if (user) {
       await authService.setSession(req.cookies['connect.sid'], user.id)
+      res.cookie('userId', user.id, { maxAge: 900000, httpOnly: true, sameSite: true });
       user.token = req.cookies['connect.sid']
       DI.rh.succeed(res, user)
     }

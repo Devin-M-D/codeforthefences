@@ -32,17 +32,22 @@ cDI.components.vikingChess = {
   container: null,
   poll: null,
   init: async () => {
-    await cDI.remote.asyncGetScript(`js/services/vikingChessService.js`)
   },
   drawGame: async (container) => {
     container.empty()
-    var gamedata = await ftbSvc["vikingChess"].getGameState()
-    ftbCmp("vikingChess").gamedata = gamedata
-    container.append(ftbCmp("vikingChess").html)
-    await ftbCmp("graphPaper").drawGrid($("#vikingChess .gameboard"), 11, 11)
-    await ftbCmp("vikingChess").loadGameState()
-    ftbCmp("vikingChess").container = container
-    ftbCmp("vikingChess").pollUpdates()
+    var gameId = window.location.pathname.split("/")[3]
+    if (gameId){
+      var gamedata = await cDI.services.vikingChess.loadUserGame(gameId)
+      ftbCmp("vikingChess").gamedata = gamedata
+      container.append(ftbCmp("vikingChess").html)
+      await ftbCmp("graphPaper").drawGrid($("#vikingChess .gameboard"), 11, 11)
+      await ftbCmp("vikingChess").loadGameState(gameId)
+      ftbCmp("vikingChess").container = container
+      ftbCmp("vikingChess").pollUpdates()
+    }
+    else {
+
+    }
   },
   loadGameState: async () => {
     var gamedata = ftbCmp("vikingChess").gamedata

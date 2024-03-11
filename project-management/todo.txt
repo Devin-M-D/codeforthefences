@@ -1,4 +1,5 @@
 Minor bugs and features:
+- main nav open/close UT jumps
 - can't type into un fields after already entering something
 - if pollTurn errors draw games home and stop polling
 - can't move into corners

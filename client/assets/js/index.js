@@ -1,5 +1,10 @@
 $(async () => {
   ftbLog("Document ready, firing strap function")
+
+  //services
+  await cDI.remote.asyncGetScript(`/js/services/vikingChessService.js`)
+
+  //draw big6
   await ftbLoadComponent("components/big6", "cargoHold", $("html"))
   await ftbLoadComponent("components/big6", "header", $("body"))
   await ftbLoadComponent("components/big6", "contentMain", $("body"))

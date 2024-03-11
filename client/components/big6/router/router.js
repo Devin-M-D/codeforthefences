@@ -1,18 +1,19 @@
 cDI.components.router = {
   init: async () => {
-    if (window.location.pathname.length == 1) {
+    var pathname = window.location.pathname
+    if (pathname.length == 1) {
       await ftbCmp("router").getRoute("blog")
     }
     else {
-      await ftbCmp("router").getRoute(window.location.pathname)
+      await ftbCmp("router").getRoute(pathname.split("/")[1], "/" + pathname.split("/").slice(2).join("/"))
     }
   },
-  getRoute: async (path) => {
-    if (path[0] == "/" || path[0] == "\\"){
-      path = path.substr(1)
+  getRoute: async (pagePath, pathParams = "") => {
+    if (pagePath[0] == "/" || pagePath[0] == "\\"){
+      pagePath = pagePath.substr(1)
     }
-    window.history.pushState(null, null, path)
-    var cmDI = await ftbCmp("contentMain").loadPage(path)
+    window.history.pushState(null, null, "/" + pagePath + pathParams)
+    var cmDI = await ftbCmp("contentMain").loadPage(pagePath)
     ftbCmp("header").setHeaderText(cmDI.siteHeaderText)
   }
 }

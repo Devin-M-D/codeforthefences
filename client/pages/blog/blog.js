@@ -1,7 +1,7 @@
 cDI.pages.blog = {
   siteHeaderText: `Blog`,
   init: async () => {
-    await cDI.remote.asyncGetScript(`js/services/blogService.js`)
+    await cDI.remote.asyncGetScript(`/js/services/blogService.js`)
   },
   drawPage: async (container) => {
     container.append(`<span id="blogMain" class="cols">

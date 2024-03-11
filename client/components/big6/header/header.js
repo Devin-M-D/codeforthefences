@@ -8,11 +8,11 @@ cDI.components.header = {
         <span id="siteName" class="header">Code for the Fences</span>
         <span id="pageName" class="iSubheader"></span>
       </span>
-      <span id="acctMenuBtn" class="shpUser" style="height:100%"></span>
+      <span id="userBtn" class="shpUser" style="height:100%"></span>
     </span>
   `,
   init: async () => {
-    await cDI.remote.asyncGetScript(`js/services/authService.js`)
+    await cDI.remote.asyncGetScript(`/js/services/authService.js`)
     await ftbCmp("header").strapAuthButton()
     await ftbCmp("header").strapHeaderHamburger()
   },
@@ -21,20 +21,20 @@ cDI.components.header = {
   },
   strapAuthButton: async () => {
     if ($("#accountDash") || $("#signupLoginBox")) { ftbCmp("modal").raiseCurtain() }
-    ftbCmp("modal").removeModalClick($("#acctMenuBtn"))
+    ftbCmp("modal").removeModalClick($("#userBtn"))
     var onCloseFn = async () => { return await ftbCmp("header").strapAuthButton() }
     if (cDI.utils.isDef(cDI.session.token)){
       var accountDashContent = await ftbCmp("accountDash").drawAccountDash()
-      await ftbCmp("modal").clickToModal($("#acctMenuBtn"), accountDashContent, true, onCloseFn)
+      await ftbCmp("modal").clickToModal($("#userBtn"), accountDashContent, true, onCloseFn)
     }
     else {
       var authMenuContent = await ftbCmp("authMenu").drawAuthMenu()
-      await ftbCmp("modal").clickToModal($("#acctMenuBtn"), authMenuContent, true, onCloseFn)
+      await ftbCmp("modal").clickToModal($("#userBtn"), authMenuContent, true, onCloseFn)
 
     }
   },
   strapHeaderHamburger: async () => {
-    ftbAddInput("click.openHamburger", $("#siteHeader > .hamburgerBox"), async () => {
+    ftbAddInput("click.openMainNav", $("#siteHeader > .hamburgerBox"), async () => {
       await ftbCmp("header").buildMainNav()
     })
   },
@@ -66,9 +66,8 @@ cDI.components.header = {
             <span id="mainNavGames" class="btnStd subheader">Games</span>
           </span>
         </span>
-      </span>
-    `)
-    ftbAddInput("click.closeDrawerPane", pane.find("mainMenuClose"), async () => {
+      </span>`)
+    ftbAddInput("click.closeDrawerPane", pane.find(".drawerPaneClose"), async () => {
       await ftbCmp("drawerPane").closeDrawerPane($(this).parent().parent().parent().parent())
     })
     ftbCmp("header").addMainNavClick(pane, $("#mainNavAbout"), '/about')

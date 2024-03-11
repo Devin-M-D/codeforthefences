@@ -2,7 +2,7 @@ USE codeforthefences;
 
 CREATE TABLE user (
   `id` int AUTO_INCREMENT primary key NOT NULL,
-  `createdDate` datetime NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `username` nvarchar(64) UNIQUE NOT NULL,
   `password` nvarchar(128) NOT NULL,
   `sessionId` nvarchar(128) NULL,
@@ -112,6 +112,7 @@ CREATE TABLE stepMap (
 
 CREATE TABLE vikingChess (
   `id` int AUTO_INCREMENT primary key NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `player1` int NOT NULL,
   `player2` int NOT NULL,
   `turn` int NOT NULL DEFAULT 0,

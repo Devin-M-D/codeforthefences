@@ -1,5 +1,3 @@
-var userModel = require('../../models/shared/user/userModel')
-
 var userQueries = {}
 
 userQueries.prjIdAndName = (tblAlias, idAlias, nameAlias) => {
