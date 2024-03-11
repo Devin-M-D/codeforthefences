@@ -7,6 +7,8 @@
 --font1: rockwell;
 --fontSizeLg: min(5vw, 5vh);
 --fontSizeMd: min(4vw, 4vh);
+--fontSizeSm: min(3vw, 3vh);
+--fontSizeMini: min(2vw, 2vh);
 
 --ruleInner: var(--clrSecondary);
 --ruleOuter: var(--clrPrimary);
@@ -25,6 +27,7 @@ html, body, span {
   padding: 0;
   overflow: hidden;
   position: relative;
+  font-size: var(--fontSizeSm);
 }
 span[type="text"], input[type="password"] {
     border: solid thin black;
@@ -79,6 +82,10 @@ span[type="text"], input[type="password"] {
   font-size: var(--fontSizeMd);
   font-style: italic;
 }
+.miniFont {
+  font-size: var(--fontSizeMini);
+}
+.bold { font-weight: bold; }
 .underline { text-decoration: underline; }
 /*#endregion*/
 

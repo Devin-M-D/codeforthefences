@@ -19,7 +19,10 @@ cDI.pages.games = {
     await cDI.addAwaitableInput("click.launchOshi", $("#runOshi"), async () => {
       await ftbCmp('games').launchGame('oshi', container)
     })
-
+    var game = window.location.pathname.split("/")[2]
+    if (game) {
+      await ftbCmp('games').launchGame(game, container)
+    }
   },
   launchGame: async (game, parentContainer) => {
     if (!cDI.session.token){
@@ -33,7 +36,7 @@ cDI.pages.games = {
       $("#selectGame").empty()
       $("#selectGame").addClass("back")
       $("#selectGame").append(backBtn)
-      
+
       $("#gamePane").empty()
       if (game == "oshi") {
         $("#gamePane").html("Oshi coming soon!")

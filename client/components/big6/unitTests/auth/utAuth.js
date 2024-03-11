@@ -7,7 +7,7 @@ cDI.components.unitTests.auth = {
       await ftbUT.auth.login(1)
     })
   },
-  clickAuthIcon: async () => { return await ftbMockInput("click.spawnModal", $("#acctMenuBtn")) },
+  clickUserBtn: async () => { return await ftbMockInput("click.spawnModal", $("#userBtn")) },
   clickSignup: async () => { return await ftbMockInput("click.signup", $("#btnSignup")) },
   clickLogin: async () => { return await ftbMockInput("click.login", $("#btnLogin")) },
   setSignupVals: (un) => {
@@ -19,7 +19,7 @@ cDI.components.unitTests.auth = {
     return await ftbUT.UTIndent(ftbUT.auth.section, "signup",
       async () => {
         await cDI.session.logout()
-        await ftbUT.auth.clickAuthIcon()
+        await ftbUT.auth.clickUserBtn()
         var randomId = name || `utAuthUser_${cDI.utils.randomString(12)}`
         ftbUT.auth.setSignupVals(randomId)
         var signupRes = await ftbUT.auth.clickSignup()
@@ -46,7 +46,7 @@ cDI.components.unitTests.auth = {
         if (cDI.utils.isDef(cDI.session.token)) {
            await cDI.session.logout()
         }
-        await ftbUT.auth.clickAuthIcon()
+        await ftbUT.auth.clickUserBtn()
         var un = cDI.session.testuser
         var pw = cDI.session.testpass
         $("#txtLoginUN").html(un)

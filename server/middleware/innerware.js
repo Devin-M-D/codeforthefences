@@ -22,14 +22,18 @@ async function userSessionInnerware (req, res) {
   if (req.cookies && req.cookies['connect.sid']){
     var sessionUser = await authService.getSession(req.cookies['connect.sid'])
     if (DI.utils.isDef(sessionUser)) {
+      if (req.body && req.cookies['userId'] && sessionUser.id != req.cookies['userId']) {
+        DI.rh.fail(res, "Invalid session, please login again.")
+      }
       visitorName = sessionUser.username
       visitorId = sessionUser.id
     }
   }
-  if (!DI.utils.isDef(req.body)) { req.body = {} }
-  req.body.session = {
-    username: visitorName,
-    userId: visitorId
+  if (req.cookies && (!req.cookies["username"] || !req.cookies["userId"])){
+    req.cookies['username'] = visitorName;
+    req.cookies['userId'] = visitorId;
+    res.cookie('username', visitorName, { maxAge: 900000, httpOnly: true, sameSite: true });
+    res.cookie('userId', visitorId, { maxAge: 900000, httpOnly: true, sameSite: true });
   }
 }
 
@@ -40,7 +44,7 @@ async function debuggingInnerware (req, res, debugging) {
     }
     req.body.debug = true
 
-    var log = `User ${req.body.session.username} requested ${req.originalUrl}`
+    var log = `User ${req.cookies["username"]} requested ${req.originalUrl}`
     console.log(log)
   }
 }

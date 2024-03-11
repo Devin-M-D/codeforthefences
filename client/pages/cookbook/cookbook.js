@@ -10,7 +10,7 @@ cDI.pages.cookbook = {
   siteHeaderText: "Cookbook",
   init: async () => {
     await ftbLoadComponent("components/projectWidgets", "recipeCard")
-    await cDI.remote.asyncGetScript(`js/services/recipeService.js`)
+    await cDI.remote.asyncGetScript(`/js/services/recipeService.js`)
     var recipes = await cDI.services.recipe.getAllRecipes()
     await cDI.components.recipeCard.appendList($("#counterTop"), recipes)
     cDI.addAwaitableInput("click", $("#addNewRecipe > .btnIcon"), e => {

@@ -3,10 +3,14 @@ cDI.components.unitTests.header = {
   runAllHeader: async (log) => {
     return await ftbUT.UTLogSection(ftbUT.header.section, async () => {
       await ftbUT.header.openMainNav()
-      // await ftbUT.header.openAuth()
+      await ftbUT.header.closeMainNav()
+      //await ftbUT.auth.clickUserBtn()
     })
   },
   openMainNav: async () => {
-    await cDI.mockInput("click.openHamburger", $("#siteHeader > .hamburgerBox"))
+    await cDI.mockInput("click.openMainNav", $("#siteHeader > .hamburgerBox"))
+  },
+  closeMainNav: async () => {
+    await cDI.mockInput("click.closeDrawerPane", $("#dpMainNavHeader").find(".drawerPaneClose"))
   }
 }

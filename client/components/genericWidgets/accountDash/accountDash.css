@@ -11,3 +11,21 @@
   align-content: start;
   justify-content: start;
 }
+#accountDashBody {
+  grid-auto-rows: minmax(10px, max-content)
+}
+.vcGameOverview {
+  grid-auto-rows: 1fr 1fr;
+}
+.vcGameOverview > span {
+  grid-template-columns: 50px 50px 50px 1fr 1fr 1fr;
+}
+.playerSide {
+  aspect-ratio: 1;
+  width: 40px;
+  padding: 5px;
+  margin: auto;
+}
+.grayUnderline {
+  border-bottom: solid thin lightgray;
+}

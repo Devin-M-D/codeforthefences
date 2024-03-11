@@ -7,7 +7,6 @@ module.exports = {
   },
   getBlogList: async () => {
     var data = await db.runQuery(blogQueries.getBlogList)
-    console.log("data", data)
     return data
   }
 }

@@ -1,9 +1,14 @@
 cDI.services.vikingChess = {
-  startNewGame: async() => {
-
+  startNewGame: async(opponentName) => {
+    var callRes = await cDI.remote.remoteCall("/crud/vikingChess/c/startNewGame", { opponentName })
+    return callRes.payload
   },
-  getGameState: async () => {
-    var callRes = await cDI.remote.remoteCall("/crud/vikingChess/r/", { expectMany: false })
+  getAllUserGames: async () => {
+    var callRes = await cDI.remote.remoteCall("/crud/vikingChess/r/allUserGames")
+    return callRes.payload
+  },
+  loadUserGame: async (gameId) => {
+    var callRes = await cDI.remote.remoteCall("/crud/vikingChess/r/getSingleUserGame", { gameId }, { expectMany: false })
     return callRes.payload
   },
   getCurrentTurn: async (gameId) => {
