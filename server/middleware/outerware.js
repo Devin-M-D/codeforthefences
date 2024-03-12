@@ -4,7 +4,7 @@ module.exports = (expressApp, debugging) => {
       if (req.body.expectMany == true && res.payload.constructor.name != "Array"){
         res.payload = [ res.payload ]
       }
-      res.json({ status: res.status, payload: res.payload })
     }
+    res.json({ status: res.status, payload: res.payload })
   })
 }

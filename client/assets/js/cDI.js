@@ -415,6 +415,20 @@ cDI.session = {
     cDI.session.token = null
     await cDI.components.header.strapAuthButton()
   },
+  validateLogin: async () => {
+    //if we think we're logged in, verify by making a call. Triggers an implicit logout in the remoteCall func if call result has status "e".
+    if (cDI.utils.isDef(cDI.session.token)){
+      ftbLog(`active session detected, testing`)
+      var sessionTest = await cDI.remote.remoteCall("/user/testToken")
+      if (sessionTest.status == 's'){
+        ftbLogUT(`active session still valid, proceeding: (session id: ${cDI.session.token.substr(0, 5)}...)`)
+      }
+      else {
+        ftbLog(`error with session, clearing`)
+        await cDI.session.clearLogin()
+      }
+    }
+  },
   testuser: cDI.stored("codeforthefences.test.username"),
   testpass: cDI.stored("codeforthefences.test.password"),
   userId: cDI.stored("codeforthefences.userId"),

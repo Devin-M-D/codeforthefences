@@ -15,6 +15,9 @@ cDI.components.router = {
     window.history.pushState(null, null, "/" + pagePath + pathParams)
     var cmDI = await ftbCmp("contentMain").loadPage(pagePath)
     ftbCmp("header").setHeaderText(cmDI.siteHeaderText)
+  },
+  getCurrentRoute: () => {
+    return window.location.pathname.split("/")
   }
 }
 
