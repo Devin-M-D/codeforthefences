@@ -155,9 +155,16 @@ cDI.components.vikingChess = {
   pollUpdates: async () => {
     if (ftbCmp("vikingChess").poll == null) {
       var fn = setInterval(async () => {
-        var dataFromServer = await ftbSvc["vikingChess"].getCurrentTurn(ftbCmp("vikingChess").gamedata.id)
-        if (ftbCmp("vikingChess").gamedata.turn != dataFromServer){
-          await ftbCmp("vikingChess").drawGame(ftbCmp("vikingChess").container)
+        var path = ftbCmp("router").getCurrentRoute()
+        if (path.length > 4 || path[1].toLowerCase() != "games" || path[2].toLowerCase() != "vikingchess" || isNaN(path[3])){
+          clearInterval(ftbCmp("vikingChess").poll)
+          ftbCmp("vikingChess").poll = null
+        }
+        else {
+          var dataFromServer = await ftbSvc["vikingChess"].getCurrentTurn(ftbCmp("vikingChess").gamedata.id)
+          if (ftbCmp("vikingChess").gamedata.turn != dataFromServer){
+            await ftbCmp("vikingChess").drawGame(ftbCmp("vikingChess").container)
+          }
         }
       }, 3000)
       ftbCmp("vikingChess").poll = fn
@@ -221,7 +228,7 @@ cDI.components.vikingChess = {
     }
   },
   movePiece: async (piece, newX, newY) => {
-    await ftbSvc["vikingChess"].submitMove(piece, newX, newY)
+    await ftbSvc.vikingChess.submitMove(ftbCmp("vikingChess").gamedata.id, piece, newX, newY)
     await ftbCmp("games").launchGame("vikingChess")
   }
 }

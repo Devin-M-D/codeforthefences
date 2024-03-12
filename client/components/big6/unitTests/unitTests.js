@@ -45,22 +45,10 @@ cDI.components.unitTests = {
       "Unit Tests set to level 3: loginIfNeccessary (just login if the session has expired)",
       async () => {
         ftbIndent()
-        //if we think we're logged in, verify by making a call. Triggers an implicit logout in the remoteCall func if call result has status "e".
-        if (cDI.utils.isDef(cDI.session.token)){
-          ftbLogUT(`active session detected, testing`)
-          var sessionTest = await cDI.remote.remoteCall("/user/testToken")
-          if (sessionTest.status == 's'){
-            ftbLogUT(`active session still valid, proceeding: (session id: ${cDI.session.token.substr(0, 5)}...)`)
-          }
-          else {
-            ftbLogUT(`error with session, clearing`)
-            await cDI.session.clearLogin()
-          }
-        }
         //if not logged in, use saved testUser or save first testUser
         if (!cDI.utils.isDef(cDI.session.token)) {
           ftbLogUT(`Not logged in, logging with ${cDI.session.testuser} and ${cDI.session.testpass}`)
-          if (!cDI.session.testuser) { cDI.session.setTestCredentials(0) }
+          if (!cDI.session.testuser) { ftbSetLogin(0) }
           await ftbUT.auth.login()
           ftbLogUT(`login succeeded token: ${cDI.session.token.substr(0, 5)}...`)
         }

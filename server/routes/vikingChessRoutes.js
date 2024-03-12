@@ -41,7 +41,7 @@ module.exports = (router) => {
   }))
   router.post('/vikingChess/submitMove/', DI.rh.asyncRoute(async (req, res, next) => {
     try {
-      var gameData = await vikingChessService.submitMove(req.cookies["userId"], req.body.piece, req.body.newX, req.body.newY)
+      var gameData = await vikingChessService.submitMove(req.cookies["userId"], req.body.gameId, req.body.piece, req.body.newX, req.body.newY)
       DI.rh.succeed(res, gameData)
     }
     catch(ex) {

@@ -53,9 +53,9 @@ vikingChessService.getCurrentTurn = async (gameId, userId) => {
   var currentTurn = (await db.runQuery(vikingChessQueries.getCurrentTurn, [gameId, userId, userId], 1)).turn
   return currentTurn
 }
-vikingChessService.submitMove = async (userId, piece, newX, newY) => {
+vikingChessService.submitMove = async (userId, gameId, piece, newX, newY) => {
   // console.log(`Moving ${piece} to ${newX}, ${newY}`)
-  var gamedata = await vikingChessService.getGame(userId)
+  var gamedata = await vikingChessService.getSingleUserGame(gameId, userId)
   var gamestate = gamedata.gamestate
   var currSpace = gamestate[piece]
   var currX = currSpace.split(",")[0]

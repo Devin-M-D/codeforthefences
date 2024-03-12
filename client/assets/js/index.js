@@ -1,6 +1,8 @@
 $(async () => {
   ftbLog("Document ready, firing strap function")
 
+  cDI.session.validateLogin()
+
   //services
   await cDI.remote.asyncGetScript(`/js/services/vikingChessService.js`)
 

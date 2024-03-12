@@ -3,7 +3,12 @@ cDI.components.contentMain = {
   loadPage: async (name) => {
     $("#contentMain").empty()
     var pageDI = await ftbLoadComponent("pages", name)
-    await pageDI.drawPage($("#contentMain"))
+    if (pageDI && pageDI.drawPage) {
+      await pageDI.drawPage($("#contentMain"))
+    }
+    else {
+      $("#contentMain").html("<span class='hardCenter'>Malformed page content!</span>")
+    }
     return pageDI
   }
 }
