@@ -42,7 +42,7 @@ cDI.components.authMenu = {
         $("#txtSgnUN").css("background-color", "coral")
       }
       else if (result.username == un) {
-        await cDI.session.setSession(result.id, result.username, result.sessionId)
+        await cDI.session.storeSession(result.id, result.username, result.sessionId)
         await ftbCmp("header").strapAuthButton()
       }
       else {

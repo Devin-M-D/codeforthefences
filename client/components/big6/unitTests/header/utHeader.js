@@ -3,6 +3,7 @@ cDI.components.unitTests.header = {
   runAllHeader: async (log) => {
     return await ftbUT.UTLogSection(ftbUT.header.section, async () => {
       await ftbUT.header.openMainNav()
+      await cDI.utils.sleep(500)
       await ftbUT.header.closeMainNav()
       //await ftbUT.auth.clickUserBtn()
     })

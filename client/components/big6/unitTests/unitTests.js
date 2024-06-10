@@ -29,6 +29,7 @@ cDI.components.unitTests = {
   runAllUnitTests: async (log) => {
     return await ftbUT.UTLogSection("Unit Tests set to level 1: runAllUnitTests",
       async () => {
+        await ftbUT.header.runAllHeader()
         await ftbUT.auth.runAllAuth()
         await ftbUT.recipe.runAllRecipe()
       })
@@ -36,8 +37,7 @@ cDI.components.unitTests = {
   customDevScenario: async (log) => {
     return await ftbUT.UTLogSection("Unit Tests set to level 2: customDevScenario",
       async () => {
-        await ftbUT.loginIfNeccessary()
-        await ftbUT.auth.clickUserBtn()
+        //await ftbUT.loginIfNeccessary()
       })
   },
   loginIfNeccessary: async () => {

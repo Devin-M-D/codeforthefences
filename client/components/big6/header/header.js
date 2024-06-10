@@ -1,14 +1,14 @@
 cDI.components.header = {
   html: `
-    <span id="siteHeader" class="flex rows">
-      <span class="hamburgerBox" style="height:100%">
+    <span id="siteHeader">
+      <span class="hamburgerBox">
         <span class="shpHamburger"></span>
       </span>
       <span id="siteHeaderText" class="rows grow hardCenter">
         <span id="siteName" class="header">Code for the Fences</span>
         <span id="pageName" class="iSubheader"></span>
       </span>
-      <span id="userBtn" class="shpUser" style="height:100%"></span>
+      <span id="userBtn" class="shpUser"></span>
     </span>
   `,
   init: async () => {
@@ -67,8 +67,8 @@ cDI.components.header = {
           </span>
         </span>
       </span>`)
-    ftbAddInput("click.closeDrawerPane", pane.find(".drawerPaneClose"), async () => {
-      await ftbCmp("drawerPane").closeDrawerPane($(this).parent().parent().parent().parent())
+    ftbAddInput("click.closeDrawerPane", pane.find(".drawerPaneClose"), async (e) => {
+      await ftbCmp("drawerPane").closeDrawerPane($(e.target).parents(".drawerPane"))
     })
     ftbCmp("header").addMainNavClick(pane, $("#mainNavAbout"), '/about')
     ftbCmp("header").addMainNavClick(pane, $("#mainNavBlog"), '/blog')
