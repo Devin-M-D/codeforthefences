@@ -6,7 +6,7 @@ cDI.components.vikingChess = {
       <span id="vikingChessP2Captures" class="vikingChessCaptures"></span>
       <span id="vikingChessP2" class="hardCenter"></span>
     </span>
-    <span class="gameboard flex"></span>
+    <span class="gameboard"></span>
     <span id="rules" class="">
       <b style="text-align: center;width:100%;padding: 20px 0px 10px 0px;">&#9660;  Rules  &#9660;</b>
       <span class="fontSm pad10 italic">
@@ -156,7 +156,7 @@ cDI.components.vikingChess = {
     if (ftbCmp("vikingChess").poll == null) {
       var fn = setInterval(async () => {
         var path = ftbCmp("router").getCurrentRoute()
-        if (path.length > 4 || path[1].toLowerCase() != "games" || path[2].toLowerCase() != "vikingchess" || isNaN(path[3])){
+        if (path.length != 4 || path[1].toLowerCase() != "games" || path[2].toLowerCase() != "vikingchess" || isNaN(path[3])){
           clearInterval(ftbCmp("vikingChess").poll)
           ftbCmp("vikingChess").poll = null
         }
@@ -166,7 +166,7 @@ cDI.components.vikingChess = {
             await ftbCmp("vikingChess").drawGame(ftbCmp("vikingChess").container)
           }
         }
-      }, 3000)
+      }, 30000)
       ftbCmp("vikingChess").poll = fn
     }
   },

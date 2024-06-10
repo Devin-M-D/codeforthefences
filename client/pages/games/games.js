@@ -8,7 +8,7 @@ cDI.pages.games = {
         <span id="runVikingChess" class="gameBtn mgn10 btnStd hardCenter">Viking Chess</span>
         <span id="runOshi" class="gameBtn mgn10 btnStd hardCenter">Oshi</span>
       </span>
-      <span id="gamePane" class="softCenter"></span>
+      <span id="gamePane"></span>
     </span>`
     container.append(html)
     await ftbLoadComponent("components/projectWidgets", "vikingChess")
@@ -23,12 +23,15 @@ cDI.pages.games = {
     if (game) {
       await ftbCmp('games').launchGame(game, container)
     }
+    cDI.session.logoutRoute = '/games'
   },
   launchGame: async (game, parentContainer) => {
     if (!cDI.session.token){
+      $("#gamePane").addClass("hardCenter")
       $("#gamePane").html("Please log in to play!")
     }
     else {
+      $("#gamePane").addClass("softCenter")
       var backBtn = $(`<span>< Back to Games Home</span>`)
       ftbAddInput("click.backGamesHome", backBtn, async () => {
         await ftbCmp("router").getRoute("/games")

@@ -1,14 +1,24 @@
 #vikingChess {
-  grid-template-rows: 10% 80% max-content;
+  grid-template-rows: 10% max-content max-content;
+  grid-template-areas:
+  "scoreboard"
+  "gameboard"
+  "rules";
+}
+#vikingChess > .gameboard {
+  grid-area: gameboard;
+  aspect-ratio: 1;
+  margin: auto;
+  height: min(90vw, 60vh);
+  width: min(90vw, 60vh);
+}
+#vikingChess > .gameboard > span {
 }
 #vikingChess > .gameboard > span > span {
   padding: 5px;
 }
-#vikingChess > .gameboard {
-  justify-content: center;
-}
 #vikingChess .scoreboard {
-  flex-basis: 10%;
+  grid-area: scoreboard;
 }
 #vikingChess .capBox { height: 50px; }
 
@@ -21,3 +31,7 @@
 #vikingChess .wPiece { background-color: white; }
 #vikingChess .bPiece { background-color: black; }
 #vikingChess .winner { color: dandelion; }
+
+#vikingChess #rules {
+  grid-area: rules;
+}

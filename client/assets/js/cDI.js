@@ -66,6 +66,9 @@ cDI.utils = {
     return new Promise((f, r) => {
       fn(f)
     })
+  },
+  sleep: (ms) => {
+    return new Promise(f => setTimeout(f, ms));
   }
 }
 //#endregion
@@ -144,7 +147,7 @@ cDI.remote = {
         xhrFields: { withCredentials: true },
         success: function (callRes) {
           ftbLogAjax("Call to:  " + remoteURL + " - Succeeded: ", callRes)
-          if (callRes.status == "e" && callRes.payload == "Unable to locate user session") { cDI.clearLogin()  }
+          if (callRes.status == "e" && callRes.payload == "Unable to locate user session") { cDI.logout()  }
           if (postDataObj.expectOne){ fulfill(callRes.payload[0]) }
           fulfill(callRes)
         },
@@ -394,7 +397,7 @@ cDI.session = {
     cDI.persist("codeforthefences.test.username", un)
     cDI.persist("codeforthefences.test.password", "testpass")
   },
-  setSession: async (id, un, token) => {
+  storeSession: async (id, un, token) => {
     cDI.persist("codeforthefences.userId", id)
     cDI.persist("codeforthefences.username", un)
     cDI.persist("codeforthefences.token", token)
@@ -402,18 +405,25 @@ cDI.session = {
     cDI.session.username = cDI.stored("codeforthefences.username")
     cDI.session.token = cDI.stored("codeforthefences.token")
   },
+  logoutRoute: null,
   logout: async () => {
     var callRes = await cDI.remote.remoteCall("/logout")
-    await cDI.session.clearLogin()
+    await cDI.session.clearStoredSession()
+    if (cDI.session.logoutRoute) {
+      await ftbCmp("router").getRoute(cDI.session.logoutRoute)
+    }
+    else {
+      await ftbCmp("router").getRoute()
+    }
+    await cDI.components.header.strapAuthButton()
   },
-  clearLogin: async () => {
+  clearStoredSession: async () => {
     cDI.unpersist("codeforthefences.userId")
     cDI.unpersist("codeforthefences.username")
     cDI.unpersist("codeforthefences.token")
     cDI.session.userId = null
     cDI.session.username = null
     cDI.session.token = null
-    await cDI.components.header.strapAuthButton()
   },
   validateLogin: async () => {
     //if we think we're logged in, verify by making a call. Triggers an implicit logout in the remoteCall func if call result has status "e".
@@ -425,7 +435,7 @@ cDI.session = {
       }
       else {
         ftbLog(`error with session, clearing`)
-        await cDI.session.clearLogin()
+        await cDI.session.clearStoredSession()
       }
     }
   },

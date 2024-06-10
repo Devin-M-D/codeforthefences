@@ -2,7 +2,7 @@
   grid-auto-rows: auto 1fr;
 }
 #gamePane {
-  grid-auto-rows: auto;
+  grid-template-rows: 1fr;
 }
 #selectGame {
   grid-auto-columns: 150px;
@@ -10,5 +10,5 @@
 }
 #selectGame.back {
   grid-auto-columns: unset;
-  justify-content: flex-start;
+  justify-content: start;
 }

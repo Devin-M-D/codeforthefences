@@ -12,7 +12,7 @@ cDI.services.auth = {
     var callRes = await cDI.remote.remoteCall("/login", {"username": un, "password": pw })
     return await cDI.remote.h(callRes,
       async (user) => {
-        await cDI.session.setSession(user.id, user.username, user.sessionId)
+        await cDI.session.storeSession(user.id, user.username, user.sessionId)
         await cDI.components.header.strapAuthButton()
         return callRes
       },

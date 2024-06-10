@@ -2,6 +2,7 @@
   background-color: var(--clrPrimary);
   box-shadow: 0px 5px 5px var(--clrSecondary);
   z-index: 1;
+  grid-template-columns: [hamburger] min(15vw, 15vh) [headline] 1fr [authMenu] min(15vw, 15vh)
 }
 #dpMainNav {
   grid-template-rows: 55px calc(100% - 55px);
