@@ -44,7 +44,7 @@ async function debuggingInnerware (req, res, debugging) {
     }
     req.body.debug = true
 
-    var log = `User ${req.cookies["username"]} requested ${req.originalUrl}`
+    var log = `${DI.datetimes.utcNow()} UTC: User ${req.cookies["username"]} requested ${req.originalUrl}`
     console.log(log)
   }
 }

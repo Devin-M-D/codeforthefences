@@ -1,4 +1,11 @@
 Minor bugs and features:
+- king not capturable by throne
+- submit button
+- rules numbers cut off
+- zoom in on login
+- scoreboard
+- migrate to sockets
+
 - can't type into un fields after already entering something
 - if pollTurn errors draw games home and stop polling
 - can't move into corners
