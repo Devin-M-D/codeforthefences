@@ -24,7 +24,6 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "moment": "^2.29.1",
     "mysql2": "^3.8.0",
     "uuid": "^8.0.0"
   }
