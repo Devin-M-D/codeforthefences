@@ -9,6 +9,8 @@
   justify-content: space-evenly;
 }
 #selectGame.back {
-  grid-auto-columns: unset;
+  grid-template-columns: 1fr;
   justify-content: start;
+  border-bottom: solid thin black;
+  margin-bottom: 20px;
 }

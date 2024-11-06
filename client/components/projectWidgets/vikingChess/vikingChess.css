@@ -1,5 +1,5 @@
 #vikingChess {
-  grid-template-rows: 10% max-content max-content;
+  grid-template-rows: min-content max-content max-content;
   grid-template-areas:
   "scoreboard"
   "gameboard"
@@ -12,15 +12,28 @@
   height: min(90vw, 60vh);
   width: min(90vw, 60vh);
 }
-#vikingChess > .gameboard > span {
-}
-#vikingChess > .gameboard > span > span {
-  padding: 5px;
-}
+#vikingChess > .gameboard > .graphPaper > span { padding: 5px; }
 #vikingChess .scoreboard {
   grid-area: scoreboard;
+  grid-template-columns: 20% 1fr 1fr 20%;
 }
-#vikingChess .capBox { height: 50px; }
+#vikingChess #vikingChessP1, #vikingChess #vikingChessP2 {  }
+#vikingChess .vcP1Name, #vikingChess .vcP2Name {
+  overflow: hidden;
+  align-self: start;
+  justify-self: start;
+  width: 100%;
+}
+#vikingChess .vcPlayerIndicator { height:6vw; aspect-ratio: 1; padding: 2px; }
+#vikingChess .vcPlayerIndicator > span { aspect-ratio: 1; }
+#vikingChess #vikingChessP1Captures, #vikingChess #vikingChessP2Captures {
+  grid-template-columns: repeat(12, 1fr);
+  align-content: space-around;
+}
+#vikingChess #vikingChessP2Captures {
+  transform: rotate(180deg);
+}
+#vikingChess .capBox { aspect-ratio: 1; }
 
 #vikingChess .kingSpace { background-color: gold; }
 #vikingChess .cornerSpace { background-color: limegreen; }

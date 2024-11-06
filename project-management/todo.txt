@@ -1,4 +1,5 @@
 Minor bugs and features:
+- remove remaining CSS flex references
 - king not capturable by throne
 - submit button
 - rules numbers cut off
