@@ -47,8 +47,8 @@ cDI.components.vikingChess = {
     }
     else {
       var newGameHtml = $(`
-        <span>
-          Challenge Player: <span id="opponentName" type="text" contenteditable="true"></span>
+        <span class="softCenter">
+          Challenge Player: <span id="opponentName" type="text" contenteditable="true" class="softCenter"></span>
           <span id="startVCGame" class="btnStd">Let battle be joined!</span>
         </span>`)
       ftbAddInput("click.startNewGame", newGameHtml.find("#startVCGame"), async () => {
@@ -60,8 +60,8 @@ cDI.components.vikingChess = {
   },
   loadGameState: async () => {
     var gamedata = ftbCmp("vikingChess").gamedata
-    $("#vikingChessP1").html(gamedata.player1.username)
-    $("#vikingChessP2").html(gamedata.player2.username)
+    $("#vikingChessP1").html(`<span class="vcP1Name">${gamedata.player1.username}</span><span class='vcPlayerIndicator'><span class='shpCircle wPiece'></span></span>`)
+    $("#vikingChessP2").html(`<span class="vcP2Name">${gamedata.player2.username}</span><span class='vcPlayerIndicator'><span class='shpCircle bPiece'></span></span>`)
     if (gamedata.ended) {
       $(`#vikingChessP${gamedata.winner}`).addClass("winner")
     }
