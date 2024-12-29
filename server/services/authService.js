@@ -28,7 +28,7 @@ module.exports = {
     return user
   },
   setSession: async (sessionId, userId) => {
-    return await db.runQuery(userQueries.setSession, [ sessionId, DI.datetimes.utcNow(), userId ])
+    return await db.runQuery(userQueries.setSession, [ sessionId, '2024-12-29 11:45', userId ])
   },
   getSession: async (sessionId) => {
     return await db.runQuery(userQueries.getSession, [ sessionId ], 1)
